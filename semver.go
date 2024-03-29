@@ -1,4 +1,4 @@
-package sprig
+package sprout
 
 import (
 	sv2 "github.com/Masterminds/semver/v3"

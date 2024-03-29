@@ -1,4 +1,4 @@
-package sprig
+package sprout
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ func Example() {
 	vars := map[string]interface{}{"Name": "  John Jacob Jingleheimer Schmidt "}
 	tpl := `Hello {{.Name | trim | lower}}`
 
-	// Get the Sprig function map.
+	// Get the sprout function map.
 	fmap := TxtFuncMap()
 	t := template.Must(template.New("test").Funcs(fmap).Parse(tpl))
 

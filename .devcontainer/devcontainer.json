@@ -1,0 +1,54 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/go
+{
+  "name": "Sprout",
+  "image": "mcr.microsoft.com/devcontainers/go:1.22-bullseye",
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Set *default* container specific settings.json values on container create.
+      "settings": {
+        "go.toolsManagement.checkForUpdates": "local",
+        "go.useLanguageServer": true,
+        "go.gopath": "/go",
+        "go.coverMode": "atomic",
+        "go.coverOnSave": true,
+        "go.disableConcurrentTests": true,
+        "editor.formatOnSave": true,
+        "go.lintTool": "golangci-lint",
+        "editor.tabSize": 2,
+        "editor.renderWhitespace": "all",
+        "gopls": {
+          "ui.completion.usePlaceholders": true,
+          // Experimental settings
+          "completeUnimported": true, // autocomplete unimported packages
+          "deepCompletion": true, // enable deep completion
+          "staticcheck": true
+        },
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit",
+          "source.fixAll": "explicit"
+        },
+        "git.autofetch": true,
+        "files.autoGuessEncoding": true,
+        "files.encoding": "utf8",
+        "go.delveConfig": {
+          "apiVersion": 2,
+          "showGlobalVariables": false
+        },
+        "editor.rulers": [80],
+        "search.useGlobalIgnoreFiles": true,
+        "search.useParentIgnoreFiles": true
+      },
+
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "golang.Go",
+        "aaron-bond.better-comments",
+        "jasonnutter.vscode-codeowners",
+        "jinliming2.vscode-go-template"
+      ]
+    }
+  }
+}

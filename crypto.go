@@ -1,4 +1,4 @@
-package sprig
+package sprout
 
 import (
 	"bytes"
@@ -35,6 +35,46 @@ import (
 	bcrypt_lib "golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/scrypt"
 )
+
+type cryptoRandomStringOpts struct {
+	letters bool
+	numbers bool
+	ascii   bool
+	chars   []rune
+}
+
+func cryptoRandomString(count int, opts cryptoRandomStringOpts) string {
+	source := []rune{}
+	if opts.chars == nil {
+		if opts.ascii {
+			for i := 32; i <= 126; i++ {
+				source = append(source, rune(i))
+			}
+		}
+
+		if opts.letters {
+			for i := 'a'; i <= 'z'; i++ {
+				source = append(source, i)
+			}
+			for i := 'A'; i <= 'Z'; i++ {
+				source = append(source, i)
+			}
+		}
+		if opts.numbers {
+			for i := '0'; i <= '9'; i++ {
+				source = append(source, i)
+			}
+		}
+	}
+
+	// Generate random string
+	return strings.Map(func(r rune) rune {
+		if bigInt, err := rand.Int(rand.Reader, big.NewInt(int64(len(source)))); err == nil {
+			return source[bigInt.Int64()]
+		}
+		return rune(-1) // Should not happen, indicates an error
+	}, strings.Repeat(" ", count))
+}
 
 func sha256sum(input string) string {
 	hash := sha256.Sum256([]byte(input))

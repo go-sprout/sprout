@@ -1,100 +1,80 @@
-# Sprig: Template functions for Go templates
+# Sprout 🌱
 
-[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/Masterminds/sprig/v3)
-[![Go Report Card](https://goreportcard.com/badge/github.com/Masterminds/sprig)](https://goreportcard.com/report/github.com/Masterminds/sprig)
-[![Stability: Sustained](https://masterminds.github.io/stability/sustained.svg)](https://masterminds.github.io/stability/sustained.html)
-[![](https://github.com/Masterminds/sprig/workflows/Tests/badge.svg)](https://github.com/Masterminds/sprig/actions)
+> [!NOTE]
+> Sprout is an evolved variant of the [Masterminds/sprig](https://github.com/Masterminds/sprig) library, reimagined for modern Go versions. It introduces fresh functionalities and commits to maintaining the library, picking up where Sprig left off. Notably, Sprig had not seen updates for two years and was not compatible beyond Golang 1.13, necessitating the creation of Sprout.
 
-The Go language comes with a [built-in template
-language](http://golang.org/pkg/text/template/), but not
-very many template functions. Sprig is a library that provides more than 100 commonly
-used template functions.
+# Table of Content 
 
-It is inspired by the template functions found in
-[Twig](http://twig.sensiolabs.org/documentation) and in various
-JavaScript libraries, such as [underscore.js](http://underscorejs.org/).
 
-## IMPORTANT NOTES
 
-Sprig leverages [mergo](https://github.com/imdario/mergo) to handle merges. In
-its v0.3.9 release, there was a behavior change that impacts merging template
-functions in sprig. It is currently recommended to use v0.3.10 or later of that package.
-Using v0.3.9 will cause sprig tests to fail.
+## Transitioning from Sprig
 
-## Package Versions
-
-There are two active major versions of the `sprig` package.
-
-* v3 is currently stable release series on the `master` branch. The Go API should
-  remain compatible with v2, the current stable version. Behavior change behind
-  some functions is the reason for the new major version.
-* v2 is the previous stable release series. It has been more than three years since
-  the initial release of v2. You can read the documentation and see the code
-  on the [release-2](https://github.com/Masterminds/sprig/tree/release-2) branch.
-  Bug fixes to this major version will continue for some time.
-
-## Usage
-
-**Template developers**: Please use Sprig's [function documentation](http://masterminds.github.io/sprig/) for
-detailed instructions and code snippets for the >100 template functions available.
-
-**Go developers**: If you'd like to include Sprig as a library in your program,
-our API documentation is available [at GoDoc.org](http://godoc.org/github.com/Masterminds/sprig).
-
-For standard usage, read on.
-
-### Load the Sprig library
-
-To load the Sprig `FuncMap`:
-
-```go
-
+For those looking to switch from Sprig to Sprout, the process is straightforward and involves just a couple of steps:
+1. Ensure your project uses Sprig's last version (v3.2.3).
+2. Update your import statements and package references as shown below:
+```diff
 import (
-  "github.com/Masterminds/sprig/v3"
+-  "github.com/Masterminds/sprig/v3"
++  "github.com/42atomys/sprout"
+
   "html/template"
 )
 
-// This example illustrates that the FuncMap *must* be set before the
-// templates themselves are loaded.
 tpl := template.Must(
-  template.New("base").Funcs(sprig.FuncMap()).ParseGlob("*.html")
+  template.New("base").
+-   Funcs(sprig.FuncMap()).
++   Funcs(sprout.FuncMap()).
+    ParseGlob("*.html")
+)
+```
+
+## Usage
+
+**For Template Creators**: Refer to the comprehensive function guide in Sprig's documentation for detailed instructions and examples across over 100 template functions.
+
+**For Go Developers**: Integrate Sprout into your applications by consulting our API documentation available on GoDoc.org.
+
+For general library usage, proceed as follows.
+
+### Integrating the Sprout Library
+To utilize Sprout's functions within your templates:
+
+
+```golang
+import (
+  "github.com/42atomys/sprout"
+  "html/template"
 )
 
-
+// Ensure the FuncMap is set before loading the templates.
+tpl := template.Must(
+  template.New("base").Funcs(sprout.FuncMap()).ParseGlob("*.html")
+)
 ```
 
-### Calling the functions inside of templates
+### Template Function Invocation
+Adhering to Go's conventions, all Sprout functions are lowercase, differing from method naming which employs TitleCase. For instance, this template snippet:
 
-By convention, all functions are lowercase. This seems to follow the Go
-idiom for template functions (as opposed to template methods, which are
-TitleCase). For example, this:
 
-```
+```golang
 {{ "hello!" | upper | repeat 5 }}
 ```
-
-produces this:
-
+Will output:
 ```
 HELLO!HELLO!HELLO!HELLO!HELLO!
 ```
 
-## Principles Driving Our Function Selection
+### Development Philosophy (Currently in reflexion to create our)
 
-We followed these principles to decide which functions to add and how to implement them:
+Our approach to extending and refining Sprout was guided by several key principles:
 
-- Use template functions to build layout. The following
-  types of operations are within the domain of template functions:
-  - Formatting
-  - Layout
-  - Simple type conversions
-  - Utilities that assist in handling common formatting and layout needs (e.g. arithmetic)
-- Template functions should not return errors unless there is no way to print
-  a sensible value. For example, converting a string to an integer should not
-  produce an error if conversion fails. Instead, it should display a default
-  value.
-- Simple math is necessary for grid layouts, pagers, and so on. Complex math
-  (anything other than arithmetic) should be done outside of templates.
-- Template functions only deal with the data passed into them. They never retrieve
-  data from a source.
-- Finally, do not override core Go template functions.
+- Empowering layout construction through template functions.
+- Designing template functions that avoid returning errors when possible, instead displaying default values for smoother user experiences.
+- Ensuring template functions operate solely on provided data, without external data fetching.
+- Maintaining the integrity of core Go template functionalities without overrides.
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-package sprig
+package sprout
 
 import (
 	"errors"
@@ -13,57 +13,9 @@ import (
 	ttemplate "text/template"
 	"time"
 
-	util "github.com/Masterminds/goutils"
 	"github.com/huandu/xstrings"
 	"github.com/shopspring/decimal"
 )
-
-// FuncMap produces the function map.
-//
-// Use this to pass the functions into the template engine:
-//
-// 	tpl := template.New("foo").Funcs(sprig.FuncMap()))
-//
-func FuncMap() template.FuncMap {
-	return HtmlFuncMap()
-}
-
-// HermeticTxtFuncMap returns a 'text/template'.FuncMap with only repeatable functions.
-func HermeticTxtFuncMap() ttemplate.FuncMap {
-	r := TxtFuncMap()
-	for _, name := range nonhermeticFunctions {
-		delete(r, name)
-	}
-	return r
-}
-
-// HermeticHtmlFuncMap returns an 'html/template'.Funcmap with only repeatable functions.
-func HermeticHtmlFuncMap() template.FuncMap {
-	r := HtmlFuncMap()
-	for _, name := range nonhermeticFunctions {
-		delete(r, name)
-	}
-	return r
-}
-
-// TxtFuncMap returns a 'text/template'.FuncMap
-func TxtFuncMap() ttemplate.FuncMap {
-	return ttemplate.FuncMap(GenericFuncMap())
-}
-
-// HtmlFuncMap returns an 'html/template'.Funcmap
-func HtmlFuncMap() template.FuncMap {
-	return template.FuncMap(GenericFuncMap())
-}
-
-// GenericFuncMap returns a copy of the basic function map as a map[string]interface{}.
-func GenericFuncMap() map[string]interface{} {
-	gfm := make(map[string]interface{}, len(genericMap))
-	for k, v := range genericMap {
-		gfm[k] = v
-	}
-	return gfm
-}
 
 // These functions are not guaranteed to evaluate to the same result for given input, because they
 // refer to the environment or global state.
@@ -71,12 +23,12 @@ var nonhermeticFunctions = []string{
 	// Date functions
 	"date",
 	"date_in_zone",
+	"dateInZone",
 	"date_modify",
+	"dateModify",
 	"now",
 	"htmlDate",
 	"htmlDateInZone",
-	"dateInZone",
-	"dateModify",
 
 	// Strings
 	"randAlphaNum",
@@ -98,16 +50,19 @@ var genericMap = map[string]interface{}{
 	"hello": func() string { return "Hello!" },
 
 	// Date functions
-	"ago":              dateAgo,
-	"date":             date,
-	"date_in_zone":     dateInZone,
-	"date_modify":      dateModify,
-	"dateInZone":       dateInZone,
-	"dateModify":       dateModify,
-	"duration":         duration,
-	"durationRound":    durationRound,
-	"htmlDate":         htmlDate,
-	"htmlDateInZone":   htmlDateInZone,
+	"ago":  dateAgo,
+	"date": date,
+	//! Deprecated: Should use dateModify instead
+	"date_modify": dateModify,
+	"dateModify":  dateModify,
+	//! Deprecated: Should use dateInZone instead
+	"date_in_zone":   dateInZone,
+	"dateInZone":     dateInZone,
+	"duration":       duration,
+	"durationRound":  durationRound,
+	"htmlDate":       htmlDate,
+	"htmlDateInZone": htmlDateInZone,
+	//! Deprecated: Should use mustDateModify instead
 	"must_date_modify": mustDateModify,
 	"mustDateModify":   mustDateModify,
 	"mustToDate":       mustToDate,
@@ -116,15 +71,19 @@ var genericMap = map[string]interface{}{
 	"unixEpoch":        unixEpoch,
 
 	// Strings
-	"abbrev":     abbrev,
-	"abbrevboth": abbrevboth,
-	"trunc":      trunc,
-	"trim":       strings.TrimSpace,
-	"upper":      strings.ToUpper,
-	"lower":      strings.ToLower,
-	"title":      strings.Title,
-	"untitle":    untitle,
-	"substr":     substring,
+	//! Deprecated: Should use ellipsis instead
+	"abbrev":   func(width int, str string) string { return ellipsis(str, 0, width) },
+	"ellipsis": func(width int, str string) string { return ellipsis(str, 0, width) },
+	//! Deprecated: Should use ellipsisBoth instead
+	"abbrevboth":   func(left, right int, str string) string { return ellipsis(str, left, right) },
+	"ellipsisBoth": func(left, right int, str string) string { return ellipsis(str, left, right) },
+	"trunc":        trunc,
+	"trim":         strings.TrimSpace,
+	"upper":        strings.ToUpper,
+	"lower":        strings.ToLower,
+	"title":        toTitleCase,
+	"untitle":      untitle,
+	"substr":       substring,
 	// Switch order so that "foo" | repeat 5
 	"repeat": func(count int, str string) string { return strings.Repeat(str, count) },
 	// Deprecated: Use trimAll.
@@ -133,19 +92,19 @@ var genericMap = map[string]interface{}{
 	"trimAll":      func(a, b string) string { return strings.Trim(b, a) },
 	"trimSuffix":   func(a, b string) string { return strings.TrimSuffix(b, a) },
 	"trimPrefix":   func(a, b string) string { return strings.TrimPrefix(b, a) },
-	"nospace":      util.DeleteWhiteSpace,
-	"initials":     initials,
+	"nospace":      nospace,
+	"initials":     func(a string) string { return initials(a, "") },
 	"randAlphaNum": randAlphaNumeric,
 	"randAlpha":    randAlpha,
 	"randAscii":    randAscii,
 	"randNumeric":  randNumeric,
-	"swapcase":     util.SwapCase,
-	"shuffle":      xstrings.Shuffle,
+	"swapcase":     swapCase,
+	"shuffle":      shuffle,
 	"snakecase":    xstrings.ToSnakeCase,
 	"camelcase":    xstrings.ToCamelCase,
 	"kebabcase":    xstrings.ToKebabCase,
-	"wrap":         func(l int, s string) string { return util.Wrap(s, l) },
-	"wrapWith":     func(l int, sep, str string) string { return util.WrapCustom(str, l, sep, true) },
+	"wrap":         func(l int, s string) string { return wordWrap(s, l, "", false) },
+	"wrapWith":     func(l int, sep, str string) string { return wordWrap(str, l, sep, true) },
 	// Switch order so that "foobar" | contains "foo"
 	"contains":   func(substr string, str string) bool { return strings.Contains(str, substr) },
 	"hasPrefix":  func(substr string, str string) bool { return strings.HasPrefix(str, substr) },
@@ -336,20 +295,20 @@ var genericMap = map[string]interface{}{
 	"mustChunk":   mustChunk,
 
 	// Crypto:
-	"bcrypt":            bcrypt,
-	"htpasswd":          htpasswd,
-	"genPrivateKey":     generatePrivateKey,
-	"derivePassword":    derivePassword,
-	"buildCustomCert":   buildCustomCertificate,
-	"genCA":             generateCertificateAuthority,
-	"genCAWithKey":      generateCertificateAuthorityWithPEMKey,
-	"genSelfSignedCert": generateSelfSignedCertificate,
+	"bcrypt":                   bcrypt,
+	"htpasswd":                 htpasswd,
+	"genPrivateKey":            generatePrivateKey,
+	"derivePassword":           derivePassword,
+	"buildCustomCert":          buildCustomCertificate,
+	"genCA":                    generateCertificateAuthority,
+	"genCAWithKey":             generateCertificateAuthorityWithPEMKey,
+	"genSelfSignedCert":        generateSelfSignedCertificate,
 	"genSelfSignedCertWithKey": generateSelfSignedCertificateWithPEMKey,
-	"genSignedCert":     generateSignedCertificate,
-	"genSignedCertWithKey": generateSignedCertificateWithPEMKey,
-	"encryptAES":        encryptAES,
-	"decryptAES":        decryptAES,
-	"randBytes":         randBytes,
+	"genSignedCert":            generateSignedCertificate,
+	"genSignedCertWithKey":     generateSignedCertificateWithPEMKey,
+	"encryptAES":               encryptAES,
+	"decryptAES":               decryptAES,
+	"randBytes":                randBytes,
 
 	// UUIDs:
 	"uuidv4": uuidv4,
@@ -379,4 +338,50 @@ var genericMap = map[string]interface{}{
 	// URLs:
 	"urlParse": urlParse,
 	"urlJoin":  urlJoin,
+}
+
+// FuncMap produces the function map.
+//
+// Use this to pass the functions into the template engine:
+//
+//	tpl := template.New("foo").Funcs(sprout.FuncMap()))
+func FuncMap() template.FuncMap {
+	return HtmlFuncMap()
+}
+
+// HermeticTxtFuncMap returns a 'text/template'.FuncMap with only repeatable functions.
+func HermeticTxtFuncMap() ttemplate.FuncMap {
+	r := TxtFuncMap()
+	for _, name := range nonhermeticFunctions {
+		delete(r, name)
+	}
+	return r
+}
+
+// HermeticHtmlFuncMap returns an 'html/template'.Funcmap with only repeatable functions.
+func HermeticHtmlFuncMap() template.FuncMap {
+	r := HtmlFuncMap()
+	for _, name := range nonhermeticFunctions {
+		delete(r, name)
+	}
+	return r
+}
+
+// TxtFuncMap returns a 'text/template'.FuncMap
+func TxtFuncMap() ttemplate.FuncMap {
+	return ttemplate.FuncMap(GenericFuncMap())
+}
+
+// HtmlFuncMap returns an 'html/template'.Funcmap
+func HtmlFuncMap() template.FuncMap {
+	return template.FuncMap(GenericFuncMap())
+}
+
+// GenericFuncMap returns a copy of the basic function map as a map[string]interface{}.
+func GenericFuncMap() map[string]interface{} {
+	gfm := make(map[string]interface{}, len(genericMap))
+	for k, v := range genericMap {
+		gfm[k] = v
+	}
+	return gfm
 }

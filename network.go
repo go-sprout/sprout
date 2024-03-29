@@ -1,4 +1,4 @@
-package sprig
+package sprout
 
 import (
 	"math/rand"

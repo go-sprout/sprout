@@ -1,4 +1,4 @@
-package sprig
+package sprout
 
 import (
 	"testing"
@@ -11,7 +11,7 @@ type fixtureTO struct {
 func TestTypeOf(t *testing.T) {
 	f := &fixtureTO{"hello", "world"}
 	tpl := `{{typeOf .}}`
-	if err := runtv(tpl, "*sprig.fixtureTO", f); err != nil {
+	if err := runtv(tpl, "*sprout.fixtureTO", f); err != nil {
 		t.Error(err)
 	}
 }
@@ -37,7 +37,7 @@ func TestKindOf(t *testing.T) {
 
 func TestTypeIs(t *testing.T) {
 	f := &fixtureTO{"hello", "world"}
-	tpl := `{{if typeIs "*sprig.fixtureTO" .}}t{{else}}f{{end}}`
+	tpl := `{{if typeIs "*sprout.fixtureTO" .}}t{{else}}f{{end}}`
 	if err := runtv(tpl, "t", f); err != nil {
 		t.Error(err)
 	}

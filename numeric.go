@@ -1,4 +1,4 @@
-package sprig
+package sprout
 
 import (
 	"fmt"
@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/spf13/cast"
 	"github.com/shopspring/decimal"
+	"github.com/spf13/cast"
 )
 
 // toFloat64 converts 64-bit floats

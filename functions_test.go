@@ -1,4 +1,4 @@
-package sprig
+package sprout
 
 import (
 	"bytes"
@@ -7,7 +7,6 @@ import (
 	"os"
 	"testing"
 	"text/template"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -56,6 +55,10 @@ func TestSnakeCase(t *testing.T) {
 	assert.NoError(t, runt(`{{ snakecase "GO_PATH" }}`, "go_path"))
 	assert.NoError(t, runt(`{{ snakecase "GO PATH" }}`, "go_path"))
 	assert.NoError(t, runt(`{{ snakecase "GO-PATH" }}`, "go_path"))
+	assert.NoError(t, runt(`{{ snakecase "http2xx" }}`, "http_2xx"))
+	assert.NoError(t, runt(`{{ snakecase "HTTP20xOK" }}`, "http_20x_ok"))
+	assert.NoError(t, runt(`{{ snakecase "Duration2m3s" }}`, "duration_2m3s"))
+	assert.NoError(t, runt(`{{ snakecase "Bld4Floor3rd" }}`, "bld4_floor_3rd"))
 }
 
 func TestCamelCase(t *testing.T) {
@@ -76,11 +79,15 @@ func TestKebabCase(t *testing.T) {
 }
 
 func TestShuffle(t *testing.T) {
-	defer rand.Seed(time.Now().UnixNano())
-	rand.Seed(1)
+	originalRand := randSource
+	defer func() {
+		randSource = originalRand
+	}()
+
+	randSource = rand.NewSource(42)
 	// Because we're using a random number generator, we need these to go in
 	// a predictable sequence:
-	assert.NoError(t, runt(`{{ shuffle "Hello World" }}`, "rldo HWlloe"))
+	assert.NoError(t, runt(`{{ shuffle "Hello World" }}`, "Wrlodlle Ho"))
 }
 
 func TestRegex(t *testing.T) {
@@ -105,7 +112,7 @@ func runtv(tpl, expect string, vars interface{}) error {
 		return err
 	}
 	if expect != b.String() {
-		return fmt.Errorf("Expected '%s', got '%s'", expect, b.String())
+		return fmt.Errorf("Expected '%v', got '%v'", expect, b.String())
 	}
 	return nil
 }
