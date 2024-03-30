@@ -107,7 +107,7 @@ _This example will takes the_ `"2024-03-29 11:12:42"` _string and convert it wit
 See more about Golang Layout on the [official documentation](https://go.dev/src/time/format.go).
 {% endhint %}
 
-:heavy\_check\_mark: Native Go Template error handling. _In case of error, the template rendering stop._toMustDate
+:heavy\_check\_mark: Native Go Template error handling. _In case of error, the template rendering stop._
 {% endtab %}
 {% endtabs %}
 
@@ -186,8 +186,3 @@ _This example will takes the 42.42 string and convert it to a float64, the outpu
 :x: No error handling
 {% endtab %}
 {% endtabs %}
-
-## Date Manipulation
-
-## JSON Manipulation
-
