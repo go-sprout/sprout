@@ -2,6 +2,7 @@
 
 * [📗 About](README.md)
 * [💻 Functions](functions.md)
+* [👷 Migration from sprig v3.2.3](migration-from-sprig-v3.2.3.md)
 * [Old documentation from sprig](old-documentation-from-sprig/README.md)
   * [Type Conversion Functions](old-documentation-from-sprig/conversion.md)
   * [Cryptographic and Security Functions](old-documentation-from-sprig/crypto.md)
