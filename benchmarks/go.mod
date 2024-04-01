@@ -1,6 +1,6 @@
 module sprout_benchmarks
 
-go 1.22.0
+go 1.21.0
 
 require (
 	github.com/42atomys/sprout v0.0.0-20240331203623-2cbfca5974e1
@@ -21,3 +21,5 @@ require (
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 )
+
+replace github.com/42atomys/sprout => ../
