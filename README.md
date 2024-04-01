@@ -3,9 +3,16 @@
 > [!NOTE]
 > Sprout is an evolved variant of the [Masterminds/sprig](https://github.com/Masterminds/sprig) library, reimagined for modern Go versions. It introduces fresh functionalities and commits to maintaining the library, picking up where Sprig left off. Notably, Sprig had not seen updates for two years and was not compatible beyond Golang 1.13, necessitating the creation of Sprout.
 
-# Table of Content 
+## Table of Contents
 
-
+- [Table of Contents](#table-of-contents)
+- [Transitioning from Sprig](#transitioning-from-sprig)
+- [Performence Benchmarks](#performence-benchmarks)
+  - [Sprig v3.2.3 vs Sprout v0.1](#sprig-v323-vs-sprout-v01)
+- [Usage](#usage)
+  - [Integrating the Sprout Library](#integrating-the-sprout-library)
+  - [Template Function Invocation](#template-function-invocation)
+- [Development Philosophy (Currently in reflexion to create our)](#development-philosophy-currently-in-reflexion-to-create-our)
 
 ## Transitioning from Sprig
 
@@ -27,6 +34,28 @@ tpl := template.Must(
     ParseGlob("*.html")
 )
 ```
+
+## Performence Benchmarks
+
+To see all the benchmarks, please refer to the [benchmarks](benchmarks/README.md) directory.
+
+### Sprig v3.2.3 vs Sprout v0.1
+```
+goos: linux
+goarch: amd64
+pkg: sprout_benchmarks
+cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+BenchmarkSprig-12              1        3869134593 ns/op        45438616 B/op      24098 allocs/op
+BenchmarkSprout-12             1        1814126036 ns/op        38284040 B/op      11627 allocs/op
+PASS
+ok      sprout_benchmarks       5.910s
+```
+
+**Time improvement**: 53.1%
+**Memory improvement**: 15.7%
+
+So, Sprout v0.1 is approximately 53.1% faster and uses 15.7% less memory than Sprig v3.2.3. 🚀
+
 
 ## Usage
 
@@ -64,7 +93,7 @@ Will output:
 HELLO!HELLO!HELLO!HELLO!HELLO!
 ```
 
-### Development Philosophy (Currently in reflexion to create our)
+## Development Philosophy (Currently in reflexion to create our)
 
 Our approach to extending and refining Sprout was guided by several key principles:
 
