@@ -104,8 +104,7 @@ func runt(tpl, expect string) error {
 //
 // It runs the template and verifies that the output is an exact match.
 func runtv(tpl, expect string, vars interface{}) error {
-	fmap := TxtFuncMap()
-	t := template.Must(template.New("test").Funcs(fmap).Parse(tpl))
+	t := template.Must(template.New("test").Funcs(FuncMap()).Parse(tpl))
 	var b bytes.Buffer
 	err := t.Execute(&b, vars)
 	if err != nil {
@@ -119,8 +118,7 @@ func runtv(tpl, expect string, vars interface{}) error {
 
 // runRaw runs a template with the given variables and returns the result.
 func runRaw(tpl string, vars interface{}) (string, error) {
-	fmap := TxtFuncMap()
-	t := template.Must(template.New("test").Funcs(fmap).Parse(tpl))
+	t := template.Must(template.New("test").Funcs(FuncMap()).Parse(tpl))
 	var b bytes.Buffer
 	err := t.Execute(&b, vars)
 	if err != nil {

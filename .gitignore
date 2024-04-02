@@ -1,2 +1,5 @@
+.env
+.vscode/
+
 vendor/
 /.glide

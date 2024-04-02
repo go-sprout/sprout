@@ -27,6 +27,8 @@ type FunctionHandler struct {
 	ErrHandling ErrHandling
 	errChan     chan error
 	Logger      *slog.Logger
+	funcMap     template.FuncMap
+	funcsAlias  FunctionAliasMap
 }
 
 // FunctionHandlerOption defines a type for functional options that configure
@@ -39,6 +41,8 @@ func NewFunctionHandler(opts ...FunctionHandlerOption) *FunctionHandler {
 		ErrHandling: ErrHandlingReturnDefaultValue,
 		errChan:     make(chan error),
 		Logger:      slog.New(&slog.TextHandler{}),
+		funcMap:     make(template.FuncMap),
+		funcsAlias:  make(FunctionAliasMap),
 	}
 
 	for _, opt := range opts {
@@ -82,14 +86,18 @@ func WithFunctionHandler(new *FunctionHandler) FunctionHandlerOption {
 // additional configured functions.
 // FOR BACKWARD COMPATIBILITY ONLY
 func FuncMap(opts ...FunctionHandlerOption) template.FuncMap {
-	parser := NewFunctionHandler(opts...)
+	fnHandler := NewFunctionHandler(opts...)
 
 	// BACKWARD COMPATIBILITY
 	// Fallback to FuncMap() to get the unmigrated functions
-	funcmap := TxtFuncMap()
+	for k, v := range TxtFuncMap() {
+		fnHandler.funcMap[k] = v
+	}
 
 	// Added migrated functions
-	funcmap["hello"] = parser.Hello
+	fnHandler.funcMap["hello"] = fnHandler.Hello
 
-	return funcmap
+	// Register aliases for functions
+	fnHandler.registerAliases()
+	return fnHandler.funcMap
 }
