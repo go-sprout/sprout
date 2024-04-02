@@ -8,7 +8,6 @@ import (
 	"path"
 	"path/filepath"
 	"reflect"
-	"strconv"
 	"strings"
 	ttemplate "text/template"
 	"time"
@@ -50,32 +49,22 @@ var genericMap = map[string]interface{}{
 	"hello": func() string { return "Hello!" },
 
 	// Date functions
-	"ago":  dateAgo,
-	"date": date,
-	//! Deprecated: Should use dateModify instead
-	"date_modify": dateModify,
-	"dateModify":  dateModify,
-	//! Deprecated: Should use dateInZone instead
-	"date_in_zone":   dateInZone,
+	"ago":            dateAgo,
+	"date":           date,
+	"dateModify":     dateModify,
 	"dateInZone":     dateInZone,
 	"duration":       duration,
 	"durationRound":  durationRound,
 	"htmlDate":       htmlDate,
 	"htmlDateInZone": htmlDateInZone,
-	//! Deprecated: Should use mustDateModify instead
-	"must_date_modify": mustDateModify,
-	"mustDateModify":   mustDateModify,
-	"mustToDate":       mustToDate,
-	"now":              time.Now,
-	"toDate":           toDate,
-	"unixEpoch":        unixEpoch,
+	"mustDateModify": mustDateModify,
+	"mustToDate":     mustToDate,
+	"now":            time.Now,
+	"toDate":         toDate,
+	"unixEpoch":      unixEpoch,
 
 	// Strings
-	//! Deprecated: Should use ellipsis instead
-	"abbrev":   func(width int, str string) string { return ellipsis(str, 0, width) },
-	"ellipsis": func(width int, str string) string { return ellipsis(str, 0, width) },
-	//! Deprecated: Should use ellipsisBoth instead
-	"abbrevboth":   func(left, right int, str string) string { return ellipsis(str, left, right) },
+	"ellipsis":     func(width int, str string) string { return ellipsis(str, 0, width) },
 	"ellipsisBoth": func(left, right int, str string) string { return ellipsis(str, left, right) },
 	"trunc":        trunc,
 	"trim":         strings.TrimSpace,
@@ -86,8 +75,6 @@ var genericMap = map[string]interface{}{
 	"substr":       substring,
 	// Switch order so that "foo" | repeat 5
 	"repeat": func(count int, str string) string { return strings.Repeat(str, count) },
-	// Deprecated: Use trimAll.
-	"trimall": func(a, b string) string { return strings.Trim(b, a) },
 	// Switch order so that "$foo" | trimall "$"
 	"trimAll":      func(a, b string) string { return strings.Trim(b, a) },
 	"trimSuffix":   func(a, b string) string { return strings.TrimSuffix(b, a) },
@@ -122,7 +109,6 @@ var genericMap = map[string]interface{}{
 	"toString":   strval,
 
 	// Wrap Atoi to stop errors.
-	"atoi":      func(a string) int { i, _ := strconv.Atoi(a); return i },
 	"int64":     toInt64,
 	"int":       toInt,
 	"float64":   toFloat64,
@@ -180,14 +166,13 @@ var genericMap = map[string]interface{}{
 	"mulf": func(a interface{}, v ...interface{}) float64 {
 		return execDecimalOp(a, v, func(d1, d2 decimal.Decimal) decimal.Decimal { return d1.Mul(d2) })
 	},
-	"biggest": max,
-	"max":     max,
-	"min":     min,
-	"maxf":    maxf,
-	"minf":    minf,
-	"ceil":    ceil,
-	"floor":   floor,
-	"round":   round,
+	"max":   max,
+	"min":   min,
+	"maxf":  maxf,
+	"minf":  minf,
+	"ceil":  ceil,
+	"floor": floor,
+	"round": round,
 
 	// string slices. Note that we reverse the order b/c that's better
 	// for template processing.
@@ -250,7 +235,6 @@ var genericMap = map[string]interface{}{
 	"b32dec": base32decode,
 
 	// Data Structures:
-	"tuple":              list, // FIXME: with the addition of append/prepend these are no longer immutable.
 	"list":               list,
 	"dict":               dict,
 	"get":                get,
@@ -267,8 +251,8 @@ var genericMap = map[string]interface{}{
 	"mustMergeOverwrite": mustMergeOverwrite,
 	"values":             values,
 
-	"append": push, "push": push,
-	"mustAppend": mustPush, "mustPush": mustPush,
+	"append":      push,
+	"mustAppend":  mustPush,
 	"prepend":     prepend,
 	"mustPrepend": mustPrepend,
 	"first":       first,
