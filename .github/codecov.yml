@@ -1,0 +1,20 @@
+coverage:
+  precision: 1
+  range: "75...90"
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 2%
+    patch:
+      default:
+        target: 80%
+        threshold: 2%
+github_checks:
+  annotations: true
+ignore:
+  - benchmark/**
+  - docs/**
+comment:
+  behavior: new
+  require_changes: true

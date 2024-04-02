@@ -1,4 +1,20 @@
-# Sprout 🌱
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/profile/images/logo_landing_light.png">
+    <source media="(prefers-color-scheme: light)" srcset=".github/profile/images/logo_landing_dark.png">
+    <img alt="Sprout Logo" width="400" src="">
+  </picture>
+  <hr />
+</div>
+
+<p align="center"><a href="https://github.com/42atomys/webhooked/actions/workflows/release.yaml"><img src="https://github.com/42atomys/webhooked/actions/workflows/release.yaml/badge.svg" alt="Release 🎉"></a>
+<a href="https://goreportcard.com/report/github.com/42atomys/sprout"><img src="https://goreportcard.com/badge/github.com/42atomys/sprout" /></a>
+<a href="https://codeclimate.com/github/42atomys/sprout"><img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability/42atomys/sprout"></a>
+<a href="https://codecov.io/gh/42atomys/sprout"><img alt="Codecov" src="https://img.shields.io/codecov/c/gh/42atomys/sprout?token=NSUZMDT9M9"></a>
+<img src="https://img.shields.io/github/v/release/42atomys/sprout?label=last%20release" alt="GitHub release (latest by date)">
+<img src="https://img.shields.io/github/contributors/42atomys/sprout?color=blueviolet" alt="GitHub contributors">
+<img src="https://img.shields.io/github/stars/42atomys/sprout?style=flat&color=blueviolet" alt="GitHub Repo stars">
+<a href="https://pkg.go.dev/github.com/42atomys/sprout"><img src="https://pkg.go.dev/badge/github.com/42atomys/sprout.svg" alt="Go Reference"></a></p>
 
 > [!NOTE]
 > Sprout is an evolved variant of the [Masterminds/sprig](https://github.com/Masterminds/sprig) library, reimagined for modern Go versions. It introduces fresh functionalities and commits to maintaining the library, picking up where Sprig left off. Notably, Sprig had not seen updates for two years and was not compatible beyond Golang 1.13, necessitating the creation of Sprout.

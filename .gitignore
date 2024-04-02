@@ -3,3 +3,5 @@
 
 vendor/
 /.glide
+
+coverage.out
