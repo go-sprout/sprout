@@ -10,41 +10,43 @@ description: The roadmap to grow the sprout
 All objectives are get from feedback, suggestions and personal knowledge. You can discuss about the v1.0 directly [in the issue on GitHub](https://github.com/42atomys/sprout/issues/1).
 {% endhint %}
 
-### **Minimize Dependencies**
+### :hourglass:**Minimize Dependencies - IN PROGRESS**
 
 Reduce the number of external dependencies to mitigate frequent update cycles, making Sprout more stable and lightweight.
 
-### **Enhanced Documentation**
+### :hourglass:**Enhanced Documentation - IN PROGRESS**
 
 Provide comprehensive, easy-to-understand documentation that covers all functionalities, use cases, and examples to improve the developer experience.
 
-### **Conventional Function Naming**
+### :hourglass:**Conventional Function Naming - IN PROGRESS**
 
 Establish clear, consistent naming conventions for functions to enhance code readability and maintainability. Unlike Sprig, where function naming varies between camelCase, and snake\_case, and similar functions lack consistent prefixing, Sprout will introduce a standardised approach to function naming. This will make the library more intuitive and reduce the learning curve for new users.
 
-### **Reduce memory fingerprint**
+### :hourglass:**Reduce memory fingerprint - IN PROGRESS**
 
 Aim to minimise memory allocations as much as possible to alleviate the burden on the garbage collector in large-scale applications. By optimising the way memory is used within the framework, we ensure that Sprout is not only efficient in its functionality but also in its resource consumption. This approach contributes to overall better performance and scalability of applications using Sprout.
 
-### **Native Error Handling**
+### :hourglass:**Native Error Handling - IN PROGRESS**
 
 Introduce built-in error handling mechanisms for all functions to ensure that errors are managed gracefully and efficiently.
 
-### **Advanced Error Handling Strategy**
+### :hourglass:**Advanced Error Handling Strategy - IN PROGRESS**
 
 Implement a custom error handling framework utilising channels for improved error reporting and handling on the Go side, reducing the risk of template crashes.
 
-### **Expanded Function Set**
+### :hourglass:**Expanded Function Set - IN PROGRESS**
 
 Add a broader array of functions without imposing limitations, enabling users to accomplish more tasks directly within the framework.
 
-### **Customisable Function Loading**
+### :hourglass:**Customisable Function Loading - IN PROGRESS**
 
 Allow users to customise which functions to load into their runtime environment, preventing unnecessary resource consumption and enhancing performance.
 
-### **Function Aliasing**
+### :white\_check\_mark: **Function Aliasing - DONE**
 
 Enable the creation of aliases for functions outside of the library, providing flexibility and convenience in how functions are accessed and utilised.
+
+Documentation can be found here: [function-aliases.md](function-aliases.md "mention")
 
 ## Compatibility between spring and sprout
 
