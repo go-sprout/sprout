@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/profile/images/logo_landing_light.png">
     <source media="(prefers-color-scheme: light)" srcset=".github/profile/images/logo_landing_dark.png">
-    <img alt="Sprout Logo" width="400" src="">
+    <img alt="Sprout Logo" width="700" src="">
   </picture>
   <hr />
 </div>
