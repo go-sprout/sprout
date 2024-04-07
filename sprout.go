@@ -5,22 +5,6 @@ import (
 	"text/template"
 )
 
-// ErrHandling defines the strategy for handling errors within FunctionHandler.
-// It supports returning default values, panicking, or sending errors to a
-// specified channel.
-type ErrHandling int
-
-const (
-	// ErrHandlingReturnDefaultValue indicates that a default value should be
-	// returned on error (default).
-	ErrHandlingReturnDefaultValue ErrHandling = iota + 1
-	// ErrHandlingPanic indicates that a panic should be raised on error.
-	ErrHandlingPanic
-	// ErrHandlingErrorChannel indicates that errors should be sent to an error
-	// channel.
-	ErrHandlingErrorChannel
-)
-
 // FunctionHandler manages function execution with configurable error handling
 // and logging.
 type FunctionHandler struct {
