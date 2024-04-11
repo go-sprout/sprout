@@ -87,6 +87,13 @@ func TestErrIsPresentWithLogger(t *testing.T) {
 	assert.Contains(t, buf.String(), "Error caught")
 }
 
+func TestErrTrigger(t *testing.T) {
+	handler := &FunctionHandler{logger: noopLogger, errHandler: &internalErrorHandler{strategy: ErrorStrategyTemplateError}}
+	err := handler.ErrTrigger("test error")
+
+	assert.ErrorContains(t, err, "test error")
+}
+
 func TestDefaultValueFor(t *testing.T) {
 	tests := []struct {
 		name     string

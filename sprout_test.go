@@ -48,6 +48,7 @@ func TestWithLogger(t *testing.T) {
 	option(handler) // Apply the option
 
 	assert.Equal(t, logger, handler.logger)
+	assert.Equal(t, logger, handler.Logger())
 }
 
 func TestWithErrorChannel(t *testing.T) {
