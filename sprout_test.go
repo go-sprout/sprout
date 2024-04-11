@@ -11,33 +11,33 @@ func TestNewFunctionHandler_DefaultValues(t *testing.T) {
 	handler := NewFunctionHandler()
 
 	assert.NotNil(t, handler)
-	assert.Equal(t, ErrHandlingReturnDefaultValue, handler.ErrHandling)
-	assert.NotNil(t, handler.errChan)
-	assert.NotNil(t, handler.Logger)
+	assert.Equal(t, ErrorStrategyReturnDefaultValue, handler.errHandler.strategy)
+	assert.NotNil(t, handler.errHandler.errChan)
+	assert.NotNil(t, handler.logger)
 }
 
 func TestNewFunctionHandler_CustomValues(t *testing.T) {
 	errChan := make(chan error, 1)
 	logger := slog.New(&slog.TextHandler{})
 	handler := NewFunctionHandler(
-		WithErrHandling(ErrHandlingPanic),
+		WithErrStrategy(ErrorStrategyPanic),
 		WithLogger(logger),
 		WithErrorChannel(errChan),
 	)
 
 	assert.NotNil(t, handler)
-	assert.Equal(t, ErrHandlingPanic, handler.ErrHandling)
-	assert.Equal(t, errChan, handler.errChan)
-	assert.Equal(t, logger, handler.Logger)
+	assert.Equal(t, ErrorStrategyPanic, handler.errHandler.strategy)
+	assert.Equal(t, errChan, handler.errHandler.errChan)
+	assert.Equal(t, logger, handler.logger)
 }
 
 func TestWithErrHandling(t *testing.T) {
-	option := WithErrHandling(ErrHandlingPanic)
+	option := WithErrStrategy(ErrorStrategyPanic)
 
 	handler := NewFunctionHandler()
 	option(handler) // Apply the option
 
-	assert.Equal(t, ErrHandlingPanic, handler.ErrHandling)
+	assert.Equal(t, ErrorStrategyPanic, handler.errHandler.strategy)
 }
 
 func TestWithLogger(t *testing.T) {
@@ -47,7 +47,7 @@ func TestWithLogger(t *testing.T) {
 	handler := NewFunctionHandler()
 	option(handler) // Apply the option
 
-	assert.Equal(t, logger, handler.Logger)
+	assert.Equal(t, logger, handler.logger)
 }
 
 func TestWithErrorChannel(t *testing.T) {
@@ -57,14 +57,16 @@ func TestWithErrorChannel(t *testing.T) {
 	handler := NewFunctionHandler()
 	option(handler) // Apply the option
 
-	assert.Equal(t, errChan, handler.errChan)
+	assert.Equal(t, errChan, handler.errHandler.errChan)
 }
 
 func TestWithParser(t *testing.T) {
 	fnHandler := &FunctionHandler{
-		ErrHandling: ErrHandlingErrorChannel,
-		Logger:      slog.New(&slog.TextHandler{}),
-		errChan:     make(chan error, 1),
+		errHandler: &internalErrorHandler{
+			strategy: ErrorStrategyChannel,
+			errChan:  make(chan error, 1),
+		},
+		logger: slog.New(&slog.TextHandler{}),
 	}
 	option := WithFunctionHandler(fnHandler)
 

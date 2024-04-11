@@ -8,11 +8,10 @@ import (
 // FunctionHandler manages function execution with configurable error handling
 // and logging.
 type FunctionHandler struct {
-	ErrHandling ErrHandling
-	errChan     chan error
-	Logger      *slog.Logger
-	funcMap     template.FuncMap
-	funcsAlias  FunctionAliasMap
+	errHandler *internalErrorHandler
+	logger     *slog.Logger
+	funcMap    template.FuncMap
+	funcsAlias FunctionAliasMap
 }
 
 // FunctionHandlerOption defines a type for functional options that configure
@@ -22,11 +21,10 @@ type FunctionHandlerOption func(*FunctionHandler)
 // NewFunctionHandler creates a new FunctionHandler with the provided options.
 func NewFunctionHandler(opts ...FunctionHandlerOption) *FunctionHandler {
 	fnHandler := &FunctionHandler{
-		ErrHandling: ErrHandlingReturnDefaultValue,
-		errChan:     make(chan error),
-		Logger:      slog.New(&slog.TextHandler{}),
-		funcMap:     make(template.FuncMap),
-		funcsAlias:  make(FunctionAliasMap),
+		errHandler: createInternalErrorHandler(),
+		logger:     slog.New(slog.Default().Handler()),
+		funcMap:    make(template.FuncMap),
+		funcsAlias: make(FunctionAliasMap),
 	}
 
 	for _, opt := range opts {
@@ -36,24 +34,24 @@ func NewFunctionHandler(opts ...FunctionHandlerOption) *FunctionHandler {
 	return fnHandler
 }
 
-// WithErrHandling sets the error handling strategy for a FunctionHandler.
-func WithErrHandling(eh ErrHandling) FunctionHandlerOption {
+// WithErrStrategy sets the error handling strategy for a FunctionHandler.
+func WithErrStrategy(eh ErrorStrategy) FunctionHandlerOption {
 	return func(p *FunctionHandler) {
-		p.ErrHandling = eh
-	}
-}
-
-// WithLogger sets the logger used by a FunctionHandler.
-func WithLogger(l *slog.Logger) FunctionHandlerOption {
-	return func(p *FunctionHandler) {
-		p.Logger = l
+		p.errHandler.strategy = eh
 	}
 }
 
 // WithErrorChannel sets the error channel for a FunctionHandler.
 func WithErrorChannel(ec chan error) FunctionHandlerOption {
 	return func(p *FunctionHandler) {
-		p.errChan = ec
+		p.errHandler.errChan = ec
+	}
+}
+
+// WithLogger sets the logger used by a FunctionHandler.
+func WithLogger(l *slog.Logger) FunctionHandlerOption {
+	return func(p *FunctionHandler) {
+		p.logger = l
 	}
 }
 
@@ -63,6 +61,12 @@ func WithFunctionHandler(new *FunctionHandler) FunctionHandlerOption {
 	return func(fnh *FunctionHandler) {
 		*fnh = *new
 	}
+}
+
+// Logger returns the logger used by a FunctionHandler. This is useful for
+// logging errors and other information based on the handler's configuration.
+func (fnHandler *FunctionHandler) Logger() *slog.Logger {
+	return fnHandler.logger
 }
 
 // FuncMap returns a template.FuncMap for use with text/template or html/template.

@@ -46,14 +46,14 @@ func BenchmarkSprout(b *testing.B) {
 		defer close(errChan)
 
 		fnHandler := sprout.NewFunctionHandler(
-			sprout.WithErrHandling(sprout.ErrHandlingPanic),
+			sprout.WithErrStrategy(sprout.ErrorStrategyPanic),
 			sprout.WithLogger(slog.New(&slog.TextHandler{})),
 			sprout.WithErrorChannel(errChan),
 		)
 
 		go func() {
 			for err := range errChan {
-				fnHandler.Logger.Error(err.Error())
+				fnHandler.Logger().Error(err.Error())
 			}
 		}()
 

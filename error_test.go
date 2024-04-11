@@ -3,14 +3,17 @@ package sprout
 import (
 	"bytes"
 	"errors"
+	"io"
 	"log/slog"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
+var noopLogger = slog.New(slog.NewTextHandler(io.Discard, &slog.HandlerOptions{}))
+
 func TestErrIsPresentNoErrorHandlingConfigured(t *testing.T) {
-	handler := &FunctionHandler{ErrHandling: 0} // Unconfigured
+	handler := &FunctionHandler{logger: noopLogger, errHandler: &internalErrorHandler{strategy: 0}} // Unconfigured
 	inputError := errors.New("test error")
 
 	resultErr, resultBool := handler.ErrIsPresent(inputError)
@@ -20,7 +23,7 @@ func TestErrIsPresentNoErrorHandlingConfigured(t *testing.T) {
 }
 
 func TestErrIsPresentReturnDefaultValueOnError(t *testing.T) {
-	handler := &FunctionHandler{ErrHandling: ErrHandlingReturnDefaultValue}
+	handler := &FunctionHandler{logger: noopLogger, errHandler: &internalErrorHandler{strategy: ErrorStrategyReturnDefaultValue}}
 	inputError := errors.New("test error")
 
 	resultErr, resultBool := handler.ErrIsPresent(inputError)
@@ -30,7 +33,7 @@ func TestErrIsPresentReturnDefaultValueOnError(t *testing.T) {
 }
 
 func TestErrIsPresentTemplateErrorReturn(t *testing.T) {
-	handler := &FunctionHandler{ErrHandling: ErrHandlingTemplateError}
+	handler := &FunctionHandler{logger: noopLogger, errHandler: &internalErrorHandler{strategy: ErrorStrategyTemplateError}}
 	inputError := errors.New("test error")
 
 	resultErr, resultBool := handler.ErrIsPresent(inputError)
@@ -40,7 +43,7 @@ func TestErrIsPresentTemplateErrorReturn(t *testing.T) {
 }
 
 func TestErrIsPresentPanicOnError(t *testing.T) {
-	handler := &FunctionHandler{ErrHandling: ErrHandlingPanic}
+	handler := &FunctionHandler{logger: noopLogger, errHandler: &internalErrorHandler{strategy: ErrorStrategyPanic}}
 	inputError := errors.New("test error")
 
 	assert.Panics(t, func() {
@@ -50,18 +53,18 @@ func TestErrIsPresentPanicOnError(t *testing.T) {
 }
 
 func TestErrIsPresentSendErrorToChannel(t *testing.T) {
-	handler := &FunctionHandler{ErrHandling: ErrHandlingErrorChannel, errChan: make(chan error, 1)}
+	handler := &FunctionHandler{logger: noopLogger, errHandler: &internalErrorHandler{strategy: ErrorStrategyChannel, errChan: make(chan error, 1)}}
 	inputError := errors.New("test error")
 
 	_, resultBool := handler.ErrIsPresent(inputError)
-	defer close(handler.errChan)
+	defer close(handler.errHandler.errChan)
 
 	assert.True(t, resultBool)
-	assert.Equal(t, inputError, <-handler.errChan)
+	assert.Equal(t, inputError, <-handler.errHandler.errChan)
 }
 
 func TestErrIsPresentNoErrorPassed(t *testing.T) {
-	handler := &FunctionHandler{ErrHandling: ErrHandlingReturnDefaultValue}
+	handler := &FunctionHandler{logger: noopLogger, errHandler: &internalErrorHandler{strategy: ErrorStrategyReturnDefaultValue}}
 
 	resultErr, resultBool := handler.ErrIsPresent(nil)
 
@@ -73,8 +76,8 @@ func TestErrIsPresentWithLogger(t *testing.T) {
 	var buf bytes.Buffer
 	logger := slog.New(slog.NewTextHandler(&buf, &slog.HandlerOptions{}))
 	handler := &FunctionHandler{
-		ErrHandling: ErrHandlingTemplateError,
-		Logger:      logger,
+		errHandler: &internalErrorHandler{strategy: ErrorStrategyTemplateError},
+		logger:     logger,
 	}
 	inputError := errors.New("test error")
 
@@ -113,7 +116,7 @@ func TestErrFuncCaller(t *testing.T) {
 	f := errFuncCaller(1)
 	assert.NotNil(t, f)
 
-	name := f.Name()
+	name := f.Name
 	assert.Contains(t, name, "TestErrFuncCaller")
 
 	// Test that errFuncCaller returns nil when called with a skip value that's too large
