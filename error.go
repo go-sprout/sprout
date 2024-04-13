@@ -14,17 +14,12 @@ import (
 type ErrorStrategy int
 
 const (
-	// ErrorStrategyReturnDefaultValue indicates that a default value should be
-	// returned on error (default).
-	ErrorStrategyReturnDefaultValue ErrorStrategy = iota + 1
 	// ErrorStrategyTemplateError indicates that an error should be returned on error
-	// following the text/template package behavior.
-	ErrorStrategyTemplateError
-	// ErrorStrategyPanic indicates that a panic should be raised on error.
-	ErrorStrategyPanic
-	// ErrorStrategyChannel indicates that errors should be sent to an error
-	// channel.
-	ErrorStrategyChannel
+	// following the text/template package behavior (default).
+	ErrorStrategyTemplateError ErrorStrategy = iota + 1
+	// ErrorStrategyReturnDefaultValue indicates that a default value should be
+	// returned on error.
+	ErrorStrategyReturnDefaultValue
 )
 
 // internalErrorHandler manages error handling within FunctionHandler
@@ -77,7 +72,7 @@ func DefaultValueFor[T interface{}](v T) T {
 // createInternalErrorHandler creates a new error handler with default values.
 func createInternalErrorHandler() *internalErrorHandler {
 	eh := &internalErrorHandler{
-		strategy: ErrorStrategyReturnDefaultValue,
+		strategy: ErrorStrategyTemplateError,
 		errChan:  make(chan error),
 	}
 
@@ -92,21 +87,22 @@ func createInternalErrorHandler() *internalErrorHandler {
 // the error was present without taking care of error handling.
 func (fh *FunctionHandler) err(eh *internalErrorHandler, err error) (error, bool) {
 	if err != nil {
-		fc := errFuncCaller(3) // Get the caller function to log where the error occurred.
+		// Get the caller function to log where the error occurred.
+		fc := errFuncCaller(3)
+
+		// Log the error if a logger is present.
 		if fh.logger != nil && fc != nil {
 			fh.logger.Error("Error caught", "error", err.Error(), "function", fc.Name, "file", fc.File, "line", fc.Line)
 		}
 
+		// Send the error to an error channel.
+		if eh.errChan != nil {
+			eh.errChan <- err
+		}
+
 		switch eh.strategy {
-		case ErrorStrategyPanic:
-			panic(err) // Panic if configured to do so.
 		case ErrorStrategyTemplateError:
 			return err, true // Return the error to the caller.
-		case ErrorStrategyChannel:
-			if eh.errChan != nil {
-				eh.errChan <- err // Send the error to an error channel.
-			}
-			return nil, true
 		case ErrorStrategyReturnDefaultValue:
 			return nil, true // Ignore the error and proceed with the default value.
 		}

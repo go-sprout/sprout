@@ -94,10 +94,8 @@ handler := sprout.NewFunctionHandler(
   // By default, Sprout uses a slog.TextHandler.
   sprout.WithLogger(slogLogger),
   // Set the error handling behavior for the handler. By default, Sprout returns the default value of the return type without crashes or panics.
-  sprout.WithErrHandling(sprout.ErrHandlingReturnDefaultValue),
+  sprout.WithErrStrategy(sprout.ErrorStrategyReturnDefaultValue),
   // Set the error channel for the handler. By default, Sprout does not use an error channel. If you set an error channel, Sprout will send errors to it.
-  // This options is only used when the error handling behavior is set to
-  // `ErrHandlingErrorChannel`
   sprout.WithErrorChannel(errChan),
   // Set the alias for a function. By default, Sprout use alias for some functions for backward compatibility with Sprig.
   sprout.WithAlias("hello", "hi"),
@@ -141,36 +139,31 @@ sprout.NewFunctionHandler(
 
 ### Usage: Error Handling
 
-Sprout provides three error handling behaviors:
-- `ErrHandlingReturnDefaultValue`: Sprout returns the default value of the return type without crashes or panics.
-- `ErrHandlingPanic`: Sprout panics when an error occurs.
-- `ErrHandlingErrorChannel`: Sprout sends errors to the error channel.
+Sprout provides two error handling behaviors:
+- `ErrorStrategyTemplateError`: Sprout returns an error when an error occurs, following the standard Go template behavior.
+- `ErrorStrategyReturnDefaultValue`: Sprout returns the default value of the return type without crashes or panics.
 
-You can set the error handling behavior using the `WithErrHandling` configuration function:
+You can set the error handling behavior using the `WithErrStrategy` configuration function:
 
 ```go
 sprout.NewFunctionHandler(
-  sprout.WithErrHandling(sprout.ErrHandlingReturnDefaultValue),
+  sprout.WithErrStrategy(sprout.ErrorStrategyReturnDefaultValue),
 )
 ```
 
 #### Default Value
 
-If you set the error handling behavior to `ErrHandlingReturnDefaultValue`, Sprout will return the default value of the return type without crashes or panics to ensure a smooth user experience when an error occurs.
-
-#### Panic
-
-If you set the error handling behavior to `ErrHandlingPanic`, Sprout will panic when an error occurs to ensure that the error is not ignored and sended back to template execution.
+If you set the error handling behavior to `ErrorStrategyReturnDefaultValue`, Sprout will return the default value of the return type without crashes or panics to ensure a smooth user experience when an error occurs.
 
 #### Error Channel
 
-If you set the error handling behavior to `ErrHandlingErrorChannel`, you can pass an error channel to the `WithErrorChannel` configuration function. Sprout will send errors to the error channel:
+You can pass an error channel to the `WithErrorChannel` configuration function. Sprout will send errors to the error channel, no matter the chosen strategy :
 
 ```go
 errChan := make(chan error)
 
 sprout.NewFunctionHandler(
-  sprout.WithErrHandling(sprout.ErrHandlingErrorChannel),
+  sprout.WithErrStrategy(sprout.ErrorStrategyTemplateError),
   sprout.WithErrorChannel(errChan),
 )
 ```

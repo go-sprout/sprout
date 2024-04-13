@@ -42,18 +42,8 @@ func TestErrIsPresentTemplateErrorReturn(t *testing.T) {
 	assert.True(t, resultBool)
 }
 
-func TestErrIsPresentPanicOnError(t *testing.T) {
-	handler := &FunctionHandler{logger: noopLogger, errHandler: &internalErrorHandler{strategy: ErrorStrategyPanic}}
-	inputError := errors.New("test error")
-
-	assert.Panics(t, func() {
-		err, _ := handler.ErrIsPresent(inputError)
-		assert.Nil(t, err)
-	}, "The code did not panic")
-}
-
 func TestErrIsPresentSendErrorToChannel(t *testing.T) {
-	handler := &FunctionHandler{logger: noopLogger, errHandler: &internalErrorHandler{strategy: ErrorStrategyChannel, errChan: make(chan error, 1)}}
+	handler := &FunctionHandler{logger: noopLogger, errHandler: &internalErrorHandler{strategy: ErrorStrategyReturnDefaultValue, errChan: make(chan error, 1)}}
 	inputError := errors.New("test error")
 
 	_, resultBool := handler.ErrIsPresent(inputError)

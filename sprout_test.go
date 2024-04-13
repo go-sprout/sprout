@@ -20,24 +20,24 @@ func TestNewFunctionHandler_CustomValues(t *testing.T) {
 	errChan := make(chan error, 1)
 	logger := slog.New(&slog.TextHandler{})
 	handler := NewFunctionHandler(
-		WithErrStrategy(ErrorStrategyPanic),
+		WithErrStrategy(ErrorStrategyTemplateError),
 		WithLogger(logger),
 		WithErrorChannel(errChan),
 	)
 
 	assert.NotNil(t, handler)
-	assert.Equal(t, ErrorStrategyPanic, handler.errHandler.strategy)
+	assert.Equal(t, ErrorStrategyTemplateError, handler.errHandler.strategy)
 	assert.Equal(t, errChan, handler.errHandler.errChan)
 	assert.Equal(t, logger, handler.logger)
 }
 
 func TestWithErrHandling(t *testing.T) {
-	option := WithErrStrategy(ErrorStrategyPanic)
+	option := WithErrStrategy(ErrorStrategyTemplateError)
 
 	handler := NewFunctionHandler()
 	option(handler) // Apply the option
 
-	assert.Equal(t, ErrorStrategyPanic, handler.errHandler.strategy)
+	assert.Equal(t, ErrorStrategyTemplateError, handler.errHandler.strategy)
 }
 
 func TestWithLogger(t *testing.T) {
@@ -64,7 +64,7 @@ func TestWithErrorChannel(t *testing.T) {
 func TestWithParser(t *testing.T) {
 	fnHandler := &FunctionHandler{
 		errHandler: &internalErrorHandler{
-			strategy: ErrorStrategyChannel,
+			strategy: ErrorStrategyTemplateError,
 			errChan:  make(chan error, 1),
 		},
 		logger: slog.New(&slog.TextHandler{}),
