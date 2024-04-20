@@ -75,16 +75,19 @@ type ErrorChain interface {
 // It allows retrieving a formatted string representing where the error occurred.
 type Stackliteable interface {
 	StackLine() string
+	WithFrameSkip(skip int) Stackliteable
 }
 
 // errorStruct is the concrete implementation of Error and ErrorChain interfaces.
 // It links together errors in a chain, capturing each error's context and
 // stack trace.
 type errorStruct struct {
-	prev      *errorStruct
-	next      *errorStruct
-	err       error
-	stacklite *stacklite
+	prev *errorStruct
+	next *errorStruct
+	err  error
+
+	stackliteSkip int
+	stacklite     *stacklite
 }
 
 // stacklite contains details about the stack at the point where the error
@@ -112,9 +115,9 @@ func New(text string, previousErrs ...error) Error {
 	}
 
 	err := &errorStruct{
-		prev:      prev,
-		err:       errors.New(text),
-		stacklite: errFuncCaller(2),
+		prev:          prev,
+		err:           errors.New(text),
+		stackliteSkip: 3,
 	}
 
 	if prev != nil {
@@ -127,6 +130,10 @@ func New(text string, previousErrs ...error) Error {
 // castToErrorStruct attempts to cast a generic error to *errorStruct.
 // If the cast is unsuccessful, it wraps the error in a new *errorStruct.
 func castToErrorStruct(err error) *errorStruct {
+	if err == nil {
+		return nil
+	}
+
 	if e, ok := err.(*errorStruct); ok {
 		return e
 	}
@@ -139,13 +146,19 @@ func Cast(err error, previousErrs ...error) Error {
 	if err == nil {
 		return nil
 	}
-	if e, ok := err.(Error); ok {
-		return e
-	}
 
 	var prev *errorStruct
 	if len(previousErrs) > 0 {
 		prev = castToErrorStruct(previousErrs[0])
+	}
+
+	if e, ok := err.(Error); ok {
+		if es, ok := e.(*errorStruct); ok {
+			es.prev = prev
+			return es
+		}
+
+		return e
 	}
 
 	return &errorStruct{
@@ -263,6 +276,14 @@ func (e *errorStruct) Stack() []string {
 	return stack
 }
 
+func (e *errorStruct) WithFrameSkip(skip int) Stackliteable {
+	if skip < 2 {
+		skip = 2
+	}
+	e.stackliteSkip = skip
+	return e
+}
+
 // Cause returns the root error in the chain, providing access to the initial error
 // that triggered the sequence of errors. This method traverses the chain to find
 // the root cause.
@@ -303,7 +324,7 @@ func (e *errorStruct) Next() ErrorChain {
 // The format is `[package.file#line function]`.
 func (e *errorStruct) StackLine() string {
 	if e.stacklite == nil {
-		return ""
+		e.stacklite = errFuncCaller(e.stackliteSkip)
 	}
 
 	b := strings.Builder{}

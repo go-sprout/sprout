@@ -2,6 +2,7 @@ package sprout
 
 import (
 	"log/slog"
+	"reflect"
 	"text/template"
 
 	"github.com/42atomys/sprout/errors"
@@ -23,9 +24,7 @@ type FunctionHandlerOption func(*FunctionHandler)
 // NewFunctionHandler creates a new FunctionHandler with the provided options.
 func NewFunctionHandler(opts ...FunctionHandlerOption) *FunctionHandler {
 	fnHandler := &FunctionHandler{
-		errHandler: errors.NewErrHandler(
-			errors.WithSubHandler(NewErrorChainHandler()),
-		),
+		errHandler: errors.NewErrorChainHandler(),
 		logger:     slog.New(slog.Default().Handler()),
 		funcMap:    make(template.FuncMap),
 		funcsAlias: make(FunctionAliasMap),
@@ -86,4 +85,26 @@ func FuncMap(opts ...FunctionHandlerOption) template.FuncMap {
 	// Register aliases for functions
 	fnHandler.registerAliases()
 	return fnHandler.funcMap
+}
+
+// DefaultValueFor returns the zero value for any type T.
+// This utility is particularly useful in situations where functions need to return
+// a default value when an error is encountered but execution must continue.
+// It supports basic types, slices, maps, and pointers.
+func DefaultValueFor[T interface{}](v T) T {
+	typeOf := reflect.TypeOf(v)
+	if typeOf == nil {
+		return v
+	}
+
+	value := reflect.Zero(typeOf).Interface().(T)
+
+	switch typeOf.Kind() {
+	case reflect.Slice:
+		value = reflect.MakeSlice(typeOf, 0, 0).Interface().(T)
+	case reflect.Map:
+		value = reflect.MakeMap(typeOf).Interface().(T)
+	}
+
+	return value
 }

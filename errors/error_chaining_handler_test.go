@@ -1,4 +1,4 @@
-package sprout
+package errors
 
 import (
 	"errors"
@@ -24,19 +24,3 @@ func TestErrorChainHandler_Handle(t *testing.T) {
 	assert.Equal(t, testError, handler.errors[0].Err(), "The error in the chain should match the handled error")
 	assert.Equal(t, testError, errReturned, "The returned error should match the handled error")
 }
-
-// TestDefaultValueFor tests the DefaultValueFor function for various types.
-func TestDefaultValueFor(t *testing.T) {
-	assert.Equal(t, 0, DefaultValueFor[int](0), "Default value for int should be 0")
-	assert.Equal(t, "", DefaultValueFor[string](""), "Default value for string should be an empty string")
-	assert.Equal(t, ([]int)(nil), DefaultValueFor[[]int](nil), "Default value for slice should be nil")
-
-	type customStruct struct {
-		Field string
-	}
-	assert.Equal(t, customStruct{}, DefaultValueFor[customStruct](customStruct{}), "Default value for struct should be zero valued struct")
-	assert.Nil(t, DefaultValueFor[map[string]int](nil), "Default value for map should be nil")
-	assert.Nil(t, DefaultValueFor[*int](nil), "Default value for pointer should be nil")
-}
-
-// Running this test will verify that DefaultValueFor correctly returns zero values for specified types.

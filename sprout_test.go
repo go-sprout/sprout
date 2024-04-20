@@ -88,3 +88,18 @@ func TestFuncMap_BackwardCompatibility(t *testing.T) {
 	assert.True(t, ok)
 	assert.Equal(t, "Hello, World!", helloFunc())
 }
+
+// TestDefaultValueFor tests the DefaultValueFor function for various types.
+func TestDefaultValueFor(t *testing.T) {
+	assert.Equal(t, 0, DefaultValueFor(0), "Default value for int should be 0")
+	assert.Equal(t, "", DefaultValueFor(""), "Default value for string should be an empty string")
+	assert.Equal(t, []int{}, DefaultValueFor[[]int](nil), "Default value for slice should be am empty slice")
+	type customStruct struct {
+		Field string
+	}
+	assert.Equal(t, customStruct{}, DefaultValueFor(customStruct{}), "Default value for struct should be zero valued struct")
+	assert.Equal(t, map[string]int{}, DefaultValueFor(map[string]int{}), "Default value for map should be nil")
+
+	var ptr *int = nil
+	assert.Equal(t, ptr, DefaultValueFor(ptr), "Default value for pointer should be nil")
+}

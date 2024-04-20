@@ -24,6 +24,10 @@ func WithLogger(l *slog.Logger) ErrHandlerOption {
 // WithPreviousErr configures an ErrorHandler to record a previous error.
 // This can be used to maintain error chains where context about prior errors
 // is preserved.
+//
+// This is recommended for use it during the Handle method to maintain a chain
+// of errors for each execution. When you pass an error on the handler itself,
+// it will be used as the previous error for all subsequent calls.
 func WithPreviousErr(err error) ErrHandlerOption {
 	return func(eh ErrorHandler) {
 		if ieh, ok := eh.(*DefaultErrorHandler); ok {
@@ -81,7 +85,22 @@ func NewErrHandler(opts ...ErrHandlerOption) ErrorHandler {
 // This method returns the error and a boolean indicating whether
 // the error was present without taking care of error handling.
 func (eh *DefaultErrorHandler) Handle(err error, opts ...ErrHandlerOption) error {
-	errReturned, _ := eh.err(Cast(err))
+	runHandler := eh.copy()
+	defer func() {
+		// Faster garbage collection by releasing the handler.
+		runHandler = nil
+	}()
+
+	for _, opt := range opts {
+		opt(runHandler)
+	}
+
+	errReturned, _ := runHandler.err(Cast(err, runHandler.previousErr))
+
+	if st, ok := errReturned.(Stackliteable); ok {
+		errReturned = st.WithFrameSkip(3).(Error)
+	}
+
 	return errReturned
 }
 
@@ -89,7 +108,7 @@ func (eh *DefaultErrorHandler) Handle(err error, opts ...ErrHandlerOption) error
 // It is equivalent to calling ErrIsPresent with an error created from the
 // provided message.
 func (eh *DefaultErrorHandler) HandleMessage(msg string, opts ...ErrHandlerOption) error {
-	return eh.Handle(New(msg, eh.previousErr))
+	return eh.Handle(New(msg), opts...)
 }
 
 func (eh *DefaultErrorHandler) err(err Error) (Error, bool) {
@@ -114,4 +133,13 @@ func (eh *DefaultErrorHandler) err(err Error) (Error, bool) {
 		}
 	}
 	return err, err != nil
+}
+
+func (eh *DefaultErrorHandler) copy() *DefaultErrorHandler {
+	return &DefaultErrorHandler{
+		strategy:    eh.strategy,
+		previousErr: eh.previousErr,
+		logger:      eh.logger,
+		subHandler:  eh.subHandler,
+	}
 }

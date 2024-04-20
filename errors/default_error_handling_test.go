@@ -28,12 +28,13 @@ func TestNewErrHandler(t *testing.T) {
 
 // TestInternalErrorHandler_Handle tests the error handling functionality with different strategies.
 func TestInternalErrorHandler_Handle(t *testing.T) {
-	err := errors.New("test error")
+	err := Cast(errors.New("test error"))
 
 	// Test with the default error strategy
 	handler := NewErrHandler().(*DefaultErrorHandler)
 	result := handler.Handle(err)
-	assert.Equal(t, Cast(err), result, "Error should be returned with the default strategy")
+	assert.Equal(t, err, result, "Error should be returned with the default strategy")
+	assert.ErrorIs(t, err, result)
 
 	// Test with the return default value strategy
 	handler = NewErrHandler(func(eh ErrorHandler) {
@@ -55,6 +56,12 @@ func TestInternalErrorHandler_HandleMessage(t *testing.T) {
 	msg := "error message"
 	err := handler.HandleMessage(msg)
 	assert.Contains(t, err.Error(), msg, "Error message should be part of the returned error")
+
+	// Test with a previous error
+	prevErr := errors.New("previous error")
+	errReturned := handler.Handle(err, WithPreviousErr(prevErr))
+	assert.ErrorIs(t, errReturned, prevErr)
+
 }
 
 // TestInternalErrorHandler_WithOptions tests the application of options on runtime.
