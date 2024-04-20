@@ -7,6 +7,7 @@ import (
 	"text/template"
 
 	"github.com/42atomys/sprout"
+	"github.com/42atomys/sprout/errors"
 	"github.com/Masterminds/sprig/v3"
 )
 
@@ -42,20 +43,10 @@ func BenchmarkSprout(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		errChan := make(chan error)
-		defer close(errChan)
-
 		fnHandler := sprout.NewFunctionHandler(
-			sprout.WithErrStrategy(sprout.ErrorStrategyPanic),
 			sprout.WithLogger(slog.New(&slog.TextHandler{})),
-			sprout.WithErrorChannel(errChan),
+			sprout.WithErrHandler(errors.NewErrHandler(errors.WithStrategy(errors.ErrorStrategyReturnDefaultValue))),
 		)
-
-		go func() {
-			for err := range errChan {
-				fnHandler.Logger().Error(err.Error())
-			}
-		}()
 
 		tmpl, err := template.New("allFunctions").Funcs(sprout.FuncMap(sprout.WithFunctionHandler(fnHandler))).ParseGlob("*.sprout.tmpl")
 
