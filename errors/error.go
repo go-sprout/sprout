@@ -162,8 +162,9 @@ func Cast(err error, previousErrs ...error) Error {
 	}
 
 	return &errorStruct{
-		err:  err,
-		prev: prev,
+		err:           err,
+		prev:          prev,
+		stackliteSkip: 3,
 	}
 }
 

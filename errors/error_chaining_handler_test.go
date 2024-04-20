@@ -22,5 +22,5 @@ func TestErrorChainHandler_Handle(t *testing.T) {
 
 	assert.Equal(t, 1, len(handler.errors), "There should be one error in the chain")
 	assert.Equal(t, testError, handler.errors[0].Err(), "The error in the chain should match the handled error")
-	assert.Equal(t, testError, errReturned, "The returned error should match the handled error")
+	assert.ErrorIs(t, errReturned, testError, "The returned error should match the handled error")
 }
