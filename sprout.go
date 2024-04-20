@@ -24,7 +24,7 @@ type FunctionHandlerOption func(*FunctionHandler)
 // NewFunctionHandler creates a new FunctionHandler with the provided options.
 func NewFunctionHandler(opts ...FunctionHandlerOption) *FunctionHandler {
 	fnHandler := &FunctionHandler{
-		errHandler: errors.NewErrorChainHandler(),
+		errHandler: errors.NewErrHandler(),
 		logger:     slog.New(slog.Default().Handler()),
 		funcMap:    make(template.FuncMap),
 		funcsAlias: make(FunctionAliasMap),
@@ -64,6 +64,12 @@ func WithFunctionHandler(new *FunctionHandler) FunctionHandlerOption {
 // logging errors and other information based on the handler's configuration.
 func (fnHandler *FunctionHandler) Logger() *slog.Logger {
 	return fnHandler.logger
+}
+
+// ErrHandler returns the error handler used by a FunctionHandler. This is useful
+// for handling errors and logging based on the handler's configuration.
+func (fnHandler *FunctionHandler) ErrHandler() errors.ErrorHandler {
+	return fnHandler.errHandler
 }
 
 // FuncMap returns a template.FuncMap for use with text/template or html/template.

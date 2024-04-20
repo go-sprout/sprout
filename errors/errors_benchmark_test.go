@@ -60,9 +60,9 @@ func BenchmarkNestingTest(b *testing.B) {
 
 		b.StopTimer()
 
-		if len(err.Stack()) != b.N+1 {
+		if len(err.Stack()) != b.N {
 			b.Logf("stack: %+v", err.Stack())
-			b.Fatalf("expected stack length to be %d, got %d", b.N+1, len(err.Stack()))
+			b.Fatalf("expected stack length to be %d, got %d", b.N, len(err.Stack()))
 		}
 	})
 }

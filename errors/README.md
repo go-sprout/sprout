@@ -24,7 +24,7 @@ First, import the Sprout errors package and create a new error handler:
 import "github.com/42atomys/sprout/errors"
 
 func main() {
-    handler := errors.NewErrorChainHandler()
+    handler := errors.NewErrHandler()
 }
 ```
 
@@ -50,7 +50,7 @@ You can set the error handling behavior using the `WithErrStrategy` configuratio
 ```go
 sprout.NewFunctionHandler(
   sprout.WithErrHandler(
-    errors.NewErrorChainHandler(
+    errors.NewErrHandler(
       errors.WithStrategy(errors.ErrorStrategyReturnDefaultValue)
     ),
   ),
@@ -67,7 +67,7 @@ If you set the error handling behavior to `ErrorStrategyTemplateError`, Sprout w
 
 
 ```go
-handler := errors.NewErrorChainHandler(errors.WithStrategy(errors.ErrStrategy))
+handler := errors.NewErrHandler(errors.WithStrategy(errors.ErrorStrategyTemplateError))
 ```
 
 # Customization
@@ -78,14 +78,14 @@ Customize your error handler with additional options like logging and sub-handle
 
 ```go
 logger := slog.New(slog.Default().Handler())
-handler := errors.NewErrorChainHandler(errors.WithLogger(logger))
+handler := errors.NewErrHandler(errors.WithLogger(logger))
 ```
 
 You can also set sub-handlers to your error handler to create a chain of error
 handling strategies:
 
 ```go
-handler := errors.NewErrorChainHandler()
+handler := errors.NewErrHandler()
 handler.WithSubHandler(yourpackage.NewCustomErrorHandler())
 ```
 
@@ -96,15 +96,18 @@ handler.WithSubHandler(yourpackage.NewCustomErrorHandler())
 You can create your own error handler by implementing the `ErrorHandler` interface:
 
 ```go
+
+import "github.com/42atomys/sprout/errors"
+
 type CustomErrorHandler struct {
     // Your custom fields
 }
 
-func (h *CustomErrorHandler) Handle(err error, opts ...ErrHandlerOption) error {
+func (h *CustomErrorHandler) Handle(err error, opts ...errors.RuntimeOption) error {
     // Your custom error handling logic
 }
 
-func (h *CustomErrorHandler)  HandleMessage(msg string, opts ...ErrHandlerOption) error {
+func (h *CustomErrorHandler)  HandleMessage(msg string, opts ...errors.RuntimeOption) error {
     // Your custom error handling logic
 }
 ```

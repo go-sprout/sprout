@@ -74,8 +74,17 @@ type ErrorChain interface {
 // Stackliteable is an interface for errors that include a stack trace line.
 // It allows retrieving a formatted string representing where the error occurred.
 type Stackliteable interface {
-	StackLine() string
-	WithFrameSkip(skip int) Stackliteable
+	Stacklite() *Stacklite
+	FormattedStackEntry() string
+}
+
+// Stacklite contains details about the stack at the point where the error
+// was captured.
+type Stacklite struct {
+	Package  string
+	Function string
+	File     string
+	Line     int
 }
 
 // errorStruct is the concrete implementation of Error and ErrorChain interfaces.
@@ -86,18 +95,13 @@ type errorStruct struct {
 	next *errorStruct
 	err  error
 
-	stackliteSkip int
-	stacklite     *stacklite
+	stacklite *Stacklite
 }
 
-// stacklite contains details about the stack at the point where the error
-// was captured.
-type stacklite struct {
-	pack string
-	fn   string
-	file string
-	line int
-}
+// defaultStackliteSkip is the default number of frames to skip when capturing
+// the stack trace for an error. This value is used when creating new errors
+// to ensure the stack trace includes the relevant function calls.
+const defaultStackliteSkip = 2
 
 // New creates a new error instance with the specified text message. It captures
 // the current stack trace and optionally links the new error with previous errors
@@ -115,9 +119,9 @@ func New(text string, previousErrs ...error) Error {
 	}
 
 	err := &errorStruct{
-		prev:          prev,
-		err:           errors.New(text),
-		stackliteSkip: 3,
+		prev:      prev,
+		err:       errors.New(text),
+		stacklite: errFuncCaller(defaultStackliteSkip),
 	}
 
 	if prev != nil {
@@ -162,10 +166,22 @@ func Cast(err error, previousErrs ...error) Error {
 	}
 
 	return &errorStruct{
-		err:           err,
-		prev:          prev,
-		stackliteSkip: 3,
+		err:       err,
+		prev:      prev,
+		stacklite: errFuncCaller(defaultStackliteSkip),
 	}
+}
+
+func (e *errorStruct) SetStacklite(skip int, force bool) *errorStruct {
+	if skip < defaultStackliteSkip {
+		skip = defaultStackliteSkip
+	}
+
+	if e.stacklite == nil || force {
+		e.stacklite = errFuncCaller(skip)
+	}
+
+	return e
 }
 
 // Error returns a string representation of the error chain from the current error
@@ -176,8 +192,8 @@ func (e *errorStruct) Error() string {
 
 	curr := e.Cause().(*errorStruct)
 	for curr != nil {
-		if sl := curr.StackLine(); sl != "" {
-			b.WriteString(curr.StackLine())
+		if sl := curr.FormattedStackEntry(); sl != "" {
+			b.WriteString(curr.FormattedStackEntry())
 			b.WriteString(": ")
 		}
 
@@ -257,7 +273,7 @@ func (e *errorStruct) Stack() []string {
 	for curr := e; curr != nil; curr = curr.prev {
 		var b strings.Builder
 		// Estimate the length of the final string to minimize reallocations
-		line := curr.StackLine()
+		line := curr.FormattedStackEntry()
 		err := ""
 		if curr.err != nil {
 			err = curr.err.Error()
@@ -277,12 +293,12 @@ func (e *errorStruct) Stack() []string {
 	return stack
 }
 
-func (e *errorStruct) WithFrameSkip(skip int) Stackliteable {
-	if skip < 2 {
-		skip = 2
-	}
-	e.stackliteSkip = skip
-	return e
+// Stacklite returns a slice of Stacklite structs that represent the stack trace
+// for each error in the chain. The stack traces are ordered from the root cause
+// to the current error. This method is useful for extracting detailed information
+// about where each error occurred in the code.
+func (e *errorStruct) Stacklite() *Stacklite {
+	return e.stacklite
 }
 
 // Cause returns the root error in the chain, providing access to the initial error
@@ -320,25 +336,25 @@ func (e *errorStruct) Next() ErrorChain {
 	return e.next
 }
 
-// StackLine constructs a formatted string containing the error's location in the code,
+// FormattedStackEntry constructs a formatted string containing the error's location in the code,
 // including the package, file, and line number where the error occurred.
 // The format is `[package.file#line function]`.
-func (e *errorStruct) StackLine() string {
+func (e *errorStruct) FormattedStackEntry() string {
 	if e.stacklite == nil {
-		e.stacklite = errFuncCaller(e.stackliteSkip)
+		return ""
 	}
 
 	b := strings.Builder{}
 	b.Grow(128) // Pre-allocate based on typical stack line length
 
 	b.WriteRune('[')
-	b.WriteString(e.stacklite.pack)
+	b.WriteString(e.Stacklite().Package)
 	b.WriteRune('.')
-	b.WriteString(e.stacklite.file)
+	b.WriteString(e.Stacklite().File)
 	b.WriteRune('#')
-	b.WriteString(strconv.Itoa(e.stacklite.line))
+	b.WriteString(strconv.Itoa(e.Stacklite().Line))
 	b.WriteRune(' ')
-	b.WriteString(e.stacklite.fn)
+	b.WriteString(e.Stacklite().Function)
 	b.WriteRune(']')
 
 	return b.String()
@@ -348,7 +364,7 @@ func (e *errorStruct) StackLine() string {
 // allowing for detailed logging and error handling. 'skip' levels are bypassed
 // to find the actual caller.
 // It returns a *runtime.Func representing the caller, or nil if not found.
-func errFuncCaller(skip int) *stacklite {
+func errFuncCaller(skip int) *Stacklite {
 	pc, _, _, ok := runtime.Caller(skip)
 	if !ok {
 		return nil
@@ -371,5 +387,5 @@ func errFuncCaller(skip int) *stacklite {
 	file, line := fn.FileLine(pc)
 	_, file = path.Split(file)
 
-	return &stacklite{pack, funcName, file, line}
+	return &Stacklite{pack, funcName, file, line}
 }

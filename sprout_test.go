@@ -31,18 +31,50 @@ type testErrHandler struct {
 
 var errTestErrhandler = errors.New("test with error handler error")
 
-func (h *testErrHandler) Handle(err error, opts ...errors.ErrHandlerOption) error {
-	return errors.Cast(errTestErrhandler, err)
+func (h *testErrHandler) Handle(err error, opts ...errors.RuntimeOption) (error, bool) {
+	return errors.Cast(errTestErrhandler, err), err != nil
 }
 
 func TestWithErrHandling(t *testing.T) {
+	handler := NewFunctionHandler()
+	assert.NotNil(t, handler.errHandler)
+
+	err, ok := handler.errHandler.Handle(errTestErrhandler)
+	assert.True(t, ok)
+	assert.Equal(t, errTestErrhandler, err)
+
+	// Test error defined outside the function
+	if st, ok := err.(errors.Stackliteable); assert.True(t, ok) {
+		assert.Equal(t, "sprout", st.Stacklite().Package)
+		assert.Equal(t, "init", st.Stacklite().Function)
+		assert.Equal(t, "sprout_test.go", st.Stacklite().File)
+		assert.Greater(t, st.Stacklite().Line, 0)
+	}
+
+	err, ok = handler.errHandler.Handle(errors.New("test error"))
+	assert.True(t, ok)
+	assert.Contains(t, err.Error(), "test error")
+
+	// Test error defined inside the function
+	if st, ok := err.(errors.Stackliteable); assert.True(t, ok) {
+		assert.Equal(t, "sprout", st.Stacklite().Package)
+		assert.Equal(t, "TestWithErrHandling", st.Stacklite().Function)
+		assert.Equal(t, "sprout_test.go", st.Stacklite().File)
+		assert.Greater(t, st.Stacklite().Line, 0)
+	}
+}
+
+func TestWithCustomErrHandling(t *testing.T) {
 	option := WithErrHandler(&testErrHandler{})
 
 	handler := NewFunctionHandler()
 	option(handler) // Apply the option
 
 	assert.NotNil(t, handler.errHandler)
-	assert.Equal(t, errTestErrhandler, handler.errHandler.Handle(nil))
+
+	err, ok := handler.errHandler.Handle(nil)
+	assert.False(t, ok)
+	assert.Equal(t, errTestErrhandler, err)
 }
 
 func TestWithLogger(t *testing.T) {
