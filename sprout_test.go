@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"testing"
 
+	"github.com/42atomys/sprout/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -11,33 +12,37 @@ func TestNewFunctionHandler_DefaultValues(t *testing.T) {
 	handler := NewFunctionHandler()
 
 	assert.NotNil(t, handler)
-	assert.Equal(t, ErrorStrategyReturnDefaultValue, handler.errHandler.strategy)
-	assert.NotNil(t, handler.errHandler.errChan)
 	assert.NotNil(t, handler.logger)
 }
 
 func TestNewFunctionHandler_CustomValues(t *testing.T) {
-	errChan := make(chan error, 1)
 	logger := slog.New(&slog.TextHandler{})
 	handler := NewFunctionHandler(
-		WithErrStrategy(ErrorStrategyTemplateError),
 		WithLogger(logger),
-		WithErrorChannel(errChan),
 	)
 
 	assert.NotNil(t, handler)
-	assert.Equal(t, ErrorStrategyTemplateError, handler.errHandler.strategy)
-	assert.Equal(t, errChan, handler.errHandler.errChan)
 	assert.Equal(t, logger, handler.logger)
 }
 
+type testErrHandler struct {
+	errors.DefaultErrorHandler
+}
+
+var errTestErrhandler = errors.New("test with error handler error")
+
+func (h *testErrHandler) Handle(err error, opts ...errors.ErrHandlerOption) error {
+	return errors.Cast(errTestErrhandler, err)
+}
+
 func TestWithErrHandling(t *testing.T) {
-	option := WithErrStrategy(ErrorStrategyTemplateError)
+	option := WithErrHandler(&testErrHandler{})
 
 	handler := NewFunctionHandler()
 	option(handler) // Apply the option
 
-	assert.Equal(t, ErrorStrategyTemplateError, handler.errHandler.strategy)
+	assert.NotNil(t, handler.errHandler)
+	assert.Equal(t, errTestErrhandler, handler.errHandler.Handle(nil))
 }
 
 func TestWithLogger(t *testing.T) {
@@ -49,32 +54,6 @@ func TestWithLogger(t *testing.T) {
 
 	assert.Equal(t, logger, handler.logger)
 	assert.Equal(t, logger, handler.Logger())
-}
-
-func TestWithErrorChannel(t *testing.T) {
-	errChan := make(chan error, 1)
-	option := WithErrorChannel(errChan)
-
-	handler := NewFunctionHandler()
-	option(handler) // Apply the option
-
-	assert.Equal(t, errChan, handler.errHandler.errChan)
-}
-
-func TestWithParser(t *testing.T) {
-	fnHandler := &FunctionHandler{
-		errHandler: &internalErrorHandler{
-			strategy: ErrorStrategyTemplateError,
-			errChan:  make(chan error, 1),
-		},
-		logger: slog.New(&slog.TextHandler{}),
-	}
-	option := WithFunctionHandler(fnHandler)
-
-	handler := NewFunctionHandler()
-	option(handler) // Apply the option
-
-	assert.Equal(t, fnHandler, handler)
 }
 
 func TestFuncMap_IncludesHello(t *testing.T) {

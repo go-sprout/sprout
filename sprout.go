@@ -3,12 +3,14 @@ package sprout
 import (
 	"log/slog"
 	"text/template"
+
+	"github.com/42atomys/sprout/errors"
 )
 
 // FunctionHandler manages function execution with configurable error handling
 // and logging.
 type FunctionHandler struct {
-	errHandler *internalErrorHandler
+	errHandler errors.ErrorHandler
 	logger     *slog.Logger
 	funcMap    template.FuncMap
 	funcsAlias FunctionAliasMap
@@ -21,7 +23,9 @@ type FunctionHandlerOption func(*FunctionHandler)
 // NewFunctionHandler creates a new FunctionHandler with the provided options.
 func NewFunctionHandler(opts ...FunctionHandlerOption) *FunctionHandler {
 	fnHandler := &FunctionHandler{
-		errHandler: createInternalErrorHandler(),
+		errHandler: errors.NewErrHandler(
+			errors.WithSubHandler(NewErrorChainHandler()),
+		),
 		logger:     slog.New(slog.Default().Handler()),
 		funcMap:    make(template.FuncMap),
 		funcsAlias: make(FunctionAliasMap),
@@ -34,24 +38,18 @@ func NewFunctionHandler(opts ...FunctionHandlerOption) *FunctionHandler {
 	return fnHandler
 }
 
-// WithErrStrategy sets the error handling strategy for a FunctionHandler.
-func WithErrStrategy(eh ErrorStrategy) FunctionHandlerOption {
+// WithErrHandler sets the error handling strategy for a FunctionHandler.
+func WithErrHandler(eh errors.ErrorHandler) FunctionHandlerOption {
 	return func(p *FunctionHandler) {
-		p.errHandler.strategy = eh
+		p.errHandler = eh
 	}
 }
 
-// WithErrorChannel sets the error channel for a FunctionHandler.
-func WithErrorChannel(ec chan error) FunctionHandlerOption {
-	return func(p *FunctionHandler) {
-		p.errHandler.errChan = ec
-	}
-}
-
-// WithLogger sets the logger used by a FunctionHandler.
+// WithLogger sets the logger used by a FunctionHandler and the error handler.
 func WithLogger(l *slog.Logger) FunctionHandlerOption {
 	return func(p *FunctionHandler) {
 		p.logger = l
+		errors.WithLogger(l)(p.errHandler)
 	}
 }
 
