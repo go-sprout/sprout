@@ -1,0 +1,55 @@
+name: Proposal
+description: Suggest an idea to Sprout
+title: "proposal: "
+labels: ["state/triage 🚦"]
+projects: ["42atomys/8"]
+assignees: ["42atomys"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        You have an idea to improve the project, go ahead! One of our staff or maintainers will discuss with you and accept or not your wonderful idea!
+
+        _If you feel like contributing and fixing this bug yourself, you can totally do it by adding a comment after your issue so we can assign you to it! Once the feature request is accepted, you can open a pull request_
+
+        🙏 Thanks in advance for your contribution
+
+  # Feature description
+  - type: textarea
+    id: describe
+    attributes:
+      label: You have a proposal, explain it!
+      description: A clear and concise description of your vision
+      placeholder: "I'm thinking about the possibility to ..."
+    validations:
+      required: true
+
+  # solution
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen
+      placeholder: "I think a good solution would be ... "
+    validations:
+      required: true
+
+  # additional
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any context or code snippets to help us understand your proposal
+      placeholder: "Here is a code snippet of the function I'm thinking about ..."
+    validations:
+      required: false
+
+  # Code if Conduct
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/42atomys/sprout/blob/main/.github/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

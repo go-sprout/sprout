@@ -1,0 +1,83 @@
+name: Bug report
+description: File a bug report
+title: "bug: "
+labels: ["type/bug 🔥", "state/triage 🚦"]
+projects: ["42atomys/8"]
+assignees: ["42atomys"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        _You have found a bug, bravo! Or rather, sorry! Send us the information about this bug so we can fix it as soon as possible._
+
+        _If you feel like contributing and fixing this bug yourself, you can totally do it by adding a comment after your issue so we can assign you to it! Open a Pull Request and send it!_
+
+        🙏 _Thanks in advance for your contribution_
+
+  # Describe
+  - type: textarea
+    id: describe
+    attributes:
+      label: Describe the bug
+      description: Thanks for taking the time to describe the bug with more details as you can
+      placeholder: "A bug happened when I click on avatar of my friends"
+    validations:
+      required: true
+
+  # Reproduce
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. When I try to use this feature '...' with this configuration '...'
+        2. And Execute template with data '...'
+        3. See error
+    validations:
+      required: true
+
+  # Expected
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen, if applicable
+      placeholder: Maybe can response with..
+    validations:
+      required: false
+
+  # Logs
+  - type: textarea
+    id: code
+    attributes:
+      label: Code Snippet
+      description: Please copy and paste any relevant templates. This will be automatically formatted into code, so no need for backticks.
+      render: Shell
+
+  # Version
+  - type: input
+    id: version
+    attributes:
+      label: Version of software
+      description: What version of sprout occure this bug?
+      placeholder: "v0.2.0"
+    validations:
+      required: true
+
+  # additional context
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here if relevant
+
+  # Code if Conduct
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/42atomys/sprout/blob/main/.github/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
