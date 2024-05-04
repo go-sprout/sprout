@@ -3,11 +3,13 @@ package benchmarks_test
 import (
 	"bytes"
 	"log/slog"
+	"sync"
 	"testing"
 	"text/template"
 
 	"github.com/42atomys/sprout"
 	"github.com/Masterminds/sprig/v3"
+	"github.com/stretchr/testify/assert"
 )
 
 /**
@@ -72,4 +74,36 @@ func BenchmarkSprout(b *testing.B) {
 		}
 		buf.Reset()
 	}
+}
+
+func TestCompareSprigAndSprout(t *testing.T) {
+	wg := sync.WaitGroup{}
+
+	wg.Add(2)
+
+	var bufSprig, bufSprout bytes.Buffer
+
+	go func() {
+		defer wg.Done()
+
+		tmplSprig, err := template.New("compare").Funcs(sprig.FuncMap()).ParseFiles("compare.tmpl")
+		assert.NoError(t, err)
+
+		err = tmplSprig.ExecuteTemplate(&bufSprig, "compare.tmpl", nil)
+		assert.NoError(t, err)
+	}()
+
+	go func() {
+		defer wg.Done()
+
+		tmplSprout, err := template.New("compare").Funcs(sprout.FuncMap()).ParseGlob("compare.tmpl")
+		assert.NoError(t, err)
+
+		err = tmplSprout.ExecuteTemplate(&bufSprout, "compare.tmpl", nil)
+		assert.NoError(t, err)
+	}()
+
+	wg.Wait()
+	// sprig is expected and sprout is actual
+	assert.Equal(t, bufSprig.String(), bufSprout.String())
 }

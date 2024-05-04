@@ -1,0 +1,219 @@
+{{/* compare.tpl: Used to compare sprig to sprout */}}
+
+Hello: {{ hello }}
+
+{{- $str := "Hello, World!" -}}
+{{- $dict := dict "key" "value" -}}
+{{- $list := list 1 2 3 -}}
+{{- $tuple := tuple 1 2 3 -}}
+{{- $set := set $dict "key2" "value2" -}}
+{{- $date := toDate "2006-01-02" "2017-12-31" -}}
+
+{{- $d := dict "one" 1 "two" 222222 -}}
+{{- $d2 := dict "one" 1 "two" 33333 -}}
+{{- $d3 := dict "one" 1 -}}
+{{- $d4 := dict "one" 1 "two" 4444 -}}
+
+{{/* Date functions */}}
+Ago: {{ago $date }}
+Date: {{date "Monday, 02 Jan 2006 15:04:05 MST" 0}}
+DateInZone: {{dateInZone "Monday, 02 Jan 2006 15:04:05 MST" 0 "UTC"}}
+DateModify: {{$date | dateModify "-1.5h"}}
+Duration: {{duration "1h30m"}}
+DurationRound: {{durationRound "2h10m5s"}} | {{ durationRound "2400h10m5s" }}
+HtmlDate: {{htmlDate "2006-01-02T15:04:05Z"}}
+HtmlDateInZone: {{htmlDateInZone "2006-01-02T15:04:05Z" "UTC"}}
+MustDateModify: {{$date | mustDateModify "-1.5h"}}
+MustToDate: {{mustToDate "2006-01-02" "2017-12-31" | date "02/01/2006"}}
+Now: {{now | date "02/01/2006"}}
+ToDate: {{toDate "2006-01-02" "2017-12-31" | date "02/01/2006"}}
+UnixEpoch: {{$date | unixEpoch}}
+
+
+{{/* String Functions */}}
+Abbrev: {{$str | abbrev 5}}
+AbbrevBoth: {{$str | abbrevboth 1 2}}
+Trunc: {{$str | trunc 5}} | {{$str | trunc -5}}
+Trim: {{trim "   hello    "}}
+Upper: {{upper $str}}
+Lower: {{lower $str}}
+Title: {{title $str}}
+UnTitle: {{untitle $str}}
+Substr: {{substr 0 5 "hello world"}}
+Repeat: {{repeat 3 "hello"}}
+TrimAll: {{trimAll "$" "$5.00"}}
+TrimSuffix: {{trimSuffix "-" "hello-"}}
+TrimPrefix: {{trimPrefix "-" "-hello"}}
+NoSpace: {{nospace "Hello, World!"}}
+Initials: {{initials "Hello, World!"}}
+SwapCase: {{swapcase "Hello, World!"}}
+SnakeCase: {{snakecase "Hello, World!"}}
+CamelCase: {{camelcase "Hello, World!"}}
+KebabCase: {{kebabcase "Hello, World!"}}
+Wrap: {{"Hello, World!" | wrap 5}}
+WrapWith: {{"Hello World!" | wrapWith 10 "\\n"}}
+Contains: {{contains $str "World"}}
+HasPrefix: {{hasPrefix $str "Hello"}}
+HasSuffix: {{hasSuffix $str "World"}}
+Quote: {{quote $str}}
+SQuote: {{squote $str}}
+Cat: {{cat "Hello" ", " "World!"}}
+Indent: {{"Hello, World!" | indent 5}}
+Nindent: {{"Hello, World!" | nindent 5}}
+Replace: {{$str | replace "World" "Sprig"}}
+Plural: {{2 | plural "apple" "apples"}} | {{1 | plural "apple" "apples"}}
+Sha1sum: {{sha1sum $str}}
+Sha256sum: {{sha256sum $str}}
+Adler32sum: {{adler32sum $str}}
+toString: {{toString 5}}
+
+Atoi: {{atoi "5"}}
+Int64: {{int64 5}}
+Int: {{int 5}}
+Float64: {{float64 5}}
+ToDecimal: {{toDecimal "0777"}}
+
+Split: {{"Hello, World!" | split ", "}}
+SplitList: {{"Hello, World!" | splitList ", "}}
+SplitN: {{"Hello, World!" | splitn ", " 1}}
+toStrings: {{list 1 2 3 | toStrings}}
+Until: {{until 5}}
+UntilStep: {{untilStep 3 6 2}}
+
+Add1: {{add1 5}}
+Add: {{add 5 10}}
+Sub: {{sub 10 5}}
+Mul: {{mul 5 10}}
+Div: {{div 10 5}}
+Mod: {{mod 10 5}}
+Add1f: {{add1f 5}}
+Addf: {{addf 5 10}}
+Subf: {{subf 10 5}}
+Mulf: {{mulf 5 10}}
+Divf: {{divf 10 5}}
+Biggest: {{biggest 5 10}}
+Max: {{max 5 6 10}}
+Min: {{min 5 6 10}}
+Ceil: {{ceil 123.001}}
+Floor: {{floor 123.9999}}
+Round: {{round 123.555555 3}}
+Maxf: {{maxf 5.5 10.5}}
+Minf: {{minf 5.5 10.5}}
+Seq: {{seq 5}} | {{seq -3}} | {{seq 0 2}} | {{seq 2 -2}} | {{seq 0 2 10}} | {{seq 0 -2 -5}}
+
+Join: {{list "Hello" "World!" | join ", "}} | {{list 1  2 3 | join "+"}}
+SortAlpha: {{list "Hello" "World" "from" "Sprig" | sortAlpha}}
+
+{{/* Default Functions */}}
+{{- $defaultVal := "defaultValue" -}}
+Default: {{default "DefaultValue" $defaultVal}}
+Empty: {{empty ""}}
+Coal: {{coalesce "" "Hello, World!"}}
+All: {{all "" "Hello, World!"}}
+Any: {{any "" "Hello, World!"}}
+Compact: {{list 1 "a" "foo" "" | compact}}
+MustCompact: {{list 1 "a" "foo" "" | mustCompact}}
+FromJson: {{fromJson "{\"key\": \"value\"}"}}
+MustFromJson: {{mustFromJson "{\"key\": \"value\"}"}}
+ToJson: {{toJson $dict}}
+MustToJson: {{mustToJson $dict}}
+ToPrettyJson: {{toPrettyJson $dict}}
+ToRawJson: {{toRawJson $dict}}
+Ternary: {{true | ternary "true" "false"}}
+DeepCopy: {{deepCopy $dict}}
+MustDeepCopy: {{mustDeepCopy $dict}}
+
+TypeOf: {{typeOf 5}}
+TypeIs: {{5 | typeIs "int"}}
+TypeIsLike: {{5 | typeIsLike "int"}}
+KindOf: {{kindOf 5}}
+KindIs: {{5 | kindIs "int"}}
+DeepEqual: {{ deepEqual (list 1 2 3) (list 1 2 3) }}
+
+
+{{/* OS Functions */}}
+Env: {{env "PATH"}}
+Expandenv: {{expandenv "$PATH"}}
+Base Path: {{base "/path/to/file.txt"}}
+Dir: {{dir "/path/to/file.txt"}}
+Ext: {{ext "/path/to/file.txt"}}
+Clean: {{clean "/path/to/file.txt"}}
+IsAbs: {{isAbs "/path/to/file.txt"}}
+
+OsBase: {{osBase "/path/to/file.txt"}}
+OsDir: {{osDir "/path/to/file.txt"}}
+OsExt: {{osExt "/path/to/file.txt"}}
+OsClean: {{osClean "/path/to/file.txt"}}
+OsIsAbs: {{osIsAbs "/path/to/file.txt"}}
+
+{{/* Encoding Functions */}}
+Base64Encode: {{b64enc "Hello, World!"}}
+Base64Decode: {{b64dec "SGVsbG8sIFdvcmxkIQ=="}}
+Base32Encode: {{b32enc "Hello, World!"}}
+Base32Decode: {{b32dec "JBSWY3DPEBLW64TMMQQQ===="}}
+
+{{/* Data Struct Functions */}}
+Tuple: {{tuple 1 2 3}}
+List: {{list 1 2 3}}
+Dict: {{dict "key" "value"}}
+Get: {{get $dict "key"}}
+Set: {{set $dict "key" "newValue"}}
+Unset: {{unset $dict "key"}}
+has: {{has 4 (list 1 2 4)}}
+Pluck: {{pluck "two" $d $d2 $d3 $d4}}
+Keys: {{keys $dict}}
+Pick: {{pick $dict "key"}}
+Omit: {{omit $dict "key"}}
+Merge: {{merge $dict (dict "key2" "value2")}}
+MergeOverwrite: {{mergeOverwrite $dict (dict "key" "value2")}}
+Values: {{values $dict}}
+Append: {{append (list 1 2) 3}}
+Prepend: {{prepend (list 2 3) 1}}
+First: {{first (list 1 2 3)}}
+Rest: {{rest (list 1 2 3)}}
+Last: {{last (list 1 2 3)}}
+Initial: {{initial (list 1 2 3)}}
+Reverse: {{reverse (list 1 2 3)}}
+Uniq: {{uniq (list 1 2 2 3)}}
+Without: {{without (list 1 2 3) 2}} | {{without (list 1 2 3) 2 3}}
+HasKey: {{hasKey $dict "key"}}
+Slice: {{slice (list 1 2 3) 1 2}} | {{slice (list 1 2 3) 1}}
+Concat: {{concat (list 1 2) (list 3 4)}}
+Dig: {{dict "a" 1 | dig "a" ""}}
+Chunk: {{list 1 2 3 4 5 | chunk 2}}
+
+{{/* Crypt Functions */}}
+derivePassword: {{derivePassword 1 "long" "password" "user" "example.com"}}
+
+Semver: {{semver "1.2.3"}}
+SemverCompare: {{semverCompare "^1.2.0" "1.2.3"}}
+
+{{/* Regex Functions */}}
+RegexMatch: {{regexMatch "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" "test@acme.com"}}
+RegexFindAll: {{regexFindAll "[2,4,6,8]" "123456789" -1}}
+RegexFind: {{regexFind "[a-zA-Z][1-9]" "abcd1234"}}
+RegexReplaceAll: {{regexReplaceAll "a(x*)b" "-ab-axxb-" "${1}W"}}
+RegexReplaceAllLiteral: {{regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "${1}"}}
+RegexSplit: {{regexSplit "z+" "pizza" -1}}
+RegexQuoteMeta: {{regexQuoteMeta "1.2.3"}}
+
+{{/* URL Functions */}}
+UrlParse: {{index ( urlParse "proto://auth@host:80/path?query#fragment" ) "host" }}
+UrlJoin: {{urlJoin (dict "fragment" "fragment" "host" "host:80" "path" "/path" "query" "query" "scheme" "proto")}}
+
+
+{{/* Cannot be matched due to random */}}
+{{/* UUIDv4: {{uuidv4}} */}}
+{{/* RandBytes: {{randBytes 10}} */}}
+{{/* EncryptAES: {{encryptAES "secretkey" "plaintext"}} */}}
+{{/* DecryptAES: {{"30tEfhuJSVRhpG97XCuWgz2okj7L8vQ1s6V9zVUPeDQ=" | decryptAES "secretkey"}} */}}
+{{/* Bcrypt: {{bcrypt "Hello, World!"}} */}}
+{{/* Htpasswd: {{htpasswd "myUser" "myPassword"}} */}}
+{{/* genPrivateKey: {{genPrivateKey "rsa"}} | {{genPrivateKey "dsa"}} | {{genPrivateKey "ecdsa"}} | {{genPrivateKey "ed25519"}} */}}
+{{/* RandInt: {{randInt 5 10}} */}}
+{{/* RandAlphaNum: {{randAlphaNum 10}} */}}
+{{/* RandAlpha: {{randAlpha 10}} */}}
+{{/* RandAscii: {{randAscii 10}} */}}
+{{/* RandNumeric: {{randNumeric 10}} */}}
+{{/* Shuffle: {{shuffle "Hello, World!"}} */}}
+{{/* GetHostByName: {{getHostByName "localhost"}} */}}
