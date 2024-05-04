@@ -94,7 +94,7 @@ func TestAliasesInTemplate(t *testing.T) {
 	WithAlias(originalFuncName, alias1, alias2)(handler)
 
 	// Create a template with the aliases.
-	result, err := runTemplate(t, handler, `{{originalFunc}} {{alias1}} {{alias2}}`)
+	result, err := runTemplate(t, handler, `{{originalFunc}} {{alias1}} {{alias2}}`, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, "cheese cheese cheese", result)
 }

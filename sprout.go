@@ -223,8 +223,8 @@ func FuncMap(opts ...FunctionHandlerOption) template.FuncMap {
 	fnHandler.funcMap["regexSplit"] = fnHandler.RegexSplit
 	fnHandler.funcMap["mustRegexSplit"] = fnHandler.MustRegexSplit
 	fnHandler.funcMap["regexQuoteMeta"] = fnHandler.RegexQuoteMeta
-	fnHandler.funcMap["append"] = fnHandler.Push
-	fnHandler.funcMap["mustAppend"] = fnHandler.MustPush
+	fnHandler.funcMap["append"] = fnHandler.Append
+	fnHandler.funcMap["mustAppend"] = fnHandler.MustAppend
 	fnHandler.funcMap["prepend"] = fnHandler.Prepend
 	fnHandler.funcMap["mustPrepend"] = fnHandler.MustPrepend
 	fnHandler.funcMap["first"] = fnHandler.First

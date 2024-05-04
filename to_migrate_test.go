@@ -326,18 +326,6 @@ func TestRandomString(t *testing.T) {
 	}
 }
 
-func TestCat(t *testing.T) {
-	tpl := `{{$b := "b"}}{{"c" | cat "a" $b}}`
-	if err := runt(tpl, "a b c"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{ .value | cat "a" "b"}}`
-	values := map[string]interface{}{"value": nil}
-	if err := runtv(tpl, "a b", values); err != nil {
-		t.Error(err)
-	}
-}
-
 func TestIndent(t *testing.T) {
 	tpl := `{{indent 4 "a\nb\nc"}}`
 	if err := runt(tpl, "    a\n    b\n    c"); err != nil {
@@ -602,102 +590,6 @@ func TestRegexQuoteMeta(t *testing.T) {
 	assert.Equal(t, "pretzel", fh.RegexQuoteMeta("pretzel"))
 }
 
-type fixtureTO struct {
-	Name, Value string
-}
-
-func TestTypeOf(t *testing.T) {
-	f := &fixtureTO{"hello", "world"}
-	tpl := `{{typeOf .}}`
-	if err := runtv(tpl, "*sprout.fixtureTO", f); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestKindOf(t *testing.T) {
-	tpl := `{{kindOf .}}`
-
-	f := fixtureTO{"hello", "world"}
-	if err := runtv(tpl, "struct", f); err != nil {
-		t.Error(err)
-	}
-
-	f2 := []string{"hello"}
-	if err := runtv(tpl, "slice", f2); err != nil {
-		t.Error(err)
-	}
-
-	var f3 *fixtureTO
-	if err := runtv(tpl, "ptr", f3); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestTypeIs(t *testing.T) {
-	f := &fixtureTO{"hello", "world"}
-	tpl := `{{if typeIs "*sprout.fixtureTO" .}}t{{else}}f{{end}}`
-	if err := runtv(tpl, "t", f); err != nil {
-		t.Error(err)
-	}
-
-	f2 := "hello"
-	if err := runtv(tpl, "f", f2); err != nil {
-		t.Error(err)
-	}
-}
-func TestTypeIsLike(t *testing.T) {
-	f := "foo"
-	tpl := `{{if typeIsLike "string" .}}t{{else}}f{{end}}`
-	if err := runtv(tpl, "t", f); err != nil {
-		t.Error(err)
-	}
-
-	// Now make a pointer. Should still match.
-	f2 := &f
-	if err := runtv(tpl, "t", f2); err != nil {
-		t.Error(err)
-	}
-}
-func TestKindIs(t *testing.T) {
-	f := &fixtureTO{"hello", "world"}
-	tpl := `{{if kindIs "ptr" .}}t{{else}}f{{end}}`
-	if err := runtv(tpl, "t", f); err != nil {
-		t.Error(err)
-	}
-	f2 := "hello"
-	if err := runtv(tpl, "f", f2); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestUntil(t *testing.T) {
-	tests := map[string]string{
-		`{{range $i, $e := until 5}}{{$i}}{{$e}}{{end}}`:   "0011223344",
-		`{{range $i, $e := until -5}}{{$i}}{{$e}} {{end}}`: "00 1-1 2-2 3-3 4-4 ",
-	}
-	for tpl, expect := range tests {
-		if err := runt(tpl, expect); err != nil {
-			t.Error(err)
-		}
-	}
-}
-func TestUntilStep(t *testing.T) {
-	tests := map[string]string{
-		`{{range $i, $e := untilStep 0 5 1}}{{$i}}{{$e}}{{end}}`:     "0011223344",
-		`{{range $i, $e := untilStep 3 6 1}}{{$i}}{{$e}}{{end}}`:     "031425",
-		`{{range $i, $e := untilStep 0 -10 -2}}{{$i}}{{$e}} {{end}}`: "00 1-2 2-4 3-6 4-8 ",
-		`{{range $i, $e := untilStep 3 0 1}}{{$i}}{{$e}}{{end}}`:     "",
-		`{{range $i, $e := untilStep 3 99 0}}{{$i}}{{$e}}{{end}}`:    "",
-		`{{range $i, $e := untilStep 3 99 -1}}{{$i}}{{$e}}{{end}}`:   "",
-		`{{range $i, $e := untilStep 3 0 0}}{{$i}}{{$e}}{{end}}`:     "",
-	}
-	for tpl, expect := range tests {
-		if err := runt(tpl, expect); err != nil {
-			t.Error(err)
-		}
-	}
-
-}
 func TestBiggest(t *testing.T) {
 	tpl := `{{ biggest 1 2 3 345 5 6 7}}`
 	if err := runt(tpl, `345`); err != nil {
@@ -1522,14 +1414,6 @@ func runRaw(tpl string, vars interface{}) (string, error) {
 	return b.String(), nil
 }
 
-func TestFail(t *testing.T) {
-	const msg = "This is an error!"
-	tpl := fmt.Sprintf(`{{fail "%s"}}`, msg)
-	_, err := runRaw(tpl, nil)
-	assert.Error(t, err)
-	assert.Contains(t, err.Error(), msg)
-}
-
 func Example() {
 	// Set up variables and template.
 	vars := map[string]interface{}{"Name": "  John Jacob Jingleheimer Schmidt "}
@@ -1805,35 +1689,6 @@ func TestValues(t *testing.T) {
 		}
 	}
 }
-
-func TestDeepCopy(t *testing.T) {
-	tests := map[string]string{
-		`{{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ values $d | sortAlpha | join "," }}`: "1,2",
-		`{{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ keys $d | sortAlpha | join "," }}`:   "a,b",
-		`{{- $one := dict "foo" (dict "bar" "baz") "qux" true -}}{{ deepCopy $one }}`:    "map[foo:map[bar:baz] qux:true]",
-	}
-
-	for tpl, expect := range tests {
-		if err := runt(tpl, expect); err != nil {
-			t.Error(err)
-		}
-	}
-}
-
-func TestMustDeepCopy(t *testing.T) {
-	tests := map[string]string{
-		`{{- $d := dict "a" 1 "b" 2 | mustDeepCopy }}{{ values $d | sortAlpha | join "," }}`: "1,2",
-		`{{- $d := dict "a" 1 "b" 2 | mustDeepCopy }}{{ keys $d | sortAlpha | join "," }}`:   "a,b",
-		`{{- $one := dict "foo" (dict "bar" "baz") "qux" true -}}{{ mustDeepCopy $one }}`:    "map[foo:map[bar:baz] qux:true]",
-	}
-
-	for tpl, expect := range tests {
-		if err := runt(tpl, expect); err != nil {
-			t.Error(err)
-		}
-	}
-}
-
 func TestDig(t *testing.T) {
 	tests := map[string]string{
 		`{{- $d := dict "a" (dict "b" (dict "c" 1)) }}{{ dig "a" "b" "c" "" $d }}`:  "1",
@@ -1846,124 +1701,6 @@ func TestDig(t *testing.T) {
 		if err := runt(tpl, expect); err != nil {
 			t.Error(err)
 		}
-	}
-}
-
-func TestDefault(t *testing.T) {
-	tpl := `{{"" | default "foo"}}`
-	if err := runt(tpl, "foo"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{default "foo" 234}}`
-	if err := runt(tpl, "234"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{default "foo" 2.34}}`
-	if err := runt(tpl, "2.34"); err != nil {
-		t.Error(err)
-	}
-
-	tpl = `{{ .Nothing | default "123" }}`
-	if err := runt(tpl, "123"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{ default "123" }}`
-	if err := runt(tpl, "123"); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestEmpty(t *testing.T) {
-	tpl := `{{if empty 1}}1{{else}}0{{end}}`
-	if err := runt(tpl, "0"); err != nil {
-		t.Error(err)
-	}
-
-	tpl = `{{if empty 0}}1{{else}}0{{end}}`
-	if err := runt(tpl, "1"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{if empty ""}}1{{else}}0{{end}}`
-	if err := runt(tpl, "1"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{if empty 0.0}}1{{else}}0{{end}}`
-	if err := runt(tpl, "1"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{if empty false}}1{{else}}0{{end}}`
-	if err := runt(tpl, "1"); err != nil {
-		t.Error(err)
-	}
-
-	dict := map[string]interface{}{"top": map[string]interface{}{}}
-	tpl = `{{if empty .top.NoSuchThing}}1{{else}}0{{end}}`
-	if err := runtv(tpl, "1", dict); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{if empty .bottom.NoSuchThing}}1{{else}}0{{end}}`
-	if err := runtv(tpl, "1", dict); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestCoalesce(t *testing.T) {
-	tests := map[string]string{
-		`{{ coalesce 1 }}`:                            "1",
-		`{{ coalesce "" 0 nil 2 }}`:                   "2",
-		`{{ $two := 2 }}{{ coalesce "" 0 nil $two }}`: "2",
-		`{{ $two := 2 }}{{ coalesce "" $two 0 0 0 }}`: "2",
-		`{{ $two := 2 }}{{ coalesce "" $two 3 4 5 }}`: "2",
-		`{{ coalesce }}`:                              "<no value>",
-	}
-	for tpl, expect := range tests {
-		assert.NoError(t, runt(tpl, expect))
-	}
-
-	dict := map[string]interface{}{"top": map[string]interface{}{}}
-	tpl := `{{ coalesce .top.NoSuchThing .bottom .bottom.dollar "airplane"}}`
-	if err := runtv(tpl, "airplane", dict); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestAll(t *testing.T) {
-	tests := map[string]string{
-		`{{ all 1 }}`:                            "true",
-		`{{ all "" 0 nil 2 }}`:                   "false",
-		`{{ $two := 2 }}{{ all "" 0 nil $two }}`: "false",
-		`{{ $two := 2 }}{{ all "" $two 0 0 0 }}`: "false",
-		`{{ $two := 2 }}{{ all "" $two 3 4 5 }}`: "false",
-		`{{ all }}`:                              "true",
-	}
-	for tpl, expect := range tests {
-		assert.NoError(t, runt(tpl, expect))
-	}
-
-	dict := map[string]interface{}{"top": map[string]interface{}{}}
-	tpl := `{{ all .top.NoSuchThing .bottom .bottom.dollar "airplane"}}`
-	if err := runtv(tpl, "false", dict); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestAny(t *testing.T) {
-	tests := map[string]string{
-		`{{ any 1 }}`:                              "true",
-		`{{ any "" 0 nil 2 }}`:                     "true",
-		`{{ $two := 2 }}{{ any "" 0 nil $two }}`:   "true",
-		`{{ $two := 2 }}{{ any "" $two 3 4 5 }}`:   "true",
-		`{{ $zero := 0 }}{{ any "" $zero 0 0 0 }}`: "false",
-		`{{ any }}`: "false",
-	}
-	for tpl, expect := range tests {
-		assert.NoError(t, runt(tpl, expect))
-	}
-
-	dict := map[string]interface{}{"top": map[string]interface{}{}}
-	tpl := `{{ any .top.NoSuchThing .bottom .bottom.dollar "airplane"}}`
-	if err := runtv(tpl, "true", dict); err != nil {
-		t.Error(err)
 	}
 }
 
@@ -2012,28 +1749,6 @@ func TestToRawJson(t *testing.T) {
 	expected := `{"bool":true,"html":"<HEAD>","number":42,"string":"test"}`
 
 	if err := runtv(tpl, expected, dict); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestTernary(t *testing.T) {
-	tpl := `{{true | ternary "foo" "bar"}}`
-	if err := runt(tpl, "foo"); err != nil {
-		t.Error(err)
-	}
-
-	tpl = `{{ternary "foo" "bar" true}}`
-	if err := runt(tpl, "foo"); err != nil {
-		t.Error(err)
-	}
-
-	tpl = `{{false | ternary "foo" "bar"}}`
-	if err := runt(tpl, "bar"); err != nil {
-		t.Error(err)
-	}
-
-	tpl = `{{ternary "foo" "bar" false}}`
-	if err := runt(tpl, "bar"); err != nil {
 		t.Error(err)
 	}
 }

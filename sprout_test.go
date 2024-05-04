@@ -83,7 +83,7 @@ func TestFuncMap_IncludesHello(t *testing.T) {
 	helloFunc, ok := funcMap["hello"].(func() string)
 	assert.True(t, ok)
 
-	assert.Equal(t, "Hello, World!", helloFunc())
+	assert.Equal(t, "Hello!", helloFunc())
 }
 
 // This test ensures backward compatibility by checking if FuncMap (the function mentioned in the comment) exists or needs to be implemented for the test.
@@ -104,5 +104,5 @@ func TestFuncMap_BackwardCompatibility(t *testing.T) {
 
 	helloFunc, ok := funcMap["hello"].(func() string)
 	assert.True(t, ok)
-	assert.Equal(t, "Hello, World!", helloFunc())
+	assert.Equal(t, "Hello!", helloFunc())
 }

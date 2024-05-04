@@ -46,8 +46,6 @@ import (
 
 	"dario.cat/mergo"
 	sv2 "github.com/Masterminds/semver/v3"
-	"github.com/google/uuid"
-	"github.com/mitchellh/copystructure"
 	"github.com/shopspring/decimal"
 	"github.com/spf13/cast"
 	bcrypt_lib "golang.org/x/crypto/bcrypt"
@@ -362,22 +360,6 @@ func (fh *FunctionHandler) Join(sep string, v any) string {
 	return strings.Join(fh.Strslice(v), sep)
 }
 
-func (fh *FunctionHandler) Cat(v ...any) string {
-	var builder strings.Builder
-	for i, item := range v {
-		if item == nil {
-			continue // Skip nil elements
-		}
-		if i > 0 {
-			builder.WriteRune(' ') // Add space between elements
-		}
-		// Append the string representation of the item
-		builder.WriteString(fmt.Sprint(item))
-	}
-	// Return the concatenated string without trailing spaces
-	return builder.String()
-}
-
 func (fh *FunctionHandler) Strval(v any) string {
 	switch v := v.(type) {
 	case string:
@@ -535,33 +517,6 @@ func (fh *FunctionHandler) DictGetOrEmpty(dict map[string]any, key string) strin
 	return reflect.ValueOf(value).String()
 }
 
-func (fh *FunctionHandler) Any(v ...any) bool {
-	for _, val := range v {
-		if !fh.Empty(val) {
-			return true
-		}
-	}
-	return false
-}
-
-func (fh *FunctionHandler) Coalesce(v ...any) any {
-	for _, val := range v {
-		if !fh.Empty(val) {
-			return val
-		}
-	}
-	return nil
-}
-
-func (fh *FunctionHandler) All(v ...any) bool {
-	for _, val := range v {
-		if fh.Empty(val) {
-			return false
-		}
-	}
-	return true
-}
-
 func (fh *FunctionHandler) UrlParse(v string) map[string]any {
 	dict := map[string]any{}
 	parsedURL, err := url.Parse(v)
@@ -685,27 +640,6 @@ func (fh *FunctionHandler) RegexQuoteMeta(s string) string {
 	return regexp.QuoteMeta(s)
 }
 
-func (fh *FunctionHandler) TypeIs(target string, src any) bool {
-	return target == fh.TypeOf(src)
-}
-
-func (fh *FunctionHandler) TypeIsLike(target string, src any) bool {
-	t := fh.TypeOf(src)
-	return target == t || "*"+target == t
-}
-
-func (fh *FunctionHandler) TypeOf(src any) string {
-	return fmt.Sprintf("%T", src)
-}
-
-func (fh *FunctionHandler) KindIs(target string, src any) bool {
-	return target == fh.KindOf(src)
-}
-
-func (fh *FunctionHandler) KindOf(src any) string {
-	return reflect.ValueOf(src).Kind().String()
-}
-
 func (fh *FunctionHandler) ToFloat64(v any) float64 {
 	return cast.ToFloat64(v)
 }
@@ -802,36 +736,6 @@ func (fh *FunctionHandler) Minf(a any, i ...any) float64 {
 	return aa
 }
 
-func (fh *FunctionHandler) Until(count int) []int {
-	step := 1
-	if count < 0 {
-		step = -1
-	}
-	return fh.UntilStep(0, count, step)
-}
-
-func (fh *FunctionHandler) UntilStep(start, stop, step int) []int {
-	v := []int{}
-
-	if stop < start {
-		if step >= 0 {
-			return v
-		}
-		for i := start; i > stop; i += step {
-			v = append(v, i)
-		}
-		return v
-	}
-
-	if step <= 0 {
-		return v
-	}
-	for i := start; i < stop; i += step {
-		v = append(v, i)
-	}
-	return v
-}
-
 func (fh *FunctionHandler) Floor(a any) float64 {
 	aa := fh.ToFloat64(a)
 	return math.Floor(aa)
@@ -886,8 +790,8 @@ func (fh *FunctionHandler) List(v ...any) []any {
 	return v
 }
 
-func (fh *FunctionHandler) Push(list any, v any) []any {
-	l, err := fh.MustPush(list, v)
+func (fh *FunctionHandler) Append(list any, v any) []any {
+	l, err := fh.MustAppend(list, v)
 	if err != nil {
 		panic(err)
 	}
@@ -895,7 +799,7 @@ func (fh *FunctionHandler) Push(list any, v any) []any {
 	return l
 }
 
-func (fh *FunctionHandler) MustPush(list any, v any) ([]any, error) {
+func (fh *FunctionHandler) MustAppend(list any, v any) ([]any, error) {
 	tp := reflect.TypeOf(list).Kind()
 	switch tp {
 	case reflect.Slice, reflect.Array:
@@ -1458,19 +1362,6 @@ func (fh *FunctionHandler) Values(dict map[string]any) []any {
 	return values
 }
 
-func (fh *FunctionHandler) DeepCopy(i any) any {
-	c, err := fh.MustDeepCopy(i)
-	if err != nil {
-		panic("deepCopy error: " + err.Error())
-	}
-
-	return c
-}
-
-func (fh *FunctionHandler) MustDeepCopy(i any) (any, error) {
-	return copystructure.Copy(i)
-}
-
 func (fh *FunctionHandler) Dig(ps ...any) (any, error) {
 	if len(ps) < 3 {
 		panic("dig needs at least three arguments")
@@ -1495,49 +1386,6 @@ func (fh *FunctionHandler) DigFromDict(dict map[string]any, d any, ks []string) 
 		return step, nil
 	}
 	return fh.DigFromDict(step.(map[string]any), d, ns)
-}
-
-func (fh *FunctionHandler) Default(d any, given ...any) any {
-
-	if fh.Empty(given) || fh.Empty(given[0]) {
-		return d
-	}
-	return given[0]
-}
-
-func (fh *FunctionHandler) Empty(given any) bool {
-	g := reflect.ValueOf(given)
-	if !g.IsValid() {
-		return true
-	}
-
-	// Basically adapted from text/template.isTrue
-	switch g.Kind() {
-	default:
-		return g.IsNil()
-	case reflect.Array, reflect.Slice, reflect.Map, reflect.String:
-		return g.Len() == 0
-	case reflect.Bool:
-		return !g.Bool()
-	case reflect.Complex64, reflect.Complex128:
-		return g.Complex() == 0
-	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return g.Int() == 0
-	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		return g.Uint() == 0
-	case reflect.Float32, reflect.Float64:
-		return g.Float() == 0
-	case reflect.Struct:
-		return false
-	}
-}
-
-func (fh *FunctionHandler) Ternary(vt any, vf any, v bool) any {
-	if v {
-		return vt
-	}
-
-	return vf
 }
 
 func (fh *FunctionHandler) FromJson(v string) any {
@@ -1757,14 +1605,6 @@ func (fh *FunctionHandler) Semver(version string) (*sv2.Version, error) {
 
 func (fh *FunctionHandler) Now() time.Time {
 	return time.Now()
-}
-
-func (fh *FunctionHandler) DeepEqual(x, y any) bool {
-	return reflect.DeepEqual(y, x)
-}
-
-func (fh *FunctionHandler) Fail(message string) (*uint, error) {
-	return nil, errors.New(message)
 }
 
 func (fh *FunctionHandler) PathBase(str string) string {
@@ -2081,11 +1921,6 @@ func (fh *FunctionHandler) RandBytes(count int) (string, error) {
 
 func (fh *FunctionHandler) RandInt(min, max int) int {
 	return mathrand.Intn(max-min) + min
-}
-
-// uuidv4 provides a safe and secure UUID v4 implementation
-func (fh *FunctionHandler) Uuidv4() string {
-	return uuid.New().String()
 }
 
 var masterPasswordSeed = "com.lyndir.masterpassword"
