@@ -247,7 +247,7 @@ func TestWrapWith(t *testing.T) {
 func TestQuote(t *testing.T) {
 	var tests = testCases{
 		{"TestEmpty", `{{ "" | quote }}`, `""`, nil},
-		{"TestNil", `{{ quote .nil }}`, `""`, map[string]any{"nil": nil}},
+		{"TestNil", `{{ quote .nil }}`, ``, map[string]any{"nil": nil}},
 		{"TestQuote", `{{ "foo" | quote }}`, `"foo"`, nil},
 		{"TestSpace", `{{ "foo bar" | quote }}`, `"foo bar"`, nil},
 		{"TestQuote", `{{ "foo \"bar\"" | quote }}`, `"foo \"bar\""`, nil},
@@ -263,7 +263,7 @@ func TestQuote(t *testing.T) {
 func TestSquote(t *testing.T) {
 	var tests = testCases{
 		{"TestEmpty", `{{ "" | squote }}`, "''", nil},
-		{"TestNil", `{{ squote .nil }}`, `""`, map[string]any{"nil": nil}},
+		{"TestNil", `{{ squote .nil }}`, "", map[string]any{"nil": nil}},
 		{"TestQuote", `{{ "foo" | squote }}`, "'foo'", nil},
 		{"TestSpace", `{{ "foo bar" | squote }}`, "'foo bar'", nil},
 		{"TestQuote", `{{ "foo 'bar'" | squote }}`, "'foo 'bar''", nil},
