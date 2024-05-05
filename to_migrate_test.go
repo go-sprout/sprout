@@ -1313,55 +1313,6 @@ func TestDig(t *testing.T) {
 	}
 }
 
-func TestFromJson(t *testing.T) {
-	dict := map[string]interface{}{"Input": `{"foo": 55}`}
-
-	tpl := `{{.Input | fromJson}}`
-	expected := `map[foo:55]`
-	if err := runtv(tpl, expected, dict); err != nil {
-		t.Error(err)
-	}
-
-	tpl = `{{(.Input | fromJson).foo}}`
-	expected = `55`
-	if err := runtv(tpl, expected, dict); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestToJson(t *testing.T) {
-	dict := map[string]interface{}{"Top": map[string]interface{}{"bool": true, "string": "test", "number": 42}}
-
-	tpl := `{{.Top | toJson}}`
-	expected := `{"bool":true,"number":42,"string":"test"}`
-	if err := runtv(tpl, expected, dict); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestToPrettyJson(t *testing.T) {
-	dict := map[string]interface{}{"Top": map[string]interface{}{"bool": true, "string": "test", "number": 42}}
-	tpl := `{{.Top | toPrettyJson}}`
-	expected := `{
-  "bool": true,
-  "number": 42,
-  "string": "test"
-}`
-	if err := runtv(tpl, expected, dict); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestToRawJson(t *testing.T) {
-	dict := map[string]interface{}{"Top": map[string]interface{}{"bool": true, "string": "test", "number": 42, "html": "<HEAD>"}}
-	tpl := `{{.Top | toRawJson}}`
-	expected := `{"bool":true,"html":"<HEAD>","number":42,"string":"test"}`
-
-	if err := runtv(tpl, expected, dict); err != nil {
-		t.Error(err)
-	}
-}
-
 func TestHtmlDate(t *testing.T) {
 	tpl := `{{ htmlDate 0}}`
 	if err := runt(tpl, "1970-01-01"); err != nil {

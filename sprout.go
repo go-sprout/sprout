@@ -295,10 +295,10 @@ func FuncMap(opts ...FunctionHandlerOption) template.FuncMap {
 	fnHandler.funcMap["fail"] = fnHandler.Fail
 	fnHandler.funcMap["urlParse"] = fnHandler.UrlParse
 	fnHandler.funcMap["urlJoin"] = fnHandler.UrlJoin
-	fnHandler.funcMap["b64enc"] = fnHandler.Base64Encode
-	fnHandler.funcMap["b64dec"] = fnHandler.Base64Decode
-	fnHandler.funcMap["b32enc"] = fnHandler.Base32Encode
-	fnHandler.funcMap["b32dec"] = fnHandler.Base32Decode
+	fnHandler.funcMap["base64Encode"] = fnHandler.Base64Encode
+	fnHandler.funcMap["base64Decode"] = fnHandler.Base64Decode
+	fnHandler.funcMap["base32Encode"] = fnHandler.Base32Encode
+	fnHandler.funcMap["base32Decode"] = fnHandler.Base32Decode
 
 	// Register aliases for functions
 	fnHandler.registerAliases()

@@ -28,6 +28,10 @@ var bc_registerSprigFuncs = FunctionAliasMap{
 	"toSnakeCase":    {"snake", "snakecase"},            //! Deprecated: Should use toSnakeCase instead
 	"toKebabCase":    {"kebab", "kebabcase"},            //! Deprecated: Should use toKebabCase instead
 	"swapCase":       {"swapcase"},                      //! Deprecated: Should use swapCase instead
+	"base64Encode":   {"b64enc"},                        //! Deprecated: Should use base64Encode instead
+	"base64Decode":   {"b64dec"},                        //! Deprecated: Should use base64Decode instead
+	"base32Encode":   {"b32enc"},                        //! Deprecated: Should use base32Encode instead
+	"base32Decode":   {"b32dec"},                        //! Deprecated: Should use base32Decode instead
 }
 
 //\ BACKWARDS COMPATIBILITY

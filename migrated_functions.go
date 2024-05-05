@@ -17,11 +17,9 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/asn1"
-	"encoding/base32"
 	"encoding/base64"
 	"encoding/binary"
 	"encoding/hex"
-	"encoding/json"
 	"encoding/pem"
 	"errors"
 	"fmt"
@@ -115,30 +113,6 @@ func (fh *FunctionHandler) FillMapWithParts(parts []string) map[string]string {
 		res[fmt.Sprintf("_%d", i)] = v
 	}
 	return res
-}
-
-func (fh *FunctionHandler) Base64Encode(s string) string {
-	return base64.StdEncoding.EncodeToString([]byte(s))
-}
-
-func (fh *FunctionHandler) Base64Decode(s string) string {
-	bytes, err := base64.StdEncoding.DecodeString(s)
-	if err != nil {
-		return err.Error()
-	}
-	return string(bytes)
-}
-
-func (fh *FunctionHandler) Base32Encode(s string) string {
-	return base32.StdEncoding.EncodeToString([]byte(s))
-}
-
-func (fh *FunctionHandler) Base32Decode(s string) string {
-	bytes, err := base32.StdEncoding.DecodeString(s)
-	if err != nil {
-		return err.Error()
-	}
-	return string(bytes)
 }
 
 func (fh *FunctionHandler) DictGetOrEmpty(dict map[string]any, key string) string {
@@ -916,62 +890,6 @@ func (fh *FunctionHandler) DigFromDict(dict map[string]any, d any, ks []string) 
 		return step, nil
 	}
 	return fh.DigFromDict(step.(map[string]any), d, ns)
-}
-
-func (fh *FunctionHandler) FromJson(v string) any {
-	output, _ := fh.MustFromJson(v)
-	return output
-}
-
-func (fh *FunctionHandler) MustFromJson(v string) (any, error) {
-	var output any
-	err := json.Unmarshal([]byte(v), &output)
-	return output, err
-}
-
-func (fh *FunctionHandler) ToJson(v any) string {
-	output, _ := json.Marshal(v)
-	return string(output)
-}
-
-func (fh *FunctionHandler) MustToJson(v any) (string, error) {
-	output, err := json.Marshal(v)
-	if err != nil {
-		return "", err
-	}
-	return string(output), nil
-}
-
-func (fh *FunctionHandler) ToPrettyJson(v any) string {
-	output, _ := json.MarshalIndent(v, "", "  ")
-	return string(output)
-}
-
-func (fh *FunctionHandler) MustToPrettyJson(v any) (string, error) {
-	output, err := json.MarshalIndent(v, "", "  ")
-	if err != nil {
-		return "", err
-	}
-	return string(output), nil
-}
-
-func (fh *FunctionHandler) ToRawJson(v any) string {
-	output, err := fh.MustToRawJson(v)
-	if err != nil {
-		panic(err)
-	}
-	return string(output)
-}
-
-func (fh *FunctionHandler) MustToRawJson(v any) (string, error) {
-	buf := new(bytes.Buffer)
-	enc := json.NewEncoder(buf)
-	enc.SetEscapeHTML(false)
-	err := enc.Encode(&v)
-	if err != nil {
-		return "", err
-	}
-	return strings.TrimSuffix(buf.String(), "\n"), nil
 }
 
 func (fh *FunctionHandler) Date(fmt string, date any) string {
