@@ -50,12 +50,6 @@ import (
 	"golang.org/x/crypto/scrypt"
 )
 
-var randSource mathrand.Source
-
-func init() {
-	randSource = mathrand.NewSource(time.Now().UnixNano())
-}
-
 // ! FUTURE: Rename this function to be more explicit
 func (fh *FunctionHandler) SplitList(sep string, str string) []string {
 	return strings.Split(str, sep)
@@ -145,22 +139,6 @@ func (fh *FunctionHandler) Base32Decode(s string) string {
 		return err.Error()
 	}
 	return string(bytes)
-}
-
-func (fh *FunctionHandler) RandAlphaNumeric(count int) string {
-	return fh.CryptoRandomString(count, cryptoRandomStringOpts{letters: true, numbers: true})
-}
-
-func (fh *FunctionHandler) RandAlpha(count int) string {
-	return fh.CryptoRandomString(count, cryptoRandomStringOpts{letters: true})
-}
-
-func (fh *FunctionHandler) RandAscii(count int) string {
-	return fh.CryptoRandomString(count, cryptoRandomStringOpts{ascii: true})
-}
-
-func (fh *FunctionHandler) RandNumeric(count int) string {
-	return fh.CryptoRandomString(count, cryptoRandomStringOpts{numbers: true})
 }
 
 func (fh *FunctionHandler) DictGetOrEmpty(dict map[string]any, key string) string {
@@ -1363,50 +1341,9 @@ func (fh *FunctionHandler) Mod(x, y any) any {
 	return reflect.ValueOf(result).Convert(reflectX.Type()).Interface()
 }
 
-////////////
+// //////////
 // CRYPTO //
-////////////
-
-type cryptoRandomStringOpts struct {
-	letters bool
-	numbers bool
-	ascii   bool
-	chars   []rune
-}
-
-func (fh *FunctionHandler) CryptoRandomString(count int, opts cryptoRandomStringOpts) string {
-	source := []rune{}
-	if opts.chars == nil {
-		if opts.ascii {
-			for i := 32; i <= 126; i++ {
-				source = append(source, rune(i))
-			}
-		}
-
-		if opts.letters {
-			for i := 'a'; i <= 'z'; i++ {
-				source = append(source, i)
-			}
-			for i := 'A'; i <= 'Z'; i++ {
-				source = append(source, i)
-			}
-		}
-		if opts.numbers {
-			for i := '0'; i <= '9'; i++ {
-				source = append(source, i)
-			}
-		}
-	}
-
-	// Generate random string
-	return strings.Map(func(r rune) rune {
-		if bigInt, err := cryptorand.Int(cryptorand.Reader, big.NewInt(int64(len(source)))); err == nil {
-			return source[bigInt.Int64()]
-		}
-		return rune(-1) // Should not happen, indicates an error
-	}, strings.Repeat(" ", count))
-}
-
+// //////////
 func (fh *FunctionHandler) Sha256sum(input string) string {
 	hash := sha256.Sum256([]byte(input))
 	return hex.EncodeToString(hash[:])
@@ -1436,18 +1373,6 @@ func (fh *FunctionHandler) Htpasswd(username string, password string) string {
 		return fmt.Sprintf("invalid username: %s", username)
 	}
 	return fmt.Sprintf("%s:%s", username, fh.Bcrypt(password))
-}
-
-func (fh *FunctionHandler) RandBytes(count int) (string, error) {
-	buf := make([]byte, count)
-	if _, err := cryptorand.Read(buf); err != nil {
-		return "", err
-	}
-	return base64.StdEncoding.EncodeToString(buf), nil
-}
-
-func (fh *FunctionHandler) RandInt(min, max int) int {
-	return mathrand.Intn(max-min) + min
 }
 
 var masterPasswordSeed = "com.lyndir.masterpassword"
