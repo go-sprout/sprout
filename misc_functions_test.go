@@ -50,6 +50,7 @@ func TestEmpty(t *testing.T) {
 		{"TestEmptyNothingInput", `{{if empty .Nothing}}1{{else}}0{{end}}`, "1", nil},
 		{"TestEmptyNestedInput", `{{if empty .top.NoSuchThing}}1{{else}}0{{end}}`, "1", map[string]any{"top": map[string]interface{}{}}},
 		{"TestEmptyNestedNoDataInput", `{{if empty .bottom.NoSuchThing}}1{{else}}0{{end}}`, "1", nil},
+		{"TestEmptyNimPointerInput", `{{if empty .nilPtr}}1{{else}}0{{end}}`, "1", map[string]any{"nilPtr": (*int)(nil)}},
 	}
 
 	runTestCases(t, tests)
