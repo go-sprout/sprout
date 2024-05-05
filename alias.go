@@ -23,6 +23,11 @@ var bc_registerSprigFuncs = FunctionAliasMap{
 	"add":            {"addf"},                          //! Deprecated: Should use add instead
 	"add1":           {"add1f"},                         //! Deprecated: Should use add1 instead
 	"sub":            {"subf"},                          //! Deprecated: Should use sub instead
+	"toTitleCase":    {"title", "titlecase"},            //! Deprecated: Should use toTitleCase instead
+	"toCamelCase":    {"camel", "camelcase"},            //! Deprecated: Should use toCamelCase instead
+	"toSnakeCase":    {"snake", "snakecase"},            //! Deprecated: Should use toSnakeCase instead
+	"toKebabCase":    {"kebab", "kebabcase"},            //! Deprecated: Should use toKebabCase instead
+	"swapCase":       {"swapcase"},                      //! Deprecated: Should use swapCase instead
 }
 
 //\ BACKWARDS COMPATIBILITY

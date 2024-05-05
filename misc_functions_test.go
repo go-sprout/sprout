@@ -1,25 +1,10 @@
 package sprout
 
 import (
-	"bytes"
 	"testing"
-	"text/template"
 
 	"github.com/stretchr/testify/assert"
 )
-
-// TestHelper is a helper function that performs common setup tasks for tests.
-func runTemplate(t *testing.T, handler *FunctionHandler, tmplString string, data any) (string, error) {
-	tmpl, err := template.New("test").Funcs(FuncMap(WithFunctionHandler(handler))).Parse(tmplString)
-	if err != nil {
-		assert.FailNow(t, "Failed to parse template", err)
-		return "", err
-	}
-
-	var buf bytes.Buffer
-	err = tmpl.ExecuteTemplate(&buf, "test", data)
-	return buf.String(), err
-}
 
 // TestHello asserts the Hello method returns the expected greeting.
 func TestHello(t *testing.T) {
@@ -34,43 +19,24 @@ func TestHello(t *testing.T) {
 }
 
 func TestDefault(t *testing.T) {
-	handler := NewFunctionHandler()
-
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-	}{
-		{"TestDefaultEmptyInput", `{{default "default" ""}}`, "default"},
-		{"TestDefaultGivenInput", `{{default "default" "given"}}`, "given"},
-		{"TestDefaultIntInput", `{{default "default" 42}}`, "42"},
-		{"TestDefaultFloatInput", `{{default "default" 2.42}}`, "2.42"},
-		{"TestDefaultTrueInput", `{{default "default" true}}`, "true"},
-		{"TestDefaultFalseInput", `{{default "default" false}}`, "default"},
-		{"TestDefaultNilInput", `{{default "default" nil}}`, "default"},
-		{"TestDefaultNothingInput", `{{default "default" .Nothing}}`, "default"},
-		{"TestDefaultMultipleNothingInput", `{{default "default" .Nothing}}`, "default"},
-		{"TestDefaultMultipleArgument", `{{"first" | default "default" "second"}}`, "second"},
+	var tests = testCases{
+		{"TestDefaultEmptyInput", `{{default "default" ""}}`, "default", nil},
+		{"TestDefaultGivenInput", `{{default "default" "given"}}`, "given", nil},
+		{"TestDefaultIntInput", `{{default "default" 42}}`, "42", nil},
+		{"TestDefaultFloatInput", `{{default "default" 2.42}}`, "2.42", nil},
+		{"TestDefaultTrueInput", `{{default "default" true}}`, "true", nil},
+		{"TestDefaultFalseInput", `{{default "default" false}}`, "default", nil},
+		{"TestDefaultNilInput", `{{default "default" nil}}`, "default", nil},
+		{"TestDefaultNothingInput", `{{default "default" .Nothing}}`, "default", nil},
+		{"TestDefaultMultipleNothingInput", `{{default "default" .Nothing}}`, "default", nil},
+		{"TestDefaultMultipleArgument", `{{"first" | default "default" "second"}}`, "second", nil},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, nil)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestEmpty(t *testing.T) {
-	handler := NewFunctionHandler()
-
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestEmptyEmptyInput", `{{if empty ""}}1{{else}}0{{end}}`, "1", nil},
 		{"TestEmptyGivenInput", `{{if empty "given"}}1{{else}}0{{end}}`, "0", nil},
 		{"TestEmptyIntInput", `{{if empty 42}}1{{else}}0{{end}}`, "0", nil},
@@ -86,24 +52,11 @@ func TestEmpty(t *testing.T) {
 		{"TestEmptyNestedNoDataInput", `{{if empty .bottom.NoSuchThing}}1{{else}}0{{end}}`, "1", nil},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestAll(t *testing.T) {
-	handler := NewFunctionHandler()
-
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestAllEmptyInput", `{{if all ""}}1{{else}}0{{end}}`, "0", nil},
 		{"TestAllGivenInput", `{{if all "given"}}1{{else}}0{{end}}`, "1", nil},
 		{"TestAllIntInput", `{{if all 42 0 1}}1{{else}}0{{end}}`, "0", nil},
@@ -113,24 +66,11 @@ func TestAll(t *testing.T) {
 		{"TestAllNoInput", `{{if all }}1{{else}}0{{end}}`, "1", nil},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestAny(t *testing.T) {
-	handler := NewFunctionHandler()
-
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestAnyEmptyInput", `{{if any ""}}1{{else}}0{{end}}`, "0", nil},
 		{"TestAnyGivenInput", `{{if any "given"}}1{{else}}0{{end}}`, "1", nil},
 		{"TestAnyIntInput", `{{if any 42 0 1}}1{{else}}0{{end}}`, "1", nil},
@@ -140,24 +80,11 @@ func TestAny(t *testing.T) {
 		{"TestAnyNoInput", `{{if any }}1{{else}}0{{end}}`, "0", nil},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestCoalesce(t *testing.T) {
-	handler := NewFunctionHandler()
-
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestCoalesceEmptyInput", `{{coalesce ""}}`, "<no value>", nil},
 		{"TestCoalesceGivenInput", `{{coalesce "given"}}`, "given", nil},
 		{"TestCoalesceIntInput", `{{ coalesce "" 0 nil 42 }}`, "42", nil},
@@ -167,37 +94,18 @@ func TestCoalesce(t *testing.T) {
 		{"TestCoalesceNoInput", `{{ coalesce }}`, "<no value>", nil},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestTernary(t *testing.T) {
-	handler := NewFunctionHandler()
-
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"", `{{true | ternary "foo" "bar"}}`, "foo", nil},
 		{"", `{{ternary "foo" "bar" true}}`, "foo", nil},
 		{"", `{{false | ternary "foo" "bar"}}`, "bar", nil},
 		{"", `{{ternary "foo" "bar" false}}`, "bar", nil},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestUuidv4(t *testing.T) {
@@ -209,14 +117,7 @@ func TestUuidv4(t *testing.T) {
 }
 
 func TestCat(t *testing.T) {
-	handler := NewFunctionHandler()
-
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestCatEmptyInput", `{{cat ""}}`, "", nil},
 		{"TestCatGivenInput", `{{cat "given"}}`, "given", nil},
 		{"TestCatIntInput", `{{cat 42}}`, "42", nil},
@@ -231,46 +132,20 @@ func TestCat(t *testing.T) {
 		{"TestCatDataInput", `{{.text | cat "a" "b"}}`, "a b cd", map[string]any{"text": "cd"}},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestUntil(t *testing.T) {
-	handler := NewFunctionHandler()
-
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"", `{{range $i, $e := until 5}}({{$i}}{{$e}}){{end}}`, "(00)(11)(22)(33)(44)", nil},
 		{"", `{{range $i, $e := until -5}}({{$i}}{{$e}}){{end}}`, "(00)(1-1)(2-2)(3-3)(4-4)", nil},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestUntilStep(t *testing.T) {
-	handler := NewFunctionHandler()
-
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"", `{{range $i, $e := untilStep 0 5 1}}({{$i}}{{$e}}){{end}}`, "(00)(11)(22)(33)(44)", nil},
 		{"", `{{range $i, $e := untilStep 3 6 1}}({{$i}}{{$e}}){{end}}`, "(03)(14)(25)", nil},
 		{"", `{{range $i, $e := untilStep 0 -10 -2}}({{$i}}{{$e}}){{end}}`, "(00)(1-2)(2-4)(3-6)(4-8)", nil},
@@ -280,52 +155,26 @@ func TestUntilStep(t *testing.T) {
 		{"", `{{range $i, $e := untilStep 3 0 0}}({{$i}}{{$e}}){{end}}`, "", nil},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestTypeIs(t *testing.T) {
-	handler := NewFunctionHandler()
-
 	type testStruct struct{}
 
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestTypeIsInt", `{{typeIs "int" 42}}`, "true", nil},
 		{"TestTypeIsString", `{{42 | typeIs "string"}}`, "false", nil},
 		{"TestTypeIsVariable", `{{$var := 42}}{{typeIs "string" $var}}`, "false", nil},
 		{"TestTypeIsStruct", `{{.var | typeIs "*sprout.testStruct"}}`, "true", map[string]any{"var": &testStruct{}}},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestTypeIsLike(t *testing.T) {
-	handler := NewFunctionHandler()
-
 	type testStruct struct{}
 
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestTypeIsLikeInt", `{{typeIsLike "int" 42}}`, "true", nil},
 		{"TestTypeIsLikeString", `{{42 | typeIsLike "string"}}`, "false", nil},
 		{"TestTypeIsLikeVariable", `{{$var := 42}}{{typeIsLike "string" $var}}`, "false", nil},
@@ -333,78 +182,39 @@ func TestTypeIsLike(t *testing.T) {
 		{"TestTypeIsLikeStructWithoutPointerMark", `{{.var | typeIsLike "sprout.testStruct"}}`, "true", map[string]any{"var": &testStruct{}}},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestTypeOf(t *testing.T) {
-	handler := NewFunctionHandler()
-
 	type testStruct struct{}
 
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestTypeOfInt", `{{typeOf 42}}`, "int", nil},
 		{"TestTypeOfString", `{{typeOf "42"}}`, "string", nil},
 		{"TestTypeOfVariable", `{{$var := 42}}{{typeOf $var}}`, "int", nil},
 		{"TestTypeOfStruct", `{{typeOf .var}}`, "*sprout.testStruct", map[string]any{"var": &testStruct{}}},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestKindIs(t *testing.T) {
-	handler := NewFunctionHandler()
-
 	type testStruct struct{}
 
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestKindIsInt", `{{kindIs "int" 42}}`, "true", nil},
 		{"TestKindIsString", `{{42 | kindIs "string"}}`, "false", nil},
 		{"TestKindIsVariable", `{{$var := 42}}{{kindIs "string" $var}}`, "false", nil},
 		{"TestKindIsStruct", `{{.var | kindIs "ptr"}}`, "true", map[string]any{"var": &testStruct{}}},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestKindOf(t *testing.T) {
-	handler := NewFunctionHandler()
-
 	type testStruct struct{}
 
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestKindOfInt", `{{kindOf 42}}`, "int", nil},
 		{"TestKindOfString", `{{kindOf "42"}}`, "string", nil},
 		{"TestKindOfSlice", `{{kindOf .var}}`, "slice", map[string]any{"var": []int{}}},
@@ -413,24 +223,11 @@ func TestKindOf(t *testing.T) {
 		{"TestKindOfStructWithoutPointerMark", `{{kindOf .var}}`, "struct", map[string]any{"var": testStruct{}}},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestDeepEqual(t *testing.T) {
-	handler := NewFunctionHandler()
-
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestDeepEqualInt", `{{deepEqual 42 42}}`, "true", nil},
 		{"TestDeepEqualString", `{{deepEqual "42" "42"}}`, "true", nil},
 		{"TestDeepEqualSlice", `{{deepEqual .a .b}}`, "true", map[string]any{"a": []int{1, 2, 3}, "b": []int{1, 2, 3}}},
@@ -441,13 +238,7 @@ func TestDeepEqual(t *testing.T) {
 		{"TestDeepEqualDifferentType", `{{deepEqual 42 "42"}}`, "false", nil},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			tmplResponse, err := runTemplate(t, handler, test.input, test.data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.expected, tmplResponse)
-		})
-	}
+	runTestCases(t, tests)
 }
 
 func TestDeepCopy(t *testing.T) {
@@ -457,12 +248,7 @@ func TestDeepCopy(t *testing.T) {
 		A int
 	}
 
-	var tests = []struct {
-		name     string
-		input    string
-		expected string
-		data     map[string]any
-	}{
+	var tests = testCases{
 		{"TestDeepCopyInt", `{{$a := 42}}{{$b := deepCopy $a}}{{$b}}`, "42", nil},
 		{"TestDeepCopyString", `{{$a := "42"}}{{$b := deepCopy $a}}{{$b}}`, "42", nil},
 		{"TestDeepCopySlice", `{{$a := .a}}{{$b := deepCopy $a}}{{$b}}`, "[1 2 3]", map[string]any{"a": []int{1, 2, 3}}},

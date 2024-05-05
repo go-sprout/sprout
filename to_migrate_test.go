@@ -7,7 +7,6 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"fmt"
-	"math/rand"
 	"net"
 	"os"
 	"strconv"
@@ -103,116 +102,6 @@ func TestUrlJoin(t *testing.T) {
 
 }
 
-func TestSubstr(t *testing.T) {
-	tpl := `{{"fooo" | substr 0 3 }}`
-	if err := runt(tpl, "foo"); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestSubstr_shorterString(t *testing.T) {
-	tpl := `{{"foo" | substr 0 10 }}`
-	if err := runt(tpl, "foo"); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestTrunc(t *testing.T) {
-	tpl := `{{ "foooooo" | trunc 3 }}`
-	if err := runt(tpl, "foo"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{ "baaaaaar" | trunc -3 }}`
-	if err := runt(tpl, "aar"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{ "baaaaaar" | trunc -999 }}`
-	if err := runt(tpl, "baaaaaar"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{ "baaaaaz" | trunc 0 }}`
-	if err := runt(tpl, ""); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestQuote(t *testing.T) {
-	tpl := `{{quote "a" "b" "c"}}`
-	if err := runt(tpl, `"a" "b" "c"`); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{quote "\"a\"" "b" "c"}}`
-	if err := runt(tpl, `"\"a\"" "b" "c"`); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{quote 1 2 3 }}`
-	if err := runt(tpl, `"1" "2" "3"`); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{ .value | quote }}`
-	values := map[string]interface{}{"value": nil}
-	if err := runtv(tpl, ``, values); err != nil {
-		t.Error(err)
-	}
-}
-func TestSquote(t *testing.T) {
-	tpl := `{{squote "a" "b" "c"}}`
-	if err := runt(tpl, `'a' 'b' 'c'`); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{squote 1 2 3 }}`
-	if err := runt(tpl, `'1' '2' '3'`); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{ .value | squote }}`
-	values := map[string]interface{}{"value": nil}
-	if err := runtv(tpl, ``, values); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestContains(t *testing.T) {
-	// Mainly, we're just verifying the paramater order swap.
-	tests := []string{
-		`{{if contains "cat" "fair catch"}}1{{end}}`,
-		`{{if hasPrefix "cat" "catch"}}1{{end}}`,
-		`{{if hasSuffix "cat" "ducat"}}1{{end}}`,
-	}
-	for _, tt := range tests {
-		if err := runt(tt, "1"); err != nil {
-			t.Error(err)
-		}
-	}
-}
-
-func TestTrim(t *testing.T) {
-	tests := []string{
-		`{{trim "   5.00   "}}`,
-		`{{trimAll "$" "$5.00$"}}`,
-		`{{trimPrefix "$" "$5.00"}}`,
-		`{{trimSuffix "$" "5.00$"}}`,
-	}
-	for _, tt := range tests {
-		if err := runt(tt, "5.00"); err != nil {
-			t.Error(err)
-		}
-	}
-}
-
-func TestSplit(t *testing.T) {
-	tpl := `{{$v := "foo$bar$baz" | split "$"}}{{$v._0}}`
-	if err := runt(tpl, "foo"); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestSplitn(t *testing.T) {
-	tpl := `{{$v := "foo$bar$baz" | splitn "$" 2}}{{$v._0}}`
-	if err := runt(tpl, "foo"); err != nil {
-		t.Error(err)
-	}
-}
-
 func TestToString(t *testing.T) {
 	tpl := `{{ toString 1 | kindOf }}`
 	assert.NoError(t, runt(tpl, "string"))
@@ -226,15 +115,6 @@ func TestToStrings(t *testing.T) {
 	if err := runtv(tpl, `[1 2]`, values); err != nil {
 		t.Error(err)
 	}
-}
-
-func TestJoin(t *testing.T) {
-	assert.NoError(t, runt(`{{ tuple "a" "b" "c" | join "-" }}`, "a-b-c"))
-	assert.NoError(t, runt(`{{ tuple 1 2 3 | join "-" }}`, "1-2-3"))
-	assert.NoError(t, runtv(`{{ join "-" .V }}`, "a-b-c", map[string]interface{}{"V": []string{"a", "b", "c"}}))
-	assert.NoError(t, runtv(`{{ join "-" .V }}`, "abc", map[string]interface{}{"V": "abc"}))
-	assert.NoError(t, runtv(`{{ join "-" .V }}`, "1-2-3", map[string]interface{}{"V": []int{1, 2, 3}}))
-	assert.NoError(t, runtv(`{{ join "-" .value }}`, "1-2", map[string]interface{}{"value": []interface{}{"1", nil, "2"}}))
 }
 
 func TestSortAlpha(t *testing.T) {
@@ -282,24 +162,6 @@ func TestBase32EncodeDecode(t *testing.T) {
 	}
 }
 
-func TestGoutils(t *testing.T) {
-	tests := map[string]string{
-		`{{abbrev 5 "hello world"}}`:           "he...",
-		`{{abbrevboth 5 10 "1234 5678 9123"}}`: "...5678...",
-		`{{nospace "h e l l o "}}`:             "hello",
-		`{{untitle "First Try"}}`:              "first try", //https://youtu.be/44-RsrF_V_w
-		`{{initials "First Try"}}`:             "FT",
-		`{{wrap 5 "Hello World"}}`:             "Hello\nWorld",
-		`{{wrapWith 5 "\t" "Hello World"}}`:    "Hello\tWorld",
-	}
-	for k, v := range tests {
-		t.Log(k)
-		if err := runt(k, v); err != nil {
-			t.Errorf("Error on tpl %q: %s", k, err)
-		}
-	}
-}
-
 func TestRandomString(t *testing.T) {
 	// Random strings are now using Masterminds/goutils's cryptographically secure random string functions
 	// by default. Consequently, these tests now have no predictable character sequence. No checks for exact
@@ -323,38 +185,6 @@ func TestRandomString(t *testing.T) {
 	// {{randNumeric 5}} should yield five random characters
 	if x, _ := runRaw(`{{randNumeric 5}}`, nil); utf8.RuneCountInString(x) != 5 {
 		t.Errorf("String should be 5 characters; string was %v characters", utf8.RuneCountInString(x))
-	}
-}
-
-func TestIndent(t *testing.T) {
-	tpl := `{{indent 4 "a\nb\nc"}}`
-	if err := runt(tpl, "    a\n    b\n    c"); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestNindent(t *testing.T) {
-	tpl := `{{nindent 4 "a\nb\nc"}}`
-	if err := runt(tpl, "\n    a\n    b\n    c"); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestReplace(t *testing.T) {
-	tpl := `{{"I Am Henry VIII" | replace " " "-"}}`
-	if err := runt(tpl, "I-Am-Henry-VIII"); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestPlural(t *testing.T) {
-	tpl := `{{$num := len "two"}}{{$num}} {{$num | plural "1 char" "chars"}}`
-	if err := runt(tpl, "3 chars"); err != nil {
-		t.Error(err)
-	}
-	tpl = `{{len "t" | plural "cheese" "%d chars"}}`
-	if err := runt(tpl, "cheese"); err != nil {
-		t.Error(err)
 	}
 }
 
@@ -881,27 +711,6 @@ func TestRandomInt(t *testing.T) {
 	}
 }
 
-func TestSeq(t *testing.T) {
-	tests := map[string]string{
-		`{{seq 0 1 3}}`:   "0 1 2 3",
-		`{{seq 0 3 10}}`:  "0 3 6 9",
-		`{{seq 3 3 2}}`:   "",
-		`{{seq 3 -3 2}}`:  "3",
-		`{{seq}}`:         "",
-		`{{seq 0 4}}`:     "0 1 2 3 4",
-		`{{seq 5}}`:       "1 2 3 4 5",
-		`{{seq -5}}`:      "1 0 -1 -2 -3 -4 -5",
-		`{{seq 0}}`:       "1 0",
-		`{{seq 0 1 2 3}}`: "",
-		`{{seq 0 -4}}`:    "0 -1 -2 -3 -4",
-	}
-	for tpl, expect := range tests {
-		if err := runt(tpl, expect); err != nil {
-			t.Error(err)
-		}
-	}
-}
-
 func TestGetHostByName(t *testing.T) {
 	tpl := `{{"www.google.com" | getHostByName}}`
 
@@ -1332,49 +1141,6 @@ func TestClean(t *testing.T) {
 
 func TestExt(t *testing.T) {
 	assert.NoError(t, runt(`{{ ext "/foo/bar/baz.txt" }}`, ".txt"))
-}
-
-// ENVIE DE CANER SUR CELUI LA LUL
-func TestSnakeCase(t *testing.T) {
-	assert.NoError(t, runt(`{{ snakecase "http2xx" }}`, "http_2xx"))
-	assert.NoError(t, runt(`{{ snakecase "HTTP20xOK" }}`, "http_20x_ok"))
-	assert.NoError(t, runt(`{{ snakecase "Duration2m3s" }}`, "duration_2m_3s"))
-	assert.NoError(t, runt(`{{ snakecase "Bld4Floor3rd" }}`, "bld_4floor_3rd"))
-	assert.NoError(t, runt(`{{ snakecase "FirstName" }}`, "first_name"))
-	assert.NoError(t, runt(`{{ snakecase "HTTPServer" }}`, "http_server"))
-	assert.NoError(t, runt(`{{ snakecase "NoHTTPS" }}`, "no_https"))
-	assert.NoError(t, runt(`{{ snakecase "GO_PATH" }}`, "go_path"))
-	assert.NoError(t, runt(`{{ snakecase "GO PATH" }}`, "go_path"))
-	assert.NoError(t, runt(`{{ snakecase "GO-PATH" }}`, "go_path"))
-}
-
-func TestCamelCase(t *testing.T) {
-	assert.NoError(t, runt(`{{ camelcase "_complex__case_" }}`, "ComplexCase"))
-	assert.NoError(t, runt(`{{ camelcase "_camel_case" }}`, "CamelCase"))
-	assert.NoError(t, runt(`{{ camelcase "http_server" }}`, "HttpServer"))
-	assert.NoError(t, runt(`{{ camelcase "no_https" }}`, "NoHttps"))
-	assert.NoError(t, runt(`{{ camelcase "all" }}`, "All"))
-}
-
-func TestKebabCase(t *testing.T) {
-	assert.NoError(t, runt(`{{ kebabcase "HTTPServer" }}`, "http-server"))
-	assert.NoError(t, runt(`{{ kebabcase "FirstName" }}`, "first-name"))
-	assert.NoError(t, runt(`{{ kebabcase "NoHTTPS" }}`, "no-https"))
-	assert.NoError(t, runt(`{{ kebabcase "GO_PATH" }}`, "go-path"))
-	assert.NoError(t, runt(`{{ kebabcase "GO PATH" }}`, "go-path"))
-	assert.NoError(t, runt(`{{ kebabcase "GO-PATH" }}`, "go-path"))
-}
-
-func TestShuffle(t *testing.T) {
-	originalRand := randSource
-	defer func() {
-		randSource = originalRand
-	}()
-
-	randSource = rand.NewSource(42)
-	// Because we're using a random number generator, we need these to go in
-	// a predictable sequence:
-	assert.NoError(t, runt(`{{ shuffle "Hello World" }}`, "Wrlodlle Ho"))
 }
 
 func TestRegex(t *testing.T) {
