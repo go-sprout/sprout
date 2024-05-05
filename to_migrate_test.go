@@ -14,7 +14,6 @@ import (
 	"testing"
 	"text/template"
 	"time"
-	"unicode/utf8"
 
 	"github.com/stretchr/testify/assert"
 	bcrypt_lib "golang.org/x/crypto/bcrypt"
@@ -159,32 +158,6 @@ func TestBase32EncodeDecode(t *testing.T) {
 	tpl = fmt.Sprintf("{{b32dec %q}}", expect)
 	if err := runt(tpl, magicWord); err != nil {
 		t.Error(err)
-	}
-}
-
-func TestRandomString(t *testing.T) {
-	// Random strings are now using Masterminds/goutils's cryptographically secure random string functions
-	// by default. Consequently, these tests now have no predictable character sequence. No checks for exact
-	// string output are necessary.
-
-	// {{randAlphaNum 5}} should yield five random characters
-	if x, _ := runRaw(`{{randAlphaNum 5}}`, nil); utf8.RuneCountInString(x) != 5 {
-		t.Errorf("String should be 5 characters; string was %v characters", utf8.RuneCountInString(x))
-	}
-
-	// {{randAlpha 5}} should yield five random characters
-	if x, _ := runRaw(`{{randAlpha 5}}`, nil); utf8.RuneCountInString(x) != 5 {
-		t.Errorf("String should be 5 characters; string was %v characters", utf8.RuneCountInString(x))
-	}
-
-	// {{randAscii 5}} should yield five random characters
-	if x, _ := runRaw(`{{randAscii 5}}`, nil); utf8.RuneCountInString(x) != 5 {
-		t.Errorf("String should be 5 characters; string was %v characters", utf8.RuneCountInString(x))
-	}
-
-	// {{randNumeric 5}} should yield five random characters
-	if x, _ := runRaw(`{{randNumeric 5}}`, nil); utf8.RuneCountInString(x) != 5 {
-		t.Errorf("String should be 5 characters; string was %v characters", utf8.RuneCountInString(x))
 	}
 }
 

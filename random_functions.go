@@ -199,9 +199,7 @@ func (fh *FunctionHandler) RandBytes(count int) (string, error) {
 	}
 
 	buf := make([]byte, count)
-	if _, err := cryptorand.Read(buf); err != nil {
-		return "", err
-	}
+	_, _ = cryptorand.Read(buf)
 	return base64.StdEncoding.EncodeToString(buf), nil
 }
 

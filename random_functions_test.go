@@ -90,3 +90,12 @@ func TestRandBytes(t *testing.T) {
 		})
 	}
 }
+
+func TestRandomString(t *testing.T) {
+	fh := NewFunctionHandler()
+	assert.Regexp(t, "^[0-9]{100}$", fh.randomString(100, &randomOpts{withNumbers: true}))
+	assert.Regexp(t, "^[a-zA-Z]{100}$", fh.randomString(100, &randomOpts{withLetters: true}))
+	assert.Regexp(t, "^[a-zA-Z0-9]{100}$", fh.randomString(100, &randomOpts{withLetters: true, withNumbers: true}))
+	assert.Regexp(t, "^([a-zA-Z0-9]|[[:ascii:]]){100}$", fh.randomString(100, &randomOpts{withLetters: true, withAscii: true}))
+	assert.Regexp(t, "^[42@]{100}$", fh.randomString(100, &randomOpts{withChars: []rune{'4', '2', '@'}}))
+}
