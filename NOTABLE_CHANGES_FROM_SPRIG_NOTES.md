@@ -45,3 +45,12 @@ func (fh *FunctionHandler) ToRawJson(v any) string {
 	return output
 }
 ```
+
+### DateAgo
+
+In sprig this function dont support int32 and *time.Time and cause result to "0s"
+In sprout this function support int32 and *time.Time and return the correct result
+
+### DateRound 
+In sprig When we pass a negative value, it will return the correct duration but in positive value.
+In sprout When we pass a negative value, it will return the correct duration with in negative value.

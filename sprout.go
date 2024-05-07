@@ -98,7 +98,7 @@ func FuncMap(opts ...FunctionHandlerOption) template.FuncMap {
 	fnHandler.funcMap["hello"] = fnHandler.Hello
 
 	// Added functions not migrated totally yet
-	fnHandler.funcMap["ago"] = fnHandler.DateAgo
+	fnHandler.funcMap["dateAgo"] = fnHandler.DateAgo
 	fnHandler.funcMap["date"] = fnHandler.Date
 	fnHandler.funcMap["dateModify"] = fnHandler.DateModify
 	fnHandler.funcMap["dateInZone"] = fnHandler.DateInZone
