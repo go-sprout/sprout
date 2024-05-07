@@ -7,10 +7,10 @@ import (
 func TestOsBase(t *testing.T) {
 	var tests = testCases{
 		{"TestEmptyPath", `{{ osBase "" }}`, ".", nil},
-		{"TestRootPath", `{{ osBase "\\" }}`, "\\", nil},
-		{"TestWithoutExtension", `{{ osBase "\\path\\to\\file" }}`, "file", nil},
-		{"TestWithFileInput", `{{ osBase "\\path\\to\\file.txt" }}`, "file.txt", nil},
-		{"TestPipeSyntax", `{{ "\\path\\to\\file.txt" | osBase }}`, "file.txt", nil},
+		{"TestRootPath", `{{ osBase "D:\\" }}`, "\\", nil},
+		{"TestWithoutExtension", `{{ osBase "D:\\path\\to\\file" }}`, "file", nil},
+		{"TestWithFileInput", `{{ osBase "D:\\path\\to\\file.txt" }}`, "file.txt", nil},
+		{"TestPipeSyntax", `{{ "D:\\path\\to\\file.txt" | osBase }}`, "file.txt", nil},
 		{"TestVariableInput", `{{ .V | osBase }}`, "file", map[string]any{"V": "\\path\\to\\file"}},
 	}
 
@@ -20,10 +20,10 @@ func TestOsBase(t *testing.T) {
 func TestOsDir(t *testing.T) {
 	var tests = testCases{
 		{"TestEmptyPath", `{{ osDir "" }}`, ".", nil},
-		{"TestRootPath", `{{ osDir "\\" }}`, "\\", nil},
-		{"TestWithoutExtension", `{{ osDir "\\path\\to\\file" }}`, "\\path\\to", nil},
-		{"TestWithFileInput", `{{ osDir "\\path\\to\\file.txt" }}`, "\\path\\to", nil},
-		{"TestPipeSyntax", `{{ "\\path\\to\\file.txt" | osDir }}`, "\\path\\to", nil},
+		{"TestRootPath", `{{ osDir "\\" }}`, "D:\\", nil},
+		{"TestWithoutExtension", `{{ osDir "D:\\path\\to\\file" }}`, "\\path\\to", nil},
+		{"TestWithFileInput", `{{ osDir "D:\\path\\to\\file.txt" }}`, "\\path\\to", nil},
+		{"TestPipeSyntax", `{{ "D:\\path\\to\\file.txt" | osDir }}`, "\\path\\to", nil},
 		{"TestVariableInput", `{{ .V | osDir }}`, "\\path\\to", map[string]any{"V": "\\path\\to\\file"}},
 	}
 
@@ -34,9 +34,9 @@ func TestOsExt(t *testing.T) {
 	var tests = testCases{
 		{"TestEmptyPath", `{{ osExt "" }}`, "", nil},
 		{"TestRootPath", `{{ osExt "\\" }}`, "", nil},
-		{"TestWithoutExtension", `{{ osExt "\\path\\to\\file" }}`, "", nil},
-		{"TestWithFileInput", `{{ osExt "\\path\\to\\file.txt" }}`, ".txt", nil},
-		{"TestPipeSyntax", `{{ "\\path\\to\\file.txt" | osExt }}`, ".txt", nil},
+		{"TestWithoutExtension", `{{ osExt "D:\\path\\to\\file" }}`, "", nil},
+		{"TestWithFileInput", `{{ osExt "D:\\path\\to\\file.txt" }}`, ".txt", nil},
+		{"TestPipeSyntax", `{{ "D:\\path\\to\\file.txt" | osExt }}`, ".txt", nil},
 		{"TestVariableInput", `{{ .V | osExt }}`, ".txt", map[string]any{"V": "\\path\\to\\file.txt"}},
 	}
 
@@ -46,9 +46,9 @@ func TestOsExt(t *testing.T) {
 func TestOsIsAbs(t *testing.T) {
 	var tests = testCases{
 		{"TestEmptyPath", `{{ osIsAbs "" }}`, "false", nil},
-		{"TestRootPath", `{{ osIsAbs "\\" }}`, "true", nil},
+		{"TestRootPath", `{{ osIsAbs "D:\\" }}`, "true", nil},
 		{"TestRelativePath", `{{ osIsAbs "path\\to\\file" }}`, "false", nil},
-		{"TestAbsolutePath", `{{ osIsAbs "\\path\\to\\file.txt" }}`, "true", nil},
+		{"TestAbsolutePath", `{{ osIsAbs "D:\\path\\to\\file.txt" }}`, "true", nil},
 		{"TestPipeSyntax", `{{ "file.txt" | osIsAbs }}`, "false", nil},
 		{"TestVariableInput", `{{ osIsAbs .V }}`, "true", map[string]any{"V": "\\path\\to\\file"}},
 	}
