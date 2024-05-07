@@ -32,6 +32,12 @@ var bc_registerSprigFuncs = FunctionAliasMap{
 	"base64Decode":   {"b64dec"},                        //! Deprecated: Should use base64Decode instead
 	"base32Encode":   {"b32enc"},                        //! Deprecated: Should use base32Encode instead
 	"base32Decode":   {"b32dec"},                        //! Deprecated: Should use base32Decode instead
+	"pathBase":       {"base"},                          //! Deprecated: Should use pathBase instead
+	"pathDir":        {"dir"},                           //! Deprecated: Should use pathDir instead
+	"pathExt":        {"ext"},                           //! Deprecated: Should use pathExt instead
+	"pathClean":      {"clean"},                         //! Deprecated: Should use pathClean instead
+	"pathIsAbs":      {"isAbs"},                         //! Deprecated: Should use pathIsAbs instead
+	"expandEnv":      {"expandenv"},                     //! Deprecated: Should use expandEnv instead
 }
 
 //\ BACKWARDS COMPATIBILITY

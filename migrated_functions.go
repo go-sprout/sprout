@@ -30,9 +30,6 @@ import (
 	mathrand "math/rand"
 	"net"
 	"net/url"
-	"os"
-	"path"
-	"path/filepath"
 	"reflect"
 	"regexp"
 	"sort"
@@ -1053,54 +1050,6 @@ func (fh *FunctionHandler) Semver(version string) (*sv2.Version, error) {
 
 func (fh *FunctionHandler) Now() time.Time {
 	return time.Now()
-}
-
-func (fh *FunctionHandler) PathBase(str string) string {
-	return path.Base(str)
-}
-
-func (fh *FunctionHandler) PathDir(str string) string {
-	return path.Dir(str)
-}
-
-func (fh *FunctionHandler) PathExt(str string) string {
-	return path.Ext(str)
-}
-
-func (fh *FunctionHandler) PathClean(str string) string {
-	return path.Clean(str)
-}
-
-func (fh *FunctionHandler) PathIsAbs(str string) bool {
-	return path.IsAbs(str)
-}
-
-func (fh *FunctionHandler) OsBase(str string) string {
-	return filepath.Base(str)
-}
-
-func (fh *FunctionHandler) OsDir(str string) string {
-	return filepath.Dir(str)
-}
-
-func (fh *FunctionHandler) OsExt(str string) string {
-	return filepath.Ext(str)
-}
-
-func (fh *FunctionHandler) OsClean(str string) string {
-	return filepath.Clean(str)
-}
-
-func (fh *FunctionHandler) OsIsAbs(str string) bool {
-	return filepath.IsAbs(str)
-}
-
-func (fh *FunctionHandler) Env(key string) string {
-	return os.Getenv(key)
-}
-
-func (fh *FunctionHandler) ExpandEnv(str string) string {
-	return os.ExpandEnv(str)
 }
 
 // //////////

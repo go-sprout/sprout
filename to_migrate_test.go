@@ -949,43 +949,6 @@ func TestIssue188(t *testing.T) {
 	}
 }
 
-func TestEnv(t *testing.T) {
-	os.Setenv("FOO", "bar")
-	tpl := `{{env "FOO"}}`
-	if err := runt(tpl, "bar"); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestExpandEnv(t *testing.T) {
-	os.Setenv("FOO", "bar")
-	tpl := `{{expandenv "Hello $FOO"}}`
-	if err := runt(tpl, "Hello bar"); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestBase(t *testing.T) {
-	assert.NoError(t, runt(`{{ base "foo/bar" }}`, "bar"))
-}
-
-func TestDir(t *testing.T) {
-	assert.NoError(t, runt(`{{ dir "foo/bar/baz" }}`, "foo/bar"))
-}
-
-func TestIsAbs(t *testing.T) {
-	assert.NoError(t, runt(`{{ isAbs "/foo" }}`, "true"))
-	assert.NoError(t, runt(`{{ isAbs "foo" }}`, "false"))
-}
-
-func TestClean(t *testing.T) {
-	assert.NoError(t, runt(`{{ clean "/foo/../foo/../bar" }}`, "/bar"))
-}
-
-func TestExt(t *testing.T) {
-	assert.NoError(t, runt(`{{ ext "/foo/bar/baz.txt" }}`, ".txt"))
-}
-
 func TestRegex(t *testing.T) {
 	assert.NoError(t, runt(`{{ regexQuoteMeta "1.2.3" }}`, "1\\.2\\.3"))
 	assert.NoError(t, runt(`{{ regexQuoteMeta "pretzel" }}`, "pretzel"))
