@@ -41,6 +41,16 @@ func TestOsExt(t *testing.T) {
 	runTestCases(t, tests)
 }
 
+func TestOsClean(t *testing.T) {
+	var tests = testCases{
+		{"TestEmptyPath", `{{ osClean "" }}`, ".", nil},
+		{"TestRootPath", `{{ osClean "/" }}`, "/", nil},
+		{"TestWithoutExtension", `{{ osClean "/path///to/file" }}`, "/path/to/file", nil},
+	}
+
+	runTestCases(t, tests)
+}
+
 func TestOsIsAbs(t *testing.T) {
 	var tests = testCases{
 		{"TestEmptyPath", `{{ osIsAbs "" }}`, "false", nil},
