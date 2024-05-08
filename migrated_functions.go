@@ -31,7 +31,6 @@ import (
 	"net"
 	"net/url"
 	"reflect"
-	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -167,84 +166,6 @@ func (fh *FunctionHandler) UrlJoin(d map[string]any) string {
 
 	resURL.User = user
 	return resURL.String()
-}
-
-func (fh *FunctionHandler) RegexMatch(regex string, s string) bool {
-	match, _ := regexp.MatchString(regex, s)
-	return match
-}
-
-func (fh *FunctionHandler) MustRegexMatch(regex string, s string) (bool, error) {
-	return regexp.MatchString(regex, s)
-}
-
-func (fh *FunctionHandler) RegexFindAll(regex string, s string, n int) []string {
-	r := regexp.MustCompile(regex)
-	return r.FindAllString(s, n)
-}
-
-func (fh *FunctionHandler) MustRegexFindAll(regex string, s string, n int) ([]string, error) {
-	r, err := regexp.Compile(regex)
-	if err != nil {
-		return []string{}, err
-	}
-	return r.FindAllString(s, n), nil
-}
-
-func (fh *FunctionHandler) RegexFind(regex string, s string) string {
-	r := regexp.MustCompile(regex)
-	return r.FindString(s)
-}
-
-func (fh *FunctionHandler) MustRegexFind(regex string, s string) (string, error) {
-	r, err := regexp.Compile(regex)
-	if err != nil {
-		return "", err
-	}
-	return r.FindString(s), nil
-}
-
-func (fh *FunctionHandler) RegexReplaceAll(regex string, s string, repl string) string {
-	r := regexp.MustCompile(regex)
-	return r.ReplaceAllString(s, repl)
-}
-
-func (fh *FunctionHandler) MustRegexReplaceAll(regex string, s string, repl string) (string, error) {
-	r, err := regexp.Compile(regex)
-	if err != nil {
-		return "", err
-	}
-	return r.ReplaceAllString(s, repl), nil
-}
-
-func (fh *FunctionHandler) RegexReplaceAllLiteral(regex string, s string, repl string) string {
-	r := regexp.MustCompile(regex)
-	return r.ReplaceAllLiteralString(s, repl)
-}
-
-func (fh *FunctionHandler) MustRegexReplaceAllLiteral(regex string, s string, repl string) (string, error) {
-	r, err := regexp.Compile(regex)
-	if err != nil {
-		return "", err
-	}
-	return r.ReplaceAllLiteralString(s, repl), nil
-}
-
-func (fh *FunctionHandler) RegexSplit(regex string, s string, n int) []string {
-	r := regexp.MustCompile(regex)
-	return r.Split(s, n)
-}
-
-func (fh *FunctionHandler) MustRegexSplit(regex string, s string, n int) ([]string, error) {
-	r, err := regexp.Compile(regex)
-	if err != nil {
-		return []string{}, err
-	}
-	return r.Split(s, n), nil
-}
-
-func (fh *FunctionHandler) RegexQuoteMeta(s string) string {
-	return regexp.QuoteMeta(s)
 }
 
 func (fh *FunctionHandler) ToFloat64(v any) float64 {
