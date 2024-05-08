@@ -54,3 +54,15 @@ In sprout this function support int32 and *time.Time and return the correct resu
 ### DateRound 
 In sprig When we pass a negative value, it will return the correct duration but in positive value.
 In sprout When we pass a negative value, it will return the correct duration with in negative value.
+
+### Append, Prepend, Concat, Chunk, Uniq, Compact, Slice, Without, Rest, Initial, Reverse
+In sprig all these functions cause internal panic.
+In sprout all these functions return empty slice when an error occurs.
+
+### First, Last
+In sprig all these functions cause internal panic.
+In sprout all these functions return nil when an error occurs.
+
+### MustAppend, MustPrepend, MustConcat, MustChunk, MustUniq, MustCompact, MustSlice, MustWithout, MustRest, MustInitial, MustReverse
+In sprig all these functions cause segfault when lsit are nil.
+In sprout all these functions return nil and an error when an error occurs.

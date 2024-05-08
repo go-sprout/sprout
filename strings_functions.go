@@ -297,7 +297,7 @@ func (fh *FunctionHandler) Repeat(count int, str string) string {
 //	{{ $list := slice "apple" "banana" "cherry" }}
 //	{{ $list | join ", " }} // Output: "apple, banana, cherry"
 func (fh *FunctionHandler) Join(sep string, v any) string {
-	return strings.Join(fh.Strslice(v), sep)
+	return strings.Join(fh.StrSlice(v), sep)
 }
 
 // Trunc truncates 's' to a maximum length 'count'. If 'count' is negative, it removes

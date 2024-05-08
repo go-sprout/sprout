@@ -163,7 +163,7 @@ func FuncMap(opts ...FunctionHandlerOption) template.FuncMap {
 	fnHandler.funcMap["split"] = fnHandler.Split
 	fnHandler.funcMap["splitList"] = fnHandler.SplitList
 	fnHandler.funcMap["splitn"] = fnHandler.Splitn
-	fnHandler.funcMap["toStrings"] = fnHandler.Strslice // fnHandler.ToStrings
+	fnHandler.funcMap["strSlice"] = fnHandler.StrSlice
 	fnHandler.funcMap["until"] = fnHandler.Until
 	fnHandler.funcMap["untilStep"] = fnHandler.UntilStep
 	fnHandler.funcMap["add1"] = fnHandler.Add1

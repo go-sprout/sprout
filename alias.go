@@ -39,6 +39,7 @@ var bc_registerSprigFuncs = FunctionAliasMap{
 	"pathIsAbs":      {"isAbs"},                         //! Deprecated: Should use pathIsAbs instead
 	"expandEnv":      {"expandenv"},                     //! Deprecated: Should use expandEnv instead
 	"dateAgo":        {"ago"},                           //! Deprecated: Should use dateAgo instead
+	"strSlice":       {"toStrings"},                     //! Deprecated: Should use strSlice instead
 }
 
 //\ BACKWARDS COMPATIBILITY
