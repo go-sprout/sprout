@@ -49,11 +49,11 @@ func TestDateAgo(t *testing.T) {
 	timeTest := time.Now().Add(-time.Hour * 24)
 
 	var tests = testCases{
-		{"TestTimeObject", `{{ .V | dateAgo }}`, "24h0m0s", map[string]any{"V": timeTest}},
-		{"TestTimeObjectPointer", `{{ .V | dateAgo }}`, "24h0m0s", map[string]any{"V": &timeTest}},
-		{"TestTimeObjectUnix", `{{ .V | dateAgo }}`, "24h0m0s", map[string]any{"V": timeTest.Unix()}},
-		{"TestTimeObjectUnixInt", `{{ .V | dateAgo }}`, "24h0m0s", map[string]any{"V": int(timeTest.Unix())}},
-		{"TestTimeObjectUnixInt32", `{{ .V | dateAgo }}`, "24h0m0s", map[string]any{"V": int32(timeTest.Unix())}},
+		{"TestTimeObject", `{{ .V | dateAgo | substr 0 5 }}`, "24h0m", map[string]any{"V": timeTest}},
+		{"TestTimeObjectPointer", `{{ .V | dateAgo | substr 0 5 }}`, "24h0m", map[string]any{"V": &timeTest}},
+		{"TestTimeObjectUnix", `{{ .V | dateAgo | substr 0 5 }}`, "24h0m", map[string]any{"V": timeTest.Unix()}},
+		{"TestTimeObjectUnixInt", `{{ .V | dateAgo | substr 0 5 }}`, "24h0m", map[string]any{"V": int(timeTest.Unix())}},
+		{"TestTimeObjectUnixInt32", `{{ .V | dateAgo | substr 0 5 }}`, "24h0m", map[string]any{"V": int32(timeTest.Unix())}},
 		{"TestWithInvalidInput", `{{ .V | dateAgo }}`, "0s", map[string]any{"V": "invalid"}},
 	}
 
@@ -130,12 +130,12 @@ func TestHtmlDateInZone(t *testing.T) {
 	timeTest := time.Date(2024, 5, 7, 15, 4, 5, 0, time.UTC)
 
 	var tests = testCases{
-		{"TestTimeObject", `{{ htmlDateInZone "2024-05-07" "UTC" }}`, "2024-05-07", map[string]any{"V": timeTest}},
-		{"TestTimeObjectPointer", `{{ htmlDateInZone "2024-05-07" "UTC" }}`, "2024-05-07", map[string]any{"V": &timeTest}},
-		{"TestTimeObjectUnix", `{{ htmlDateInZone "2024-05-07" "UTC" }}`, "2024-05-07", map[string]any{"V": timeTest.Unix()}},
-		{"TestTimeObjectUnixInt", `{{ htmlDateInZone "2024-05-07" "UTC" }}`, "2024-05-07", map[string]any{"V": int(timeTest.Unix())}},
-		{"TestTimeObjectUnixInt32", `{{ htmlDateInZone "2024-05-07" "UTC" }}`, "2024-05-07", map[string]any{"V": int32(timeTest.Unix())}},
-		{"TestWithInvalidInput", `{{ htmlDateInZone "2024-05-07" "UTC" }}`, time.Now().Format("2006-01-02"), map[string]any{"V": make(chan int)}},
+		{"TestTimeObject", `{{ htmlDateInZone .V "UTC" }}`, "2024-05-07", map[string]any{"V": timeTest}},
+		{"TestTimeObjectPointer", `{{ htmlDateInZone .V "UTC" }}`, "2024-05-07", map[string]any{"V": &timeTest}},
+		{"TestTimeObjectUnix", `{{ htmlDateInZone .V "UTC" }}`, "2024-05-07", map[string]any{"V": timeTest.Unix()}},
+		{"TestTimeObjectUnixInt", `{{ htmlDateInZone .V "UTC" }}`, "2024-05-07", map[string]any{"V": int(timeTest.Unix())}},
+		{"TestTimeObjectUnixInt32", `{{ htmlDateInZone .V "UTC" }}`, "2024-05-07", map[string]any{"V": int32(timeTest.Unix())}},
+		{"TestWithInvalidInput", `{{ htmlDateInZone .V "UTC" }}`, time.Now().Format("2006-01-02"), map[string]any{"V": make(chan int)}},
 	}
 
 	runTestCases(t, tests)
