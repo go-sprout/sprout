@@ -3,7 +3,7 @@ module sprout_benchmarks
 go 1.21.0
 
 require (
-	github.com/42atomys/sprout v0.0.0-20240331203623-2cbfca5974e1
+	github.com/go-sprout/sprout v0.0.0-20240331203623-2cbfca5974e1
 	github.com/Masterminds/sprig/v3 v3.2.3
 	github.com/stretchr/testify v1.9.0
 )
@@ -26,4 +26,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/42atomys/sprout => ../
+replace github.com/go-sprout/sprout => ../

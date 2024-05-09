@@ -5,7 +5,7 @@
 This section guides you on where you can find help regarding the use of this library.
 
 - Official Documentation: [Sprout Documentation](https://docs.atom.codes/sprout)
-- Issues: [GitHub Issues](https://github.com/42atomys/sprout/issues)
+- Issues: [GitHub Issues](https://github.com/go-sprout/sprout/issues)
 
 ## How to report an issue
 

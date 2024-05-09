@@ -10,7 +10,7 @@ body:
       value: |
         You have a question relative to the library, need answers about development ?
 
-        You can join and ask on [Discussion](https://github.com/42atomys/sprout/discussions)
+        You can join and ask on [Discussion](https://github.com/go-sprout/sprout/discussions)
 
         If you feel better to open an issue and the issue don't exist yet, you can write it here !
 
@@ -28,7 +28,7 @@ body:
     id: terms
     attributes:
       label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/42atomys/sprout/blob/main/.github/CODE_OF_CONDUCT.md)
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/go-sprout/sprout/blob/main/.github/CODE_OF_CONDUCT.md)
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true

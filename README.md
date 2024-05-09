@@ -8,14 +8,14 @@
 </div>
 
 <div align="center">
-<a target="_blank" href="https://github.com/42atomys/sprout/actions/workflows/test.yaml"><img src="https://img.shields.io/github/actions/workflow/status/42atomys/sprout/test.yaml?branch=main&label=tests"></a>
-<a target="_blank" href="https://goreportcard.com/report/github.com/42atomys/sprout"><img src="https://goreportcard.com/badge/github.com/42atomys/sprout" /></a>
-<a target="_blank" href="https://codeclimate.com/github/42atomys/sprout"><img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability/42atomys/sprout"></a>
-<a target="_blank" href="https://codecov.io/gh/42atomys/sprout"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/42atomys/sprout"></a>
-<img src="https://img.shields.io/github/v/release/42atomys/sprout?label=last%20release" alt="GitHub release (latest by date)">
-<img src="https://img.shields.io/github/contributors/42atomys/sprout?color=blueviolet" alt="GitHub contributors">
-<img src="https://img.shields.io/github/stars/42atomys/sprout?style=flat&color=blueviolet" alt="GitHub Repo stars">
-<a target="_blank" href="https://pkg.go.dev/github.com/42atomys/sprout"><img src="https://pkg.go.dev/badge/github.com/42atomys/sprout.svg" alt="Go Reference"></a>
+<a target="_blank" href="https://github.com/go-sprout/sprout/actions/workflows/test.yaml"><img src="https://img.shields.io/github/actions/workflow/status/go-sprout/sprout/test.yaml?branch=main&label=tests"></a>
+<a target="_blank" href="https://goreportcard.com/report/github.com/go-sprout/sprout"><img src="https://goreportcard.com/badge/github.com/go-sprout/sprout" /></a>
+<a target="_blank" href="https://codeclimate.com/github/go-sprout/sprout"><img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability/go-sprout/sprout"></a>
+<a target="_blank" href="https://codecov.io/gh/go-sprout/sprout"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/go-sprout/sprout"></a>
+<img src="https://img.shields.io/github/v/release/go-sprout/sprout?label=last%20release" alt="GitHub release (latest by date)">
+<img src="https://img.shields.io/github/contributors/go-sprout/sprout?color=blueviolet" alt="GitHub contributors">
+<img src="https://img.shields.io/github/stars/go-sprout/sprout?style=flat&color=blueviolet" alt="GitHub Repo stars">
+<a target="_blank" href="https://pkg.go.dev/github.com/go-sprout/sprout"><img src="https://pkg.go.dev/badge/github.com/go-sprout/sprout.svg" alt="Go Reference"></a>
 <br />
 <h3> <a target="_blank" href="https://docs.atom.codes/sprout">Official Documentation</a></h3>
 <hr/>
@@ -57,7 +57,7 @@ Sprout is designed to be a drop-in replacement for Sprig in the v1.0, with the s
 ```diff
 import (
 -  "github.com/Masterminds/sprig/v3"
-+  "github.com/42atomys/sprout"
++  "github.com/go-sprout/sprout"
 )
 
 tpl := template.Must(
@@ -74,7 +74,7 @@ To use Sprout in your project, import the library and use the `FuncMap` function
 
 ```go
 import (
-  "github.com/42atomys/sprout"
+  "github.com/go-sprout/sprout"
   "text/template"
 )
 

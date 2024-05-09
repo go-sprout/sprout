@@ -5,13 +5,13 @@
 > 💡 Cultivating Innovation, One Sprig at a Time!
 
 ## 🚀 Features
-- **Creating the Root of the Sprout**: Sprouts are now an evolution of Sprig with a standalone function handler. See (@42atomys) [PR 2](https://github.com/42atomys/sprout/pull/2).
-- **Allowing Function Aliasing**: Enables developers to use aliases for their templates. In Sprout, this feature is used for backward compatibility with Sprig. See (@42atomys) [PR 3](https://github.com/42atomys/sprout/pull/3). 
+- **Creating the Root of the Sprout**: Sprouts are now an evolution of Sprig with a standalone function handler. See (@42atomys) [PR 2](https://github.com/go-sprout/sprout/pull/2).
+- **Allowing Function Aliasing**: Enables developers to use aliases for their templates. In Sprout, this feature is used for backward compatibility with Sprig. See (@42atomys) [PR 3](https://github.com/go-sprout/sprout/pull/3). 
   - Full documentation available here: https://docs.atom.codes/sprout/function-aliases
 
 ## 🛠 Chore
 - **Documentation Available**: Documentation can be found at https://docs.atom.codes/sprout.
-- **README Refactor**: The README has been updated to reflect the project's vision and its future. See (@42atomys) [PR 4](https://github.com/42atomys/sprout/pull/4).
+- **README Refactor**: The README has been updated to reflect the project's vision and its future. See (@42atomys) [PR 4](https://github.com/go-sprout/sprout/pull/4).
 
 
 ## Release v0.1.0: New Seed 🌱 (2024-03-29)
@@ -34,6 +34,6 @@ Key features and enhancements include:
 Looking ahead, Sprout will continue to evolve with the Go ecosystem. Our roadmap includes the integration of more features and utilities, drawing from the feedback and needs of our growing community of users. We aim to foster a vibrant ecosystem around Sprout, encouraging contributions, and collaboration to ensure that Sprout remains at the forefront of Go development tools.
 
 ### Getting Started with Sprout
-To start using Sprout in your Go projects, please visit our GitHub repository at [Sprout's GitHub Page](https://github.com/42atomys/sprout). You'll find comprehensive documentation, installation instructions, and examples to help you get started.
+To start using Sprout in your Go projects, please visit our GitHub repository at [Sprout's GitHub Page](https://github.com/go-sprout/sprout). You'll find comprehensive documentation, installation instructions, and examples to help you get started.
 
 We are thrilled to embark on this journey with you, the Go developer community, and look forward to seeing the incredible applications you will build with Sprout. Thank you for your support, and welcome to Sprout v0.1!

@@ -13,7 +13,7 @@
  * 4. Temporary exclusions: Certain functions are temporarily excluded to prevent breaking changes,
  *    pending the implementation of the new loader feature.
  * 5. Community decision: Choices made by the community are documented and can be discussed at
- *    https://github.com/42atomys/sprout/issues/1.
+ *    https://github.com/go-sprout/sprout/issues/1.
  *
  * The Sprout library is an open-source project and welcomes contributions from the community.
  * To discuss existing exclusions or propose new ones, please contribute to the discussions on

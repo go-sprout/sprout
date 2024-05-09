@@ -7,8 +7,8 @@ import (
 	"testing"
 	"text/template"
 
-	"github.com/42atomys/sprout"
 	"github.com/Masterminds/sprig/v3"
+	"github.com/go-sprout/sprout"
 	"github.com/stretchr/testify/assert"
 )
 

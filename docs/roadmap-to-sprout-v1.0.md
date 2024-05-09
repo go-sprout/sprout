@@ -7,7 +7,7 @@ description: The roadmap to grow the sprout
 ## Key Objectives
 
 {% hint style="info" %}
-All objectives are get from feedback, suggestions and personal knowledge. You can discuss about the v1.0 directly [in the issue on GitHub](https://github.com/42atomys/sprout/issues/1).
+All objectives are get from feedback, suggestions and personal knowledge. You can discuss about the v1.0 directly [in the issue on GitHub](https://github.com/go-sprout/sprout/issues/1).
 {% endhint %}
 
 ### :hourglass:**Minimize Dependencies - IN PROGRESS**

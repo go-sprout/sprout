@@ -1,4 +1,4 @@
-module github.com/42atomys/sprout
+module github.com/go-sprout/sprout
 
 go 1.21
 

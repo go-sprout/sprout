@@ -1,6 +1,6 @@
 # Welcome to the Contributing Guide for Sprout
 
-**For any questions, participate in our [Community Discussions](https://github.com/42atomys/sprout/discussions).**
+**For any questions, participate in our [Community Discussions](https://github.com/go-sprout/sprout/discussions).**
 
 Thank you for your interest in contributing to Sprout! ✨
 
@@ -38,11 +38,11 @@ Contributing to Sprout is meant to be straightforward and rewarding. You can con
 
 #### Creating a New Issue
 
-If you notice a problem or have an enhancement idea, check if there's an existing issue first. If not, open a new issue using a suitable [issue template](https://github.com/42atomys/sprout/issues/new/choose).
+If you notice a problem or have an enhancement idea, check if there's an existing issue first. If not, open a new issue using a suitable [issue template](https://github.com/go-sprout/sprout/issues/new/choose).
 
 #### Resolving an Issue
 
-Browse our [open issues](https://github.com/42atomys/sprout/issues) to find something that interests you. Use `labels` to filter issues, especially the [good first issue](https://github.com/42atomys/sprout/labels/good%20first%20issue) label if you're looking for an easier start.
+Browse our [open issues](https://github.com/go-sprout/sprout/issues) to find something that interests you. Use `labels` to filter issues, especially the [good first issue](https://github.com/go-sprout/sprout/labels/good%20first%20issue) label if you're looking for an easier start.
 
 We encourage you to pick an issue and open a pull request with your solution.
 
@@ -86,6 +86,6 @@ After submitting, our team will review your contributions and possibly request f
 
 Congratulations 🎉 and thank you for contributing to Sprout!
 
-Once merged, your contributions will be part of the [Sprout GitHub repository](https://github.com/42atomys/sprout) and you will be credited as a contributor in the release notes and on the contributors page.
+Once merged, your contributions will be part of the [Sprout GitHub repository](https://github.com/go-sprout/sprout) and you will be credited as a contributor in the release notes and on the contributors page.
 
 Welcome to the Sprout community! 🌱
