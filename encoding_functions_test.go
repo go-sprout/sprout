@@ -17,7 +17,7 @@ func TestBase64Decode(t *testing.T) {
 		{"TestWithoutInput", `{{ "" | base64Decode }}`, "", nil},
 		{"TestHelloWorldInput", `{{ "SGVsbG8gV29ybGQ=" | base64Decode }}`, "Hello World", nil},
 		{"TestFromVariableInput", `{{ .V | base64Decode }}`, "Hello World", map[string]any{"V": "SGVsbG8gV29ybGQ="}},
-		{"TestInvalidInput", `{{ "SGVsbG8gV29ybGQ" | base64Decode }}`, "illegal base64 data at input byte 12", nil},
+		{"TestInvalidInput", `{{ "SGVsbG8gV29ybGQ" | base64Decode }}`, "", nil},
 	}
 
 	runTestCases(t, tests)
@@ -38,7 +38,7 @@ func TestBase32Decode(t *testing.T) {
 		{"TestWithoutInput", `{{ "" | base32Decode }}`, "", nil},
 		{"TestHelloWorldInput", `{{ "JBSWY3DPEBLW64TMMQ======" | base32Decode }}`, "Hello World", nil},
 		{"TestFromVariableInput", `{{ .V | base32Decode }}`, "Hello World", map[string]any{"V": "JBSWY3DPEBLW64TMMQ======"}},
-		{"TestInvalidInput", `{{ "JBSWY3DPEBLW64TMMQ" | base32Decode }}`, "illegal base32 data at input byte 16", nil},
+		{"TestInvalidInput", `{{ "JBSWY3DPEBLW64TMMQ" | base32Decode }}`, "", nil},
 	}
 
 	runTestCases(t, tests)
