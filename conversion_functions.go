@@ -128,6 +128,23 @@ func (fh *FunctionHandler) ToDate(fmt, str string) time.Time {
 	return result
 }
 
+// ToDuration converts a value to a time.Duration.
+//
+// Parameters:
+//
+//	v any - the value to convert to time.Duration. This value can be a string, int, or another compatible type.
+//
+// Returns:
+//
+//	time.Duration - the duration representation of the value.
+//
+// Example:
+//
+//	{{ (toDuration "1h30m").Seconds }} // Output: 5400
+func (fh *FunctionHandler) ToDuration(v any) time.Duration {
+	return cast.ToDuration(v)
+}
+
 // MustToDate tries to parse a string into a time.Time object based on a format,
 // returning an error if parsing fails.
 //

@@ -154,6 +154,7 @@ func FuncMap(opts ...FunctionHandlerOption) template.FuncMap {
 	fnHandler.funcMap["toFloat64"] = fnHandler.ToFloat64
 	fnHandler.funcMap["seq"] = fnHandler.Seq
 	fnHandler.funcMap["toOctal"] = fnHandler.ToOctal
+	fnHandler.funcMap["toDuration"] = fnHandler.ToDuration
 	fnHandler.funcMap["split"] = fnHandler.Split
 	fnHandler.funcMap["splitList"] = fnHandler.SplitList
 	fnHandler.funcMap["splitn"] = fnHandler.Splitn
