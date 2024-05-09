@@ -3,8 +3,8 @@ module sprout_benchmarks
 go 1.21.0
 
 require (
-	github.com/go-sprout/sprout v0.0.0-20240331203623-2cbfca5974e1
 	github.com/Masterminds/sprig/v3 v3.2.3
+	github.com/go-sprout/sprout v0.3.0
 	github.com/stretchr/testify v1.9.0
 )
 
