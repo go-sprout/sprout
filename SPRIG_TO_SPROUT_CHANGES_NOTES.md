@@ -80,3 +80,22 @@ Methods that previously caused a panic in Sprig :
 ## Base32Decode / Base64Decode
 - **Sprig**: Decoding functions return the error string when the input is not a valid base64 encoded string.
 - **Sprout**: Decoding functions return an empty string if the input is not a valid base64 encoded string, simplifying error handling.
+
+## Dig 
+> Consider the example dictionary defined as follows:
+> ```go
+> dict := map[string]any{
+>   "a": map[string]any{
+>     "b": 2,
+>   },
+> }
+> ```
+
+- **Sprig**: Previously, the `dig` function would return the last map in the access chain.
+```go
+{{ $dict | dig "a" "b" }} // Output: map[b:2]
+```
+- **Sprout**: Now, the `dig` function returns the final object in the chain, regardless of its type (map, array, string, etc.).
+```go
+{{ $dict | dig "a" "b" }} // Output: 2
+```
