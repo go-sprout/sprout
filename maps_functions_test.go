@@ -49,8 +49,8 @@ func TestUnset(t *testing.T) {
 func TestKeys(t *testing.T) {
 	var tests = testCases{
 		{"TestEmpty", `{{keys .}}`, "[]", nil},
-		{"TestWithKeys", `{{keys .}}`, `[a b]`, map[string]any{"a": 1, "b": 2}},
-		{"TestWithMultiplesMaps", `{{keys .A .B}}`, `[a b c d]`, map[string]any{"A": map[string]any{"a": 1, "b": 2}, "B": map[string]any{"c": 3, "d": 4}}},
+		{"TestWithKeys", `{{keys . | sortAlpha}}`, `[a b]`, map[string]any{"a": 1, "b": 2}},
+		{"TestWithMultiplesMaps", `{{keys .A .B | sortAlpha}}`, `[a b c d]`, map[string]any{"A": map[string]any{"a": 1, "b": 2}, "B": map[string]any{"c": 3, "d": 4}}},
 	}
 
 	runTestCases(t, tests)
@@ -59,7 +59,7 @@ func TestKeys(t *testing.T) {
 func TestValues(t *testing.T) {
 	var tests = testCases{
 		{"TestEmpty", `{{values .}}`, "[]", nil},
-		{"TestWithValues", `{{values .}}`, "[1 foo]", map[string]any{"a": 1, "b": "foo"}},
+		{"TestWithValues", `{{values . | sortAlpha}}`, "[1 foo]", map[string]any{"a": 1, "b": "foo"}},
 	}
 
 	runTestCases(t, tests)
