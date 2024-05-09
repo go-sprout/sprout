@@ -1,5 +1,20 @@
 # Changelog
 
+## Release v0.3.0: Sprout Blossom 🌸 (2023-07-09)
+
+> 💡 Sprouting New Possibilities in Every Release!
+
+> [!IMPORTANT]
+> The project has moved to a new GitHub home [**github.com/go-sprout/sprout**](https://github.com/go-sprout/sprout) !
+
+## 🚀 Features
+- **Unified Function Management**: All functions are now neatly organized under the new FunctionHandler, streamlining how functionalities are handled within the library. This consolidation is crucial for enhancing library operations and future development. See (@42atomys) [PR 14](https://github.com/go-sprout/sprout/pull/14).
+- **Introducing `toDuration` Conversion**: A new utility function, `toDuration`, has been added to simplify time conversions across various formats, enhancing our toolkit's versatility. See (@42atomys) [PR 27](https://github.com/go-sprout/sprout/pull/27).
+
+## 🛠 Documentation and Community
+- **Project's New Home**: The project has moved to a new GitHub home, centralizing where updates and community interactions will take place. Visit us at: [Sprout on GitHub](https://github.com/go-sprout/sprout).
+- **Community Files Update**: All community-related files have been refreshed to better support our growing community of developers and contributors. See (@42atomys) [PR 12](https://github.com/go-sprout/sprout/pull/12).
+
 ## Release v0.2.0: Garden Genesis 🌱 (2022-11-29)
 
 > 💡 Cultivating Innovation, One Sprig at a Time!
