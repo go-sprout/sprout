@@ -955,7 +955,7 @@ func (fh *FunctionHandler) SwapCase(str string) string {
 //	{{ "apple,banana,cherry" | split "," }} // Output: { "_0":"apple", "_1":"banana", "_2":"cherry" }
 func (fh *FunctionHandler) Split(sep, orig string) map[string]string {
 	parts := strings.Split(orig, sep)
-	return fh.FillMapWithParts(parts)
+	return fh.populateMapWithParts(parts)
 }
 
 // Splitn divides 'orig' into a map of string parts using 'sep' as the separator
@@ -976,7 +976,31 @@ func (fh *FunctionHandler) Split(sep, orig string) map[string]string {
 //	{{ "apple,banana,cherry" | split "," 2 }} // Output: { "_0":"apple", "_1":"banana,cherry" }
 func (fh *FunctionHandler) Splitn(sep string, n int, orig string) map[string]string {
 	parts := strings.SplitN(orig, sep, n)
-	return fh.FillMapWithParts(parts)
+	return fh.populateMapWithParts(parts)
+}
+
+// populateMapWithParts converts an array of strings into a map with keys based
+// on the index of each string.
+//
+// Parameters:
+//
+//	parts []string - the array of strings to be converted into a map.
+//
+// Returns:
+//
+//	map[string]string - a map where each key corresponds to an index (with an underscore prefix) of the string in the input array.
+//
+// Example:
+//
+//	parts := []string{"apple", "banana", "cherry"}
+//	result := fh.populateMapWithParts(parts)
+//	fmt.Println(result) // Output: {"_0": "apple", "_1": "banana", "_2": "cherry"}
+func (fh *FunctionHandler) populateMapWithParts(parts []string) map[string]string {
+	res := make(map[string]string, len(parts))
+	for i, v := range parts {
+		res[fmt.Sprintf("_%d", i)] = v
+	}
+	return res
 }
 
 // Substring extracts a substring from 's' starting at 'start' and ending at 'end'.
@@ -1088,7 +1112,7 @@ func (fh *FunctionHandler) Seq(params ...int) string {
 		if end < start {
 			increment = -1
 		}
-		return fh.IntArrayToString(fh.UntilStep(start, end+increment, increment), " ")
+		return fh.convertIntArrayToString(fh.UntilStep(start, end+increment, increment), " ")
 	case 3:
 		start := params[0]
 		end := params[2]
@@ -1099,7 +1123,7 @@ func (fh *FunctionHandler) Seq(params ...int) string {
 				return ""
 			}
 		}
-		return fh.IntArrayToString(fh.UntilStep(start, end+increment, step), " ")
+		return fh.convertIntArrayToString(fh.UntilStep(start, end+increment, step), " ")
 	case 2:
 		start := params[0]
 		end := params[1]
@@ -1107,8 +1131,29 @@ func (fh *FunctionHandler) Seq(params ...int) string {
 		if end < start {
 			step = -1
 		}
-		return fh.IntArrayToString(fh.UntilStep(start, end+step, step), " ")
+		return fh.convertIntArrayToString(fh.UntilStep(start, end+step, step), " ")
 	default:
 		return ""
 	}
+}
+
+// convertIntArrayToString converts an array of integers into a single string
+// with elements separated by a given delimiter.
+//
+// Parameters:
+//
+//	slice []int - the array of integers to convert.
+//	delimiter string - the string to use as a delimiter between the integers in the output string.
+//
+// Returns:
+//
+//	string - the resulting string that concatenates all the integers in the array separated by the specified delimiter.
+//
+// Example:
+//
+//	slice := []int{1, 2, 3, 4, 5}
+//	result := fh.convertIntArrayToString(slice, ", ")
+//	fmt.Println(result) // Output: "1, 2, 3, 4, 5"
+func (fh *FunctionHandler) convertIntArrayToString(slice []int, delimeter string) string {
+	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(slice)), delimeter), "[]")
 }

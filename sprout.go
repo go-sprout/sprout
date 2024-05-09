@@ -88,12 +88,6 @@ func WithFunctionHandler(new *FunctionHandler) FunctionHandlerOption {
 func FuncMap(opts ...FunctionHandlerOption) template.FuncMap {
 	fnHandler := NewFunctionHandler(opts...)
 
-	// BACKWARD COMPATIBILITY
-	// Fallback to FuncMap() to get the unmigrated functions
-	for k, v := range TxtFuncMap() {
-		fnHandler.funcMap[k] = v
-	}
-
 	// Added migrated functions
 	fnHandler.funcMap["hello"] = fnHandler.Hello
 

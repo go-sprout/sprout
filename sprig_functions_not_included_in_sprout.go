@@ -1,3 +1,24 @@
+/**
+ * This file lists the functions originally part of the Sprig library that are
+ * intentionally excluded from the Sprout library. The exclusions are based on\
+ * community decisions and technical evaluations aimed at enhancing security,
+ * relevance, and performance in the context of Go templates.
+ * Each exclusion is supported by rational and further community discussions
+ * can be found on our GitHub issues page.
+ *
+ * Exclusion Criteria:
+ * 1. Crypto functions: Deemed inappropriate for Go templates due to inherent security risks.
+ * 2. Irrelevant functions: Omitted because they do not provide utility in the context of Go templates.
+ * 3. Deprecated/Insecure: Functions using outdated or insecure standards are excluded.
+ * 4. Temporary exclusions: Certain functions are temporarily excluded to prevent breaking changes,
+ *    pending the implementation of the new loader feature.
+ * 5. Community decision: Choices made by the community are documented and can be discussed at
+ *    https://github.com/42atomys/sprout/issues/1.
+ *
+ * The Sprout library is an open-source project and welcomes contributions from the community.
+ * To discuss existing exclusions or propose new ones, please contribute to the discussions on
+ * our GitHub repository.
+ */
 package sprout
 
 import (
@@ -34,30 +55,9 @@ import (
 	"time"
 
 	sv2 "github.com/Masterminds/semver/v3"
-	"github.com/shopspring/decimal"
 	bcrypt_lib "golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/scrypt"
 )
-
-func (fh *FunctionHandler) FillMapWithParts(parts []string) map[string]string {
-	res := make(map[string]string, len(parts))
-	for i, v := range parts {
-		res[fmt.Sprintf("_%d", i)] = v
-	}
-	return res
-}
-
-func (fh *FunctionHandler) DictGetOrEmpty(dict map[string]any, key string) string {
-	value, ok := dict[key]
-	if !ok {
-		return ""
-	}
-	tp := reflect.TypeOf(value).Kind()
-	if tp != reflect.String {
-		panic(fmt.Sprintf("unable to parse %s key, must be of type string, but %s found", key, tp.String()))
-	}
-	return reflect.ValueOf(value).String()
-}
 
 func (fh *FunctionHandler) UrlParse(v string) map[string]any {
 	dict := map[string]any{}
@@ -83,14 +83,14 @@ func (fh *FunctionHandler) UrlParse(v string) map[string]any {
 
 func (fh *FunctionHandler) UrlJoin(d map[string]any) string {
 	resURL := url.URL{
-		Scheme:   fh.DictGetOrEmpty(d, "scheme"),
-		Host:     fh.DictGetOrEmpty(d, "host"),
-		Path:     fh.DictGetOrEmpty(d, "path"),
-		RawQuery: fh.DictGetOrEmpty(d, "query"),
-		Opaque:   fh.DictGetOrEmpty(d, "opaque"),
-		Fragment: fh.DictGetOrEmpty(d, "fragment"),
+		Scheme:   fh.Get(d, "scheme").(string),
+		Host:     fh.Get(d, "host").(string),
+		Path:     fh.Get(d, "path").(string),
+		RawQuery: fh.Get(d, "query").(string),
+		Opaque:   fh.Get(d, "opaque").(string),
+		Fragment: fh.Get(d, "fragment").(string),
 	}
-	userinfo := fh.DictGetOrEmpty(d, "userinfo")
+	userinfo := fh.Get(d, "userinfo").(string)
 	var user *url.Userinfo
 	if userinfo != "" {
 		tempURL, err := url.Parse(fmt.Sprintf("proto://%s@host", userinfo))
@@ -102,20 +102,6 @@ func (fh *FunctionHandler) UrlJoin(d map[string]any) string {
 
 	resURL.User = user
 	return resURL.String()
-}
-
-func (fh *FunctionHandler) IntArrayToString(slice []int, delimeter string) string {
-	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(slice)), delimeter), "[]")
-}
-
-func (fh *FunctionHandler) ExecDecimalOp(a any, b []any, f func(d1, d2 decimal.Decimal) decimal.Decimal) float64 {
-	prt := decimal.NewFromFloat(fh.ToFloat64(a))
-	for _, x := range b {
-		dx := decimal.NewFromFloat(fh.ToFloat64(x))
-		prt = f(prt, dx)
-	}
-	rslt, _ := prt.Float64()
-	return rslt
 }
 
 func (fh *FunctionHandler) GetHostByName(name string) string {
