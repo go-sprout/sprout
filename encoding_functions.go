@@ -42,7 +42,7 @@ func (fh *FunctionHandler) Base64Encode(s string) string {
 func (fh *FunctionHandler) Base64Decode(s string) string {
 	bytes, err := base64.StdEncoding.DecodeString(s)
 	if err != nil {
-		return err.Error()
+		return ""
 	}
 	return string(bytes)
 }
@@ -81,7 +81,7 @@ func (fh *FunctionHandler) Base32Encode(s string) string {
 func (fh *FunctionHandler) Base32Decode(s string) string {
 	bytes, err := base32.StdEncoding.DecodeString(s)
 	if err != nil {
-		return err.Error()
+		return ""
 	}
 	return string(bytes)
 }
