@@ -82,6 +82,19 @@ func TestToDate(t *testing.T) {
 	runTestCases(t, tests)
 }
 
+func TestToDuration(t *testing.T) {
+	var tests = testCases{
+		{"TestInt", `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, "time.Duration-1ns", map[string]any{"V": 1}},
+		{"TestInt32", `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, "time.Duration-1µs", map[string]any{"V": int32(1000)}},
+		{"TestFloat64", `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, "time.Duration-1.00042ms", map[string]any{"V": float64(1000 * 1000.42)}},
+		{"TestString", `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, "time.Duration-1m0s", map[string]any{"V": "1m"}},
+		{"TestInvalid", `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, "time.Duration-0s", map[string]any{"V": "aaaa"}},
+		{"TestCallingOnIt", `{{ (toDuration "1h30m").Seconds }}`, "5400", nil},
+	}
+
+	runTestCases(t, tests)
+}
+
 func TestMustToDate(t *testing.T) {
 	var tests = mustTestCases{
 		{testCase{"TestDate", `{{$v := mustToDate "2006-01-02" .V }}{{typeOf $v}}-{{$v}}`, "time.Time-2024-05-09 00:00:00 +0000 UTC", map[string]any{"V": "2024-05-09"}}, ""},
