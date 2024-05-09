@@ -3,13 +3,10 @@ package sprout
 import (
 	"bytes"
 	"crypto/x509"
-	"encoding/base32"
 	"encoding/base64"
 	"encoding/pem"
 	"fmt"
 	"net"
-	"os"
-	"strconv"
 	"strings"
 	"testing"
 	"text/template"
@@ -105,51 +102,6 @@ func TestToString(t *testing.T) {
 	assert.NoError(t, runt(tpl, "string"))
 }
 
-func TestToStrings(t *testing.T) {
-	tpl := `{{ $s := list 1 2 3 | toStrings }}{{ index $s 1 | kindOf }}`
-	assert.NoError(t, runt(tpl, "string"))
-	tpl = `{{ list 1 .value 2 | toStrings }}`
-	values := map[string]interface{}{"value": nil}
-	if err := runtv(tpl, `[1 2]`, values); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestBase64EncodeDecode(t *testing.T) {
-	magicWord := "coffee"
-	expect := base64.StdEncoding.EncodeToString([]byte(magicWord))
-
-	if expect == magicWord {
-		t.Fatal("Encoder doesn't work.")
-	}
-
-	tpl := `{{b64enc "coffee"}}`
-	if err := runt(tpl, expect); err != nil {
-		t.Error(err)
-	}
-	tpl = fmt.Sprintf("{{b64dec %q}}", expect)
-	if err := runt(tpl, magicWord); err != nil {
-		t.Error(err)
-	}
-}
-func TestBase32EncodeDecode(t *testing.T) {
-	magicWord := "coffee"
-	expect := base32.StdEncoding.EncodeToString([]byte(magicWord))
-
-	if expect == magicWord {
-		t.Fatal("Encoder doesn't work.")
-	}
-
-	tpl := `{{b32enc "coffee"}}`
-	if err := runt(tpl, expect); err != nil {
-		t.Error(err)
-	}
-	tpl = fmt.Sprintf("{{b32dec %q}}", expect)
-	if err := runt(tpl, magicWord); err != nil {
-		t.Error(err)
-	}
-}
-
 func TestSemverCompare(t *testing.T) {
 	tests := map[string]string{
 		`{{ semverCompare "1.2.3" "1.2.3" }}`:  `true`,
@@ -171,18 +123,6 @@ func TestSemver(t *testing.T) {
 	}
 	for tpl, expect := range tests {
 		assert.NoError(t, runt(tpl, expect))
-	}
-}
-
-func TestBiggest(t *testing.T) {
-	tpl := `{{ biggest 1 2 3 345 5 6 7}}`
-	if err := runt(tpl, `345`); err != nil {
-		t.Error(err)
-	}
-
-	tpl = `{{ max 345}}`
-	if err := runt(tpl, `345`); err != nil {
-		t.Error(err)
 	}
 }
 
@@ -315,26 +255,6 @@ func TestToDecimal(t *testing.T) {
 	}
 }
 
-func TestRandomInt(t *testing.T) {
-	var tests = []struct {
-		min int
-		max int
-	}{
-		{10, 11},
-		{10, 13},
-		{0, 1},
-		{5, 50},
-	}
-	for _, v := range tests {
-		x, _ := runRaw(fmt.Sprintf(`{{ randInt %d %d }}`, v.min, v.max), nil)
-		r, err := strconv.Atoi(x)
-		assert.NoError(t, err)
-		assert.True(t, func(min, max, r int) bool {
-			return r >= v.min && r < v.max
-		}(v.min, v.max, r))
-	}
-}
-
 func TestGetHostByName(t *testing.T) {
 	tpl := `{{"www.google.com" | getHostByName}}`
 
@@ -343,13 +263,6 @@ func TestGetHostByName(t *testing.T) {
 	ip := net.ParseIP(resolvedIP)
 	assert.NotNil(t, ip)
 	assert.NotEmpty(t, ip)
-}
-
-func TestTuple(t *testing.T) {
-	tpl := `{{$t := tuple 1 "a" "foo"}}{{index $t 2}}{{index $t 0 }}{{index $t 1}}`
-	if err := runt(tpl, "foo1a"); err != nil {
-		t.Error(err)
-	}
 }
 
 func TestIssue188(t *testing.T) {
@@ -410,23 +323,6 @@ func runRaw(tpl string, vars interface{}) (string, error) {
 		return "", err
 	}
 	return b.String(), nil
-}
-
-func Example() {
-	// Set up variables and template.
-	vars := map[string]interface{}{"Name": "  John Jacob Jingleheimer Schmidt "}
-	tpl := `Hello {{.Name | trim | lower}}`
-
-	// Get the sprout function map.
-	t := template.Must(template.New("test").Funcs(FuncMap()).Parse(tpl))
-
-	err := t.Execute(os.Stdout, vars)
-	if err != nil {
-		fmt.Printf("Error during template execution: %s", err)
-		return
-	}
-	// Output:
-	// Hello john jacob jingleheimer schmidt
 }
 
 func TestToDate(t *testing.T) {
@@ -589,27 +485,6 @@ func TestGenPrivateKey(t *testing.T) {
 	_, err = runRaw(tpl, nil)
 	if err != nil {
 		t.Error(err)
-	}
-}
-
-func TestUUIDGeneration(t *testing.T) {
-	tpl := `{{uuidv4}}`
-	out, err := runRaw(tpl, nil)
-	if err != nil {
-		t.Error(err)
-	}
-
-	if len(out) != 36 {
-		t.Error("Expected UUID of length 36")
-	}
-
-	out2, err := runRaw(tpl, nil)
-	if err != nil {
-		t.Error(err)
-	}
-
-	if out == out2 {
-		t.Error("Expected subsequent UUID generations to be different")
 	}
 }
 

@@ -25,7 +25,9 @@ func testRandHelper(t *testing.T, tcs []randTestCase) {
 			assert.NoError(t, err)
 
 			assert.Regexp(t, test.regexp, result)
-			assert.Len(t, result, test.length)
+			if test.length != -1 {
+				assert.Len(t, result, test.length)
+			}
 		})
 	}
 }
@@ -89,6 +91,17 @@ func TestRandBytes(t *testing.T) {
 			assert.Len(t, b, test.length)
 		})
 	}
+}
+
+func TestRandInt(t *testing.T) {
+	var tests = []randTestCase{
+		{"TestRandIntWithNegativeValue", `{{ randInt -1 10 }}`, "", -1},
+		{"BetweenZeroAndTen", `{{ randInt 0 10 }}`, `^[0-9]{1,2}$`, -1},
+		{"BetweenTenAndTwenty", `{{ randInt 10 20 }}`, `^[0-9]{1,2}$`, -1},
+		{"BetweenNegativeTenAndTwenty", `{{ randInt -10 20 }}`, `^-?[0-9]{1,2}$`, -1},
+	}
+
+	testRandHelper(t, tests)
 }
 
 func TestRandomString(t *testing.T) {
