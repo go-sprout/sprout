@@ -204,6 +204,25 @@ func (fh *FunctionHandler) Slice(list any, indices ...any) any {
 	return result
 }
 
+// Has checks if the specified element is present in the collection.
+//
+// Parameters:
+//
+//	element any - the element to search for.
+//	list any - the collection to search.
+//
+// Returns:
+//
+//	bool - true if the element is found, otherwise false.
+//
+// Example:
+//
+//	{{ ["value", "other"] | has "value" }} // Output: true
+func (fh *FunctionHandler) Has(element any, list any) bool {
+	result, _ := fh.MustHas(element, list)
+	return result
+}
+
 // Without returns a new list excluding specified elements.
 //
 // Parameters:
@@ -685,6 +704,45 @@ func (fh *FunctionHandler) MustSlice(list any, indices ...any) (any, error) {
 		return valueOfList.Slice(start, end).Interface(), nil
 	default:
 		return nil, fmt.Errorf("list should be type of slice or array but %s", tp)
+	}
+}
+
+// MustHas checks if a specified element is present in a collection and handles
+// type errors.
+//
+// Parameters:
+//
+//	element any - the element to search for in the collection.
+//	list any - the collection in which to search for the element.
+//
+// Returns:
+//
+//	bool - true if the element is found, otherwise false.
+//	error - error if the list is not a type that can be searched (not a slice or array).
+//
+// Example:
+//
+//	{{ [1, 2, 3, 4] | mustHas 3 }} // Output: true, nil
+func (fh *FunctionHandler) MustHas(element any, list any) (bool, error) {
+	if list == nil {
+		return false, nil
+	}
+	typeOfList := reflect.TypeOf(list).Kind()
+	switch typeOfList {
+	case reflect.Slice, reflect.Array:
+		valueOfList := reflect.ValueOf(list)
+		var item any
+		length := valueOfList.Len()
+		for i := 0; i < length; i++ {
+			item = valueOfList.Index(i).Interface()
+			if reflect.DeepEqual(element, item) {
+				return true, nil
+			}
+		}
+
+		return false, nil
+	default:
+		return false, fmt.Errorf("cannot find has on type %s", typeOfList)
 	}
 }
 

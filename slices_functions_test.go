@@ -100,6 +100,21 @@ func TestSlice(t *testing.T) {
 	runTestCases(t, tests)
 }
 
+func TestHas(t *testing.T) {
+	var tests = testCases{
+		{"", `{{ .V | has "a" }}`, "true", map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
+		{"", `{{ .V | has "a" }}`, "false", map[string]any{"V": []string{"b", "c", "d", "e"}}},
+		{"", `{{ .V | has 1 }}`, "true", map[string]any{"V": []any{"b", 1, nil, struct{}{}}}},
+		{"", `{{ .V | has .Nil }}`, "true", map[string]any{"Nil": nil, "V": []any{"b", 1, nil, struct{}{}}}},
+		{"", `{{ .V | has "nope" }}`, "false", map[string]any{"V": []any{"b", 1, nil, struct{}{}}}},
+		{"", `{{ .V | has 1 }}`, "true", map[string]any{"V": []int{1}}},
+		{"", `{{ .V | has "a" }}`, "false", map[string]any{"V": nil}},
+		{"", `{{ .V | has "a" }}`, "false", map[string]any{"V": 1}},
+	}
+
+	runTestCases(t, tests)
+}
+
 func TestWithout(t *testing.T) {
 	var tests = testCases{
 		{"", `{{ without .V "a" }}`, "[b c d e]", map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
@@ -272,6 +287,21 @@ func TestMustSlice(t *testing.T) {
 		{testCase{"", `{{ mustSlice .V 0 1 }}`, "[a]", map[string]any{"V": []string{"a", "b", "c", "d", "e"}}}, ""},
 		{testCase{"", `{{ mustSlice .V 0 1 }}`, "", map[string]any{"V": nil}}, "cannot slice nil"},
 		{testCase{"", `{{ mustSlice .V 0 1 }}`, "", map[string]any{"V": 1}}, "list should be type of slice or array but int"},
+	}
+
+	runMustTestCases(t, tests)
+}
+
+func TestMustHas(t *testing.T) {
+	var tests = mustTestCases{
+		{testCase{"", `{{ .V | mustHas "a" }}`, "true", map[string]any{"V": []string{"a", "b", "c", "d", "e"}}}, ""},
+		{testCase{"", `{{ .V | mustHas "a" }}`, "false", map[string]any{"V": []string{"b", "c", "d", "e"}}}, ""},
+		{testCase{"", `{{ .V | mustHas 1 }}`, "true", map[string]any{"V": []any{"b", 1, nil, struct{}{}}}}, ""},
+		{testCase{"", `{{ .V | mustHas .Nil }}`, "true", map[string]any{"Nil": nil, "V": []any{"b", 1, nil, struct{}{}}}}, ""},
+		{testCase{"", `{{ .V | mustHas "nope" }}`, "false", map[string]any{"V": []any{"b", 1, nil, struct{}{}}}}, ""},
+		{testCase{"", `{{ .V | mustHas 1 }}`, "true", map[string]any{"V": []int{1}}}, ""},
+		{testCase{"", `{{ .V | mustHas "a" }}`, "false", map[string]any{"V": nil}}, ""},
+		{testCase{"", `{{ .V | mustHas "a" }}`, "", map[string]any{"V": 1}}, "cannot find has on type int"},
 	}
 
 	runMustTestCases(t, tests)
