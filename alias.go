@@ -13,7 +13,6 @@ var bc_registerSprigFuncs = FunctionAliasMap{
 	"ellipsis":       {"abbrev"},                        //! Deprecated: Should use ellipsis instead
 	"ellipsisBoth":   {"abbrevboth"},                    //! Deprecated: Should use ellipsisBoth instead
 	"trimAll":        {"trimall"},                       //! Deprecated: Should use trimAll instead
-	"int":            {"atoi"},                          //! Deprecated: Should use toInt instead
 	"append":         {"push"},                          //! Deprecated: Should use append instead
 	"mustAppend":     {"mustPush"},                      //! Deprecated: Should use mustAppend instead
 	"list":           {"tuple"},                         // FIXME: with the addition of append/prepend these are no longer immutable.
@@ -40,6 +39,10 @@ var bc_registerSprigFuncs = FunctionAliasMap{
 	"expandEnv":      {"expandenv"},                     //! Deprecated: Should use expandEnv instead
 	"dateAgo":        {"ago"},                           //! Deprecated: Should use dateAgo instead
 	"strSlice":       {"toStrings"},                     //! Deprecated: Should use strSlice instead
+	"toInt":          {"int", "atoi"},                   //! Deprecated: Should use toInt instead
+	"toInt64":        {"int64"},                         //! Deprecated: Should use toInt64 instead
+	"toFloat64":      {"float64"},                       //! Deprecated: Should use toFloat64 instead
+	"toOctal":        {"toDecimal"},                     //! Deprecated: Should use toOctal instead
 }
 
 //\ BACKWARDS COMPATIBILITY

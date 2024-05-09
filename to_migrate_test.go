@@ -97,11 +97,6 @@ func TestUrlJoin(t *testing.T) {
 
 }
 
-func TestToString(t *testing.T) {
-	tpl := `{{ toString 1 | kindOf }}`
-	assert.NoError(t, runt(tpl, "string"))
-}
-
 func TestSemverCompare(t *testing.T) {
 	tests := map[string]string{
 		`{{ semverCompare "1.2.3" "1.2.3" }}`:  `true`,
@@ -123,135 +118,6 @@ func TestSemver(t *testing.T) {
 	}
 	for tpl, expect := range tests {
 		assert.NoError(t, runt(tpl, expect))
-	}
-}
-
-func TestToFloat64(t *testing.T) {
-	fh := NewFunctionHandler()
-	target := float64(102)
-	if target != fh.ToFloat64(int8(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToFloat64(int(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToFloat64(int32(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToFloat64(int16(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToFloat64(int64(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToFloat64("102") {
-		t.Errorf("Expected 102")
-	}
-	if 0 != fh.ToFloat64("frankie") {
-		t.Errorf("Expected 0")
-	}
-	if target != fh.ToFloat64(uint16(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToFloat64(uint64(102)) {
-		t.Errorf("Expected 102")
-	}
-	if 102.1234 != fh.ToFloat64(float64(102.1234)) {
-		t.Errorf("Expected 102.1234")
-	}
-	if 1 != fh.ToFloat64(true) {
-		t.Errorf("Expected 102")
-	}
-}
-func TestToInt64(t *testing.T) {
-	fh := NewFunctionHandler()
-	target := int64(102)
-	if target != fh.ToInt64(int8(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt64(int(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt64(int32(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt64(int16(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt64(int64(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt64("102") {
-		t.Errorf("Expected 102")
-	}
-	if 0 != fh.ToInt64("frankie") {
-		t.Errorf("Expected 0")
-	}
-	if target != fh.ToInt64(uint16(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt64(uint64(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt64(float64(102.1234)) {
-		t.Errorf("Expected 102")
-	}
-	if 1 != fh.ToInt64(true) {
-		t.Errorf("Expected 102")
-	}
-}
-
-func TestToInt(t *testing.T) {
-	fh := NewFunctionHandler()
-	target := int(102)
-	if target != fh.ToInt(int8(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt(int(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt(int32(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt(int16(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt(int64(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt("102") {
-		t.Errorf("Expected 102")
-	}
-	if 0 != fh.ToInt("frankie") {
-		t.Errorf("Expected 0")
-	}
-	if target != fh.ToInt(uint16(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt(uint64(102)) {
-		t.Errorf("Expected 102")
-	}
-	if target != fh.ToInt(float64(102.1234)) {
-		t.Errorf("Expected 102")
-	}
-	if 1 != fh.ToInt(true) {
-		t.Errorf("Expected 102")
-	}
-}
-
-func TestToDecimal(t *testing.T) {
-	tests := map[interface{}]int64{
-		"777": 511,
-		777:   511,
-		770:   504,
-		755:   493,
-	}
-
-	for input, expectedResult := range tests {
-		result := NewFunctionHandler().ToDecimal(input)
-		if result != expectedResult {
-			t.Errorf("Expected %v but got %v", expectedResult, result)
-		}
 	}
 }
 
@@ -323,13 +189,6 @@ func runRaw(tpl string, vars interface{}) (string, error) {
 		return "", err
 	}
 	return b.String(), nil
-}
-
-func TestToDate(t *testing.T) {
-	tpl := `{{toDate "2006-01-02" "2017-12-31" | date "02/01/2006"}}`
-	if err := runt(tpl, "31/12/2017"); err != nil {
-		t.Error(err)
-	}
 }
 
 const (

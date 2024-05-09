@@ -383,7 +383,7 @@ func (fh *FunctionHandler) SortAlpha(list any) []string {
 		sortedList.Sort()
 		return sortedList
 	}
-	return []string{fh.Strval(list)}
+	return []string{fh.ToString(list)}
 }
 
 // SplitList divides a string into a slice of substrings separated by the
@@ -422,7 +422,7 @@ func (fh *FunctionHandler) StrSlice(value any) []string {
 		var result []string
 		for _, s := range interfaces {
 			if s != nil {
-				result = append(result, fh.Strval(s))
+				result = append(result, fh.ToString(s))
 			}
 		}
 		return result
@@ -435,14 +435,14 @@ func (fh *FunctionHandler) StrSlice(value any) []string {
 		for i := 0; i < reflectedValue.Len(); i++ {
 			value := reflectedValue.Index(i).Interface()
 			if value != nil {
-				result = append(result, fh.Strval(value))
+				result = append(result, fh.ToString(value))
 			}
 		}
 		return result
 	}
 
 	// If it's not a slice, array, or nil, return a slice with the string representation of v.
-	return []string{fh.Strval(value)}
+	return []string{fh.ToString(value)}
 }
 
 // MustAppend appends an element to a slice or array, returning an error if the

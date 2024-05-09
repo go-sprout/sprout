@@ -179,7 +179,8 @@ Without: {{without (list 1 2 3) 2}} | {{without (list 1 2 3) 2 3}}
 HasKey: {{hasKey $dict "key"}}
 Slice: {{slice (list 1 2 3) 1 2}} | {{slice (list 1 2 3) 1}}
 Concat: {{concat (list 1 2) (list 3 4)}}
-Dig: {{dict "a" 1 | dig "a" ""}}
+# Incompatible with sprig
+# Dig: {{/* dig "b" "a" (dict "a" 1 "b" (dict "a" 2)) */}}
 Chunk: {{list 1 2 3 4 5 | chunk 2}}
 
 {{/* Crypt Functions */}}

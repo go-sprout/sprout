@@ -30,7 +30,7 @@ func (fh *FunctionHandler) Dict(values ...any) map[string]any {
 	dict := make(map[string]any, len(values)/2)
 
 	for i := 0; i < len(values); i += 2 {
-		dict[fh.Strval(values[i])] = values[i+1]
+		dict[fh.ToString(values[i])] = values[i+1]
 	}
 
 	return dict

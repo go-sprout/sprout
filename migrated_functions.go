@@ -30,32 +30,14 @@ import (
 	"net"
 	"net/url"
 	"reflect"
-	"strconv"
 	"strings"
 	"time"
 
 	sv2 "github.com/Masterminds/semver/v3"
 	"github.com/shopspring/decimal"
-	"github.com/spf13/cast"
 	bcrypt_lib "golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/scrypt"
 )
-
-func (fh *FunctionHandler) Strval(v any) string {
-	switch v := v.(type) {
-	case string:
-		return v
-	case []byte:
-		return string(v)
-	case error:
-		return v.Error()
-	case fmt.Stringer:
-		return v.String()
-	default:
-		// Handles any other types by leveraging fmt.Sprintf for a string representation.
-		return fmt.Sprintf("%v", v)
-	}
-}
 
 func (fh *FunctionHandler) FillMapWithParts(parts []string) map[string]string {
 	res := make(map[string]string, len(parts))
@@ -122,26 +104,6 @@ func (fh *FunctionHandler) UrlJoin(d map[string]any) string {
 	return resURL.String()
 }
 
-func (fh *FunctionHandler) ToFloat64(v any) float64 {
-	return cast.ToFloat64(v)
-}
-
-func (fh *FunctionHandler) ToInt(v any) int {
-	return cast.ToInt(v)
-}
-
-func (fh *FunctionHandler) ToInt64(v any) int64 {
-	return cast.ToInt64(v)
-}
-
-func (fh *FunctionHandler) ToDecimal(v any) int64 {
-	result, err := strconv.ParseInt(fmt.Sprint(v), 8, 64)
-	if err != nil {
-		return 0
-	}
-	return result
-}
-
 func (fh *FunctionHandler) IntArrayToString(slice []int, delimeter string) string {
 	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(slice)), delimeter), "[]")
 }
@@ -169,15 +131,6 @@ func (fh *FunctionHandler) InList(haystack []any, needle any) bool {
 		}
 	}
 	return false
-}
-
-func (fh *FunctionHandler) ToDate(fmt, str string) time.Time {
-	t, _ := time.ParseInLocation(fmt, str, time.Local)
-	return t
-}
-
-func (fh *FunctionHandler) MustToDate(fmt, str string) (time.Time, error) {
-	return time.ParseInLocation(fmt, str, time.Local)
 }
 
 func (fh *FunctionHandler) SemverCompare(constraint, version string) (bool, error) {
