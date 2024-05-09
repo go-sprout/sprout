@@ -66,3 +66,7 @@ In sprout all these functions return nil when an error occurs.
 ### MustAppend, MustPrepend, MustConcat, MustChunk, MustUniq, MustCompact, MustSlice, MustWithout, MustRest, MustInitial, MustReverse
 In sprig all these functions cause segfault when lsit are nil.
 In sprout all these functions return nil and an error when an error occurs.
+
+### Has, Dig
+In sprig this function cause internal panic.
+In sprout this function return false when an error occurs.
