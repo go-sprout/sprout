@@ -1,3 +1,24 @@
+/**
+ * This file lists the functions originally part of the Sprig library that are
+ * intentionally excluded from the Sprout library. The exclusions are based on\
+ * community decisions and technical evaluations aimed at enhancing security,
+ * relevance, and performance in the context of Go templates.
+ * Each exclusion is supported by rational and further community discussions
+ * can be found on our GitHub issues page.
+ *
+ * Exclusion Criteria:
+ * 1. Crypto functions: Deemed inappropriate for Go templates due to inherent security risks.
+ * 2. Irrelevant functions: Omitted because they do not provide utility in the context of Go templates.
+ * 3. Deprecated/Insecure: Functions using outdated or insecure standards are excluded.
+ * 4. Temporary exclusions: Certain functions are temporarily excluded to prevent breaking changes,
+ *    pending the implementation of the new loader feature.
+ * 5. Community decision: Choices made by the community are documented and can be discussed at
+ *    https://github.com/42atomys/sprout/issues/1.
+ *
+ * The Sprout library is an open-source project and welcomes contributions from the community.
+ * To discuss existing exclusions or propose new ones, please contribute to the discussions on
+ * our GitHub repository.
+ */
 package sprout
 
 import (
@@ -10,7 +31,7 @@ import (
 	"crypto/ed25519"
 	"crypto/elliptic"
 	"crypto/hmac"
-	"crypto/rand"
+	cryptorand "crypto/rand"
 	"crypto/rsa"
 	"crypto/sha1"
 	"crypto/sha256"
@@ -26,72 +47,115 @@ import (
 	"hash/adler32"
 	"io"
 	"math/big"
+	mathrand "math/rand"
 	"net"
+	"net/url"
+	"reflect"
+	"strings"
 	"time"
 
-	"strings"
-
-	"github.com/google/uuid"
+	sv2 "github.com/Masterminds/semver/v3"
 	bcrypt_lib "golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/scrypt"
 )
 
-type cryptoRandomStringOpts struct {
-	letters bool
-	numbers bool
-	ascii   bool
-	chars   []rune
-}
-
-func cryptoRandomString(count int, opts cryptoRandomStringOpts) string {
-	source := []rune{}
-	if opts.chars == nil {
-		if opts.ascii {
-			for i := 32; i <= 126; i++ {
-				source = append(source, rune(i))
-			}
-		}
-
-		if opts.letters {
-			for i := 'a'; i <= 'z'; i++ {
-				source = append(source, i)
-			}
-			for i := 'A'; i <= 'Z'; i++ {
-				source = append(source, i)
-			}
-		}
-		if opts.numbers {
-			for i := '0'; i <= '9'; i++ {
-				source = append(source, i)
-			}
-		}
+func (fh *FunctionHandler) UrlParse(v string) map[string]any {
+	dict := map[string]any{}
+	parsedURL, err := url.Parse(v)
+	if err != nil {
+		panic(fmt.Sprintf("unable to parse url: %s", err))
+	}
+	dict["scheme"] = parsedURL.Scheme
+	dict["host"] = parsedURL.Host
+	dict["hostname"] = parsedURL.Hostname()
+	dict["path"] = parsedURL.Path
+	dict["query"] = parsedURL.RawQuery
+	dict["opaque"] = parsedURL.Opaque
+	dict["fragment"] = parsedURL.Fragment
+	if parsedURL.User != nil {
+		dict["userinfo"] = parsedURL.User.String()
+	} else {
+		dict["userinfo"] = ""
 	}
 
-	// Generate random string
-	return strings.Map(func(r rune) rune {
-		if bigInt, err := rand.Int(rand.Reader, big.NewInt(int64(len(source)))); err == nil {
-			return source[bigInt.Int64()]
-		}
-		return rune(-1) // Should not happen, indicates an error
-	}, strings.Repeat(" ", count))
+	return dict
 }
 
-func sha256sum(input string) string {
+func (fh *FunctionHandler) UrlJoin(d map[string]any) string {
+	resURL := url.URL{
+		Scheme:   fh.Get(d, "scheme").(string),
+		Host:     fh.Get(d, "host").(string),
+		Path:     fh.Get(d, "path").(string),
+		RawQuery: fh.Get(d, "query").(string),
+		Opaque:   fh.Get(d, "opaque").(string),
+		Fragment: fh.Get(d, "fragment").(string),
+	}
+	userinfo := fh.Get(d, "userinfo").(string)
+	var user *url.Userinfo
+	if userinfo != "" {
+		tempURL, err := url.Parse(fmt.Sprintf("proto://%s@host", userinfo))
+		if err != nil {
+			panic(fmt.Sprintf("unable to parse userinfo in dict: %s", err))
+		}
+		user = tempURL.User
+	}
+
+	resURL.User = user
+	return resURL.String()
+}
+
+func (fh *FunctionHandler) GetHostByName(name string) string {
+	addrs, _ := net.LookupHost(name)
+	//TODO: add error handing when release v3 comes out
+	return addrs[mathrand.Intn(len(addrs))]
+}
+
+func (fh *FunctionHandler) InList(haystack []any, needle any) bool {
+	for _, h := range haystack {
+		if reflect.DeepEqual(needle, h) {
+			return true
+		}
+	}
+	return false
+}
+
+func (fh *FunctionHandler) SemverCompare(constraint, version string) (bool, error) {
+	c, err := sv2.NewConstraint(constraint)
+	if err != nil {
+		return false, err
+	}
+
+	v, err := sv2.NewVersion(version)
+	if err != nil {
+		return false, err
+	}
+
+	return c.Check(v), nil
+}
+
+func (fh *FunctionHandler) Semver(version string) (*sv2.Version, error) {
+	return sv2.NewVersion(version)
+}
+
+// //////////
+// CRYPTO //
+// //////////
+func (fh *FunctionHandler) Sha256sum(input string) string {
 	hash := sha256.Sum256([]byte(input))
 	return hex.EncodeToString(hash[:])
 }
 
-func sha1sum(input string) string {
+func (fh *FunctionHandler) Sha1sum(input string) string {
 	hash := sha1.Sum([]byte(input))
 	return hex.EncodeToString(hash[:])
 }
 
-func adler32sum(input string) string {
+func (fh *FunctionHandler) Adler32sum(input string) string {
 	hash := adler32.Checksum([]byte(input))
 	return fmt.Sprintf("%d", hash)
 }
 
-func bcrypt(input string) string {
+func (fh *FunctionHandler) Bcrypt(input string) string {
 	hash, err := bcrypt_lib.GenerateFromPassword([]byte(input), bcrypt_lib.DefaultCost)
 	if err != nil {
 		return fmt.Sprintf("failed to encrypt string with bcrypt: %s", err)
@@ -100,24 +164,11 @@ func bcrypt(input string) string {
 	return string(hash)
 }
 
-func htpasswd(username string, password string) string {
+func (fh *FunctionHandler) Htpasswd(username string, password string) string {
 	if strings.Contains(username, ":") {
 		return fmt.Sprintf("invalid username: %s", username)
 	}
-	return fmt.Sprintf("%s:%s", username, bcrypt(password))
-}
-
-func randBytes(count int) (string, error) {
-	buf := make([]byte, count)
-	if _, err := rand.Read(buf); err != nil {
-		return "", err
-	}
-	return base64.StdEncoding.EncodeToString(buf), nil
-}
-
-// uuidv4 provides a safe and secure UUID v4 implementation
-func uuidv4() string {
-	return uuid.New().String()
+	return fmt.Sprintf("%s:%s", username, fh.Bcrypt(password))
 }
 
 var masterPasswordSeed = "com.lyndir.masterpassword"
@@ -147,7 +198,7 @@ var templateCharacters = map[byte]string{
 	'x': "AEIOUaeiouBCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz0123456789!@#$%^&*()",
 }
 
-func derivePassword(counter uint32, passwordType, password, user, site string) string {
+func (fh *FunctionHandler) DerivePassword(counter uint32, passwordType, password, user, site string) string {
 	var templates = passwordTypeTemplates[passwordType]
 	if templates == nil {
 		return fmt.Sprintf("cannot find password template %s", passwordType)
@@ -184,26 +235,26 @@ func derivePassword(counter uint32, passwordType, password, user, site string) s
 	return buffer.String()
 }
 
-func generatePrivateKey(typ string) string {
+func (fh *FunctionHandler) GeneratePrivateKey(typ string) string {
 	var priv interface{}
 	var err error
 	switch typ {
 	case "", "rsa":
 		// good enough for government work
-		priv, err = rsa.GenerateKey(rand.Reader, 4096)
+		priv, err = rsa.GenerateKey(cryptorand.Reader, 4096)
 	case "dsa":
 		key := new(dsa.PrivateKey)
 		// again, good enough for government work
-		if err = dsa.GenerateParameters(&key.Parameters, rand.Reader, dsa.L2048N256); err != nil {
+		if err = dsa.GenerateParameters(&key.Parameters, cryptorand.Reader, dsa.L2048N256); err != nil {
 			return fmt.Sprintf("failed to generate dsa params: %s", err)
 		}
-		err = dsa.GenerateKey(key, rand.Reader)
+		err = dsa.GenerateKey(key, cryptorand.Reader)
 		priv = key
 	case "ecdsa":
 		// again, good enough for government work
-		priv, err = ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+		priv, err = ecdsa.GenerateKey(elliptic.P256(), cryptorand.Reader)
 	case "ed25519":
-		_, priv, err = ed25519.GenerateKey(rand.Reader)
+		_, priv, err = ed25519.GenerateKey(cryptorand.Reader)
 	default:
 		return "Unknown type " + typ
 	}
@@ -211,7 +262,7 @@ func generatePrivateKey(typ string) string {
 		return fmt.Sprintf("failed to generate private key: %s", err)
 	}
 
-	return string(pem.EncodeToMemory(pemBlockForKey(priv)))
+	return string(pem.EncodeToMemory(fh.PemBlockForKey(priv)))
 }
 
 // DSAKeyFormat stores the format for DSA keys.
@@ -221,7 +272,7 @@ type DSAKeyFormat struct {
 	P, Q, G, Y, X *big.Int
 }
 
-func pemBlockForKey(priv interface{}) *pem.Block {
+func (fh *FunctionHandler) PemBlockForKey(priv interface{}) *pem.Block {
 	switch k := priv.(type) {
 	case *rsa.PrivateKey:
 		return &pem.Block{Type: "RSA PRIVATE KEY", Bytes: x509.MarshalPKCS1PrivateKey(k)}
@@ -245,7 +296,7 @@ func pemBlockForKey(priv interface{}) *pem.Block {
 	}
 }
 
-func parsePrivateKeyPEM(pemBlock string) (crypto.PrivateKey, error) {
+func (fh *FunctionHandler) ParsePrivateKeyPEM(pemBlock string) (crypto.PrivateKey, error) {
 	block, _ := pem.Decode([]byte(pemBlock))
 	if block == nil {
 		return nil, errors.New("no PEM data in input")
@@ -295,7 +346,7 @@ func parsePrivateKeyPEM(pemBlock string) (crypto.PrivateKey, error) {
 	}
 }
 
-func getPublicKey(priv crypto.PrivateKey) (crypto.PublicKey, error) {
+func (fh *FunctionHandler) GetPublicKey(priv crypto.PrivateKey) (crypto.PublicKey, error) {
 	switch k := priv.(type) {
 	case interface{ Public() crypto.PublicKey }:
 		return k.Public(), nil
@@ -311,7 +362,7 @@ type certificate struct {
 	Key  string
 }
 
-func buildCustomCertificate(b64cert string, b64key string) (certificate, error) {
+func (fh *FunctionHandler) BuildCustomCertificate(b64cert string, b64key string) (certificate, error) {
 	crt := certificate{}
 
 	cert, err := base64.StdEncoding.DecodeString(b64cert)
@@ -336,7 +387,7 @@ func buildCustomCertificate(b64cert string, b64key string) (certificate, error) 
 		)
 	}
 
-	_, err = parsePrivateKeyPEM(string(key))
+	_, err = fh.ParsePrivateKeyPEM(string(key))
 	if err != nil {
 		return crt, fmt.Errorf(
 			"error parsing private key: %s",
@@ -350,38 +401,38 @@ func buildCustomCertificate(b64cert string, b64key string) (certificate, error) 
 	return crt, nil
 }
 
-func generateCertificateAuthority(
+func (fh *FunctionHandler) GenerateCertificateAuthority(
 	cn string,
 	daysValid int,
 ) (certificate, error) {
-	priv, err := rsa.GenerateKey(rand.Reader, 2048)
+	priv, err := rsa.GenerateKey(cryptorand.Reader, 2048)
 	if err != nil {
 		return certificate{}, fmt.Errorf("error generating rsa key: %s", err)
 	}
 
-	return generateCertificateAuthorityWithKeyInternal(cn, daysValid, priv)
+	return fh.GenerateCertificateAuthorityWithKeyInternal(cn, daysValid, priv)
 }
 
-func generateCertificateAuthorityWithPEMKey(
+func (fh *FunctionHandler) GenerateCertificateAuthorityWithPEMKey(
 	cn string,
 	daysValid int,
 	privPEM string,
 ) (certificate, error) {
-	priv, err := parsePrivateKeyPEM(privPEM)
+	priv, err := fh.ParsePrivateKeyPEM(privPEM)
 	if err != nil {
 		return certificate{}, fmt.Errorf("parsing private key: %s", err)
 	}
-	return generateCertificateAuthorityWithKeyInternal(cn, daysValid, priv)
+	return fh.GenerateCertificateAuthorityWithKeyInternal(cn, daysValid, priv)
 }
 
-func generateCertificateAuthorityWithKeyInternal(
+func (fh *FunctionHandler) GenerateCertificateAuthorityWithKeyInternal(
 	cn string,
 	daysValid int,
 	priv crypto.PrivateKey,
 ) (certificate, error) {
 	ca := certificate{}
 
-	template, err := getBaseCertTemplate(cn, nil, nil, daysValid)
+	template, err := fh.GetBaseCertTemplate(cn, nil, nil, daysValid)
 	if err != nil {
 		return ca, err
 	}
@@ -391,39 +442,39 @@ func generateCertificateAuthorityWithKeyInternal(
 		x509.KeyUsageCertSign
 	template.IsCA = true
 
-	ca.Cert, ca.Key, err = getCertAndKey(template, priv, template, priv)
+	ca.Cert, ca.Key, err = fh.GetCertAndKey(template, priv, template, priv)
 
 	return ca, err
 }
 
-func generateSelfSignedCertificate(
+func (fh *FunctionHandler) GenerateSelfSignedCertificate(
 	cn string,
 	ips []interface{},
 	alternateDNS []interface{},
 	daysValid int,
 ) (certificate, error) {
-	priv, err := rsa.GenerateKey(rand.Reader, 2048)
+	priv, err := rsa.GenerateKey(cryptorand.Reader, 2048)
 	if err != nil {
 		return certificate{}, fmt.Errorf("error generating rsa key: %s", err)
 	}
-	return generateSelfSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, priv)
+	return fh.GenerateSelfSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, priv)
 }
 
-func generateSelfSignedCertificateWithPEMKey(
+func (fh *FunctionHandler) GenerateSelfSignedCertificateWithPEMKey(
 	cn string,
 	ips []interface{},
 	alternateDNS []interface{},
 	daysValid int,
 	privPEM string,
 ) (certificate, error) {
-	priv, err := parsePrivateKeyPEM(privPEM)
+	priv, err := fh.ParsePrivateKeyPEM(privPEM)
 	if err != nil {
 		return certificate{}, fmt.Errorf("parsing private key: %s", err)
 	}
-	return generateSelfSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, priv)
+	return fh.GenerateSelfSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, priv)
 }
 
-func generateSelfSignedCertificateWithKeyInternal(
+func (fh *FunctionHandler) GenerateSelfSignedCertificateWithKeyInternal(
 	cn string,
 	ips []interface{},
 	alternateDNS []interface{},
@@ -432,31 +483,31 @@ func generateSelfSignedCertificateWithKeyInternal(
 ) (certificate, error) {
 	cert := certificate{}
 
-	template, err := getBaseCertTemplate(cn, ips, alternateDNS, daysValid)
+	template, err := fh.GetBaseCertTemplate(cn, ips, alternateDNS, daysValid)
 	if err != nil {
 		return cert, err
 	}
 
-	cert.Cert, cert.Key, err = getCertAndKey(template, priv, template, priv)
+	cert.Cert, cert.Key, err = fh.GetCertAndKey(template, priv, template, priv)
 
 	return cert, err
 }
 
-func generateSignedCertificate(
+func (fh *FunctionHandler) GenerateSignedCertificate(
 	cn string,
 	ips []interface{},
 	alternateDNS []interface{},
 	daysValid int,
 	ca certificate,
 ) (certificate, error) {
-	priv, err := rsa.GenerateKey(rand.Reader, 2048)
+	priv, err := rsa.GenerateKey(cryptorand.Reader, 2048)
 	if err != nil {
 		return certificate{}, fmt.Errorf("error generating rsa key: %s", err)
 	}
-	return generateSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, ca, priv)
+	return fh.GenerateSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, ca, priv)
 }
 
-func generateSignedCertificateWithPEMKey(
+func (fh *FunctionHandler) GenerateSignedCertificateWithPEMKey(
 	cn string,
 	ips []interface{},
 	alternateDNS []interface{},
@@ -464,14 +515,14 @@ func generateSignedCertificateWithPEMKey(
 	ca certificate,
 	privPEM string,
 ) (certificate, error) {
-	priv, err := parsePrivateKeyPEM(privPEM)
+	priv, err := fh.ParsePrivateKeyPEM(privPEM)
 	if err != nil {
 		return certificate{}, fmt.Errorf("parsing private key: %s", err)
 	}
-	return generateSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, ca, priv)
+	return fh.GenerateSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, ca, priv)
 }
 
-func generateSignedCertificateWithKeyInternal(
+func (fh *FunctionHandler) GenerateSignedCertificateWithKeyInternal(
 	cn string,
 	ips []interface{},
 	alternateDNS []interface{},
@@ -492,7 +543,7 @@ func generateSignedCertificateWithKeyInternal(
 			err,
 		)
 	}
-	signerKey, err := parsePrivateKeyPEM(ca.Key)
+	signerKey, err := fh.ParsePrivateKeyPEM(ca.Key)
 	if err != nil {
 		return cert, fmt.Errorf(
 			"error parsing private key: %s",
@@ -500,12 +551,12 @@ func generateSignedCertificateWithKeyInternal(
 		)
 	}
 
-	template, err := getBaseCertTemplate(cn, ips, alternateDNS, daysValid)
+	template, err := fh.GetBaseCertTemplate(cn, ips, alternateDNS, daysValid)
 	if err != nil {
 		return cert, err
 	}
 
-	cert.Cert, cert.Key, err = getCertAndKey(
+	cert.Cert, cert.Key, err = fh.GetCertAndKey(
 		template,
 		priv,
 		signerCert,
@@ -515,18 +566,18 @@ func generateSignedCertificateWithKeyInternal(
 	return cert, err
 }
 
-func getCertAndKey(
+func (fh *FunctionHandler) GetCertAndKey(
 	template *x509.Certificate,
 	signeeKey crypto.PrivateKey,
 	parent *x509.Certificate,
 	signingKey crypto.PrivateKey,
 ) (string, string, error) {
-	signeePubKey, err := getPublicKey(signeeKey)
+	signeePubKey, err := fh.GetPublicKey(signeeKey)
 	if err != nil {
 		return "", "", fmt.Errorf("error retrieving public key from signee key: %s", err)
 	}
 	derBytes, err := x509.CreateCertificate(
-		rand.Reader,
+		cryptorand.Reader,
 		template,
 		parent,
 		signeePubKey,
@@ -547,7 +598,7 @@ func getCertAndKey(
 	keyBuffer := bytes.Buffer{}
 	if err := pem.Encode(
 		&keyBuffer,
-		pemBlockForKey(signeeKey),
+		fh.PemBlockForKey(signeeKey),
 	); err != nil {
 		return "", "", fmt.Errorf("error pem-encoding key: %s", err)
 	}
@@ -555,22 +606,22 @@ func getCertAndKey(
 	return certBuffer.String(), keyBuffer.String(), nil
 }
 
-func getBaseCertTemplate(
+func (fh *FunctionHandler) GetBaseCertTemplate(
 	cn string,
 	ips []interface{},
 	alternateDNS []interface{},
 	daysValid int,
 ) (*x509.Certificate, error) {
-	ipAddresses, err := getNetIPs(ips)
+	ipAddresses, err := fh.GetNetIPs(ips)
 	if err != nil {
 		return nil, err
 	}
-	dnsNames, err := getAlternateDNSStrs(alternateDNS)
+	dnsNames, err := fh.GetAlternateDNSStrs(alternateDNS)
 	if err != nil {
 		return nil, err
 	}
 	serialNumberUpperBound := new(big.Int).Lsh(big.NewInt(1), 128)
-	serialNumber, err := rand.Int(rand.Reader, serialNumberUpperBound)
+	serialNumber, err := cryptorand.Int(cryptorand.Reader, serialNumberUpperBound)
 	if err != nil {
 		return nil, err
 	}
@@ -592,7 +643,7 @@ func getBaseCertTemplate(
 	}, nil
 }
 
-func getNetIPs(ips []interface{}) ([]net.IP, error) {
+func (fh *FunctionHandler) GetNetIPs(ips []interface{}) ([]net.IP, error) {
 	if ips == nil {
 		return []net.IP{}, nil
 	}
@@ -614,7 +665,7 @@ func getNetIPs(ips []interface{}) ([]net.IP, error) {
 	return netIPs, nil
 }
 
-func getAlternateDNSStrs(alternateDNS []interface{}) ([]string, error) {
+func (fh *FunctionHandler) GetAlternateDNSStrs(alternateDNS []interface{}) ([]string, error) {
 	if alternateDNS == nil {
 		return []string{}, nil
 	}
@@ -634,7 +685,7 @@ func getAlternateDNSStrs(alternateDNS []interface{}) ([]string, error) {
 	return alternateDNSStrs, nil
 }
 
-func encryptAES(password string, plaintext string) (string, error) {
+func (fh *FunctionHandler) EncryptAES(password string, plaintext string) (string, error) {
 	if plaintext == "" {
 		return "", nil
 	}
@@ -655,7 +706,7 @@ func encryptAES(password string, plaintext string) (string, error) {
 	ciphertext := make([]byte, aes.BlockSize+len(content))
 
 	iv := ciphertext[:aes.BlockSize]
-	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+	if _, err := io.ReadFull(cryptorand.Reader, iv); err != nil {
 		return "", err
 	}
 
@@ -665,7 +716,7 @@ func encryptAES(password string, plaintext string) (string, error) {
 	return base64.StdEncoding.EncodeToString(ciphertext), nil
 }
 
-func decryptAES(password string, crypt64 string) (string, error) {
+func (fh *FunctionHandler) DecryptAES(password string, crypt64 string) (string, error) {
 	if crypt64 == "" {
 		return "", nil
 	}

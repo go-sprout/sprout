@@ -83,26 +83,5 @@ func TestFuncMap_IncludesHello(t *testing.T) {
 	helloFunc, ok := funcMap["hello"].(func() string)
 	assert.True(t, ok)
 
-	assert.Equal(t, "Hello, World!", helloFunc())
-}
-
-// This test ensures backward compatibility by checking if FuncMap (the function mentioned in the comment) exists or needs to be implemented for the test.
-func TestFuncMap_BackwardCompatibility(t *testing.T) {
-	// Assuming FuncMap() is implemented and returns a template.FuncMap
-	// Replace the implementation details as per actual FuncMap function.
-	genericMap["TestFuncMap_BackwardCompatibility"] = func() string {
-		return "example"
-	}
-
-	funcMap := FuncMap()
-	exampleFunc, exists := funcMap["TestFuncMap_BackwardCompatibility"]
-	assert.True(t, exists)
-
-	result, ok := exampleFunc.(func() string)
-	assert.True(t, ok)
-	assert.Equal(t, "example", result())
-
-	helloFunc, ok := funcMap["hello"].(func() string)
-	assert.True(t, ok)
-	assert.Equal(t, "Hello, World!", helloFunc())
+	assert.Equal(t, "Hello!", helloFunc())
 }

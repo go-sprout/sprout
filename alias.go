@@ -7,17 +7,42 @@ type FunctionAliasMap map[string][]string
 // The following functions are provided for backwards compatibility with the
 // original sprig methods. They are not recommended for use in new code.
 var bc_registerSprigFuncs = FunctionAliasMap{
-	"dateModify":     {"date_modify"},      //! Deprecated: Should use dateModify instead
-	"dateInZone":     {"date_in_zone"},     //! Deprecated: Should use dateInZone instead
-	"mustDateModify": {"must_date_modify"}, //! Deprecated: Should use mustDateModify instead
-	"ellipsis":       {"abbrev"},           //! Deprecated: Should use ellipsis instead
-	"ellipsisBoth":   {"abbrevboth"},       //! Deprecated: Should use ellipsisBoth instead
-	"trimAll":        {"trimall"},          //! Deprecated: Should use trimAll instead
-	"int":            {"atoi"},             //! Deprecated: Should use toInt instead
-	"append":         {"push"},             //! Deprecated: Should use append instead
-	"mustAppend":     {"mustPush"},         //! Deprecated: Should use mustAppend instead
-	"list":           {"tuple"},            // FIXME: with the addition of append/prepend these are no longer immutable.
-	"max":            {"biggest"},
+	"dateModify":     {"date_modify"},                   //! Deprecated: Should use dateModify instead
+	"dateInZone":     {"date_in_zone"},                  //! Deprecated: Should use dateInZone instead
+	"mustDateModify": {"must_date_modify"},              //! Deprecated: Should use mustDateModify instead
+	"ellipsis":       {"abbrev"},                        //! Deprecated: Should use ellipsis instead
+	"ellipsisBoth":   {"abbrevboth"},                    //! Deprecated: Should use ellipsisBoth instead
+	"trimAll":        {"trimall"},                       //! Deprecated: Should use trimAll instead
+	"append":         {"push"},                          //! Deprecated: Should use append instead
+	"mustAppend":     {"mustPush"},                      //! Deprecated: Should use mustAppend instead
+	"list":           {"tuple"},                         // FIXME: with the addition of append/prepend these are no longer immutable.
+	"max":            {"biggest"},                       //! Deprecated: Should use max instead
+	"toUpper":        {"upper", "toupper", "uppercase"}, //! Deprecated: Should use toUpper instead
+	"toLower":        {"lower", "tolower", "lowercase"}, //! Deprecated: Should use toLower instead
+	"add":            {"addf"},                          //! Deprecated: Should use add instead
+	"add1":           {"add1f"},                         //! Deprecated: Should use add1 instead
+	"sub":            {"subf"},                          //! Deprecated: Should use sub instead
+	"toTitleCase":    {"title", "titlecase"},            //! Deprecated: Should use toTitleCase instead
+	"toCamelCase":    {"camel", "camelcase"},            //! Deprecated: Should use toCamelCase instead
+	"toSnakeCase":    {"snake", "snakecase"},            //! Deprecated: Should use toSnakeCase instead
+	"toKebabCase":    {"kebab", "kebabcase"},            //! Deprecated: Should use toKebabCase instead
+	"swapCase":       {"swapcase"},                      //! Deprecated: Should use swapCase instead
+	"base64Encode":   {"b64enc"},                        //! Deprecated: Should use base64Encode instead
+	"base64Decode":   {"b64dec"},                        //! Deprecated: Should use base64Decode instead
+	"base32Encode":   {"b32enc"},                        //! Deprecated: Should use base32Encode instead
+	"base32Decode":   {"b32dec"},                        //! Deprecated: Should use base32Decode instead
+	"pathBase":       {"base"},                          //! Deprecated: Should use pathBase instead
+	"pathDir":        {"dir"},                           //! Deprecated: Should use pathDir instead
+	"pathExt":        {"ext"},                           //! Deprecated: Should use pathExt instead
+	"pathClean":      {"clean"},                         //! Deprecated: Should use pathClean instead
+	"pathIsAbs":      {"isAbs"},                         //! Deprecated: Should use pathIsAbs instead
+	"expandEnv":      {"expandenv"},                     //! Deprecated: Should use expandEnv instead
+	"dateAgo":        {"ago"},                           //! Deprecated: Should use dateAgo instead
+	"strSlice":       {"toStrings"},                     //! Deprecated: Should use strSlice instead
+	"toInt":          {"int", "atoi"},                   //! Deprecated: Should use toInt instead
+	"toInt64":        {"int64"},                         //! Deprecated: Should use toInt64 instead
+	"toFloat64":      {"float64"},                       //! Deprecated: Should use toFloat64 instead
+	"toOctal":        {"toDecimal"},                     //! Deprecated: Should use toOctal instead
 }
 
 //\ BACKWARDS COMPATIBILITY
@@ -89,19 +114,19 @@ func WithAliases(aliases FunctionAliasMap) FunctionHandlerOption {
 // It should be called after all aliases have been added through the WithAlias
 // option and before the function map is used to ensure all aliases are properly
 // registered.
-func (p *FunctionHandler) registerAliases() {
+func (fh *FunctionHandler) registerAliases() {
 	// BACKWARDS COMPATIBILITY
 	// Register the sprig function aliases
 	for originalFunction, aliases := range bc_registerSprigFuncs {
 		for _, alias := range aliases {
-			p.funcMap[alias] = p.funcMap[originalFunction]
+			fh.funcMap[alias] = fh.funcMap[originalFunction]
 		}
 	}
 	//\ BACKWARDS COMPATIBILITY
 
-	for originalFunction, aliases := range p.funcsAlias {
+	for originalFunction, aliases := range fh.funcsAlias {
 		for _, alias := range aliases {
-			p.funcMap[alias] = p.funcMap[originalFunction]
+			fh.funcMap[alias] = fh.funcMap[originalFunction]
 		}
 	}
 }
