@@ -41,11 +41,12 @@ func TestToFloat64(t *testing.T) {
 	runTestCases(t, tests)
 }
 
-func TestToDecimal(t *testing.T) {
+func TestToOctal(t *testing.T) {
 	var tests = testCases{
-		{"TestInt", `{{$v := toDecimal .V }}{{typeOf $v}}-{{$v}}`, "int64-511", map[string]any{"V": 777}},
-		{"TestInt32", `{{$v := toDecimal .V }}{{typeOf $v}}-{{$v}}`, "int64-504", map[string]any{"V": int32(770)}},
-		{"TestString", `{{$v := toDecimal .V }}{{typeOf $v}}-{{$v}}`, "int64-1", map[string]any{"V": "1"}},
+		{"TestInt", `{{$v := toOctal .V }}{{typeOf $v}}-{{$v}}`, "int64-511", map[string]any{"V": 777}},
+		{"TestInt32", `{{$v := toOctal .V }}{{typeOf $v}}-{{$v}}`, "int64-504", map[string]any{"V": int32(770)}},
+		{"TestString", `{{$v := toOctal .V }}{{typeOf $v}}-{{$v}}`, "int64-1", map[string]any{"V": "1"}},
+		{"TestInvalid", `{{$v := toOctal .V }}{{typeOf $v}}-{{$v}}`, "int64-0", map[string]any{"V": 1.1}},
 	}
 
 	runTestCases(t, tests)
