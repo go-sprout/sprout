@@ -5,6 +5,20 @@ import (
 	"testing"
 )
 
+func TestToBool(t *testing.T) {
+	var tests = testCases{
+		{"TestBool", `{{$v := toBool .V }}{{kindOf $v}}-{{$v}}`, "bool-true", map[string]any{"V": true}},
+		{"TestInt", `{{$v := toBool .V }}{{kindOf $v}}-{{$v}}`, "bool-true", map[string]any{"V": 1}},
+		{"TestInt32", `{{$v := toBool .V }}{{kindOf $v}}-{{$v}}`, "bool-true", map[string]any{"V": int32(1)}},
+		{"TestFloat64", `{{$v := toBool .V }}{{kindOf $v}}-{{$v}}`, "bool-true", map[string]any{"V": float64(1.42)}},
+		{"TestString", `{{$v := toBool .V }}{{kindOf $v}}-{{$v}}`, "bool-true", map[string]any{"V": "true"}},
+		{"TestStringFalse", `{{$v := toBool .V }}{{kindOf $v}}-{{$v}}`, "bool-false", map[string]any{"V": "false"}},
+		{"TestStringInvalid", `{{$v := toBool .V }}{{kindOf $v}}-{{$v}}`, "bool-false", map[string]any{"V": "invalid"}},
+	}
+
+	runTestCases(t, tests)
+}
+
 func TestToInt(t *testing.T) {
 	var tests = testCases{
 		{"TestInt", `{{$v := toInt .V }}{{kindOf $v}}-{{$v}}`, "int-1", map[string]any{"V": 1}},
@@ -24,6 +38,30 @@ func TestToInt64(t *testing.T) {
 		{"TestFloat64", `{{$v := toInt64 .V }}{{typeOf $v}}-{{$v}}`, "int64-1", map[string]any{"V": float64(1.42)}},
 		{"TestBool", `{{$v := toInt64 .V }}{{typeOf $v}}-{{$v}}`, "int64-1", map[string]any{"V": true}},
 		{"TestString", `{{$v := toInt64 .V }}{{typeOf $v}}-{{$v}}`, "int64-1", map[string]any{"V": "1"}},
+	}
+
+	runTestCases(t, tests)
+}
+
+func TestToUint(t *testing.T) {
+	var tests = testCases{
+		{"TestInt", `{{$v := toUint .V }}{{kindOf $v}}-{{$v}}`, "uint-1", map[string]any{"V": 1}},
+		{"TestInt32", `{{$v := toUint .V }}{{kindOf $v}}-{{$v}}`, "uint-1", map[string]any{"V": int32(1)}},
+		{"TestFloat64", `{{$v := toUint .V }}{{kindOf $v}}-{{$v}}`, "uint-1", map[string]any{"V": float64(1.42)}},
+		{"TestBool", `{{$v := toUint .V }}{{kindOf $v}}-{{$v}}`, "uint-1", map[string]any{"V": true}},
+		{"TestString", `{{$v := toUint .V }}{{kindOf $v}}-{{$v}}`, "uint-1", map[string]any{"V": "1"}},
+	}
+
+	runTestCases(t, tests)
+}
+
+func TestToUint64(t *testing.T) {
+	var tests = testCases{
+		{"TestInt", `{{$v := toUint64 .V }}{{typeOf $v}}-{{$v}}`, "uint64-1", map[string]any{"V": 1}},
+		{"TestInt32", `{{$v := toUint64 .V }}{{typeOf $v}}-{{$v}}`, "uint64-1", map[string]any{"V": int32(1)}},
+		{"TestFloat64", `{{$v := toUint64 .V }}{{typeOf $v}}-{{$v}}`, "uint64-1", map[string]any{"V": float64(1.42)}},
+		{"TestBool", `{{$v := toUint64 .V }}{{typeOf $v}}-{{$v}}`, "uint64-1", map[string]any{"V": true}},
+		{"TestString", `{{$v := toUint64 .V }}{{typeOf $v}}-{{$v}}`, "uint64-1", map[string]any{"V": "1"}},
 	}
 
 	runTestCases(t, tests)

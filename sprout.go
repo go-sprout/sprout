@@ -149,9 +149,12 @@ func FuncMap(opts ...FunctionHandlerOption) template.FuncMap {
 	fnHandler.funcMap["sha256sum"] = fnHandler.Sha256sum
 	fnHandler.funcMap["adler32sum"] = fnHandler.Adler32sum
 	fnHandler.funcMap["toString"] = fnHandler.ToString
-	fnHandler.funcMap["toInt64"] = fnHandler.ToInt64
 	fnHandler.funcMap["toInt"] = fnHandler.ToInt
+	fnHandler.funcMap["toInt64"] = fnHandler.ToInt64
+	fnHandler.funcMap["toUint"] = fnHandler.ToUint
+	fnHandler.funcMap["toUint64"] = fnHandler.ToUint64
 	fnHandler.funcMap["toFloat64"] = fnHandler.ToFloat64
+	fnHandler.funcMap["toBool"] = fnHandler.ToBool
 	fnHandler.funcMap["seq"] = fnHandler.Seq
 	fnHandler.funcMap["toOctal"] = fnHandler.ToOctal
 	fnHandler.funcMap["toDuration"] = fnHandler.ToDuration

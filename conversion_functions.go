@@ -8,6 +8,23 @@ import (
 	"github.com/spf13/cast"
 )
 
+// ToBool converts a value to a boolean.
+//
+// Parameters:
+//
+//	v any - the value to convert to a boolean. This can be any types reasonably be converted to true or false.
+//
+// Returns:
+//
+//	bool - the boolean representation of the value.
+//
+// Example:
+//
+//	{{ "true" | toBool }} // Output: true
+func (fh *FunctionHandler) ToBool(v any) bool {
+	return cast.ToBool(v)
+}
+
 // ToInt converts a value to an int using robust type casting.
 //
 // Parameters:
@@ -40,6 +57,40 @@ func (fh *FunctionHandler) ToInt(v any) int {
 //	{{ "123456789012" | toInt64 }} // Output: 123456789012
 func (fh *FunctionHandler) ToInt64(v any) int64 {
 	return cast.ToInt64(v)
+}
+
+// ToUint converts a value to a uint.
+//
+// Parameters:
+//
+//	v any - the value to convert to uint. This value can be of any type that is numerically convertible.
+//
+// Returns:
+//
+//	uint - the uint representation of the value.
+//
+// Example:
+//
+//	{{ "123" | toUint }} // Output: 123
+func (fh *FunctionHandler) ToUint(v any) uint {
+	return cast.ToUint(v)
+}
+
+// ToUint64 converts a value to a uint64.
+//
+// Parameters:
+//
+//	v any - the value to convert to uint64. This value can be of any type that is numerically convertible.
+//
+// Returns:
+//
+//	uint64 - the uint64 representation of the value.
+//
+// Example:
+//
+//	{{ "123456789012345" | toUint64 }} // Output: 123456789012345
+func (fh *FunctionHandler) ToUint64(v any) uint64 {
+	return cast.ToUint64(v)
 }
 
 // ToFloat64 converts a value to a float64.
