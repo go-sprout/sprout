@@ -1,7 +1,8 @@
 # Table of contents
 
 * [📗 About](README.md)
-* [💻 Functions](functions.md)
+* [💻 Functions](functions/README.md)
+  * [Type Conversions](functions/type-conversions.md)
 * [🧦 Function Aliases](function-aliases.md)
 * [🚀 Roadmap to Sprout v1.0](roadmap-to-sprout-v1.0.md)
 * [Old documentation from sprig](old-documentation-from-sprig/README.md)
