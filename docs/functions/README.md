@@ -12,7 +12,7 @@ Every function is categorized into a group and may include a **'must'** version.
 
 ### List of groups
 
-* [**Conversions**](../old-documentation-from-sprig/conversion.md): Utility functions are used to convert one type to another in your templates.
+* [**Conversions**](type-conversions.md): Utility functions are used to convert one type to another in your templates.
 * <mark style="color:red;">**Encoding**</mark>: Functions designed to handle the encoding and decoding of data formats.
 * <mark style="color:red;">**Filesystem**</mark>: Tools to interact with and manipulate the file system.
 * <mark style="color:red;">**Maps**</mark>: Functions to facilitate operations and manipulations on map data structures.
