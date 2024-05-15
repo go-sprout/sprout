@@ -398,7 +398,7 @@ func (fh *FunctionHandler) MergeOverwrite(dest map[string]any, srcs ...map[strin
 //	{{ mustMerge {}, {"a": 1, "b": 2}, {"b": 3, "c": 4}  }} // Output: {"a": 1, "b": 2, "c": 4}, nil
 func (fh *FunctionHandler) MustMerge(dest map[string]any, srcs ...map[string]any) (any, error) {
 	for _, src := range srcs {
-		if err := mergo.Merge(&dest, src); err != nil {
+		if err := mergo.Merge(&dest, src, mergo.WithoutDereference); err != nil {
 			// This error is not expected to occur, as we ensure types are correct in
 			// the function signature. If it does, it is a bug in the function implementation.
 			return nil, err
@@ -426,7 +426,7 @@ func (fh *FunctionHandler) MustMerge(dest map[string]any, srcs ...map[string]any
 //	{{ mustMergeOverwrite {}, {"a": 1, "b": 2}, {"b": 3, "c": 4} }} // Output: {"a": 1, "b": 3, "c": 4}, nil
 func (fh *FunctionHandler) MustMergeOverwrite(dest map[string]any, srcs ...map[string]any) (any, error) {
 	for _, src := range srcs {
-		if err := mergo.Merge(&dest, src, mergo.WithOverride); err != nil {
+		if err := mergo.Merge(&dest, src, mergo.WithOverride, mergo.WithoutDereference); err != nil {
 			// This error is not expected to occur, as we ensure types are correct in
 			// the function signature. If it does, it is a bug in the function implementation.
 			return nil, err
