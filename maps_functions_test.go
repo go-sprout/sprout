@@ -131,7 +131,8 @@ func TestMerge(t *testing.T) {
 	var tests = testCases{
 		{"TestEmpty", `{{merge .}}`, "map[]", nil},
 		{"TestWithOneMap", `{{merge .}}`, "map[a:1 b:2]", map[string]any{"a": 1, "b": 2}},
-		{"TestWithTwoMaps", `{{merge .A .B}}`, "map[a:1 b:2 c:3 d:4]", map[string]any{"A": map[string]any{"a": 1, "b": 2}, "B": map[string]any{"c": 3, "d": 4}}},
+		{"TestWithTwoMaps", `{{merge .Dest .Src1}}`, "map[a:1 b:2 c:3 d:4]", map[string]any{"Dest": map[string]any{"a": 1, "b": 2}, "Src1": map[string]any{"c": 3, "d": 4}}},
+		{"TestWithZeroValues", `{{merge .Dest .Src1}}`, "map[a:0 b:false c:3 d:4]", map[string]any{"Dest": map[string]any{"a": 0, "b": false}, "Src1": map[string]any{"a": 2, "b": true, "c": 3, "d": 4}}},
 	}
 
 	runTestCases(t, tests)
@@ -141,8 +142,9 @@ func TestMergeOverwrite(t *testing.T) {
 	var tests = testCases{
 		{"TestEmpty", `{{mergeOverwrite .}}`, "map[]", nil},
 		{"TestWithOneMap", `{{mergeOverwrite .}}`, "map[a:1 b:2]", map[string]any{"a": 1, "b": 2}},
-		{"TestWithTwoMaps", `{{mergeOverwrite .A .B}}`, "map[a:1 b:2 c:3 d:4]", map[string]any{"A": map[string]any{"a": 1, "b": 2}, "B": map[string]any{"c": 3, "d": 4}}},
-		{"TestWithOverwrite", `{{mergeOverwrite .A .B}}`, "map[a:3 b:2 d:4]", map[string]any{"A": map[string]any{"a": 1, "b": 2}, "B": map[string]any{"a": 3, "d": 4}}},
+		{"TestWithTwoMaps", `{{mergeOverwrite .Dest .Src1}}`, "map[a:1 b:2 c:3 d:4]", map[string]any{"Dest": map[string]any{"a": 1, "b": 2}, "Src1": map[string]any{"c": 3, "d": 4}}},
+		{"TestWithOverwrite", `{{mergeOverwrite .Dest .Src1}}`, "map[a:3 b:2 d:4]", map[string]any{"Dest": map[string]any{"a": 1, "b": 2}, "Src1": map[string]any{"a": 3, "d": 4}}},
+		{"TestWithZeroValues", `{{mergeOverwrite .Dest .Src1}}`, "map[a:2 b:true c:3 d:4]", map[string]any{"Dest": map[string]any{"a": 0, "b": false}, "Src1": map[string]any{"a": 2, "b": true, "c": 3, "d": 4}}},
 	}
 
 	runTestCases(t, tests)
@@ -152,8 +154,8 @@ func TestMustMerge(t *testing.T) {
 	var dest map[string]any
 	var tests = mustTestCases{
 		{testCase{"TestWithNotEnoughArgs", `{{mustMerge .}}`, "map[a:1]", map[string]any{"a": 1}}, ""},
-		{testCase{"TestWithDestNonInitialized", `{{mustMerge .A .B}}`, "map[b:2]", map[string]any{"A": dest, "B": map[string]any{"b": 2}}}, ""},
-		{testCase{"TestWithDestNotMap", `{{mustMerge .A .B}}`, "", map[string]any{"A": 1, "B": map[string]any{"b": 2}}}, "wrong type for value"},
+		{testCase{"TestWithDestNonInitialized", `{{mustMerge .Dest .Src1}}`, "map[b:2]", map[string]any{"Dest": dest, "Src1": map[string]any{"b": 2}}}, ""},
+		{testCase{"TestWithDestNotMap", `{{mustMerge .Dest .Src1}}`, "", map[string]any{"Dest": 1, "Src1": map[string]any{"b": 2}}}, "wrong type for value"},
 	}
 
 	runMustTestCases(t, tests)
