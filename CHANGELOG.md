@@ -1,30 +1,43 @@
 # Changelog
 
-## Release v0.3.0: Sprout Blossom 🌸 (2023-07-09)
+## Release v0.4.0: Sprout Blossom 🌸 (2024-05-16)
+
+> 💡 Cultivating code is something beautiful.
+
+### 🚀 Features
+- **Enhanced Conversions Group**: New functions (`toBool`, `toUint`, `toUint64`) and comprehensive documentation have been added to the conversions group, broadening our library's functionality and making it more user-friendly. See (@42atomys) [PR 33](https://github.com/go-sprout/sprout/pull/33).
+- **YAML Functions Unleashed**: Implementing YAML functions (`fromYaml`, `toYaml`. `mustFromYaml`, `mustToYaml`) inspired by Helm's robust toolset, we've extended our configuration management capabilities. See (@42atomys) [PR 36](https://github.com/go-sprout/sprout/pull/36).
+
+### 🛠 Fixes from sprig issues
+- **Merge Function Improvement**: The merge function has been tweaked to preserve the zero value in destination structs, ensuring more predictable and accurate data handling. See (@42atomys) [PR 34](https://github.com/go-sprout/sprout/pull/34).
+- **String Transformation Logic Update**: Corrected the logic for transforming strings to CamelCase and PascalCase to avoid previous inconsistencies and errors. See (@42atomys) [PR 35](https://github.com/go-sprout/sprout/pull/35).
+
+
+## Release v0.3.0: Moved Farm 🌾 (2024-05-09)
 
 > 💡 Sprouting New Possibilities in Every Release!
 
 > [!IMPORTANT]
 > The project has moved to a new GitHub home [**github.com/go-sprout/sprout**](https://github.com/go-sprout/sprout) !
 
-## 🚀 Features
+### 🚀 Features
 - **Unified Function Management**: All functions are now neatly organized under the new FunctionHandler, streamlining how functionalities are handled within the library. This consolidation is crucial for enhancing library operations and future development. See (@42atomys) [PR 14](https://github.com/go-sprout/sprout/pull/14).
 - **Introducing `toDuration` Conversion**: A new utility function, `toDuration`, has been added to simplify time conversions across various formats, enhancing our toolkit's versatility. See (@42atomys) [PR 27](https://github.com/go-sprout/sprout/pull/27).
 
-## 🛠 Documentation and Community
+### 🛠 Documentation and Community
 - **Project's New Home**: The project has moved to a new GitHub home, centralizing where updates and community interactions will take place. Visit us at: [Sprout on GitHub](https://github.com/go-sprout/sprout).
 - **Community Files Update**: All community-related files have been refreshed to better support our growing community of developers and contributors. See (@42atomys) [PR 12](https://github.com/go-sprout/sprout/pull/12).
 
-## Release v0.2.0: Garden Genesis 🌱 (2022-11-29)
+## Release v0.2.0: Garden Genesis 🌱 (2024-04-03)
 
 > 💡 Cultivating Innovation, One Sprig at a Time!
 
-## 🚀 Features
+### 🚀 Features
 - **Creating the Root of the Sprout**: Sprouts are now an evolution of Sprig with a standalone function handler. See (@42atomys) [PR 2](https://github.com/go-sprout/sprout/pull/2).
 - **Allowing Function Aliasing**: Enables developers to use aliases for their templates. In Sprout, this feature is used for backward compatibility with Sprig. See (@42atomys) [PR 3](https://github.com/go-sprout/sprout/pull/3). 
   - Full documentation available here: https://docs.atom.codes/sprout/function-aliases
 
-## 🛠 Chore
+### 🛠 Chore
 - **Documentation Available**: Documentation can be found at https://docs.atom.codes/sprout.
 - **README Refactor**: The README has been updated to reflect the project's vision and its future. See (@42atomys) [PR 4](https://github.com/go-sprout/sprout/pull/4).
 
