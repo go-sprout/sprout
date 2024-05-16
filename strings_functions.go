@@ -43,16 +43,17 @@ import (
 //		}
 //	 Use `style` to transform "ExampleText" to "example_text"
 type caseStyle struct {
-	Separator      rune // Character that separates words.
-	CapitalizeNext bool // Whether to capitalize the first character of each word.
-	ForceLowercase bool // Whether to force all characters to lowercase.
-	ForceUppercase bool // Whether to force all characters to uppercase.
+	Separator       rune // Character that separates words.
+	CapitalizeFirst bool // Whether to capitalize the first character of the string.
+	CapitalizeNext  bool // Whether to capitalize the first character of each word.
+	ForceLowercase  bool // Whether to force all characters to lowercase.
+	ForceUppercase  bool // Whether to force all characters to uppercase.
 }
 
 var (
-	camelCaseStyle    = caseStyle{Separator: -1, CapitalizeNext: true, ForceLowercase: true}
+	camelCaseStyle    = caseStyle{Separator: -1, CapitalizeNext: true, CapitalizeFirst: false, ForceLowercase: true}
 	kebabCaseStyle    = caseStyle{Separator: '-', ForceLowercase: true}
-	pascalCaseStyle   = caseStyle{Separator: -1, CapitalizeNext: true}
+	pascalCaseStyle   = caseStyle{Separator: -1, CapitalizeFirst: true, CapitalizeNext: true}
 	snakeCaseStyle    = caseStyle{Separator: '_', ForceLowercase: true}
 	dotCaseStyle      = caseStyle{Separator: '.', ForceLowercase: true}
 	pathCaseStyle     = caseStyle{Separator: '/', ForceLowercase: true}
@@ -702,8 +703,13 @@ func (fh *FunctionHandler) Squote(elements ...any) string {
 func (fh *FunctionHandler) transformString(style caseStyle, str string) string {
 	var result strings.Builder
 	result.Grow(len(str) + 10) // Allocate a bit more for potential separators
-	capitalizeNext := style.CapitalizeNext
-	var lastRune, nextRune rune = 0, 0
+
+	var capitalizeNext = style.CapitalizeNext
+	var lastRune, lastLetter, nextRune rune = 0, 0, 0
+
+	if !style.CapitalizeFirst {
+		capitalizeNext = false
+	}
 
 	for i, r := range str {
 		if i+1 < len(str) {
@@ -714,7 +720,10 @@ func (fh *FunctionHandler) transformString(style caseStyle, str string) string {
 			if style.Separator != -1 && (lastRune != style.Separator) {
 				result.WriteRune(style.Separator)
 			}
-			capitalizeNext = true
+			if lastLetter != 0 {
+				capitalizeNext = true
+			}
+
 			lastRune = style.Separator
 			continue
 		}
@@ -739,7 +748,11 @@ func (fh *FunctionHandler) transformString(style caseStyle, str string) string {
 		} else {
 			result.WriteRune(r)
 		}
+
 		lastRune = r // Update lastRune to the current rune
+		if unicode.IsLetter(r) {
+			lastLetter = r
+		}
 	}
 
 	return result.String()
