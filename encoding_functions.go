@@ -6,6 +6,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"strings"
+
+	"sigs.k8s.io/yaml"
 )
 
 // Base64Encode encodes a string into its Base64 representation.
@@ -117,7 +119,7 @@ func (fh *FunctionHandler) FromJson(v string) any {
 //
 // Example:
 //
-//	jsonStr := fh.ToJson(map[string]interface{}{"name": "John", "age": 30})
+//	jsonStr := fh.ToJson(map[string]any{"name": "John", "age": 30})
 //	fmt.Println(jsonStr) // Output: {"age":30,"name":"John"}
 func (fh *FunctionHandler) ToJson(v any) string {
 	output, _ := fh.MustToJson(v)
@@ -136,7 +138,7 @@ func (fh *FunctionHandler) ToJson(v any) string {
 //
 // Example:
 //
-//	prettyJson := fh.ToPrettyJson(map[string]interface{}{"name": "John", "age": 30})
+//	prettyJson := fh.ToPrettyJson(map[string]any{"name": "John", "age": 30})
 //	fmt.Println(prettyJson) // Output: {
 //	                        //   "age": 30,
 //	                        //   "name": "John"
@@ -158,11 +160,52 @@ func (fh *FunctionHandler) ToPrettyJson(v any) string {
 //
 // Example:
 //
-//	rawJson := fh.ToRawJson(map[string]interface{}{"content": "<div>Hello World!</div>"})
+//	rawJson := fh.ToRawJson(map[string]any{"content": "<div>Hello World!</div>"})
 //	fmt.Println(rawJson) // Output: {"content":"<div>Hello World!</div>"}
 func (fh *FunctionHandler) ToRawJson(v any) string {
 	output, _ := fh.MustToRawJson(v)
 	return output
+}
+
+// FromYAML deserializes a YAML string into a Go map.
+//
+// Parameters:
+//
+//	str string - the YAML string to deserialize.
+//
+// Returns:
+//
+//	any - a map representing the YAML data. Returns nil if deserialization fails.
+//
+// Example:
+//
+//	{{ "name: John Doe\nage: 30" | fromYAML }} // Output: map[name:John Doe age:30]
+func (fh *FunctionHandler) FromYAML(str string) any {
+	var m = make(map[string]any)
+
+	if err := yaml.Unmarshal([]byte(str), &m); err != nil {
+		return nil
+	}
+
+	return m
+}
+
+// ToYAML serializes a Go data structure to a YAML string.
+//
+// Parameters:
+//
+//	v any - the data structure to serialize.
+//
+// Returns:
+//
+//	string - the YAML string representation of the data structure.
+//
+// Example:
+//
+//	{{ {"name": "John Doe", "age": 30} | toYAML }} // Output: "name: John Doe\nage: 30\n"
+func (fh *FunctionHandler) ToYAML(v any) string {
+	result, _ := fh.MustToYAML(v)
+	return result
 }
 
 // MustFromJson decodes a JSON string into a Go data structure, returning an
@@ -256,4 +299,48 @@ func (fh *FunctionHandler) MustToRawJson(v any) (string, error) {
 		return "", err
 	}
 	return strings.TrimSuffix(buf.String(), "\n"), nil
+}
+
+// MustFromYaml deserializes a YAML string into a Go data structure, returning
+// the result along with any error that occurs.
+//
+// Parameters:
+//
+//	v string - the YAML string to deserialize.
+//
+// Returns:
+//
+//	any - the Go data structure representing the deserialized YAML content.
+//	error - an error if the YAML content cannot be deserialized.
+//
+// Example:
+//
+//	{{ "name: John Doe\nage: 30" | mustFromYaml }} // Output: map[name:John Doe age:30], nil
+func (fh *FunctionHandler) MustFromYAML(v string) (any, error) {
+	var output any
+	err := yaml.Unmarshal([]byte(v), &output)
+	return output, err
+}
+
+// MustToYAML serializes a Go data structure to a YAML string and returns any error that occurs during the serialization.
+//
+// Parameters:
+//
+//	v any - the data structure to serialize.
+//
+// Returns:
+//
+//	string - the YAML string representation of the data structure.
+//	error - error if the serialization fails.
+//
+// Example:
+//
+//	{{ {"name": "John Doe", "age": 30} | mustToYAML }} // Output: "name: John Doe\nage: 30\n", nil
+func (fh *FunctionHandler) MustToYAML(v any) (string, error) {
+	data, err := yaml.Marshal(v)
+	if err != nil {
+		return "", err
+	}
+
+	return strings.TrimSuffix(string(data), "\n"), nil
 }

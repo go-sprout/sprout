@@ -81,6 +81,26 @@ func TestToRawJson(t *testing.T) {
 	runTestCases(t, tests)
 }
 
+func TestFromYAML(t *testing.T) {
+	var tests = testCases{
+		{"TestEmptyInput", `{{ "" | fromYaml }}`, "map[]", nil},
+		{"TestVariableInput", `{{ .V | fromYaml }}`, "map[bar:map[baz:1] foo:55]", map[string]any{"V": "foo: 55\nbar:\n  baz: 1\n"}},
+		{"TestAccessField", `{{ (.V | fromYaml).foo }}`, "55", map[string]any{"V": "foo: 55"}},
+		{"TestInvalidInput", `{{ .V | fromYaml }}`, "<no value>", map[string]any{"V": "foo: :: baz"}},
+	}
+
+	runTestCases(t, tests)
+}
+
+func TestToYAML(t *testing.T) {
+	var tests = testCases{
+		{"TestEmptyInput", `{{ "" | toYaml }}`, "\"\"", nil},
+		{"TestVariableInput", `{{ .V | toYaml }}`, "bar: baz\nfoo: 55", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
+	}
+
+	runTestCases(t, tests)
+}
+
 func TestMustFromJson(t *testing.T) {
 	var tests = mustTestCases{
 		{testCase{"TestEmptyInput", `{{ "" | mustFromJson }}`, "", nil}, "unexpected end"},
@@ -116,6 +136,26 @@ func TestMustToRawJson(t *testing.T) {
 		{testCase{"TestEmptyInput", `{{ "" | mustToRawJson }}`, "\"\"", nil}, ""},
 		{testCase{"TestVariableInput", `{{ .V | mustToRawJson }}`, "{\"bar\":\"baz\",\"foo\":55}", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}}, ""},
 		{testCase{"TestInvalidInput", `{{ .V | mustToRawJson }}`, "", map[string]any{"V": make(chan int)}}, "json: unsupported type: chan int"},
+	}
+
+	runMustTestCases(t, tests)
+}
+
+func TestMustFromYAML(t *testing.T) {
+	var tests = mustTestCases{
+		{testCase{"TestEmptyInput", `{{ "foo: :: baz" | mustFromYaml }}`, "", nil}, "error converting YAML to JSON"},
+		{testCase{"TestVariableInput", `{{ .V | mustFromYaml }}`, "map[bar:map[baz:1] foo:55]", map[string]any{"V": "foo: 55\nbar:\n  baz: 1\n"}}, ""},
+		{testCase{"TestInvalidInput", `{{ .V | mustFromYaml }}`, "", map[string]any{"V": ":"}}, "did not find expected key"},
+	}
+
+	runMustTestCases(t, tests)
+}
+
+func TestMustToYAML(t *testing.T) {
+	var tests = mustTestCases{
+		{testCase{"TestEmptyInput", `{{ "" | mustToYaml }}`, "\"\"", nil}, ""},
+		{testCase{"TestVariableInput", `{{ .V | mustToYaml }}`, "bar: baz\nfoo: 55", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}}, ""},
+		{testCase{"TestInvalidInput", `{{ .V | mustToYaml }}`, "", map[string]any{"V": make(chan int)}}, "json: unsupported type: chan int"},
 	}
 
 	runMustTestCases(t, tests)
