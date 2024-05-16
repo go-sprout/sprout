@@ -199,6 +199,7 @@ func FuncMap(opts ...FunctionHandlerOption) template.FuncMap {
 	fnHandler.funcMap["mustToJson"] = fnHandler.MustToJson
 	fnHandler.funcMap["mustToPrettyJson"] = fnHandler.MustToPrettyJson
 	fnHandler.funcMap["mustToRawJson"] = fnHandler.MustToRawJson
+	fnHandler.funcMap["mustFromYaml"] = fnHandler.MustFromYAML
 	fnHandler.funcMap["mustToYaml"] = fnHandler.MustToYAML
 	fnHandler.funcMap["ternary"] = fnHandler.Ternary
 	fnHandler.funcMap["deepCopy"] = fnHandler.DeepCopy

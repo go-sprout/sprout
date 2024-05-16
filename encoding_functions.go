@@ -301,6 +301,27 @@ func (fh *FunctionHandler) MustToRawJson(v any) (string, error) {
 	return strings.TrimSuffix(buf.String(), "\n"), nil
 }
 
+// MustFromYaml deserializes a YAML string into a Go data structure, returning
+// the result along with any error that occurs.
+//
+// Parameters:
+//
+//	v string - the YAML string to deserialize.
+//
+// Returns:
+//
+//	any - the Go data structure representing the deserialized YAML content.
+//	error - an error if the YAML content cannot be deserialized.
+//
+// Example:
+//
+//	{{ "name: John Doe\nage: 30" | mustFromYaml }} // Output: map[name:John Doe age:30], nil
+func (fh *FunctionHandler) MustFromYAML(v string) (any, error) {
+	var output any
+	err := yaml.Unmarshal([]byte(v), &output)
+	return output, err
+}
+
 // MustToYAML serializes a Go data structure to a YAML string and returns any error that occurs during the serialization.
 //
 // Parameters:
