@@ -279,16 +279,17 @@ func TestSquote(t *testing.T) {
 func TestToCamelCase(t *testing.T) {
 	var tests = testCases{
 		{"TestEmpty", `{{ "" | toCamelCase }}`, "", nil},
-		{"TestCamelCase", `{{ "foo bar" | toCamelCase }}`, "FooBar", nil},
-		{"TestCamelCaseWithSpace", `{{ "foo  bar" | toCamelCase }}`, "FooBar", nil},
-		{"TestCamelCaseWithUnderscore", `{{ "foo_bar" | toCamelCase }}`, "FooBar", nil},
-		{"TestCamelCaseWithHyphen", `{{ "foo-bar" | toCamelCase }}`, "FooBar", nil},
-		{"TestCamelCaseWithMixed", `{{ "foo-bar_baz" | toCamelCase }}`, "FooBarBaz", nil},
-		{"", `{{ toCamelCase "_complex__case_" }}`, "ComplexCase", nil},
-		{"", `{{ toCamelCase "_camel_case" }}`, "CamelCase", nil},
-		{"", `{{ toCamelCase "http_server" }}`, "HttpServer", nil},
-		{"", `{{ toCamelCase "no_https" }}`, "NoHttps", nil},
-		{"", `{{ toCamelCase "all" }}`, "All", nil},
+		{"TestCamelCase", `{{ "foo bar" | toCamelCase }}`, "fooBar", nil},
+		{"TestCamelCaseWithUpperCase", `{{ "FoO  bar" | toCamelCase }}`, "fooBar", nil},
+		{"TestCamelCaseWithSpace", `{{ "foo  bar" | toCamelCase }}`, "fooBar", nil},
+		{"TestCamelCaseWithUnderscore", `{{ "foo_bar" | toCamelCase }}`, "fooBar", nil},
+		{"TestCamelCaseWithHyphen", `{{ "foo-bar" | toCamelCase }}`, "fooBar", nil},
+		{"TestCamelCaseWithMixed", `{{ "foo-bar_baz" | toCamelCase }}`, "fooBarBaz", nil},
+		{"", `{{ toCamelCase "___complex__case_" }}`, "complexCase", nil},
+		{"", `{{ toCamelCase "_camel_case" }}`, "camelCase", nil},
+		{"", `{{ toCamelCase "http_server" }}`, "httpServer", nil},
+		{"", `{{ toCamelCase "no_https" }}`, "noHttps", nil},
+		{"", `{{ toCamelCase "all" }}`, "all", nil},
 	}
 
 	runTestCases(t, tests)
