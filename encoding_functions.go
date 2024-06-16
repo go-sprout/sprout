@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	"sigs.k8s.io/yaml"
+	"gopkg.in/yaml.v3"
 )
 
 // Base64Encode encodes a string into its Base64 representation.
@@ -181,7 +181,7 @@ func (fh *FunctionHandler) ToRawJson(v any) string {
 //
 //	{{ "name: John Doe\nage: 30" | fromYAML }} // Output: map[name:John Doe age:30]
 func (fh *FunctionHandler) FromYAML(str string) any {
-	var m = make(map[string]any)
+	m := make(map[string]any)
 
 	if err := yaml.Unmarshal([]byte(str), &m); err != nil {
 		return nil

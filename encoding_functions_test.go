@@ -3,7 +3,7 @@ package sprout
 import "testing"
 
 func TestBase64Encode(t *testing.T) {
-	var tests = testCases{
+	tests := testCases{
 		{"TestWithoutInput", `{{ "" | base64Encode }}`, "", nil},
 		{"TestHelloWorldInput", `{{ "Hello World" | base64Encode }}`, "SGVsbG8gV29ybGQ=", nil},
 		{"TestFromVariableInput", `{{ .V | base64Encode }}`, "SGVsbG8gV29ybGQ=", map[string]any{"V": "Hello World"}},
@@ -13,7 +13,7 @@ func TestBase64Encode(t *testing.T) {
 }
 
 func TestBase64Decode(t *testing.T) {
-	var tests = testCases{
+	tests := testCases{
 		{"TestWithoutInput", `{{ "" | base64Decode }}`, "", nil},
 		{"TestHelloWorldInput", `{{ "SGVsbG8gV29ybGQ=" | base64Decode }}`, "Hello World", nil},
 		{"TestFromVariableInput", `{{ .V | base64Decode }}`, "Hello World", map[string]any{"V": "SGVsbG8gV29ybGQ="}},
@@ -24,7 +24,7 @@ func TestBase64Decode(t *testing.T) {
 }
 
 func TestBase32Encode(t *testing.T) {
-	var tests = testCases{
+	tests := testCases{
 		{"TestWithoutInput", `{{ "" | base32Encode }}`, "", nil},
 		{"TestHelloWorldInput", `{{ "Hello World" | base32Encode }}`, "JBSWY3DPEBLW64TMMQ======", nil},
 		{"TestFromVariableInput", `{{ .V | base32Encode }}`, "JBSWY3DPEBLW64TMMQ======", map[string]any{"V": "Hello World"}},
@@ -34,7 +34,7 @@ func TestBase32Encode(t *testing.T) {
 }
 
 func TestBase32Decode(t *testing.T) {
-	var tests = testCases{
+	tests := testCases{
 		{"TestWithoutInput", `{{ "" | base32Decode }}`, "", nil},
 		{"TestHelloWorldInput", `{{ "JBSWY3DPEBLW64TMMQ======" | base32Decode }}`, "Hello World", nil},
 		{"TestFromVariableInput", `{{ .V | base32Decode }}`, "Hello World", map[string]any{"V": "JBSWY3DPEBLW64TMMQ======"}},
@@ -45,7 +45,7 @@ func TestBase32Decode(t *testing.T) {
 }
 
 func TestFromJson(t *testing.T) {
-	var tests = testCases{
+	tests := testCases{
 		{"TestEmptyInput", `{{ "" | fromJson }}`, "<no value>", nil},
 		{"TestVariableInput", `{{ .V | fromJson }}`, "map[foo:55]", map[string]any{"V": `{"foo": 55}`}},
 		{"TestAccessField", `{{ (.V | fromJson).foo }}`, "55", map[string]any{"V": `{"foo": 55}`}},
@@ -55,7 +55,7 @@ func TestFromJson(t *testing.T) {
 }
 
 func TestToJson(t *testing.T) {
-	var tests = testCases{
+	tests := testCases{
 		{"TestEmptyInput", `{{ "" | toJson }}`, "\"\"", nil},
 		{"TestVariableInput", `{{ .V | toJson }}`, "{\"bar\":\"baz\",\"foo\":55}", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 	}
@@ -64,7 +64,7 @@ func TestToJson(t *testing.T) {
 }
 
 func TestToPrettyJson(t *testing.T) {
-	var tests = testCases{
+	tests := testCases{
 		{"TestEmptyInput", `{{ "" | toPrettyJson }}`, "\"\"", nil},
 		{"TestVariableInput", `{{ .V | toPrettyJson }}`, "{\n  \"bar\": \"baz\",\n  \"foo\": 55\n}", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 	}
@@ -73,7 +73,7 @@ func TestToPrettyJson(t *testing.T) {
 }
 
 func TestToRawJson(t *testing.T) {
-	var tests = testCases{
+	tests := testCases{
 		{"TestEmptyInput", `{{ "" | toRawJson }}`, "\"\"", nil},
 		{"TestVariableInput", `{{ .V | toRawJson }}`, "{\"bar\":\"baz\",\"foo\":55}", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 	}
@@ -82,7 +82,7 @@ func TestToRawJson(t *testing.T) {
 }
 
 func TestFromYAML(t *testing.T) {
-	var tests = testCases{
+	tests := testCases{
 		{"TestEmptyInput", `{{ "" | fromYaml }}`, "map[]", nil},
 		{"TestVariableInput", `{{ .V | fromYaml }}`, "map[bar:map[baz:1] foo:55]", map[string]any{"V": "foo: 55\nbar:\n  baz: 1\n"}},
 		{"TestAccessField", `{{ (.V | fromYaml).foo }}`, "55", map[string]any{"V": "foo: 55"}},
@@ -93,7 +93,7 @@ func TestFromYAML(t *testing.T) {
 }
 
 func TestToYAML(t *testing.T) {
-	var tests = testCases{
+	tests := testCases{
 		{"TestEmptyInput", `{{ "" | toYaml }}`, "\"\"", nil},
 		{"TestVariableInput", `{{ .V | toYaml }}`, "bar: baz\nfoo: 55", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 	}
@@ -102,7 +102,7 @@ func TestToYAML(t *testing.T) {
 }
 
 func TestMustFromJson(t *testing.T) {
-	var tests = mustTestCases{
+	tests := mustTestCases{
 		{testCase{"TestEmptyInput", `{{ "" | mustFromJson }}`, "", nil}, "unexpected end"},
 		{testCase{"TestVariableInput", `{{ .V | mustFromJson }}`, "map[foo:55]", map[string]any{"V": `{"foo": 55}`}}, ""},
 		{testCase{"TestInvalidInput", `{{ .V | mustFromJson }}`, "", map[string]any{"V": "{3}"}}, "invalid character '3'"},
@@ -112,7 +112,7 @@ func TestMustFromJson(t *testing.T) {
 }
 
 func TestMustToJson(t *testing.T) {
-	var tests = mustTestCases{
+	tests := mustTestCases{
 		{testCase{"TestEmptyInput", `{{ "" | mustToJson }}`, "\"\"", nil}, ""},
 		{testCase{"TestVariableInput", `{{ .V | mustToJson }}`, "{\"bar\":\"baz\",\"foo\":55}", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}}, ""},
 		{testCase{"TestInvalidInput", `{{ .V | mustToJson }}`, "", map[string]any{"V": make(chan int)}}, "json: unsupported type: chan int"},
@@ -122,7 +122,7 @@ func TestMustToJson(t *testing.T) {
 }
 
 func TestMustToPrettyJson(t *testing.T) {
-	var tests = mustTestCases{
+	tests := mustTestCases{
 		{testCase{"TestEmptyInput", `{{ "" | mustToPrettyJson }}`, "\"\"", nil}, ""},
 		{testCase{"TestVariableInput", `{{ .V | mustToPrettyJson }}`, "{\n  \"bar\": \"baz\",\n  \"foo\": 55\n}", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}}, ""},
 		{testCase{"TestInvalidInput", `{{ .V | mustToPrettyJson }}`, "", map[string]any{"V": make(chan int)}}, "json: unsupported type: chan int"},
@@ -132,7 +132,7 @@ func TestMustToPrettyJson(t *testing.T) {
 }
 
 func TestMustToRawJson(t *testing.T) {
-	var tests = mustTestCases{
+	tests := mustTestCases{
 		{testCase{"TestEmptyInput", `{{ "" | mustToRawJson }}`, "\"\"", nil}, ""},
 		{testCase{"TestVariableInput", `{{ .V | mustToRawJson }}`, "{\"bar\":\"baz\",\"foo\":55}", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}}, ""},
 		{testCase{"TestInvalidInput", `{{ .V | mustToRawJson }}`, "", map[string]any{"V": make(chan int)}}, "json: unsupported type: chan int"},
@@ -142,8 +142,8 @@ func TestMustToRawJson(t *testing.T) {
 }
 
 func TestMustFromYAML(t *testing.T) {
-	var tests = mustTestCases{
-		{testCase{"TestEmptyInput", `{{ "foo: :: baz" | mustFromYaml }}`, "", nil}, "error converting YAML to JSON"},
+	tests := mustTestCases{
+		{testCase{"TestEmptyInput", `{{ "foo: :: baz" | mustFromYaml }}`, "", nil}, "yaml: mapping values are not allowed in this context"},
 		{testCase{"TestVariableInput", `{{ .V | mustFromYaml }}`, "map[bar:map[baz:1] foo:55]", map[string]any{"V": "foo: 55\nbar:\n  baz: 1\n"}}, ""},
 		{testCase{"TestInvalidInput", `{{ .V | mustFromYaml }}`, "", map[string]any{"V": ":"}}, "did not find expected key"},
 	}
@@ -152,10 +152,10 @@ func TestMustFromYAML(t *testing.T) {
 }
 
 func TestMustToYAML(t *testing.T) {
-	var tests = mustTestCases{
+	tests := mustTestCases{
 		{testCase{"TestEmptyInput", `{{ "" | mustToYaml }}`, "\"\"", nil}, ""},
 		{testCase{"TestVariableInput", `{{ .V | mustToYaml }}`, "bar: baz\nfoo: 55", map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}}, ""},
-		{testCase{"TestInvalidInput", `{{ .V | mustToYaml }}`, "", map[string]any{"V": make(chan int)}}, "json: unsupported type: chan int"},
+		{testCase{"TestInvalidInput", `{{ .V | mustToYaml }}`, "", map[string]any{"V": make(chan int)}}, "cannot marshal type: chan int"},
 	}
 
 	runMustTestCases(t, tests)
