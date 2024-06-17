@@ -237,7 +237,7 @@ func (fh *FunctionHandler) DivInt(values ...any) int64 {
 func (fh *FunctionHandler) Divf(values ...any) any {
 	//FIXME:  Special manipulation to force float operation
 	// This is a workaround to ensure that the result is a float to allow
-	// BACKWARD COMPATIBILITY with previous versions of Sprig.
+	// BACKWARDS COMPATIBILITY with previous versions of Sprig.
 	if len(values) > 0 {
 		if _, ok := values[0].(float64); !ok {
 			values[0] = cast.ToFloat64(values[0])

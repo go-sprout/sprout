@@ -99,3 +99,11 @@ Methods that previously caused a panic in Sprig :
 ```go
 {{ $dict | dig "a" "b" }} // Output: 2
 ```
+
+## ToCamelCase / ToPascalCase
+- **Sprig**: The `toCamelCase` return value are in PascalCase. No `toPascalCase` function is available.
+- **Sprout**: The `toCamelCase` function returns camelCase strings, while the `toPascalCase` function returns PascalCase strings.
+
+## Merge / MergeOverwrite
+- **Sprig**: The `merge` and `mergeOverwrite` functions does dereferencing when second value are the default golang value (example: `0` for int).
+- **Sprout**: The `merge` and `mergeOverwrite` functions does not dereference and keep the second value as is (example: `0` for int).
