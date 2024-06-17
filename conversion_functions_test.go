@@ -135,7 +135,7 @@ func TestToDuration(t *testing.T) {
 
 func TestMustToDate(t *testing.T) {
 	var tests = mustTestCases{
-		{testCase{"TestDate", `{{$v := mustToDate "2006-01-02" .V }}{{typeOf $v}}-{{$v}}`, "time.Time-2024-05-09 00:00:00 +0000 UTC", map[string]any{"V": "2024-05-09"}}, ""},
+		{testCase{"TestDate", `{{$v := mustToDate "2006-01-02 15:04:05 MST" .V }}{{typeOf $v}}-{{$v}}`, "time.Time-2024-05-09 00:00:00 +0000 UTC", map[string]any{"V": "2024-05-09 00:00:00 UTC"}}, ""},
 		{testCase{"TestInvalidValue", `{{$v := mustToDate "2006-01-02" .V }}{{typeOf $v}}-{{$v}}`, "", map[string]any{"V": ""}}, "cannot parse \"\" as \"2006\""},
 		{testCase{"TestInvalidLayout", `{{$v := mustToDate "invalid" .V }}{{typeOf $v}}-{{$v}}`, "", map[string]any{"V": "2024-05-09"}}, "cannot parse \"2024-05-09\" as \"invalid\""},
 	}
