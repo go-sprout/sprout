@@ -1,5 +1,16 @@
 # Changelog
 
+## Release v0.4.1: Sprout Blossom 🌸 (2024-06-17)
+
+> 💡 Cultivating Innovation, One Sprig at a Time!
+
+### 🚀 Features
+- **Reducing YAML Dependencies Footprint**: Improved project efficiency by reducing dependencies. See (@andig) [PR 38](https://github.com/go-sprout/sprout/pull/38).
+  
+### 🐛 Bugs fixes
+- **Timezone Leak Fix in `toDate` Method**: Resolved an issue affecting date calculations. See (@42atomys) [PR 42](https://github.com/go-sprout/sprout/pull/42).
+- **Backward Compatibility Documentation**: Added documentation for ensuring seamless upgrades. See (@42atomys) [PR 43](https://github.com/go-sprout/sprout/pull/43).
+
 ## Release v0.4.0: Sprout Blossom 🌸 (2024-05-16)
 
 > 💡 Cultivating code is something beautiful.
