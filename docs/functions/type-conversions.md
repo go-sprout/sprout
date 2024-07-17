@@ -205,6 +205,7 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 {{ (1000.0 * 1000.0) | toDuration }} // Output: 1ms
 {{ "1m" | toDuration }} // Output: 1m
 {{ "invalid" | toDuration }} // Output: 0s
+{{ (toDuration "1h30m").Seconds }} // Output: 5400
 ```
 {% endtab %}
 {% endtabs %}
