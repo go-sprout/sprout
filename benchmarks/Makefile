@@ -1,2 +1,5 @@
 bench:
-	go test -count=1 -bench ^Benchmark -benchmem -cpuprofile cpu.out -memprofile mem.out
+	go test -run=^$$ -bench ^Benchmark -benchmem -cpuprofile cpu.out -memprofile mem.out
+
+compare:
+	go test -cpuprofile cpu.out -memprofile mem.out

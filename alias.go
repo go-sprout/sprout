@@ -119,14 +119,18 @@ func (fh *FunctionHandler) registerAliases() {
 	// Register the sprig function aliases
 	for originalFunction, aliases := range bc_registerSprigFuncs {
 		for _, alias := range aliases {
-			fh.funcMap[alias] = fh.funcMap[originalFunction]
+			if fn, ok := fh.funcsMap[originalFunction]; ok {
+				fh.funcsMap[alias] = fn
+			}
 		}
 	}
 	//\ BACKWARDS COMPATIBILITY
 
 	for originalFunction, aliases := range fh.funcsAlias {
 		for _, alias := range aliases {
-			fh.funcMap[alias] = fh.funcMap[originalFunction]
+			if fn, ok := fh.funcsMap[originalFunction]; ok {
+				fh.funcsMap[alias] = fn
+			}
 		}
 	}
 }

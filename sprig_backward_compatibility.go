@@ -3,6 +3,25 @@ package sprout
 import (
 	htemplate "html/template"
 	ttemplate "text/template"
+
+	"github.com/go-sprout/sprout/registry/backward"
+	"github.com/go-sprout/sprout/registry/builtin"
+	"github.com/go-sprout/sprout/registry/checksum"
+	"github.com/go-sprout/sprout/registry/conversion"
+	"github.com/go-sprout/sprout/registry/crypto"
+	"github.com/go-sprout/sprout/registry/encoding"
+	"github.com/go-sprout/sprout/registry/env"
+	"github.com/go-sprout/sprout/registry/filesystem"
+	"github.com/go-sprout/sprout/registry/maps"
+	"github.com/go-sprout/sprout/registry/numeric"
+	"github.com/go-sprout/sprout/registry/random"
+	"github.com/go-sprout/sprout/registry/reflect"
+	"github.com/go-sprout/sprout/registry/regexp"
+	"github.com/go-sprout/sprout/registry/semver"
+	"github.com/go-sprout/sprout/registry/slices"
+	"github.com/go-sprout/sprout/registry/strings"
+	"github.com/go-sprout/sprout/registry/time"
+	"github.com/go-sprout/sprout/registry/uniqueid"
 )
 
 // These functions are not guaranteed to evaluate to the same result for given input, because they
@@ -79,4 +98,37 @@ func HtmlFuncMap(opts ...FunctionHandlerOption) htemplate.FuncMap {
 // FOR BACKWARDS COMPATIBILITY ONLY
 func GenericFuncMap(opts ...FunctionHandlerOption) map[string]interface{} {
 	return FuncMap(opts...)
+}
+
+// FuncMap returns a template.FuncMap for use with text/template or html/template.
+// It provides backward compatibility with sprig.FuncMap and integrates
+// additional configured functions.
+// FOR BACKWARD COMPATIBILITY ONLY
+func FuncMap(opts ...FunctionHandlerOption) ttemplate.FuncMap {
+	fnHandler := NewFunctionHandler(opts...)
+
+	_ = fnHandler.AddRegistries(
+		builtin.NewRegistry(),
+		uniqueid.NewRegistry(),
+		semver.NewRegistry(),
+		backward.NewRegistry(),
+		reflect.NewRegistry(),
+		time.NewRegistry(),
+		strings.NewRegistry(),
+		random.NewRegistry(),
+		checksum.NewRegistry(),
+		conversion.NewRegistry(),
+		numeric.NewRegistry(),
+		encoding.NewRegistry(),
+		regexp.NewRegistry(),
+		slices.NewRegistry(),
+		maps.NewRegistry(),
+		crypto.NewRegistry(),
+		filesystem.NewRegistry(),
+		env.NewRegistry(),
+	)
+
+	// Register aliases for functions
+	fnHandler.registerAliases()
+	return fnHandler.funcsMap
 }

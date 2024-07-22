@@ -55,7 +55,7 @@ func BenchmarkSprout(b *testing.B) {
 
 		go func() {
 			for err := range errChan {
-				fnHandler.Logger.Error(err.Error())
+				fnHandler.Logger().Error(err.Error())
 			}
 		}()
 

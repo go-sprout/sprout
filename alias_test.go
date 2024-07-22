@@ -1,6 +1,8 @@
 package sprout
 
 import (
+	"bytes"
+	"html/template"
 	"reflect"
 	"testing"
 
@@ -67,17 +69,17 @@ func TestRegisterAliases(t *testing.T) {
 	alias1 := "alias1"
 	alias2 := "alias2"
 
-	// Mock a function for originalFunc and add it to funcMap.
+	// Mock a function for originalFunc and add it to funcsRegistry.
 	mockFunc := func() {}
-	handler.funcMap[originalFunc] = mockFunc
+	handler.funcsMap[originalFunc] = mockFunc
 
 	// Apply the WithAlias option and then register the aliases.
 	WithAlias(originalFunc, alias1, alias2)(handler)
 	handler.registerAliases()
 
-	// Check that the aliases are mapped to the same function as the original function in funcMap.
-	assert.True(t, reflect.ValueOf(handler.funcMap[originalFunc]).Pointer() == reflect.ValueOf(handler.funcMap[alias1]).Pointer())
-	assert.True(t, reflect.ValueOf(handler.funcMap[originalFunc]).Pointer() == reflect.ValueOf(handler.funcMap[alias2]).Pointer())
+	// Check that the aliases are mapped to the same function as the original function in funcsRegistry.
+	assert.True(t, reflect.ValueOf(handler.funcsMap[originalFunc]).Pointer() == reflect.ValueOf(handler.funcsMap[alias1]).Pointer())
+	assert.True(t, reflect.ValueOf(handler.funcsMap[originalFunc]).Pointer() == reflect.ValueOf(handler.funcsMap[alias2]).Pointer())
 }
 
 func TestAliasesInTemplate(t *testing.T) {
@@ -86,15 +88,19 @@ func TestAliasesInTemplate(t *testing.T) {
 	alias1 := "alias1"
 	alias2 := "alias2"
 
-	// Mock a function for originalFunc and add it to funcMap.
+	// Mock a function for originalFunc and add it to funcsRegistry.
 	mockFunc := func() string { return "cheese" }
-	handler.funcMap[originalFuncName] = mockFunc
+	handler.funcsMap[originalFuncName] = mockFunc
 
 	// Apply the WithAlias option and then register the aliases.
 	WithAlias(originalFuncName, alias1, alias2)(handler)
 
 	// Create a template with the aliases.
-	result, err := runTemplate(t, handler, `{{originalFunc}} {{alias1}} {{alias2}}`, nil)
+	tmpl, err := template.New("test").Funcs(FuncMap(WithFunctionHandler(handler))).Parse(`{{originalFunc}} {{alias1}} {{alias2}}`)
 	assert.NoError(t, err)
-	assert.Equal(t, "cheese cheese cheese", result)
+
+	var buf bytes.Buffer
+	err = tmpl.ExecuteTemplate(&buf, "test", nil)
+	assert.NoError(t, err)
+	assert.Equal(t, "cheese cheese cheese", buf.String())
 }
