@@ -20,3 +20,9 @@ func (or *EnvironmentRegistry) Uid() string {
 func (or *EnvironmentRegistry) LinkHandler(fh sprout.Handler) {
 	or.handler = &fh
 }
+
+// RegisterFunctions registers all functions of the registry.
+func (er *EnvironmentRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "env", er.Env)
+	sprout.AddFunction(funcsMap, "expandEnv", er.ExpandEnv)
+}

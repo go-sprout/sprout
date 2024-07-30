@@ -4,34 +4,8 @@ import (
 	"math"
 	"reflect"
 
-	"github.com/go-sprout/sprout"
 	"github.com/spf13/cast"
 )
-
-// RegisterFunctions registers all functions of the registry.
-func (nr *NumericRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
-	sprout.AddFunction(funcsMap, "floor", nr.Floor)
-	sprout.AddFunction(funcsMap, "ceil", nr.Ceil)
-	sprout.AddFunction(funcsMap, "round", nr.Round)
-	sprout.AddFunction(funcsMap, "add", nr.Add)
-	sprout.AddFunction(funcsMap, "add1", nr.Add1)
-	sprout.AddFunction(funcsMap, "sub", nr.Sub)
-	sprout.AddFunction(funcsMap, "mul", nr.MulInt)
-	sprout.AddFunction(funcsMap, "mulf", nr.Mulf)
-	sprout.AddFunction(funcsMap, "div", nr.DivInt)
-	sprout.AddFunction(funcsMap, "divf", nr.Divf)
-	sprout.AddFunction(funcsMap, "mod", nr.Mod)
-	sprout.AddFunction(funcsMap, "min", nr.Min)
-	sprout.AddFunction(funcsMap, "minf", nr.Minf)
-	sprout.AddFunction(funcsMap, "max", nr.Max)
-	sprout.AddFunction(funcsMap, "maxf", nr.Maxf)
-}
-
-func (nr *NumericRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) {
-	sprout.AddAlias(aliasMap, "add", "addf")
-	sprout.AddAlias(aliasMap, "add1", "add1f")
-	sprout.AddAlias(aliasMap, "sub", "subf")
-}
 
 // Floor returns the largest integer less than or equal to the provided number.
 //

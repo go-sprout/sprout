@@ -20,3 +20,9 @@ func (sr *SemverRegistry) Uid() string {
 func (sr *SemverRegistry) LinkHandler(fh sprout.Handler) {
 	sr.handler = &fh
 }
+
+// RegisterFunctions registers all functions of the registry.
+func (br *SemverRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "semver", br.Semver)
+	sprout.AddFunction(funcsMap, "semverCompare", br.SemverCompare)
+}

@@ -20,3 +20,8 @@ func (ur *UniqueIDRegistry) Uid() string {
 func (ur *UniqueIDRegistry) LinkHandler(fh sprout.Handler) {
 	ur.handler = &fh
 }
+
+// RegisterFunctions registers all functions of the registry.
+func (ur *UniqueIDRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "uuidv4", ur.Uuidv4)
+}

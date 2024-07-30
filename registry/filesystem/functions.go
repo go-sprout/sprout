@@ -3,23 +3,7 @@ package filesystem
 import (
 	"path"
 	"path/filepath"
-
-	"github.com/go-sprout/sprout"
 )
-
-// RegisterFunctions registers all functions of the registry.
-func (fsr *FileSystemRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
-	sprout.AddFunction(funcsMap, "pathBase", fsr.PathBase)
-	sprout.AddFunction(funcsMap, "pathDir", fsr.PathDir)
-	sprout.AddFunction(funcsMap, "pathExt", fsr.PathExt)
-	sprout.AddFunction(funcsMap, "pathClean", fsr.PathClean)
-	sprout.AddFunction(funcsMap, "pathIsAbs", fsr.PathIsAbs)
-	sprout.AddFunction(funcsMap, "osBase", fsr.OsBase)
-	sprout.AddFunction(funcsMap, "osDir", fsr.OsDir)
-	sprout.AddFunction(funcsMap, "osExt", fsr.OsExt)
-	sprout.AddFunction(funcsMap, "osClean", fsr.OsClean)
-	sprout.AddFunction(funcsMap, "osIsAbs", fsr.OsIsAbs)
-}
 
 // PathBase returns the last element of the path.
 //

@@ -20,3 +20,17 @@ func (or *ConversionRegistry) Uid() string {
 func (or *ConversionRegistry) LinkHandler(fh sprout.Handler) {
 	or.handler = &fh
 }
+
+func (cr *ConversionRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "toBool", cr.ToBool)
+	sprout.AddFunction(funcsMap, "toInt", cr.ToInt)
+	sprout.AddFunction(funcsMap, "toInt64", cr.ToInt64)
+	sprout.AddFunction(funcsMap, "toUint", cr.ToUint)
+	sprout.AddFunction(funcsMap, "toUint64", cr.ToUint64)
+	sprout.AddFunction(funcsMap, "toFloat64", cr.ToFloat64)
+	sprout.AddFunction(funcsMap, "toOctal", cr.ToOctal)
+	sprout.AddFunction(funcsMap, "toString", cr.ToString)
+	sprout.AddFunction(funcsMap, "toDate", cr.ToDate)
+	sprout.AddFunction(funcsMap, "toDuration", cr.ToDuration)
+	sprout.AddFunction(funcsMap, "mustToDate", cr.MustToDate)
+}

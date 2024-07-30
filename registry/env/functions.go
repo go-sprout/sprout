@@ -2,15 +2,7 @@ package env
 
 import (
 	"os"
-
-	"github.com/go-sprout/sprout"
 )
-
-// RegisterFunctions registers all functions of the registry.
-func (er *EnvironmentRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
-	sprout.AddFunction(funcsMap, "env", er.Env)
-	sprout.AddFunction(funcsMap, "expandEnv", er.ExpandEnv)
-}
 
 // Env retrieves the value of an environment variable.
 //

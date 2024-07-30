@@ -21,27 +21,9 @@ import (
 	"io"
 	"strings"
 
-	"github.com/go-sprout/sprout"
 	bcrypt_lib "golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/scrypt"
 )
-
-// RegisterFunctions adds all crypto-related functions to the provided registry.
-func (ch *CryptoRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
-	sprout.AddFunction(funcsMap, "bcrypt", ch.Bcrypt)
-	sprout.AddFunction(funcsMap, "htpasswd", ch.Htpasswd)
-	sprout.AddFunction(funcsMap, "derivePassword", ch.DerivePassword)
-	sprout.AddFunction(funcsMap, "genPrivateKey", ch.GeneratePrivateKey)
-	sprout.AddFunction(funcsMap, "buildCustomCert", ch.BuildCustomCertificate)
-	sprout.AddFunction(funcsMap, "genCA", ch.GenerateCertificateAuthority)
-	sprout.AddFunction(funcsMap, "genCAWithKey", ch.GenerateCertificateAuthorityWithPEMKey)
-	sprout.AddFunction(funcsMap, "genSelfSignedCert", ch.GenerateSelfSignedCertificate)
-	sprout.AddFunction(funcsMap, "genSelfSignedCertWithKey", ch.GenerateSelfSignedCertificateWithPEMKey)
-	sprout.AddFunction(funcsMap, "genSignedCert", ch.GenerateSignedCertificate)
-	sprout.AddFunction(funcsMap, "genSignedCertWithKey", ch.GenerateSignedCertificateWithPEMKey)
-	sprout.AddFunction(funcsMap, "encryptAES", ch.EncryptAES)
-	sprout.AddFunction(funcsMap, "decryptAES", ch.DecryptAES)
-}
 
 func (ch *CryptoRegistry) Bcrypt(input string) string {
 	hash, err := bcrypt_lib.GenerateFromPassword([]byte(input), bcrypt_lib.DefaultCost)

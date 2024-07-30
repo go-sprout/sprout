@@ -1,14 +1,8 @@
 package uniqueid
 
 import (
-	"github.com/go-sprout/sprout"
 	"github.com/google/uuid"
 )
-
-// RegisterFunctions registers all functions of the registry.
-func (ur *UniqueIDRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
-	sprout.AddFunction(funcsMap, "uuidv4", ur.Uuidv4)
-}
 
 // Uuidv4 generates a new random UUID (Universally Unique Identifier) version 4.
 // This function does not take parameters and returns a string representation

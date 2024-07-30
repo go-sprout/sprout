@@ -5,21 +5,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/go-sprout/sprout"
 	"github.com/mitchellh/copystructure"
 )
-
-// RegisterFunctions registers all functions of the registry.
-func (nr *ReflectRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
-	sprout.AddFunction(funcsMap, "typeIs", nr.TypeIs)
-	sprout.AddFunction(funcsMap, "typeIsLike", nr.TypeIsLike)
-	sprout.AddFunction(funcsMap, "typeOf", nr.TypeOf)
-	sprout.AddFunction(funcsMap, "kindIs", nr.KindIs)
-	sprout.AddFunction(funcsMap, "kindOf", nr.KindOf)
-	sprout.AddFunction(funcsMap, "deepEqual", nr.DeepEqual)
-	sprout.AddFunction(funcsMap, "deepCopy", nr.DeepCopy)
-	sprout.AddFunction(funcsMap, "mustDeepCopy", nr.MustDeepCopy)
-}
 
 // TypeIs compares the type of 'src' to a target type string 'target'.
 // It returns true if the type of 'src' matches the 'target'.

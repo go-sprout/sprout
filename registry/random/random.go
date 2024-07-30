@@ -70,3 +70,13 @@ func (rr *RandomRegistry) Uid() string {
 func (rr *RandomRegistry) LinkHandler(fh sprout.Handler) {
 	rr.handler = &fh
 }
+
+// RegisterFunctions registers all functions of the registry.
+func (rr *RandomRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "randAlphaNum", rr.RandAlphaNumeric)
+	sprout.AddFunction(funcsMap, "randAlpha", rr.RandAlpha)
+	sprout.AddFunction(funcsMap, "randAscii", rr.RandAscii)
+	sprout.AddFunction(funcsMap, "randNumeric", rr.RandNumeric)
+	sprout.AddFunction(funcsMap, "randBytes", rr.RandBytes)
+	sprout.AddFunction(funcsMap, "randInt", rr.RandInt)
+}

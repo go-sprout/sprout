@@ -4,21 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-sprout/sprout"
 	"github.com/go-sprout/sprout/internal/helpers"
 )
-
-// RegisterFunctions registers all functions of the registry.
-func (br *BuiltinRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
-	sprout.AddFunction(funcsMap, "hello", br.Hello)
-	sprout.AddFunction(funcsMap, "default", br.Default)
-	sprout.AddFunction(funcsMap, "empty", br.Empty)
-	sprout.AddFunction(funcsMap, "all", br.All)
-	sprout.AddFunction(funcsMap, "any", br.Any)
-	sprout.AddFunction(funcsMap, "coalesce", br.Coalesce)
-	sprout.AddFunction(funcsMap, "ternary", br.Ternary)
-	sprout.AddFunction(funcsMap, "cat", br.Cat)
-}
 
 // Hello returns a greeting string.
 // It simply returns the string "Hello!" to be used as a test function.

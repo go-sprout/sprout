@@ -7,28 +7,8 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/go-sprout/sprout"
 	"gopkg.in/yaml.v3"
 )
-
-func (er *EncodingRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
-	sprout.AddFunction(funcsMap, "base64Encode", er.Base64Encode)
-	sprout.AddFunction(funcsMap, "base64Decode", er.Base64Decode)
-	sprout.AddFunction(funcsMap, "base32Encode", er.Base32Encode)
-	sprout.AddFunction(funcsMap, "base32Decode", er.Base32Decode)
-	sprout.AddFunction(funcsMap, "fromJson", er.FromJson)
-	sprout.AddFunction(funcsMap, "toJson", er.ToJson)
-	sprout.AddFunction(funcsMap, "toPrettyJson", er.ToPrettyJson)
-	sprout.AddFunction(funcsMap, "toRawJson", er.ToRawJson)
-	sprout.AddFunction(funcsMap, "fromYaml", er.FromYAML)
-	sprout.AddFunction(funcsMap, "toYaml", er.ToYAML)
-	sprout.AddFunction(funcsMap, "mustFromJson", er.MustFromJson)
-	sprout.AddFunction(funcsMap, "mustToJson", er.MustToJson)
-	sprout.AddFunction(funcsMap, "mustToPrettyJson", er.MustToPrettyJson)
-	sprout.AddFunction(funcsMap, "mustToRawJson", er.MustToRawJson)
-	sprout.AddFunction(funcsMap, "mustFromYaml", er.MustFromYAML)
-	sprout.AddFunction(funcsMap, "mustToYaml", er.MustToYAML)
-}
 
 // Base64Encode encodes a string into its Base64 representation.
 //

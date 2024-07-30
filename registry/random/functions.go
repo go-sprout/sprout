@@ -4,19 +4,7 @@ import (
 	cryptorand "crypto/rand"
 	"encoding/base64"
 	mathrand "math/rand"
-
-	"github.com/go-sprout/sprout"
 )
-
-// RegisterFunctions registers all functions of the registry.
-func (rr *RandomRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
-	sprout.AddFunction(funcsMap, "randAlphaNum", rr.RandAlphaNumeric)
-	sprout.AddFunction(funcsMap, "randAlpha", rr.RandAlpha)
-	sprout.AddFunction(funcsMap, "randAscii", rr.RandAscii)
-	sprout.AddFunction(funcsMap, "randNumeric", rr.RandNumeric)
-	sprout.AddFunction(funcsMap, "randBytes", rr.RandBytes)
-	sprout.AddFunction(funcsMap, "randInt", rr.RandInt)
-}
 
 // RandAlphaNumeric generates a random alphanumeric string of specified length.
 //

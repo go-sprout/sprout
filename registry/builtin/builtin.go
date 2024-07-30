@@ -20,3 +20,15 @@ func (br *BuiltinRegistry) Uid() string {
 func (br *BuiltinRegistry) LinkHandler(fh sprout.Handler) {
 	br.handler = &fh
 }
+
+// RegisterFunctions registers all functions of the registry.
+func (br *BuiltinRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "hello", br.Hello)
+	sprout.AddFunction(funcsMap, "default", br.Default)
+	sprout.AddFunction(funcsMap, "empty", br.Empty)
+	sprout.AddFunction(funcsMap, "all", br.All)
+	sprout.AddFunction(funcsMap, "any", br.Any)
+	sprout.AddFunction(funcsMap, "coalesce", br.Coalesce)
+	sprout.AddFunction(funcsMap, "ternary", br.Ternary)
+	sprout.AddFunction(funcsMap, "cat", br.Cat)
+}
