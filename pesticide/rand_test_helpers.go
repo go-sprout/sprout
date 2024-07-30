@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/go-sprout/sprout"
-	"github.com/go-sprout/sprout/registry"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,7 +14,7 @@ type RegexpTestCase struct {
 	Length   int
 }
 
-func RunRegexpTestCases(t *testing.T, registry registry.Registry, tcs []RegexpTestCase) {
+func RunRegexpTestCases(t *testing.T, registry sprout.Registry, tcs []RegexpTestCase) {
 	t.Helper()
 	handler := sprout.NewFunctionHandler()
 	_ = handler.AddRegistry(registry)

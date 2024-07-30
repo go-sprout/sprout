@@ -1,9 +1,9 @@
 package reflect
 
-import "github.com/go-sprout/sprout/registry"
+import "github.com/go-sprout/sprout"
 
 type ReflectRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of reflect registry.
@@ -17,6 +17,6 @@ func (rr *ReflectRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (rr *ReflectRegistry) LinkHandler(fh registry.Handler) {
+func (rr *ReflectRegistry) LinkHandler(fh sprout.Handler) {
 	rr.handler = &fh
 }

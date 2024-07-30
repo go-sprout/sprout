@@ -7,27 +7,27 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout"
 	"gopkg.in/yaml.v3"
 )
 
-func (er *EncodingRegistry) RegisterFunctions(funcsMap registry.FunctionMap) {
-	registry.AddFunction(funcsMap, "base64Encode", er.Base64Encode)
-	registry.AddFunction(funcsMap, "base64Decode", er.Base64Decode)
-	registry.AddFunction(funcsMap, "base32Encode", er.Base32Encode)
-	registry.AddFunction(funcsMap, "base32Decode", er.Base32Decode)
-	registry.AddFunction(funcsMap, "fromJson", er.FromJson)
-	registry.AddFunction(funcsMap, "toJson", er.ToJson)
-	registry.AddFunction(funcsMap, "toPrettyJson", er.ToPrettyJson)
-	registry.AddFunction(funcsMap, "toRawJson", er.ToRawJson)
-	registry.AddFunction(funcsMap, "fromYaml", er.FromYAML)
-	registry.AddFunction(funcsMap, "toYaml", er.ToYAML)
-	registry.AddFunction(funcsMap, "mustFromJson", er.MustFromJson)
-	registry.AddFunction(funcsMap, "mustToJson", er.MustToJson)
-	registry.AddFunction(funcsMap, "mustToPrettyJson", er.MustToPrettyJson)
-	registry.AddFunction(funcsMap, "mustToRawJson", er.MustToRawJson)
-	registry.AddFunction(funcsMap, "mustFromYaml", er.MustFromYAML)
-	registry.AddFunction(funcsMap, "mustToYaml", er.MustToYAML)
+func (er *EncodingRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "base64Encode", er.Base64Encode)
+	sprout.AddFunction(funcsMap, "base64Decode", er.Base64Decode)
+	sprout.AddFunction(funcsMap, "base32Encode", er.Base32Encode)
+	sprout.AddFunction(funcsMap, "base32Decode", er.Base32Decode)
+	sprout.AddFunction(funcsMap, "fromJson", er.FromJson)
+	sprout.AddFunction(funcsMap, "toJson", er.ToJson)
+	sprout.AddFunction(funcsMap, "toPrettyJson", er.ToPrettyJson)
+	sprout.AddFunction(funcsMap, "toRawJson", er.ToRawJson)
+	sprout.AddFunction(funcsMap, "fromYaml", er.FromYAML)
+	sprout.AddFunction(funcsMap, "toYaml", er.ToYAML)
+	sprout.AddFunction(funcsMap, "mustFromJson", er.MustFromJson)
+	sprout.AddFunction(funcsMap, "mustToJson", er.MustToJson)
+	sprout.AddFunction(funcsMap, "mustToPrettyJson", er.MustToPrettyJson)
+	sprout.AddFunction(funcsMap, "mustToRawJson", er.MustToRawJson)
+	sprout.AddFunction(funcsMap, "mustFromYaml", er.MustFromYAML)
+	sprout.AddFunction(funcsMap, "mustToYaml", er.MustToYAML)
 }
 
 // Base64Encode encodes a string into its Base64 representation.

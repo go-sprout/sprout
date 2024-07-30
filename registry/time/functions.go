@@ -5,22 +5,22 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout"
 )
 
 // RegisterFunctions registers all functions of the registry.
-func (tr *TimeRegistry) RegisterFunctions(funcsMap registry.FunctionMap) {
-	registry.AddFunction(funcsMap, "date", tr.Date)
-	registry.AddFunction(funcsMap, "dateInZone", tr.DateInZone)
-	registry.AddFunction(funcsMap, "duration", tr.Duration)
-	registry.AddFunction(funcsMap, "dateAgo", tr.DateAgo)
-	registry.AddFunction(funcsMap, "now", tr.Now)
-	registry.AddFunction(funcsMap, "unixEpoch", tr.UnixEpoch)
-	registry.AddFunction(funcsMap, "dateModify", tr.DateModify)
-	registry.AddFunction(funcsMap, "durationRound", tr.DurationRound)
-	registry.AddFunction(funcsMap, "htmlDate", tr.HtmlDate)
-	registry.AddFunction(funcsMap, "htmlDateInZone", tr.HtmlDateInZone)
-	registry.AddFunction(funcsMap, "mustDateModify", tr.MustDateModify)
+func (tr *TimeRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "date", tr.Date)
+	sprout.AddFunction(funcsMap, "dateInZone", tr.DateInZone)
+	sprout.AddFunction(funcsMap, "duration", tr.Duration)
+	sprout.AddFunction(funcsMap, "dateAgo", tr.DateAgo)
+	sprout.AddFunction(funcsMap, "now", tr.Now)
+	sprout.AddFunction(funcsMap, "unixEpoch", tr.UnixEpoch)
+	sprout.AddFunction(funcsMap, "dateModify", tr.DateModify)
+	sprout.AddFunction(funcsMap, "durationRound", tr.DurationRound)
+	sprout.AddFunction(funcsMap, "htmlDate", tr.HtmlDate)
+	sprout.AddFunction(funcsMap, "htmlDateInZone", tr.HtmlDateInZone)
+	sprout.AddFunction(funcsMap, "mustDateModify", tr.MustDateModify)
 }
 
 // Date formats a given date or current time into a specified format string.

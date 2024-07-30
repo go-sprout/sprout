@@ -6,7 +6,7 @@ import (
 	mathrand "math/rand"
 	"time"
 
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout"
 )
 
 // caseStyle defines the rules for transforming strings based on capitalization,
@@ -73,7 +73,7 @@ func init() {
 }
 
 type StringsRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of strings registry.
@@ -87,6 +87,6 @@ func (sr *StringsRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (sr *StringsRegistry) LinkHandler(fh registry.Handler) {
+func (sr *StringsRegistry) LinkHandler(fh sprout.Handler) {
 	sr.handler = &fh
 }

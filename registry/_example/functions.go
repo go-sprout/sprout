@@ -1,12 +1,12 @@
 package example
 
 import (
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout"
 )
 
 // RegisterFunctions registers all functions of the registry.
-func (or *ExampleRegistry) RegisterFunctions(funcsMap registry.FunctionMap) {
-	registry.AddFunction(funcsMap, "example", or.ExampleFunction)
+func (or *ExampleRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "example", or.ExampleFunction)
 }
 
 // ExampleFunction is a function that does something.

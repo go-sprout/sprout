@@ -96,7 +96,7 @@ func TestAliasesInTemplate(t *testing.T) {
 	WithAlias(originalFuncName, alias1, alias2)(handler)
 
 	// Create a template with the aliases.
-	tmpl, err := template.New("test").Funcs(FuncMap(WithFunctionHandler(handler))).Parse(`{{originalFunc}} {{alias1}} {{alias2}}`)
+	tmpl, err := template.New("test").Funcs(handler.Build()).Parse(`{{originalFunc}} {{alias1}} {{alias2}}`)
 	assert.NoError(t, err)
 
 	var buf bytes.Buffer

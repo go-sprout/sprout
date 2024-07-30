@@ -4,27 +4,27 @@ import (
 	"fmt"
 
 	"dario.cat/mergo"
+	"github.com/go-sprout/sprout"
 	"github.com/go-sprout/sprout/internal/helpers"
-	"github.com/go-sprout/sprout/registry"
 )
 
 // RegisterFunctions registers all functions of the registry.
-func (mr *MapsRegistry) RegisterFunctions(funcsMap registry.FunctionMap) {
-	registry.AddFunction(funcsMap, "dict", mr.Dict)
-	registry.AddFunction(funcsMap, "get", mr.Get)
-	registry.AddFunction(funcsMap, "set", mr.Set)
-	registry.AddFunction(funcsMap, "unset", mr.Unset)
-	registry.AddFunction(funcsMap, "keys", mr.Keys)
-	registry.AddFunction(funcsMap, "values", mr.Values)
-	registry.AddFunction(funcsMap, "pluck", mr.Pluck)
-	registry.AddFunction(funcsMap, "pick", mr.Pick)
-	registry.AddFunction(funcsMap, "omit", mr.Omit)
-	registry.AddFunction(funcsMap, "dig", mr.Dig)
-	registry.AddFunction(funcsMap, "hasKey", mr.HasKey)
-	registry.AddFunction(funcsMap, "merge", mr.Merge)
-	registry.AddFunction(funcsMap, "mergeOverwrite", mr.MergeOverwrite)
-	registry.AddFunction(funcsMap, "mustMerge", mr.MustMerge)
-	registry.AddFunction(funcsMap, "mustMergeOverwrite", mr.MustMergeOverwrite)
+func (mr *MapsRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "dict", mr.Dict)
+	sprout.AddFunction(funcsMap, "get", mr.Get)
+	sprout.AddFunction(funcsMap, "set", mr.Set)
+	sprout.AddFunction(funcsMap, "unset", mr.Unset)
+	sprout.AddFunction(funcsMap, "keys", mr.Keys)
+	sprout.AddFunction(funcsMap, "values", mr.Values)
+	sprout.AddFunction(funcsMap, "pluck", mr.Pluck)
+	sprout.AddFunction(funcsMap, "pick", mr.Pick)
+	sprout.AddFunction(funcsMap, "omit", mr.Omit)
+	sprout.AddFunction(funcsMap, "dig", mr.Dig)
+	sprout.AddFunction(funcsMap, "hasKey", mr.HasKey)
+	sprout.AddFunction(funcsMap, "merge", mr.Merge)
+	sprout.AddFunction(funcsMap, "mergeOverwrite", mr.MergeOverwrite)
+	sprout.AddFunction(funcsMap, "mustMerge", mr.MustMerge)
+	sprout.AddFunction(funcsMap, "mustMergeOverwrite", mr.MustMergeOverwrite)
 }
 
 // Dict creates a dictionary from a list of keys and values.

@@ -5,7 +5,7 @@ Hello: {{ hello }}
 {{- $str := "Hello, World!" -}}
 {{- $dict := dict "key" "value" -}}
 {{- $list := list 1 2 3 -}}
-{{- $tuple := tuple 1 2 3 -}}
+{{- $tuple := list 1 2 3 -}}
 {{- $set := set $dict "key2" "value2" -}}
 
 {{- $d := dict "one" 1 "two" 222222 -}}
@@ -15,7 +15,7 @@ Hello: {{ hello }}
 
 
 {{/* Date functions */}}
-Ago: {{ago 5}}
+Ago: {{dateAgo 5}}
 Date: {{date "Monday, 02 Jan 2006 15:04:05 MST" 0}}
 DateInZone: {{dateInZone "Monday, 02 Jan 2006 15:04:05 MST" 0 "UTC"}}
 DateModify: {{now | dateModify "-1.5h"}}
@@ -30,13 +30,13 @@ ToDate: {{toDate "2006-01-02" "2017-12-31" | date "02/01/2006"}}
 UnixEpoch: {{now | unixEpoch}}
 
 {{/* String Functions */}}
-Abbrev: {{$str | abbrev 5}}
-AbbrevBoth: {{$str | abbrevboth 1 2}}
+Abbrev: {{$str | ellipsis 5}}
+AbbrevBoth: {{$str | ellipsisBoth 1 2}}
 Trunc: {{$str | trunc 5}}
 Trim: {{trim "   hello    "}}
-Upper: {{upper $str}}
-Lower: {{lower $str}}
-Title: {{title $str}}
+Upper: {{toUpper $str}}
+Lower: {{toLower $str}}
+Title: {{toTitleCase $str}}
 UnTitle: {{untitle $str}}
 Substr: {{substr 0 5 "hello world"}}
 Repeat: {{repeat 3 "hello"}}
@@ -49,11 +49,11 @@ RandAlphaNum: {{randAlphaNum 10}}
 RandAlpha: {{randAlpha 10}}
 RandAscii: {{randAscii 10}}
 RandNumeric: {{randNumeric 10}}
-SwapCase: {{swapcase "Hello, World!"}}
+SwapCase: {{swapCase "Hello, World!"}}
 Shuffle: {{shuffle "Hello, World!"}}
-SnakeCase: {{snakecase "Hello, World!"}}
-CamelCase: {{camelcase "Hello, World!"}}
-KebabCase: {{kebabcase "Hello, World!"}}
+SnakeCase: {{toSnakeCase "Hello, World!"}}
+CamelCase: {{toCamelCase "Hello, World!"}}
+KebabCase: {{toKebabCase "Hello, World!"}}
 Wrap: {{"Hello, World!" | wrap 5}}
 WrapWith: {{"Hello, World!" | wrapWith 5 "!"}}
 Contains: {{contains $str "World"}}
@@ -71,16 +71,16 @@ Sha256sum: {{sha256sum $str}}
 Adler32sum: {{adler32sum $str}}
 toString: {{toString 5}}
 
-Atoi: {{atoi "5"}}
-Int64: {{int64 5}}
-Int: {{int 5}}
-Float64: {{float64 5}}
-ToDecimal: {{toDecimal 8}}
+Atoi: {{toInt "5"}}
+Int64: {{toInt64 5}}
+Int: {{toInt 5}}
+Float64: {{toFloat64 5}}
+ToDecimal: {{toOctal 8}}
 
 Split: {{"Hello, World!" | split ", "}}
 SplitList: {{"Hello, World!" | splitList ", "}}
 SplitN: {{"Hello, World!" | splitn ", " 1}}
-toStrings: {{list 1 2 3 | toStrings}}
+toStrings: {{list 1 2 3 | strSlice}}
 Until: {{until 5}}
 UntilStep: {{untilStep 3 6 2}}
 
@@ -96,7 +96,7 @@ Addf: {{addf 5 10}}
 Subf: {{subf 10 5}}
 Mulf: {{mulf 5 10}}
 Divf: {{divf 10 5}}
-Biggest: {{biggest 5 10}}
+Biggest: {{max 5 10}}
 Max: {{max 5 10}}
 Min: {{min 5 10}}
 Ceil: {{ceil 5.5}}
@@ -137,13 +137,13 @@ DeepEqual: {{deepEqual 5 5}}
 
 {{/* OS Functions */}}
 Env: {{env "PATH"}}
-Expandenv: {{expandenv "$PATH"}}
+Expandenv: {{expandEnv "$PATH"}}
 GetHostByName: {{getHostByName "localhost"}}
-Base Path: {{base "/path/to/file.txt"}}
-Dir: {{dir "/path/to/file.txt"}}
-Ext: {{ext "/path/to/file.txt"}}
-Clean: {{clean "/path/to/file.txt"}}
-IsAbs: {{isAbs "/path/to/file.txt"}}
+Base Path: {{pathBase "/path/to/file.txt"}}
+Dir: {{pathDir "/path/to/file.txt"}}
+Ext: {{pathExt "/path/to/file.txt"}}
+Clean: {{pathClean "/path/to/file.txt"}}
+IsAbs: {{pathIsAbs "/path/to/file.txt"}}
 
 OsBase: {{osBase "/path/to/file.txt"}}
 OsDir: {{osDir "/path/to/file.txt"}}
@@ -152,13 +152,13 @@ OsClean: {{osClean "/path/to/file.txt"}}
 OsIsAbs: {{osIsAbs "/path/to/file.txt"}}
 
 {{/* Encoding Functions */}}
-Base64Encode: {{b64enc "Hello, World!"}}
-Base64Decode: {{b64dec "SGVsbG8sIFdvcmxkIQ=="}}
-Base32Encode: {{b32enc "Hello, World!"}}
-Base32Decode: {{b32dec "JBSWY3DPEBLW64TMMQQQ===="}}
+Base64Encode: {{base64Encode "Hello, World!"}}
+Base64Decode: {{base64Decode "SGVsbG8sIFdvcmxkIQ=="}}
+Base32Encode: {{base32Encode "Hello, World!"}}
+Base32Decode: {{base32Decode "JBSWY3DPEBLW64TMMQQQ===="}}
 
 {{/* Data Struct Functions */}}
-Tuple: {{tuple 1 2 3}}
+Tuple: {{list 1 2 3}}
 List: {{list 1 2 3}}
 Dict: {{dict "key" "value"}}
 Get: {{get $dict "key"}}

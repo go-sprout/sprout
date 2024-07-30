@@ -4,20 +4,20 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/go-sprout/sprout"
 	"github.com/go-sprout/sprout/internal/helpers"
-	"github.com/go-sprout/sprout/registry"
 )
 
 // RegisterFunctions registers all functions of the registry.
-func (br *BuiltinRegistry) RegisterFunctions(funcsMap registry.FunctionMap) {
-	registry.AddFunction(funcsMap, "hello", br.Hello)
-	registry.AddFunction(funcsMap, "default", br.Default)
-	registry.AddFunction(funcsMap, "empty", br.Empty)
-	registry.AddFunction(funcsMap, "all", br.All)
-	registry.AddFunction(funcsMap, "any", br.Any)
-	registry.AddFunction(funcsMap, "coalesce", br.Coalesce)
-	registry.AddFunction(funcsMap, "ternary", br.Ternary)
-	registry.AddFunction(funcsMap, "cat", br.Cat)
+func (br *BuiltinRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "hello", br.Hello)
+	sprout.AddFunction(funcsMap, "default", br.Default)
+	sprout.AddFunction(funcsMap, "empty", br.Empty)
+	sprout.AddFunction(funcsMap, "all", br.All)
+	sprout.AddFunction(funcsMap, "any", br.Any)
+	sprout.AddFunction(funcsMap, "coalesce", br.Coalesce)
+	sprout.AddFunction(funcsMap, "ternary", br.Ternary)
+	sprout.AddFunction(funcsMap, "cat", br.Cat)
 }
 
 // Hello returns a greeting string.

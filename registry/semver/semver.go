@@ -1,11 +1,9 @@
 package semver
 
-import (
-	"github.com/go-sprout/sprout/registry"
-)
+import "github.com/go-sprout/sprout"
 
 type SemverRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of your registry with the embedded Handler.
@@ -19,6 +17,6 @@ func (sr *SemverRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (sr *SemverRegistry) LinkHandler(fh registry.Handler) {
+func (sr *SemverRegistry) LinkHandler(fh sprout.Handler) {
 	sr.handler = &fh
 }

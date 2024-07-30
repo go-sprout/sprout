@@ -1,9 +1,9 @@
 package maps
 
-import "github.com/go-sprout/sprout/registry"
+import "github.com/go-sprout/sprout"
 
 type MapsRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of maps registry.
@@ -17,6 +17,6 @@ func (mr *MapsRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (mr *MapsRegistry) LinkHandler(fh registry.Handler) {
+func (mr *MapsRegistry) LinkHandler(fh sprout.Handler) {
 	mr.handler = &fh
 }

@@ -1,4 +1,4 @@
-package registry
+package sprout
 
 import "log/slog"
 
@@ -10,8 +10,10 @@ import "log/slog"
 // ! This interface is not meant to be implemented by the user but by the
 // ! library itself. An user could implement it but it is not recommended.
 type Handler interface {
+	Logger() *slog.Logger
+
 	AddRegistry(registry Registry) error
 	AddRegistries(registries ...Registry) error
-	Registry() FunctionMap
-	Logger() *slog.Logger
+
+	Build() FunctionMap
 }

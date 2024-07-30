@@ -1,11 +1,9 @@
 package encoding
 
-import (
-	"github.com/go-sprout/sprout/registry"
-)
+import "github.com/go-sprout/sprout"
 
 type EncodingRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of conversion registry.
@@ -19,6 +17,6 @@ func (or *EncodingRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (or *EncodingRegistry) LinkHandler(fh registry.Handler) {
+func (or *EncodingRegistry) LinkHandler(fh sprout.Handler) {
 	or.handler = &fh
 }

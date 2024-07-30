@@ -2,13 +2,13 @@ package semver
 
 import (
 	"github.com/Masterminds/semver/v3"
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout"
 )
 
 // RegisterFunctions registers all functions of the registry.
-func (br *SemverRegistry) RegisterFunctions(funcsMap registry.FunctionMap) {
-	registry.AddFunction(funcsMap, "semver", br.Semver)
-	registry.AddFunction(funcsMap, "semverCompare", br.SemverCompare)
+func (br *SemverRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "semver", br.Semver)
+	sprout.AddFunction(funcsMap, "semverCompare", br.SemverCompare)
 }
 
 // Semver creates a new semantic version object from a given version string.

@@ -8,15 +8,15 @@ import (
 	"fmt"
 	"hash/adler32"
 
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout"
 )
 
 // RegisterFunctions registers all functions of the registry.
-func (cr *ChecksumRegistry) RegisterFunctions(funcsMap registry.FunctionMap) {
-	registry.AddFunction(funcsMap, "sha1sum", cr.Sha1sum)
-	registry.AddFunction(funcsMap, "sha256sum", cr.Sha256sum)
-	registry.AddFunction(funcsMap, "adler32sum", cr.Adler32sum)
-	registry.AddFunction(funcsMap, "md5sum", cr.Md5sum)
+func (cr *ChecksumRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "sha1sum", cr.Sha1sum)
+	sprout.AddFunction(funcsMap, "sha256sum", cr.Sha256sum)
+	sprout.AddFunction(funcsMap, "adler32sum", cr.Adler32sum)
+	sprout.AddFunction(funcsMap, "md5sum", cr.Md5sum)
 }
 
 // ExampleFunction is a function that does something.

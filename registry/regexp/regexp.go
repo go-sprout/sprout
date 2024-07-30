@@ -1,11 +1,9 @@
 package regexp
 
-import (
-	"github.com/go-sprout/sprout/registry"
-)
+import "github.com/go-sprout/sprout"
 
 type RegexpRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of regexp registry.
@@ -19,6 +17,6 @@ func (rr *RegexpRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (rr *RegexpRegistry) LinkHandler(fh registry.Handler) {
+func (rr *RegexpRegistry) LinkHandler(fh sprout.Handler) {
 	rr.handler = &fh
 }

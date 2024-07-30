@@ -1,11 +1,9 @@
 package time
 
-import (
-	"github.com/go-sprout/sprout/registry"
-)
+import "github.com/go-sprout/sprout"
 
 type TimeRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of conversion registry.
@@ -19,6 +17,6 @@ func (tr *TimeRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (tr *TimeRegistry) LinkHandler(fh registry.Handler) {
+func (tr *TimeRegistry) LinkHandler(fh sprout.Handler) {
 	tr.handler = &fh
 }

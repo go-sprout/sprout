@@ -22,11 +22,11 @@
 package backward
 
 import (
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout"
 )
 
 type BackwardCompatibilityRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of your registry with the embedded Handler.
@@ -40,6 +40,14 @@ func (bcr *BackwardCompatibilityRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (bcr *BackwardCompatibilityRegistry) LinkHandler(fh registry.Handler) {
+func (bcr *BackwardCompatibilityRegistry) LinkHandler(fh sprout.Handler) {
 	bcr.handler = &fh
+}
+
+// RegisterFunctions registers all functions of the registry.
+func (bcr *BackwardCompatibilityRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "fail", bcr.Fail)
+	sprout.AddFunction(funcsMap, "urlParse", bcr.UrlParse)
+	sprout.AddFunction(funcsMap, "urlJoin", bcr.UrlJoin)
+	sprout.AddFunction(funcsMap, "getHostByName", bcr.GetHostByName)
 }

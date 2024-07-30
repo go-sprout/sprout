@@ -2,8 +2,6 @@ package sprout
 
 import (
 	"log/slog"
-
-	"github.com/go-sprout/sprout/registry"
 )
 
 // ErrHandling defines the strategy for handling errors within FunctionHandler.
@@ -28,7 +26,8 @@ type FunctionHandler struct {
 	ErrHandling ErrHandling
 	errChan     chan error
 	logger      *slog.Logger
-	funcsMap    registry.FunctionMap
+	registries  []Registry
+	funcsMap    FunctionMap
 	funcsAlias  FunctionAliasMap
 }
 
@@ -42,8 +41,10 @@ func NewFunctionHandler(opts ...FunctionHandlerOption) *FunctionHandler {
 		ErrHandling: ErrHandlingReturnDefaultValue,
 		errChan:     make(chan error),
 		logger:      slog.New(&slog.TextHandler{}),
-		funcsMap:    make(registry.FunctionMap),
+		funcsMap:    make(FunctionMap),
 		funcsAlias:  make(FunctionAliasMap),
+
+		registries: make([]Registry, 0),
 	}
 
 	for _, opt := range opts {
@@ -76,7 +77,7 @@ func WithErrorChannel(ec chan error) FunctionHandlerOption {
 
 // WithFunctionHandler updates a FunctionHandler with settings from another FunctionHandler.
 // This is useful for copying configurations between handlers.
-func WithFunctionHandler(new registry.Handler) FunctionHandlerOption {
+func WithFunctionHandler(new Handler) FunctionHandlerOption {
 	return func(fnh *FunctionHandler) {
 		if new == nil {
 			return
@@ -91,16 +92,23 @@ func WithFunctionHandler(new registry.Handler) FunctionHandlerOption {
 // RegisterHandler registers a single FunctionRegistry implementation (e.g., a handler)
 // into the FunctionHandler's internal function registry. This method allows for integrating
 // additional functions into the template processing environment.
-func (fh *FunctionHandler) AddRegistry(registry registry.Registry) error {
-	registry.LinkHandler(fh)
-	registry.RegisterFunctions(fh.funcsMap)
+func (fh *FunctionHandler) AddRegistry(reg Registry) error {
+	fh.registries = append(fh.registries, reg)
+
+	reg.LinkHandler(fh)
+	reg.RegisterFunctions(fh.funcsMap)
+
+	if regAlias, ok := reg.(RegistryWithAlias); ok {
+		regAlias.RegisterAliases(fh.funcsAlias)
+	}
+
 	return nil
 }
 
 // RegisterHandlers registers multiple FunctionRegistry implementations into the
 // FunctionHandler's internal function registry. This method simplifies the process
 // of adding multiple sets of functionalities into the template engine at once.
-func (fh *FunctionHandler) AddRegistries(registries ...registry.Registry) error {
+func (fh *FunctionHandler) AddRegistries(registries ...Registry) error {
 	for _, registry := range registries {
 		if err := fh.AddRegistry(registry); err != nil {
 			return err
@@ -109,12 +117,12 @@ func (fh *FunctionHandler) AddRegistries(registries ...registry.Registry) error 
 	return nil
 }
 
-// Registry retrieves the complete function registry that has been configured
-// within this FunctionHandler. This registry is ready to be used with template engines
+// Build retrieves the complete suite of functiosn and alias that has been configured
+// within this Handler. This handler is ready to be used with template engines
 // that accept FuncMap, such as html/template or text/template.
 //
 // NOTE: This will replace the `FuncsMap()`, `TxtFuncMap()` and `HtmlFuncMap()` from sprig
-func (fh *FunctionHandler) Registry() registry.FunctionMap {
+func (fh *FunctionHandler) Build() FunctionMap {
 	fh.registerAliases() // Ensure all aliases are processed before returning the registry
 	return fh.funcsMap
 }

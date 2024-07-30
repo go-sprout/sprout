@@ -73,15 +73,3 @@ func TestWithParser(t *testing.T) {
 
 	assert.Equal(t, fnHandler, handler)
 }
-
-func TestFuncMap_IncludesHello(t *testing.T) {
-	funcMap := FuncMap()
-
-	_, exists := funcMap["hello"]
-	assert.True(t, exists)
-
-	helloFunc, ok := funcMap["hello"].(func() string)
-	assert.True(t, ok)
-
-	assert.Equal(t, "Hello!", helloFunc())
-}

@@ -1,4 +1,4 @@
-package registry
+package sprout
 
 import "text/template"
 
@@ -27,6 +27,12 @@ type Registry interface {
 	RegisterFunctions(fnMap FunctionMap)
 }
 
+type RegistryWithAlias interface {
+	// RegisterAliases adds the provided aliases into the given alias map.
+	// This method is called by an Handler to register all aliases of a registry.
+	RegisterAliases(aliasMap FunctionAliasMap)
+}
+
 // AddFunction adds a new function under the specified name to the given registry.
 // If the function name already exists in the registry, this method does nothing to
 // prevent accidental overwriting of existing registered functions.
@@ -35,4 +41,19 @@ func AddFunction(funcsMap FunctionMap, name string, function any) {
 		return // Prevent overwriting existing functions
 	}
 	funcsMap[name] = function
+}
+
+// AddAlias adds an alias for the original function name. The original function
+// name must already exist in the FunctionHandler's function map. If the original
+// function name does not exist, the alias is not added.
+func AddAlias(aliasMap FunctionAliasMap, originalFunction string, aliases ...string) {
+	if len(aliases) == 0 {
+		return
+	}
+
+	if _, ok := aliasMap[originalFunction]; !ok {
+		aliasMap[originalFunction] = make([]string, 0)
+	}
+
+	aliasMap[originalFunction] = append(aliasMap[originalFunction], aliases...)
 }

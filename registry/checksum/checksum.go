@@ -1,11 +1,9 @@
 package checksum
 
-import (
-	"github.com/go-sprout/sprout/registry"
-)
+import "github.com/go-sprout/sprout"
 
 type ChecksumRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of the checksum registry.
@@ -19,6 +17,6 @@ func (cr *ChecksumRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (cr *ChecksumRegistry) LinkHandler(fh registry.Handler) {
+func (cr *ChecksumRegistry) LinkHandler(fh sprout.Handler) {
 	cr.handler = &fh
 }

@@ -1,11 +1,9 @@
 package filesystem
 
-import (
-	"github.com/go-sprout/sprout/registry"
-)
+import "github.com/go-sprout/sprout"
 
 type FileSystemRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of filesystem registry.
@@ -19,6 +17,6 @@ func (fsr *FileSystemRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (fsr *FileSystemRegistry) LinkHandler(fh registry.Handler) {
+func (fsr *FileSystemRegistry) LinkHandler(fh sprout.Handler) {
 	fsr.handler = &fh
 }

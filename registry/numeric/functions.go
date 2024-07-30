@@ -4,27 +4,33 @@ import (
 	"math"
 	"reflect"
 
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout"
 	"github.com/spf13/cast"
 )
 
 // RegisterFunctions registers all functions of the registry.
-func (nr *NumericRegistry) RegisterFunctions(funcsMap registry.FunctionMap) {
-	registry.AddFunction(funcsMap, "floor", nr.Floor)
-	registry.AddFunction(funcsMap, "ceil", nr.Ceil)
-	registry.AddFunction(funcsMap, "round", nr.Round)
-	registry.AddFunction(funcsMap, "add", nr.Add)
-	registry.AddFunction(funcsMap, "add1", nr.Add1)
-	registry.AddFunction(funcsMap, "sub", nr.Sub)
-	registry.AddFunction(funcsMap, "mul", nr.MulInt)
-	registry.AddFunction(funcsMap, "mulf", nr.Mulf)
-	registry.AddFunction(funcsMap, "div", nr.DivInt)
-	registry.AddFunction(funcsMap, "divf", nr.Divf)
-	registry.AddFunction(funcsMap, "mod", nr.Mod)
-	registry.AddFunction(funcsMap, "min", nr.Min)
-	registry.AddFunction(funcsMap, "minf", nr.Minf)
-	registry.AddFunction(funcsMap, "max", nr.Max)
-	registry.AddFunction(funcsMap, "maxf", nr.Maxf)
+func (nr *NumericRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+	sprout.AddFunction(funcsMap, "floor", nr.Floor)
+	sprout.AddFunction(funcsMap, "ceil", nr.Ceil)
+	sprout.AddFunction(funcsMap, "round", nr.Round)
+	sprout.AddFunction(funcsMap, "add", nr.Add)
+	sprout.AddFunction(funcsMap, "add1", nr.Add1)
+	sprout.AddFunction(funcsMap, "sub", nr.Sub)
+	sprout.AddFunction(funcsMap, "mul", nr.MulInt)
+	sprout.AddFunction(funcsMap, "mulf", nr.Mulf)
+	sprout.AddFunction(funcsMap, "div", nr.DivInt)
+	sprout.AddFunction(funcsMap, "divf", nr.Divf)
+	sprout.AddFunction(funcsMap, "mod", nr.Mod)
+	sprout.AddFunction(funcsMap, "min", nr.Min)
+	sprout.AddFunction(funcsMap, "minf", nr.Minf)
+	sprout.AddFunction(funcsMap, "max", nr.Max)
+	sprout.AddFunction(funcsMap, "maxf", nr.Maxf)
+}
+
+func (nr *NumericRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) {
+	sprout.AddAlias(aliasMap, "add", "addf")
+	sprout.AddAlias(aliasMap, "add1", "add1f")
+	sprout.AddAlias(aliasMap, "sub", "subf")
 }
 
 // Floor returns the largest integer less than or equal to the provided number.

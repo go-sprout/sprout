@@ -12,7 +12,10 @@ import (
 	"text/template"
 
 	"github.com/go-sprout/sprout"
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout/registry/maps"
+	"github.com/go-sprout/sprout/registry/reflect"
+	"github.com/go-sprout/sprout/registry/slices"
+	"github.com/go-sprout/sprout/registry/strings"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -28,32 +31,28 @@ type MustTestCase struct {
 	ExpectedErr string
 }
 
-func RunTestCases(t *testing.T, registry registry.Registry, tc []TestCase) {
+func RunTestCases(t *testing.T, registry sprout.Registry, tc []TestCase) {
 	t.Helper()
-	handler := sprout.NewFunctionHandler()
-	_ = handler.AddRegistry(registry)
 
 	for _, test := range tc {
 		t.Run(test.Name, func(t *testing.T) {
 			t.Helper()
 
-			tmplResponse, err := runTemplate(t, handler, test.Input, test.Data)
+			tmplResponse, err := runTemplate(t, testHandler(registry), test.Input, test.Data)
 			assert.NoError(t, err)
 			assert.Equal(t, test.Expected, tmplResponse)
 		})
 	}
 }
 
-func RunMustTestCases(t *testing.T, registry registry.Registry, tc []MustTestCase) {
+func RunMustTestCases(t *testing.T, registry sprout.Registry, tc []MustTestCase) {
 	t.Helper()
-	handler := sprout.NewFunctionHandler()
-	_ = handler.AddRegistry(registry)
 
 	for _, test := range tc {
 		t.Run(test.Name, func(t *testing.T) {
 			t.Helper()
 
-			tmplResponse, err := runTemplate(t, handler, test.Input, test.Data)
+			tmplResponse, err := runTemplate(t, testHandler(registry), test.Input, test.Data)
 			if test.ExpectedErr != "" {
 				if assert.Error(t, err) {
 					assert.Contains(t, err.Error(), test.ExpectedErr)
@@ -66,18 +65,16 @@ func RunMustTestCases(t *testing.T, registry registry.Registry, tc []MustTestCas
 	}
 }
 
-func TestTemplate(t *testing.T, registry registry.Registry, tmplString string, data any) (string, error) {
+func TestTemplate(t *testing.T, registry sprout.Registry, tmplString string, data any) (string, error) {
 	t.Helper()
-	handler := sprout.NewFunctionHandler()
-	_ = handler.AddRegistry(registry)
 
-	return runTemplate(t, handler, tmplString, data)
+	return runTemplate(t, testHandler(registry), tmplString, data)
 }
 
-func runTemplate(t *testing.T, handler registry.Handler, tmplString string, data any) (string, error) {
+func runTemplate(t *testing.T, handler sprout.Handler, tmplString string, data any) (string, error) {
 	t.Helper()
 
-	tmpl, err := template.New("test").Funcs(sprout.FuncMap(sprout.WithFunctionHandler(handler))).Parse(tmplString)
+	tmpl, err := template.New("test").Funcs(handler.Build()).Parse(tmplString)
 	if err != nil {
 		assert.FailNow(t, "Failed to parse template", err)
 		return "", err
@@ -86,4 +83,17 @@ func runTemplate(t *testing.T, handler registry.Handler, tmplString string, data
 	var buf bytes.Buffer
 	err = tmpl.ExecuteTemplate(&buf, "test", data)
 	return buf.String(), err
+}
+
+func testHandler(registry sprout.Registry) *sprout.FunctionHandler {
+	handler := sprout.NewFunctionHandler()
+	_ = handler.AddRegistries(
+		strings.NewRegistry(),
+		slices.NewRegistry(),
+		maps.NewRegistry(),
+		reflect.NewRegistry(),
+		registry,
+	)
+
+	return handler
 }

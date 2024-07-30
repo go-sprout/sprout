@@ -1,8 +1,6 @@
 package numeric
 
-import (
-	"github.com/go-sprout/sprout/registry"
-)
+import "github.com/go-sprout/sprout"
 
 // numericOperation defines a function type that performs a binary operation on
 // two float64 values. It is used to abstract arithmetic operations like
@@ -17,7 +15,7 @@ import (
 type numericOperation func(float64, float64) float64
 
 type NumericRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of numeric registry.
@@ -31,6 +29,6 @@ func (nr *NumericRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (nr *NumericRegistry) LinkHandler(fh registry.Handler) {
+func (nr *NumericRegistry) LinkHandler(fh sprout.Handler) {
 	nr.handler = &fh
 }

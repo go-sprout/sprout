@@ -6,7 +6,7 @@ import (
 	mathrand "math/rand"
 	"time"
 
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout"
 )
 
 // randomOpts defines options for generating random strings. These options specify
@@ -53,7 +53,7 @@ func init() {
 }
 
 type RandomRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of regexp registry.
@@ -67,6 +67,6 @@ func (rr *RandomRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (rr *RandomRegistry) LinkHandler(fh registry.Handler) {
+func (rr *RandomRegistry) LinkHandler(fh sprout.Handler) {
 	rr.handler = &fh
 }

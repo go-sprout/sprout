@@ -6,18 +6,7 @@ import (
 	"math/rand"
 	"net"
 	"net/url"
-
-	"github.com/go-sprout/sprout/registry"
-	"github.com/go-sprout/sprout/registry/maps"
 )
-
-// RegisterFunctions registers all functions of the registry.
-func (bcr *BackwardCompatibilityRegistry) RegisterFunctions(funcsMap registry.FunctionMap) {
-	registry.AddFunction(funcsMap, "fail", bcr.Fail)
-	registry.AddFunction(funcsMap, "urlParse", bcr.UrlParse)
-	registry.AddFunction(funcsMap, "urlJoin", bcr.UrlJoin)
-	registry.AddFunction(funcsMap, "getHostByName", bcr.GetHostByName)
-}
 
 // ! DEPRECATED: This should be removed in the next major version.
 //
@@ -74,8 +63,6 @@ func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) map[string]any {
 	return dict
 }
 
-var mr = maps.NewRegistry()
-
 // ! DEPRECATED: This should be removed in the next major version.
 // UrlJoin constructs a URL string from a given map of URL components.
 //
@@ -104,14 +91,14 @@ var mr = maps.NewRegistry()
 func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) string {
 
 	resURL := url.URL{
-		Scheme:   mr.Get(d, "scheme").(string),
-		Host:     mr.Get(d, "host").(string),
-		Path:     mr.Get(d, "path").(string),
-		RawQuery: mr.Get(d, "query").(string),
-		Opaque:   mr.Get(d, "opaque").(string),
-		Fragment: mr.Get(d, "fragment").(string),
+		Scheme:   bcr.get(d, "scheme").(string),
+		Host:     bcr.get(d, "host").(string),
+		Path:     bcr.get(d, "path").(string),
+		RawQuery: bcr.get(d, "query").(string),
+		Opaque:   bcr.get(d, "opaque").(string),
+		Fragment: bcr.get(d, "fragment").(string),
 	}
-	userinfo := mr.Get(d, "userinfo").(string)
+	userinfo := bcr.get(d, "userinfo").(string)
 	var user *url.Userinfo
 	if userinfo != "" {
 		tempURL, err := url.Parse(fmt.Sprintf("proto://%s@host", userinfo))

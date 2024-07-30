@@ -1,11 +1,12 @@
 package example
 
 import (
+	"github.com/go-sprout/sprout"
 	"github.com/go-sprout/sprout/registry"
 )
 
 type ExampleRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of your registry with the embedded Handler.

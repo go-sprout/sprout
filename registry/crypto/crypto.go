@@ -3,11 +3,11 @@ package crypto
 import (
 	"math/big"
 
-	"github.com/go-sprout/sprout/registry"
+	"github.com/go-sprout/sprout"
 )
 
 type CryptoRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // DSAKeyFormat stores the format for DSA keys.
@@ -59,6 +59,6 @@ func (ch *CryptoRegistry) Uid() string {
 	return "crypto"
 }
 
-func (ch *CryptoRegistry) LinkHandler(fh registry.Handler) {
+func (ch *CryptoRegistry) LinkHandler(fh sprout.Handler) {
 	ch.handler = &fh
 }

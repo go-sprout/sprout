@@ -9,6 +9,25 @@ import (
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/go-sprout/sprout"
+	"github.com/go-sprout/sprout/registry/backward"
+	"github.com/go-sprout/sprout/registry/builtin"
+	"github.com/go-sprout/sprout/registry/checksum"
+	"github.com/go-sprout/sprout/registry/conversion"
+	"github.com/go-sprout/sprout/registry/crypto"
+	"github.com/go-sprout/sprout/registry/encoding"
+	"github.com/go-sprout/sprout/registry/env"
+	"github.com/go-sprout/sprout/registry/filesystem"
+	"github.com/go-sprout/sprout/registry/maps"
+	"github.com/go-sprout/sprout/registry/numeric"
+	"github.com/go-sprout/sprout/registry/random"
+	"github.com/go-sprout/sprout/registry/reflect"
+	"github.com/go-sprout/sprout/registry/regexp"
+	"github.com/go-sprout/sprout/registry/semver"
+	"github.com/go-sprout/sprout/registry/slices"
+	"github.com/go-sprout/sprout/registry/strings"
+	"github.com/go-sprout/sprout/registry/time"
+	"github.com/go-sprout/sprout/registry/uniqueid"
+	"github.com/go-sprout/sprout/sprigin"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -44,22 +63,32 @@ func BenchmarkSprout(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		errChan := make(chan error)
-		defer close(errChan)
-
 		fnHandler := sprout.NewFunctionHandler(
-			sprout.WithErrHandling(sprout.ErrHandlingPanic),
 			sprout.WithLogger(slog.New(&slog.TextHandler{})),
-			sprout.WithErrorChannel(errChan),
 		)
 
-		go func() {
-			for err := range errChan {
-				fnHandler.Logger().Error(err.Error())
-			}
-		}()
+		fnHandler.AddRegistries(
+			builtin.NewRegistry(),
+			uniqueid.NewRegistry(),
+			semver.NewRegistry(),
+			backward.NewRegistry(),
+			reflect.NewRegistry(),
+			time.NewRegistry(),
+			strings.NewRegistry(),
+			random.NewRegistry(),
+			checksum.NewRegistry(),
+			conversion.NewRegistry(),
+			numeric.NewRegistry(),
+			encoding.NewRegistry(),
+			regexp.NewRegistry(),
+			slices.NewRegistry(),
+			maps.NewRegistry(),
+			crypto.NewRegistry(),
+			filesystem.NewRegistry(),
+			env.NewRegistry(),
+		)
 
-		tmpl, err := template.New("allFunctions").Funcs(sprout.FuncMap(sprout.WithFunctionHandler(fnHandler))).ParseGlob("*.sprout.tmpl")
+		tmpl, err := template.New("allFunctions").Funcs(fnHandler.Build()).ParseGlob("*.sprout.tmpl")
 
 		if err != nil {
 			panic(err)
@@ -96,7 +125,7 @@ func TestCompareSprigAndSprout(t *testing.T) {
 	go func() {
 		defer wg.Done()
 
-		tmplSprout, err := template.New("compare").Funcs(sprout.FuncMap()).ParseGlob("compare.tmpl")
+		tmplSprout, err := template.New("compare").Funcs(sprigin.FuncMap()).ParseGlob("compare.tmpl")
 		assert.NoError(t, err)
 
 		err = tmplSprout.ExecuteTemplate(&bufSprout, "compare.tmpl", nil)

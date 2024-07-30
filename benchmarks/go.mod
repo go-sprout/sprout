@@ -1,6 +1,6 @@
 module sprout_benchmarks
 
-go 1.21.0
+go 1.22.5
 
 require (
 	github.com/Masterminds/sprig/v3 v3.2.3
@@ -22,7 +22,7 @@ require (
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/text v0.16.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 

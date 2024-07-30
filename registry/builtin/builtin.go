@@ -1,11 +1,9 @@
 package builtin
 
-import (
-	"github.com/go-sprout/sprout/registry"
-)
+import "github.com/go-sprout/sprout"
 
 type BuiltinRegistry struct {
-	handler *registry.Handler // Embedding Handler for shared functionality
+	handler *sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of your registry with the embedded Handler.
@@ -19,6 +17,6 @@ func (br *BuiltinRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (br *BuiltinRegistry) LinkHandler(fh registry.Handler) {
+func (br *BuiltinRegistry) LinkHandler(fh sprout.Handler) {
 	br.handler = &fh
 }
