@@ -15,7 +15,8 @@ github_checks:
 ignore:
   - benchmark/**
   - docs/**
-  - sprig_functions_not_included_in_sprout.go
+  - springin/** # ignore the springin directory due to deprecated code
+  - registry/crypto/** # ignore the registry/crypto due to deprecated code
 comment:
   behavior: new
   require_changes: true
