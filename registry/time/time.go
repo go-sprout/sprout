@@ -17,12 +17,13 @@ func (tr *TimeRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (tr *TimeRegistry) LinkHandler(fh sprout.Handler) {
+func (tr *TimeRegistry) LinkHandler(fh sprout.Handler) error {
 	tr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (tr *TimeRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (tr *TimeRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "date", tr.Date)
 	sprout.AddFunction(funcsMap, "dateInZone", tr.DateInZone)
 	sprout.AddFunction(funcsMap, "duration", tr.Duration)
@@ -34,4 +35,5 @@ func (tr *TimeRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
 	sprout.AddFunction(funcsMap, "htmlDate", tr.HtmlDate)
 	sprout.AddFunction(funcsMap, "htmlDateInZone", tr.HtmlDateInZone)
 	sprout.AddFunction(funcsMap, "mustDateModify", tr.MustDateModify)
+	return nil
 }

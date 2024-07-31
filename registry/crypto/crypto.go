@@ -59,12 +59,13 @@ func (ch *CryptoRegistry) Uid() string {
 	return "crypto"
 }
 
-func (ch *CryptoRegistry) LinkHandler(fh sprout.Handler) {
+func (ch *CryptoRegistry) LinkHandler(fh sprout.Handler) error {
 	ch.handler = &fh
+	return nil
 }
 
 // RegisterFunctions adds all crypto-related functions to the provided registry.
-func (ch *CryptoRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (ch *CryptoRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "bcrypt", ch.Bcrypt)
 	sprout.AddFunction(funcsMap, "htpasswd", ch.Htpasswd)
 	sprout.AddFunction(funcsMap, "derivePassword", ch.DerivePassword)
@@ -78,4 +79,5 @@ func (ch *CryptoRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
 	sprout.AddFunction(funcsMap, "genSignedCertWithKey", ch.GenerateSignedCertificateWithPEMKey)
 	sprout.AddFunction(funcsMap, "encryptAES", ch.EncryptAES)
 	sprout.AddFunction(funcsMap, "decryptAES", ch.DecryptAES)
+	return nil
 }

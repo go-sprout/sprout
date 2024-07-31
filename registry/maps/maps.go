@@ -17,12 +17,13 @@ func (mr *MapsRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (mr *MapsRegistry) LinkHandler(fh sprout.Handler) {
+func (mr *MapsRegistry) LinkHandler(fh sprout.Handler) error {
 	mr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (mr *MapsRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (mr *MapsRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "dict", mr.Dict)
 	sprout.AddFunction(funcsMap, "get", mr.Get)
 	sprout.AddFunction(funcsMap, "set", mr.Set)
@@ -38,4 +39,5 @@ func (mr *MapsRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
 	sprout.AddFunction(funcsMap, "mergeOverwrite", mr.MergeOverwrite)
 	sprout.AddFunction(funcsMap, "mustMerge", mr.MustMerge)
 	sprout.AddFunction(funcsMap, "mustMergeOverwrite", mr.MustMergeOverwrite)
+	return nil
 }

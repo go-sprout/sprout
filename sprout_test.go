@@ -61,15 +61,29 @@ func TestWithErrorChannel(t *testing.T) {
 }
 
 func TestWithParser(t *testing.T) {
-	fnHandler := &FunctionHandler{
+	fnHandler := &DefaultHandler{
 		ErrHandling: ErrHandlingErrorChannel,
 		logger:      slog.New(&slog.TextHandler{}),
 		errChan:     make(chan error, 1),
 	}
-	option := WithFunctionHandler(fnHandler)
+	option := WithHandler(fnHandler)
 
-	handler := NewFunctionHandler()
+	handler := New()
 	option(handler) // Apply the option
 
 	assert.Equal(t, fnHandler, handler)
+}
+
+func TestWithNilHandler(t *testing.T) {
+	fnHandler := &DefaultHandler{
+		ErrHandling: ErrHandlingErrorChannel,
+		logger:      slog.New(&slog.TextHandler{}),
+		errChan:     make(chan error, 1),
+	}
+	option := WithHandler(nil)
+
+	beforeApply := fnHandler
+	option(beforeApply)
+
+	assert.Equal(t, beforeApply, fnHandler)
 }

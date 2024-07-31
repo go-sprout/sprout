@@ -72,6 +72,7 @@ func (or *OwnRegistry) Uid() string {
 // This function links the Handler to your registry, enabling runtime functionalities.
 func (or *OwnRegistry) LinkHandler(fh registry.Handler) {
     or.handler = &fh
+return nil
 }
 
 ```
@@ -127,7 +128,7 @@ import (
 )
 
 func main() {
-  handler := sprout.NewFunctionHandler()
+  handler := sprout.New()
   handler.AddRegistry(ownregistry.NewRegistry())
 
   tpl := template.Must(

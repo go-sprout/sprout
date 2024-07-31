@@ -17,12 +17,13 @@ func (rr *RegexpRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (rr *RegexpRegistry) LinkHandler(fh sprout.Handler) {
+func (rr *RegexpRegistry) LinkHandler(fh sprout.Handler) error {
 	rr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (rr *RegexpRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (rr *RegexpRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "regexFind", rr.RegexFind)
 	sprout.AddFunction(funcsMap, "regexFindAll", rr.RegexFindAll)
 	sprout.AddFunction(funcsMap, "regexMatch", rr.RegexMatch)
@@ -36,4 +37,5 @@ func (rr *RegexpRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
 	sprout.AddFunction(funcsMap, "mustRegexSplit", rr.MustRegexSplit)
 	sprout.AddFunction(funcsMap, "mustRegexReplaceAll", rr.MustRegexReplaceAll)
 	sprout.AddFunction(funcsMap, "mustRegexReplaceAllLiteral", rr.MustRegexReplaceAllLiteral)
+	return nil
 }

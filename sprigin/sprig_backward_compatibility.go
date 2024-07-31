@@ -132,6 +132,14 @@ func (sh *SprigHandler) Logger() *slog.Logger {
 	return slog.New(slog.Default().Handler())
 }
 
+func (sh *SprigHandler) Functions() sprout.FunctionMap {
+	return sh.funcsMap
+}
+
+func (sh *SprigHandler) Aliases() sprout.FunctionAliasMap {
+	return sh.funcsAlias
+}
+
 func (sh *SprigHandler) Build() sprout.FunctionMap {
 	_ = sh.AddRegistries(
 		builtin.NewRegistry(),

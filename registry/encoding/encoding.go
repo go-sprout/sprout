@@ -17,11 +17,12 @@ func (or *EncodingRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (or *EncodingRegistry) LinkHandler(fh sprout.Handler) {
+func (or *EncodingRegistry) LinkHandler(fh sprout.Handler) error {
 	or.handler = &fh
+	return nil
 }
 
-func (er *EncodingRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (er *EncodingRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "base64Encode", er.Base64Encode)
 	sprout.AddFunction(funcsMap, "base64Decode", er.Base64Decode)
 	sprout.AddFunction(funcsMap, "base32Encode", er.Base32Encode)
@@ -38,4 +39,5 @@ func (er *EncodingRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
 	sprout.AddFunction(funcsMap, "mustToRawJson", er.MustToRawJson)
 	sprout.AddFunction(funcsMap, "mustFromYaml", er.MustFromYAML)
 	sprout.AddFunction(funcsMap, "mustToYaml", er.MustToYAML)
+	return nil
 }

@@ -21,16 +21,16 @@ type Registry interface {
 	// LinkHandler links the given Handler to the registry.
 	// * This method help you to have access to the main handler and its
 	// * functionalities, like the logger, error handling, and more.
-	LinkHandler(fh Handler)
+	LinkHandler(fh Handler) error
 	// RegisterFunctions adds the provided functions into the given function map.
 	// This method is called by an Handler to register all functions of a registry.
-	RegisterFunctions(fnMap FunctionMap)
+	RegisterFunctions(fnMap FunctionMap) error
 }
 
 type RegistryWithAlias interface {
 	// RegisterAliases adds the provided aliases into the given alias map.
 	// This method is called by an Handler to register all aliases of a registry.
-	RegisterAliases(aliasMap FunctionAliasMap)
+	RegisterAliases(aliasMap FunctionAliasMap) error
 }
 
 // AddFunction adds a new function under the specified name to the given registry.

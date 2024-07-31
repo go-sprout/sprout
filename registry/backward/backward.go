@@ -40,14 +40,16 @@ func (bcr *BackwardCompatibilityRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (bcr *BackwardCompatibilityRegistry) LinkHandler(fh sprout.Handler) {
+func (bcr *BackwardCompatibilityRegistry) LinkHandler(fh sprout.Handler) error {
 	bcr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (bcr *BackwardCompatibilityRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (bcr *BackwardCompatibilityRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "fail", bcr.Fail)
 	sprout.AddFunction(funcsMap, "urlParse", bcr.UrlParse)
 	sprout.AddFunction(funcsMap, "urlJoin", bcr.UrlJoin)
 	sprout.AddFunction(funcsMap, "getHostByName", bcr.GetHostByName)
+	return nil
 }

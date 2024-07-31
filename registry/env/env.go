@@ -17,12 +17,14 @@ func (or *EnvironmentRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (or *EnvironmentRegistry) LinkHandler(fh sprout.Handler) {
+func (or *EnvironmentRegistry) LinkHandler(fh sprout.Handler) error {
 	or.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (er *EnvironmentRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (er *EnvironmentRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "env", er.Env)
 	sprout.AddFunction(funcsMap, "expandEnv", er.ExpandEnv)
+	return nil
 }

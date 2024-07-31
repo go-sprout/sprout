@@ -63,7 +63,7 @@ func BenchmarkSprout(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		fnHandler := sprout.NewFunctionHandler(
+		fnHandler := sprout.New(
 			sprout.WithLogger(slog.New(&slog.TextHandler{})),
 		)
 

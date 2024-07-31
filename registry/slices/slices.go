@@ -17,12 +17,13 @@ func (sr *SlicesRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (sr *SlicesRegistry) LinkHandler(fh sprout.Handler) {
+func (sr *SlicesRegistry) LinkHandler(fh sprout.Handler) error {
 	sr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (sr *SlicesRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (sr *SlicesRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "list", sr.List)
 	sprout.AddFunction(funcsMap, "append", sr.Append)
 	sprout.AddFunction(funcsMap, "prepend", sr.Prepend)
@@ -56,4 +57,5 @@ func (sr *SlicesRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
 	sprout.AddFunction(funcsMap, "mustFirst", sr.MustFirst)
 	sprout.AddFunction(funcsMap, "mustLast", sr.MustLast)
 	sprout.AddFunction(funcsMap, "mustReverse", sr.MustReverse)
+	return nil
 }

@@ -17,12 +17,14 @@ func (sr *SemverRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (sr *SemverRegistry) LinkHandler(fh sprout.Handler) {
+func (sr *SemverRegistry) LinkHandler(fh sprout.Handler) error {
 	sr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (br *SemverRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (br *SemverRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "semver", br.Semver)
 	sprout.AddFunction(funcsMap, "semverCompare", br.SemverCompare)
+	return nil
 }

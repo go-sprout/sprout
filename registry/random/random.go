@@ -67,16 +67,18 @@ func (rr *RandomRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (rr *RandomRegistry) LinkHandler(fh sprout.Handler) {
+func (rr *RandomRegistry) LinkHandler(fh sprout.Handler) error {
 	rr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (rr *RandomRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (rr *RandomRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "randAlphaNum", rr.RandAlphaNumeric)
 	sprout.AddFunction(funcsMap, "randAlpha", rr.RandAlpha)
 	sprout.AddFunction(funcsMap, "randAscii", rr.RandAscii)
 	sprout.AddFunction(funcsMap, "randNumeric", rr.RandNumeric)
 	sprout.AddFunction(funcsMap, "randBytes", rr.RandBytes)
 	sprout.AddFunction(funcsMap, "randInt", rr.RandInt)
+	return nil
 }

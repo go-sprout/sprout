@@ -88,7 +88,7 @@ tpl := template.Must(
 You can customize the behavior of Sprout by creating a `FunctionHandler` and passing it to the `FuncMap` function or using the configuration functions provided by Sprout:
 
 ```go
-handler := sprout.NewFunctionHandler(
+handler := sprout.New(
   // Add your logger to the handler to log errors and debug information using the
   // standard slog package or any other logger that implements the slog.Logger interface.
   // By default, Sprout uses a slog.TextHandler.
@@ -134,7 +134,7 @@ Sprout provides the ability to set an alias for a function. This feature is usef
 See more about the alias in the [documentation](https://docs.atom.codes/sprout/function-aliases).
 
 ```go
-sprout.NewFunctionHandler(
+sprout.New(
   sprout.WithAlias("hello", "hi"),
 )
 ```
@@ -149,7 +149,7 @@ Sprout provides three error handling behaviors:
 You can set the error handling behavior using the `WithErrHandling` configuration function:
 
 ```go
-sprout.NewFunctionHandler(
+sprout.New(
   sprout.WithErrHandling(sprout.ErrHandlingReturnDefaultValue),
 )
 ```
@@ -169,7 +169,7 @@ If you set the error handling behavior to `ErrHandlingErrorChannel`, you can pas
 ```go
 errChan := make(chan error)
 
-sprout.NewFunctionHandler(
+sprout.New(
   sprout.WithErrHandling(sprout.ErrHandlingErrorChannel),
   sprout.WithErrorChannel(errChan),
 )

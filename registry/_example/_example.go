@@ -22,4 +22,5 @@ func (or *ExampleRegistry) Uid() string {
 // LinkHandler links the handler to the registry at runtime.
 func (or *ExampleRegistry) LinkHandler(fh registry.Handler) {
 	or.handler = &fh
+	return nil
 }

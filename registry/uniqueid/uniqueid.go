@@ -17,11 +17,13 @@ func (ur *UniqueIDRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (ur *UniqueIDRegistry) LinkHandler(fh sprout.Handler) {
+func (ur *UniqueIDRegistry) LinkHandler(fh sprout.Handler) error {
 	ur.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (ur *UniqueIDRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (ur *UniqueIDRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "uuidv4", ur.Uuidv4)
+	return nil
 }

@@ -29,12 +29,13 @@ func (nr *NumericRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (nr *NumericRegistry) LinkHandler(fh sprout.Handler) {
+func (nr *NumericRegistry) LinkHandler(fh sprout.Handler) error {
 	nr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (nr *NumericRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (nr *NumericRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "floor", nr.Floor)
 	sprout.AddFunction(funcsMap, "ceil", nr.Ceil)
 	sprout.AddFunction(funcsMap, "round", nr.Round)
@@ -50,10 +51,12 @@ func (nr *NumericRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
 	sprout.AddFunction(funcsMap, "minf", nr.Minf)
 	sprout.AddFunction(funcsMap, "max", nr.Max)
 	sprout.AddFunction(funcsMap, "maxf", nr.Maxf)
+	return nil
 }
 
-func (nr *NumericRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) {
+func (nr *NumericRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) error {
 	sprout.AddAlias(aliasMap, "add", "addf")
 	sprout.AddAlias(aliasMap, "add1", "add1f")
 	sprout.AddAlias(aliasMap, "sub", "subf")
+	return nil
 }

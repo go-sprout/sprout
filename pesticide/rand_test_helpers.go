@@ -16,7 +16,7 @@ type RegexpTestCase struct {
 
 func RunRegexpTestCases(t *testing.T, registry sprout.Registry, tcs []RegexpTestCase) {
 	t.Helper()
-	handler := sprout.NewFunctionHandler()
+	handler := sprout.New()
 	_ = handler.AddRegistry(registry)
 
 	for _, test := range tcs {

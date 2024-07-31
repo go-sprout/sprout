@@ -85,8 +85,8 @@ func runTemplate(t *testing.T, handler sprout.Handler, tmplString string, data a
 	return buf.String(), err
 }
 
-func testHandler(registry sprout.Registry) *sprout.FunctionHandler {
-	handler := sprout.NewFunctionHandler()
+func testHandler(registry sprout.Registry) *sprout.DefaultHandler {
+	handler := sprout.New()
 	_ = handler.AddRegistries(
 		strings.NewRegistry(),
 		slices.NewRegistry(),

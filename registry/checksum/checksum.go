@@ -17,14 +17,16 @@ func (cr *ChecksumRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (cr *ChecksumRegistry) LinkHandler(fh sprout.Handler) {
+func (cr *ChecksumRegistry) LinkHandler(fh sprout.Handler) error {
 	cr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (cr *ChecksumRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (cr *ChecksumRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "sha1sum", cr.Sha1sum)
 	sprout.AddFunction(funcsMap, "sha256sum", cr.Sha256sum)
 	sprout.AddFunction(funcsMap, "adler32sum", cr.Adler32sum)
 	sprout.AddFunction(funcsMap, "md5sum", cr.Md5sum)
+	return nil
 }

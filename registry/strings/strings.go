@@ -87,12 +87,13 @@ func (sr *StringsRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (sr *StringsRegistry) LinkHandler(fh sprout.Handler) {
+func (sr *StringsRegistry) LinkHandler(fh sprout.Handler) error {
 	sr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (sr *StringsRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (sr *StringsRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "nospace", sr.Nospace)
 	sprout.AddFunction(funcsMap, "trim", sr.Trim)
 	sprout.AddFunction(funcsMap, "trimAll", sr.TrimAll)
@@ -132,4 +133,5 @@ func (sr *StringsRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
 	sprout.AddFunction(funcsMap, "indent", sr.Indent)
 	sprout.AddFunction(funcsMap, "nindent", sr.Nindent)
 	sprout.AddFunction(funcsMap, "seq", sr.Seq)
+	return nil
 }

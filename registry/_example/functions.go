@@ -5,8 +5,9 @@ import (
 )
 
 // RegisterFunctions registers all functions of the registry.
-func (or *ExampleRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (or *ExampleRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "example", or.ExampleFunction)
+	return nil
 }
 
 // ExampleFunction is a function that does something.

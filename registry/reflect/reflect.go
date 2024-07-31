@@ -17,12 +17,13 @@ func (rr *ReflectRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (rr *ReflectRegistry) LinkHandler(fh sprout.Handler) {
+func (rr *ReflectRegistry) LinkHandler(fh sprout.Handler) error {
 	rr.handler = &fh
+	return nil
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (nr *ReflectRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (nr *ReflectRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "typeIs", nr.TypeIs)
 	sprout.AddFunction(funcsMap, "typeIsLike", nr.TypeIsLike)
 	sprout.AddFunction(funcsMap, "typeOf", nr.TypeOf)
@@ -31,4 +32,5 @@ func (nr *ReflectRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
 	sprout.AddFunction(funcsMap, "deepEqual", nr.DeepEqual)
 	sprout.AddFunction(funcsMap, "deepCopy", nr.DeepCopy)
 	sprout.AddFunction(funcsMap, "mustDeepCopy", nr.MustDeepCopy)
+	return nil
 }
