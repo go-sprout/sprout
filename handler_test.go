@@ -198,6 +198,17 @@ func TestDefaultHandler_AddRegistryWithAlias(t *testing.T) {
 	mockRegistry.AssertCalled(t, "RegisterAliases", dh.cachedFuncsAlias)
 }
 
+func TestDefaultHandler_Registries(t *testing.T) {
+	dh := &DefaultHandler{
+		registries: []Registry{
+			new(MockRegistry),
+			new(MockRegistry),
+		},
+	}
+
+	assert.Len(t, dh.registries, 2, "Registries should return the correct number of registries")
+}
+
 // TestDefaultHandler_Functions tests the Functions method of DefaultHandler.
 func TestDefaultHandler_Functions(t *testing.T) {
 	funcsMap := make(FunctionMap)

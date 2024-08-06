@@ -99,23 +99,27 @@ var nonhermeticFunctions = []string{
 }
 
 type SprigHandler struct {
+	registries []sprout.Registry
 	funcsMap   sprout.FunctionMap
 	funcsAlias sprout.FunctionAliasMap
 }
 
 func NewSprigHandler() *SprigHandler {
 	return &SprigHandler{
+		registries: make([]sprout.Registry, 0),
 		funcsMap:   make(sprout.FunctionMap),
 		funcsAlias: make(sprout.FunctionAliasMap),
 	}
 }
 
 func (sh *SprigHandler) AddRegistry(registry sprout.Registry) error {
-	registry.LinkHandler(sh)
-	registry.RegisterFunctions(sh.funcsMap)
+	sh.registries = append(sh.registries, registry)
+
+	_ = registry.LinkHandler(sh)
+	_ = registry.RegisterFunctions(sh.funcsMap)
 
 	if regAlias, ok := registry.(sprout.RegistryWithAlias); ok {
-		regAlias.RegisterAliases(sh.funcsAlias)
+		_ = regAlias.RegisterAliases(sh.funcsAlias)
 	}
 
 	return nil
