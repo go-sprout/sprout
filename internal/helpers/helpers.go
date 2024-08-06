@@ -104,6 +104,15 @@ func UntilStep(start, stop, step int) []int {
 	return v
 }
 
+// ToString converts the input value to a string based on its type.
+//
+// Parameters:
+//
+//	given any - the value to be converted to a string.
+//
+// Returns:
+//
+//	string - the string representation of the input value.
 func ToString(v any) string {
 	switch v := v.(type) {
 	case string:
