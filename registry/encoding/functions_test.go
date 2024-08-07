@@ -281,9 +281,9 @@ func TestMustToYAML(t *testing.T) {
 				Name:     "TestInvalidInput",
 				Input:    `{{ .V | mustToYaml }}`,
 				Expected: "",
-				Data:     map[string]any{"V": make(chan int)},
+				Data:     map[string]any{"V": func() {}},
 			},
-			ExpectedErr: "cannot marshal type: chan int",
+			ExpectedErr: "cannot marshal type: func()",
 		},
 	}
 

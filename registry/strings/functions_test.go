@@ -164,21 +164,15 @@ func TestTrunc(t *testing.T) {
 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
-// func TestShuffle(t *testing.T) {
-// 	originalRandSource := randSource
-// 	defer func() {
-// 		randSource = originalRandSource
-// 	}()
+func TestShuffle(t *testing.T) {
+	var tc = []pesticide.RegexpTestCase{
+		{Template: `{{ shuffle "" }}`, Length: 0, Regexp: `^$`},
+		{Template: `{{ shuffle "hey" }}`, Length: 3, Regexp: `^[hey]{3}$`},
+		{Template: `{{ shuffle "foo bar baz" }}`, Length: 11, Regexp: `^[\sfobazr]{11}$`},
+	}
 
-// 	randSource = mathrand.NewSource(0)
-
-// 	var tc = []pesticide.TestCase{
-// 		{"TestEmpty", `{{ "" | shuffle }}`, "", nil},
-// 		{"TestShuffle", `{{ "foobar" | shuffle }}`, "abfoor", nil},
-// 	}
-
-// 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
-// }
+	pesticide.RunRegexpTestCases(t, strings.NewRegistry(), tc)
+}
 
 func TestEllipsis(t *testing.T) {
 	var tc = []pesticide.TestCase{
