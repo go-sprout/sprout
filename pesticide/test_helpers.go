@@ -17,6 +17,7 @@ import (
 	"github.com/go-sprout/sprout/registry/slices"
 	"github.com/go-sprout/sprout/registry/strings"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type TestCase struct {
@@ -54,9 +55,7 @@ func RunMustTestCases(t *testing.T, registry sprout.Registry, tc []MustTestCase)
 
 			tmplResponse, err := runTemplate(t, testHandler(registry), test.Input, test.Data)
 			if test.ExpectedErr != "" {
-				if assert.Error(t, err) {
-					assert.Contains(t, err.Error(), test.ExpectedErr)
-				}
+				assert.ErrorContains(t, err, test.ExpectedErr)
 			} else {
 				assert.NoError(t, err)
 			}
@@ -75,10 +74,7 @@ func runTemplate(t *testing.T, handler sprout.Handler, tmplString string, data a
 	t.Helper()
 
 	tmpl, err := template.New("test").Funcs(handler.Build()).Parse(tmplString)
-	if err != nil {
-		assert.FailNow(t, "Failed to parse template", err)
-		return "", err
-	}
+	require.NoError(t, err, "Failed to parse template")
 
 	var buf bytes.Buffer
 	err = tmpl.ExecuteTemplate(&buf, "test", data)
