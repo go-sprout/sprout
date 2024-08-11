@@ -41,6 +41,10 @@ func (bcr *BackwardCompatibilityRegistry) Fail(message string) (*uint, error) {
 //
 //	map[string]any - a map containing the URL components: "scheme", "host",
 //									"hostname", "path", "query", "opaque", "fragment", and "userinfo".
+//
+// Example:
+//
+//	{{ "https://example.com/path?query=1#fragment" | urlParse }} // Output: map[fragment:fragment host:example.com hostname:example.com path:path query:query scheme:https]
 func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) map[string]any {
 	dict := map[string]any{}
 	parsedURL, err := url.Parse(v)
@@ -77,17 +81,7 @@ func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) map[string]any {
 //
 // Example:
 //
-//	urlMap := map[string]any{
-//		"scheme":   "https",
-//		"host":     "example.com",
-//		"path":     "/path",
-//		"query":    "query=1",
-//		"opaque":   "",
-//		"fragment": "fragment",
-//		"userinfo": "user:pass",
-//	}
-//	urlString := bcr.UrlJoin(urlMap)
-//	fmt.Println(urlString) // Output: "https://user:pass@example.com/path?query=1#fragment"
+//	{{ dict scheme="https" host="example.com" path="/path" query="query=1" opaque="opaque" fragment="fragment" | urlJoin }} // Output: "https://example.com/path?query=1#fragment"
 func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) string {
 
 	resURL := url.URL{
@@ -124,6 +118,10 @@ func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) string {
 //	string - a randomly selected IP address associated with the hostname.
 //
 // Note: This function currently lacks error handling
+//
+// Example:
+//
+//	{{ getHostByName "example.com" }} // Output: "237.84.2.178"
 func (bcr *BackwardCompatibilityRegistry) GetHostByName(name string) string {
 	addrs, _ := net.LookupHost(name)
 	return addrs[rand.Intn(len(addrs))]
