@@ -162,7 +162,9 @@ func (mr *MapsRegistry) Values(dict map[string]any) []any {
 //
 // Example:
 //
-//	{{ [{"key": "value1"}, {"key": "value2"}] | pluck "key" }} // Output: ["value1", "value2"]
+//	{{ $d1 := dict "key" "value1"}}
+//	{{ $d2 := dict "key" "value2" }}
+//	{{ pluck "key"	$d1 $d2 }} // Output: ["value1", "value2"]
 func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
 	result := []any{}
 	for _, dict := range dicts {
@@ -186,7 +188,8 @@ func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
 //
 // Example:
 //
-//	{{ pick {"key1": "value1", "key2": "value2", "key3": "value3"}, "key1", "key3" }} // Output: {"key1": "value1", "key3": "value3"}
+//	{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
+//	{{ pick $d "key1" "key3" }} // Output: {"key1": "value1", "key3": "value3"}
 func (mr *MapsRegistry) Pick(dict map[string]any, keys ...string) map[string]any {
 	result := map[string]any{}
 	for _, k := range keys {
@@ -210,7 +213,8 @@ func (mr *MapsRegistry) Pick(dict map[string]any, keys ...string) map[string]any
 //
 // Example:
 //
-//	{{ omit {"key1": "value1", "key2": "value2", "key3": "value3"}, "key2" }} // Output: {"key1": "value1", "key3": "value3"}
+//	{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
+//	{{ omit $d "key1" "key3" }} // Output: {"key2": "value2"}
 func (mr *MapsRegistry) Omit(dict map[string]any, keys ...string) map[string]any {
 	result := map[string]any{}
 

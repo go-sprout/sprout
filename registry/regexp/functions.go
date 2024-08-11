@@ -138,8 +138,8 @@ func (rr *RegexpRegistry) RegexReplaceAllLiteral(regex string, s string, repl st
 // Example:
 //
 //	{{ regexQuoteMeta ".+*?^$()[]{}|" }} // Output: "\.\+\*\?\^\$\(\)\[\]\{\}\|"
-func (rr *RegexpRegistry) RegexQuoteMeta(s string) string {
-	return regexp.QuoteMeta(s)
+func (rr *RegexpRegistry) RegexQuoteMeta(str string) string {
+	return regexp.QuoteMeta(str)
 }
 
 // MustRegexFind searches for the first match of a regex pattern in a string

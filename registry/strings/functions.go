@@ -268,7 +268,7 @@ func (sr *StringsRegistry) Join(sep string, v any) string {
 // Example:
 //
 //	{{ "Hello World" | trunc 5 }} // Output: "Hello"
-//	{{ "Hello World" | trunc -1 }} // Output: "World"
+//	{{ "Hello World" | trunc -5 }} // Output: "World"
 func (sr *StringsRegistry) Trunc(count int, str string) string {
 	length := len(str)
 

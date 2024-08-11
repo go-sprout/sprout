@@ -17,7 +17,7 @@ type DSAKeyFormat struct {
 	P, Q, G, Y, X *big.Int
 }
 
-type certificate struct {
+type Certificate struct {
 	Cert string
 	Key  string
 }

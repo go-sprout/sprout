@@ -61,7 +61,7 @@ func TestSprigHandler(t *testing.T) {
 	}
 
 	assert.ElementsMatch(t, registriesUids, []string{
-		"builtin", "uniqueid", "semver", "backwardCompatibilityWithSprig",
+		"std", "uniqueid", "semver", "backwardCompatibilityWithSprig",
 		"reflect", "time", "strings", "random", "checksum", "conversion",
 		"numeric", "encoding", "regexp", "slices", "maps", "crypto",
 		"filesystem", "env",

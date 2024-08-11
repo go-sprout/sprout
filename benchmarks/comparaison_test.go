@@ -10,7 +10,6 @@ import (
 	"github.com/Masterminds/sprig/v3"
 	"github.com/go-sprout/sprout"
 	"github.com/go-sprout/sprout/registry/backward"
-	"github.com/go-sprout/sprout/registry/builtin"
 	"github.com/go-sprout/sprout/registry/checksum"
 	"github.com/go-sprout/sprout/registry/conversion"
 	"github.com/go-sprout/sprout/registry/crypto"
@@ -68,7 +67,7 @@ func BenchmarkSprout(b *testing.B) {
 		)
 
 		fnHandler.AddRegistries(
-			builtin.NewRegistry(),
+			std.NewRegistry(),
 			uniqueid.NewRegistry(),
 			semver.NewRegistry(),
 			backward.NewRegistry(),

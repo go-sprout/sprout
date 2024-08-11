@@ -100,8 +100,7 @@ func (er *EncodingRegistry) Base32Decode(s string) string {
 //
 // Example:
 //
-//	result := er.FromJson(`{"name":"John", "age":30}`)
-//	fmt.Printf("%v\n", result) // Output: map[name:John age:30]
+// {{ '{"name":"John", "age":30}' | fromJson }} // Output: map[name:John age:30]
 func (er *EncodingRegistry) FromJson(v string) any {
 	output, _ := er.MustFromJson(v)
 	return output
@@ -119,8 +118,8 @@ func (er *EncodingRegistry) FromJson(v string) any {
 //
 // Example:
 //
-//	jsonStr := er.ToJson(map[string]any{"name": "John", "age": 30})
-//	fmt.Println(jsonStr) // Output: {"age":30,"name":"John"}
+//	{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
+//	{{ toJson $d }} // Output: {"key1":"value1","key2":"value2","key3":"value3"}
 func (er *EncodingRegistry) ToJson(v any) string {
 	output, _ := er.MustToJson(v)
 	return output
@@ -138,11 +137,8 @@ func (er *EncodingRegistry) ToJson(v any) string {
 //
 // Example:
 //
-//	prettyJson := er.ToPrettyJson(map[string]any{"name": "John", "age": 30})
-//	fmt.Println(prettyJson) // Output: {
-//	                        //   "age": 30,
-//	                        //   "name": "John"
-//	                        // }
+// {{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
+// {{ toPrettyJson $d }} // Output: "{\n  \"key1\": \"value1\",\n  \"key2\": \"value2\",\n  \"key3\": \"value3\"\n}"
 func (er *EncodingRegistry) ToPrettyJson(v any) string {
 	output, _ := er.MustToPrettyJson(v)
 	return output
@@ -160,8 +156,8 @@ func (er *EncodingRegistry) ToPrettyJson(v any) string {
 //
 // Example:
 //
-//	rawJson := er.ToRawJson(map[string]any{"content": "<div>Hello World!</div>"})
-//	fmt.Println(rawJson) // Output: {"content":"<div>Hello World!</div>"}
+//	{{ $d := dict "content" "<p>Hello World</p>" }}
+//	{{ toRawJson $d }} // Output: {"content":"<p>Hello World</p>"}
 func (er *EncodingRegistry) ToRawJson(v any) string {
 	output, _ := er.MustToRawJson(v)
 	return output
@@ -179,7 +175,7 @@ func (er *EncodingRegistry) ToRawJson(v any) string {
 //
 // Example:
 //
-//	{{ "name: John Doe\nage: 30" | fromYAML }} // Output: map[name:John Doe age:30]
+//	{{ "name: John Doe\nage: 30" | fromYaml }} // Output: map[name:John Doe age:30]
 func (er *EncodingRegistry) FromYAML(str string) any {
 	m := make(map[string]any)
 
@@ -202,7 +198,8 @@ func (er *EncodingRegistry) FromYAML(str string) any {
 //
 // Example:
 //
-//	{{ {"name": "John Doe", "age": 30} | toYAML }} // Output: "name: John Doe\nage: 30\n"
+//	{{ $d := dict "name" "John Doe" "age" 30 }}
+//	{{ toYaml $d }} // Output: name: John Doe\nage: 30
 func (er *EncodingRegistry) ToYAML(v any) string {
 	result, _ := er.MustToYAML(v)
 	return result
@@ -335,7 +332,8 @@ func (er *EncodingRegistry) MustFromYAML(v string) (any, error) {
 //
 // Example:
 //
-//	{{ {"name": "John Doe", "age": 30} | mustToYAML }} // Output: "name: John Doe\nage: 30\n", nil
+//	{{ $d := dict "name" "John Doe" "age" 30 }}
+//	{{ $d | mustToYaml }} // Output: name: John Doe\nage: 30
 func (er *EncodingRegistry) MustToYAML(v any) (string, error) {
 	data, err := yaml.Marshal(v)
 	if err != nil {

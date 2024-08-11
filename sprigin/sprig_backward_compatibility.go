@@ -7,7 +7,6 @@ import (
 
 	"github.com/go-sprout/sprout"
 	"github.com/go-sprout/sprout/registry/backward"
-	"github.com/go-sprout/sprout/registry/builtin"
 	"github.com/go-sprout/sprout/registry/checksum"
 	"github.com/go-sprout/sprout/registry/conversion"
 	"github.com/go-sprout/sprout/registry/crypto"
@@ -21,6 +20,7 @@ import (
 	"github.com/go-sprout/sprout/registry/regexp"
 	"github.com/go-sprout/sprout/registry/semver"
 	"github.com/go-sprout/sprout/registry/slices"
+	"github.com/go-sprout/sprout/registry/std"
 	"github.com/go-sprout/sprout/registry/strings"
 	"github.com/go-sprout/sprout/registry/time"
 	"github.com/go-sprout/sprout/registry/uniqueid"
@@ -146,7 +146,7 @@ func (sh *SprigHandler) Aliases() sprout.FunctionAliasMap {
 
 func (sh *SprigHandler) Build() sprout.FunctionMap {
 	_ = sh.AddRegistries(
-		builtin.NewRegistry(),
+		std.NewRegistry(),
 		uniqueid.NewRegistry(),
 		semver.NewRegistry(),
 		backward.NewRegistry(),

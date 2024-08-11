@@ -187,8 +187,8 @@ func (ch *CryptoRegistry) generateCertificateAuthorityWithKeyInternal(
 	cn string,
 	daysValid int,
 	priv crypto.PrivateKey,
-) (certificate, error) {
-	ca := certificate{}
+) (Certificate, error) {
+	ca := Certificate{}
 
 	template, err := ch.getBaseCertTemplate(cn, nil, nil, daysValid)
 	if err != nil {
@@ -211,8 +211,8 @@ func (ch *CryptoRegistry) generateSelfSignedCertificateWithKeyInternal(
 	alternateDNS []interface{},
 	daysValid int,
 	priv crypto.PrivateKey,
-) (certificate, error) {
-	cert := certificate{}
+) (Certificate, error) {
+	cert := Certificate{}
 
 	template, err := ch.getBaseCertTemplate(cn, ips, alternateDNS, daysValid)
 	if err != nil {
@@ -229,10 +229,10 @@ func (ch *CryptoRegistry) generateSignedCertificateWithKeyInternal(
 	ips []interface{},
 	alternateDNS []interface{},
 	daysValid int,
-	ca certificate,
+	ca Certificate,
 	priv crypto.PrivateKey,
-) (certificate, error) {
-	cert := certificate{}
+) (Certificate, error) {
+	cert := Certificate{}
 
 	decodedSignerCert, _ := pem.Decode([]byte(ca.Cert))
 	if decodedSignerCert == nil {

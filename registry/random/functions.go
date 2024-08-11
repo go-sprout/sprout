@@ -98,6 +98,18 @@ func (rr *RandomRegistry) RandBytes(count int) (string, error) {
 	return base64.StdEncoding.EncodeToString(buf), nil
 }
 
+// RandInt generates a random integer between the specified minimum and maximum
+// values (inclusive).
+//
+// Parameters:
+// - min: the minimum value of the range (inclusive).
+// - max: the maximum value of the range (inclusive).
+//
+// Returns:
+// - int: the randomly generated integer.
+//
+// Example:
+// {{ randInt 1 10 }} // Output: 5
 func (rr *RandomRegistry) RandInt(min, max int) int {
 	return mathrand.Intn(max-min) + min
 }

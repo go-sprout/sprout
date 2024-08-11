@@ -1,4 +1,4 @@
-package builtin
+package std
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 // Hello returns a greeting string.
 // It simply returns the string "Hello!" to be used as a test function.
-func (br *BuiltinRegistry) Hello() string {
+func (sr *StdRegistry) Hello() string {
 	return "Hello!"
 }
 
@@ -40,7 +40,7 @@ func (br *BuiltinRegistry) Hello() string {
 //	{{ "" | default "default" }}  // Output: "default"
 //	{{ "first" | default "default" }} // Output: "first"
 //	{{ "first" | default "default" "second" }} // Output: "second"
-func (br *BuiltinRegistry) Default(defaultValue any, given ...any) any {
+func (sr *StdRegistry) Default(defaultValue any, given ...any) any {
 	if helpers.Empty(given) || helpers.Empty(given[0]) {
 		return defaultValue
 	}
@@ -73,7 +73,7 @@ func (br *BuiltinRegistry) Default(defaultValue any, given ...any) any {
 //	{{ 0 | empty }} // Output: true
 //	{{ false | empty }} // Output: true
 //	{{ struct{}{} | empty }} // Output: false
-func (br *BuiltinRegistry) Empty(given any) bool {
+func (sr *StdRegistry) Empty(given any) bool {
 	return helpers.Empty(given)
 }
 
@@ -92,7 +92,7 @@ func (br *BuiltinRegistry) Empty(given any) bool {
 //
 //	{{ 1, "hello", true | all }} // Output: true
 //	{{ 1, "", true | all }} // Output: false
-func (br *BuiltinRegistry) All(values ...any) bool {
+func (sr *StdRegistry) All(values ...any) bool {
 	for _, val := range values {
 		if helpers.Empty(val) {
 			return false
@@ -114,7 +114,7 @@ func (br *BuiltinRegistry) All(values ...any) bool {
 //   {{ "", 0, false | any }} // Output: false
 //   {{ "", 0, "text" | any }} // Output: true
 
-func (br *BuiltinRegistry) Any(values ...any) bool {
+func (sr *StdRegistry) Any(values ...any) bool {
 	for _, val := range values {
 		if !helpers.Empty(val) {
 			return true
@@ -136,7 +136,7 @@ func (br *BuiltinRegistry) Any(values ...any) bool {
 // Example:
 //   {{ nil, "", "first", "second" | coalesce }} // Output: "first"
 
-func (br *BuiltinRegistry) Coalesce(values ...any) any {
+func (sr *StdRegistry) Coalesce(values ...any) any {
 	for _, val := range values {
 		if !helpers.Empty(val) {
 			return val
@@ -162,7 +162,7 @@ func (br *BuiltinRegistry) Coalesce(values ...any) any {
 //
 //	{{ "yes", "no", true | ternary }} // Output: "yes"
 //	{{ "yes", "no", false | ternary }} // Output: "no"
-func (br *BuiltinRegistry) Ternary(trueValue any, falseValue any, condition bool) any {
+func (sr *StdRegistry) Ternary(trueValue any, falseValue any, condition bool) any {
 	if condition {
 		return trueValue
 	}
@@ -186,7 +186,7 @@ func (br *BuiltinRegistry) Ternary(trueValue any, falseValue any, condition bool
 // Example:
 //
 //	{{ "Hello", nil, 123, true | cat }} // Output: "Hello 123 true"
-func (br *BuiltinRegistry) Cat(values ...any) string {
+func (sr *StdRegistry) Cat(values ...any) string {
 	var builder strings.Builder
 	for i, item := range values {
 		if item == nil {

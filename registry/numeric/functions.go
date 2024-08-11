@@ -88,7 +88,7 @@ func (nr *NumericRegistry) Add(values ...any) any {
 	return operateNumeric(values, func(a, b float64) float64 { return a + b }, 0.0)
 }
 
-// Add performs a unary addition operation on a single value.
+// Add1 performs a unary addition operation on a single value.
 //
 // Parameters:
 //

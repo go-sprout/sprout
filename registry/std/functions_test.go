@@ -1,10 +1,10 @@
-package builtin_test
+package std_test
 
 import (
 	"testing"
 
 	"github.com/go-sprout/sprout/pesticide"
-	"github.com/go-sprout/sprout/registry/builtin"
+	"github.com/go-sprout/sprout/registry/std"
 )
 
 // TestHello asserts the Hello method returns the expected greeting.
@@ -12,7 +12,7 @@ func TestHello(t *testing.T) {
 	var tc = []pesticide.TestCase{
 		{Name: "TestHello", Input: `{{hello}}`, Expected: "Hello!"},
 	}
-	pesticide.RunTestCases(t, builtin.NewRegistry(), tc)
+	pesticide.RunTestCases(t, std.NewRegistry(), tc)
 }
 
 func TestDefault(t *testing.T) {
@@ -29,7 +29,7 @@ func TestDefault(t *testing.T) {
 		{Name: "TestDefaultMultipleArgument", Input: `{{"first" | default "default" "second"}}`, Expected: "second"},
 	}
 
-	pesticide.RunTestCases(t, builtin.NewRegistry(), tc)
+	pesticide.RunTestCases(t, std.NewRegistry(), tc)
 }
 
 func TestEmpty(t *testing.T) {
@@ -50,7 +50,7 @@ func TestEmpty(t *testing.T) {
 		{Name: "TestEmptyNimPointerInput", Input: `{{if empty .nilPtr}}1{{else}}0{{end}}`, Expected: "1", Data: map[string]any{"nilPtr": (*int)(nil)}},
 	}
 
-	pesticide.RunTestCases(t, builtin.NewRegistry(), tc)
+	pesticide.RunTestCases(t, std.NewRegistry(), tc)
 }
 
 func TestAll(t *testing.T) {
@@ -64,7 +64,7 @@ func TestAll(t *testing.T) {
 		{Name: "TestAllNoInput", Input: `{{if all }}1{{else}}0{{end}}`, Expected: "1"},
 	}
 
-	pesticide.RunTestCases(t, builtin.NewRegistry(), tc)
+	pesticide.RunTestCases(t, std.NewRegistry(), tc)
 }
 
 func TestAny(t *testing.T) {
@@ -78,7 +78,7 @@ func TestAny(t *testing.T) {
 		{Name: "TestAnyNoInput", Input: `{{if any }}1{{else}}0{{end}}`, Expected: "0"},
 	}
 
-	pesticide.RunTestCases(t, builtin.NewRegistry(), tc)
+	pesticide.RunTestCases(t, std.NewRegistry(), tc)
 }
 
 func TestCoalesce(t *testing.T) {
@@ -92,7 +92,7 @@ func TestCoalesce(t *testing.T) {
 		{Name: "TestCoalesceNoInput", Input: `{{ coalesce }}`, Expected: "<no value>"},
 	}
 
-	pesticide.RunTestCases(t, builtin.NewRegistry(), tc)
+	pesticide.RunTestCases(t, std.NewRegistry(), tc)
 }
 
 func TestTernary(t *testing.T) {
@@ -103,7 +103,7 @@ func TestTernary(t *testing.T) {
 		{Input: `{{ternary "foo" "bar" false}}`, Expected: "bar"},
 	}
 
-	pesticide.RunTestCases(t, builtin.NewRegistry(), tc)
+	pesticide.RunTestCases(t, std.NewRegistry(), tc)
 }
 
 func TestCat(t *testing.T) {
@@ -122,5 +122,5 @@ func TestCat(t *testing.T) {
 		{Name: "TestCatDataInput", Input: `{{.text | cat "a" "b"}}`, Expected: "a b cd", Data: map[string]interface{}{"text": "cd"}},
 	}
 
-	pesticide.RunTestCases(t, builtin.NewRegistry(), tc)
+	pesticide.RunTestCases(t, std.NewRegistry(), tc)
 }
