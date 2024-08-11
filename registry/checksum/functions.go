@@ -57,7 +57,7 @@ func (cr *ChecksumRegistry) SHA256Sum(input string) string {
 // {{ adler32sum "Hello, World!" }} // Output: 1f9e046a
 func (cr *ChecksumRegistry) Adler32Sum(input string) string {
 	hash := adler32.Checksum([]byte(input))
-	return fmt.Sprintf("%d", hash)
+	return fmt.Sprint(hash)
 }
 
 // MD5Sum calculates the MD5 hash of the input string and returns it as a

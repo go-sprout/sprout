@@ -45,9 +45,9 @@ func TestAdler32sum(t *testing.T) {
 	multiHash := adler32.Checksum([]byte("hello world"))
 
 	var tc = []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{adler32sum ""}}`, Expected: fmt.Sprintf("%d", noHash)},
-		{Name: "TestSingleByteInput", Input: `{{adler32sum "a"}}`, Expected: fmt.Sprintf("%d", soloHash)},
-		{Name: "TestMultiByteInput", Input: `{{adler32sum "hello world"}}`, Expected: fmt.Sprintf("%d", multiHash)},
+		{Name: "TestEmptyInput", Input: `{{adler32sum ""}}`, Expected: fmt.Sprint(noHash)},
+		{Name: "TestSingleByteInput", Input: `{{adler32sum "a"}}`, Expected: fmt.Sprint(soloHash)},
+		{Name: "TestMultiByteInput", Input: `{{adler32sum "hello world"}}`, Expected: fmt.Sprint(multiHash)},
 	}
 	pesticide.RunTestCases(t, checksum.NewRegistry(), tc)
 }
