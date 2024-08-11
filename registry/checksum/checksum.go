@@ -24,9 +24,9 @@ func (cr *ChecksumRegistry) LinkHandler(fh sprout.Handler) error {
 
 // RegisterFunctions registers all functions of the registry.
 func (cr *ChecksumRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
-	sprout.AddFunction(funcsMap, "sha1sum", cr.Sha1sum)
-	sprout.AddFunction(funcsMap, "sha256sum", cr.Sha256sum)
-	sprout.AddFunction(funcsMap, "adler32sum", cr.Adler32sum)
-	sprout.AddFunction(funcsMap, "md5sum", cr.Md5sum)
+	sprout.AddFunction(funcsMap, "sha1sum", cr.SHA1Sum)
+	sprout.AddFunction(funcsMap, "sha256sum", cr.SHA256Sum)
+	sprout.AddFunction(funcsMap, "adler32sum", cr.Adler32Sum)
+	sprout.AddFunction(funcsMap, "md5sum", cr.MD5Sum)
 	return nil
 }
