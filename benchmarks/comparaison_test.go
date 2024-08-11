@@ -23,6 +23,7 @@ import (
 	"github.com/go-sprout/sprout/registry/regexp"
 	"github.com/go-sprout/sprout/registry/semver"
 	"github.com/go-sprout/sprout/registry/slices"
+	"github.com/go-sprout/sprout/registry/std"
 	"github.com/go-sprout/sprout/registry/strings"
 	"github.com/go-sprout/sprout/registry/time"
 	"github.com/go-sprout/sprout/registry/uniqueid"
