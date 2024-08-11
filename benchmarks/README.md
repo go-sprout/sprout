@@ -36,3 +36,21 @@ ok      sprout_benchmarks       3.720s
 **Memory improvement**: ((44671136 - 37916984) / 44671136) * 100 = 15.1%
 
 So, Sprout v0.3 is approximately 52.6% faster and uses 15.1% less memory than Sprig v3.2.3.
+
+## Sprig v3.2.3 vs Sprout v0.5
+```
+go test -count=1 -bench ^Benchmark -benchmem -cpuprofile cpu.out -memprofile mem.out
+goos: linux
+goarch: amd64
+pkg: sprout_benchmarks
+cpu: Intel(R) Core(TM) i9-9900K CPU @ 3.60GHz
+BenchmarkSprig-16              1        2991811373 ns/op        50522680 B/op      32649 allocs/op
+BenchmarkSprout-16             1        1638797544 ns/op        42171152 B/op      18061 allocs/op
+PASS
+ok      sprout_benchmarks       4.921s
+```
+
+**Time improvement**: ((2991811373 - 1638797544) / 2991811373) * 100 = 45.3%
+**Memory improvement**: ((50522680 - 42171152) / 50522680) * 100 = 16.5%
+
+So, Sprout v0.5 is approximately 45.3% faster and uses 16.5% less memory than Sprig v3.2.3.
