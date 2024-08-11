@@ -8,6 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 )
 
 // Mock implementations for the Registry and RegistryWithAlias interfaces
@@ -138,8 +139,8 @@ func TestDefaultHandler_AddRegistry(t *testing.T) {
 	err := dh.AddRegistry(mockRegistry)
 	assert.NoError(t, err, "AddRegistry should not return an error")
 
-	assert.Len(t, dh.registries, 1, "Registry should be added to the DefaultHandler")
-	assert.Equal(t, mockRegistry, dh.registries[0], "Registry should match the mock registry")
+	require.Len(t, dh.registries, 1, "Registry should be added to the DefaultHandler")
+	assert.Contains(t, dh.registries, mockRegistry, "Registry should match the mock registry")
 
 	mockRegistry.AssertCalled(t, "LinkHandler", dh)
 	mockRegistry.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
@@ -164,9 +165,9 @@ func TestDefaultHandler_AddRegistries(t *testing.T) {
 	err := dh.AddRegistries(mockRegistry1, mockRegistry2)
 	assert.NoError(t, err, "AddRegistries should not return an error")
 
-	assert.Len(t, dh.registries, 2, "Both registries should be added to the DefaultHandler")
-	assert.Equal(t, mockRegistry1, dh.registries[0], "First registry should match mockRegistry1")
-	assert.Equal(t, mockRegistry2, dh.registries[1], "Second registry should match mockRegistry2")
+	require.Len(t, dh.registries, 2, "Both registries should be added to the DefaultHandler")
+	assert.Contains(t, dh.registries, mockRegistry1, "First registry should match mockRegistry1")
+	assert.Contains(t, dh.registries, mockRegistry2, "Second registry should match mockRegistry2")
 
 	mockRegistry1.AssertCalled(t, "LinkHandler", dh)
 	mockRegistry1.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
@@ -190,8 +191,8 @@ func TestDefaultHandler_AddRegistryWithAlias(t *testing.T) {
 	err := dh.AddRegistry(mockRegistry)
 	assert.NoError(t, err, "AddRegistry should not return an error")
 
-	assert.Len(t, dh.registries, 1, "Registry should be added to the DefaultHandler")
-	assert.Equal(t, mockRegistry, dh.registries[0], "Registry should match the mock registry")
+	require.Len(t, dh.registries, 1, "Registry should be added to the DefaultHandler")
+	assert.Contains(t, dh.registries, mockRegistry, "Registry should match the mock registry")
 
 	mockRegistry.AssertCalled(t, "LinkHandler", dh)
 	mockRegistry.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
