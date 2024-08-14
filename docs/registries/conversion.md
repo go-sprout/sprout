@@ -1,14 +1,25 @@
 ---
-description: Utility functions are used to convert one type to another in your templates.
+description: >-
+  The Conversion registry includes a collection of functions designed to convert
+  one data type to another directly within your templates. This allows for
+  seamless type transformations.
 ---
 
-# Type Conversions
+# Conversion
 
-### toBool
+{% hint style="info" %}
+You can easily import all the functions from the <mark style="color:yellow;">`conversion`</mark> registry by including the following import statement in your code
+
+```go
+import "github.com/go-sprout/sprout/registry/conversion"
+```
+{% endhint %}
+
+### <mark style="color:purple;">toBool</mark>
 
 toBool converts a value from any types reasonably be converted to a boolean. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Group</td><td><code>conversion</code></td></tr><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toBool(v any) bool
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToBool(v any) bool
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
 
 {% tabs %}
@@ -23,11 +34,11 @@ toBool converts a value from any types reasonably be converted to a boolean. _Us
 {% endtab %}
 {% endtabs %}
 
-### toInt
+### <mark style="color:purple;">toInt</mark>
 
 toInt converts a value into a int. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Group</td><td><code>conversion</code></td></tr><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toInt(v any) int
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToInt(v any) int
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
 
 {% tabs %}
@@ -41,11 +52,11 @@ toInt converts a value into a int. _Using the_ [_cast_ ](https://github.com/spf1
 {% endtab %}
 {% endtabs %}
 
-### toInt64
+### <mark style="color:purple;">toInt64</mark>
 
 toInt64 converts a value into a int64. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Group</td><td><code>conversion</code></td></tr><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toInt64(v any) int64
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToInt64(v any) int64
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
 
 {% tabs %}
@@ -59,11 +70,11 @@ toInt64 converts a value into a int64. _Using the_ [_cast_ ](https://github.com/
 {% endtab %}
 {% endtabs %}
 
-### toUint
+### <mark style="color:purple;">toUint</mark>
 
 toUint converts a value into a uint. Utilizes the [cast](https://github.com/spf13/cast) package for conversion.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Group</td><td><code>conversion</code></td></tr><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toUint(v any) uint
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUint(v any) uint
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
 
 {% tabs %}
@@ -77,11 +88,11 @@ toUint converts a value into a uint. Utilizes the [cast](https://github.com/spf1
 {% endtab %}
 {% endtabs %}
 
-### toUint64
+### <mark style="color:purple;">toUint64</mark>
 
 toUint64 converts a value into a uint64. Utilizes the [cast](https://github.com/spf13/cast) package for conversion.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Group</td><td><code>conversion</code></td></tr><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toUint64(v any) uint64
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUint64(v any) uint64
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
 
 {% tabs %}
@@ -94,11 +105,11 @@ toUint64 converts a value into a uint64. Utilizes the [cast](https://github.com/
 {% endtab %}
 {% endtabs %}
 
-### toFloat64
+### <mark style="color:purple;">toFloat64</mark>
 
 toFloat64 converts a value into a float64. Utilizes the [cast](https://github.com/spf13/cast) package for conversion.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Group</td><td><code>conversion</code></td></tr><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toFloat64(v any) float64
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToFloat64(v any) float64
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
 
 {% tabs %}
@@ -112,11 +123,11 @@ toFloat64 converts a value into a float64. Utilizes the [cast](https://github.co
 {% endtab %}
 {% endtabs %}
 
-### toOctal
+### <mark style="color:purple;">toOctal</mark>
 
 toOctal parses a value as an octal (base 8) integer.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Group</td><td><code>conversion</code></td></tr><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toOctal(v any) int64
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToOctal(v any) int64
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
 
 {% tabs %}
@@ -130,11 +141,11 @@ toOctal parses a value as an octal (base 8) integer.
 {% endtab %}
 {% endtabs %}
 
-### toString
+### <mark style="color:purple;">toString</mark>
 
 toString converts a value to a string, handling various types effectively.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Group</td><td><code>conversion</code></td></tr><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toString(v any) string
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToString(v any) string
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
 
 {% tabs %}
@@ -151,16 +162,16 @@ toString converts a value to a string, handling various types effectively.
 {% hint style="info" %}
 **Note**: toString can handle various types as:
 
-* `error` and output `err.Error()`&#x20;
+* `error` and output `err.Error()`
 * `fmt.Stringer` and output `o.String()`
 {% endhint %}
 
-### toDate / toMustDate
+### <mark style="color:purple;">toDate / toMustDate</mark>
 
 toDate converts a string to a `time.Time` object based on a format specification.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Group</td><td><code>conversion</code></td></tr><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toDate(layout, value string) time.Time
-toMustDate(layout string, value string) (time.Time, error)
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToDate(layout, value string) time.Time
+ToMustDate(layout string, value string) (time.Time, error)
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td></tr></tbody></table>
 
 {% tabs %}
@@ -179,7 +190,7 @@ _This example will takes the_ `"2024-05-10 11:12:42"` _string and convert it wit
 // Output: 2024-05-10 00:00:00 +0000 UTC, nil
 ```
 
-_This example will takes the_ `"2024-05-10 11:12:42"` _string and convert it with the layout_ `"2006-01-02"`.&#x20;
+_This example will takes the_ `"2024-05-10 11:12:42"` _string and convert it with the layout_ `"2006-01-02"`.
 
 :heavy\_check\_mark: Native Go Template error handling. _In case of error, the template rendering stop._
 {% endtab %}
@@ -189,13 +200,13 @@ _This example will takes the_ `"2024-05-10 11:12:42"` _string and convert it wit
 See more about Golang Layout on the [official documentation](https://go.dev/src/time/format.go).
 {% endhint %}
 
-### toDuration
+### <mark style="color:purple;">toDuration</mark>
 
 toDuration converts a value to a `time.Duration`. Taking a possibly signed sequence of decimal numbers, each optional fraction and a unit suffix, such `300ms`, `-1.5h` or `2h45m`.
 
 Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Group</td><td><code>conversion</code></td></tr><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toDuration(v any) time.Duration
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToDuration(v any) time.Duration
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
 
 {% tabs %}
@@ -210,12 +221,12 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 {% endtab %}
 {% endtabs %}
 
-## Deprecated functions
+## <mark style="color:red;">Deprecated functions</mark>
 
 ### atoi :warning:
 
 {% hint style="warning" %}
-**\[DEPRECATED]** Use [`toInt`](type-conversions.md#toint)instead.
+**\[DEPRECATED]** Use [`toInt`](conversion.md#toint)instead.
 {% endhint %}
 
 {% tabs %}
@@ -230,7 +241,7 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 ### int :warning:
 
 {% hint style="warning" %}
-**\[DEPRECATED]** Use [`toInt`](type-conversions.md#toint)instead.
+**\[DEPRECATED]** Use [`toInt`](conversion.md#toint)instead.
 {% endhint %}
 
 {% tabs %}
@@ -243,7 +254,7 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 ### int64 :warning:
 
 {% hint style="warning" %}
-**\[DEPRECATED]** Use [`toInt64`](type-conversions.md#toint64)instead.
+**\[DEPRECATED]** Use [`toInt64`](conversion.md#toint64)instead.
 {% endhint %}
 
 {% tabs %}
@@ -257,7 +268,7 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 ### float64 :warning:
 
 {% hint style="warning" %}
-**\[DEPRECATED]** Use [`toFloat64`](type-conversions.md#tofloat64)instead.
+**\[DEPRECATED]** Use [`toFloat64`](conversion.md#tofloat64)instead.
 {% endhint %}
 
 {% tabs %}

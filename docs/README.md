@@ -1,8 +1,9 @@
 ---
 description: What is the Sprout project ?
+icon: address-card
 ---
 
-# 📗 About
+# About
 
 Sprout :seedling: originates as **a fork** from [Sprig](https://github.com/Masterminds/sprig), which laid the foundation for this project. Initially, Sprout was created to update dependencies and introduce new functions.
 

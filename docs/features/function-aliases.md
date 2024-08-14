@@ -2,7 +2,7 @@
 description: Need two names for one function in your code? Aliases are the solution.
 ---
 
-# 🧦 Function Aliases
+# Function Aliases
 
 The function aliasing feature introduces a seamless way for developers to maintain backward compatibility while transitioning to new function names in their codebases. This mechanism is designed to ensure that older code remains functional without immediate modifications, even as the library evolves.
 
@@ -10,7 +10,7 @@ The function aliasing feature introduces a seamless way for developers to mainta
 This feature is crucial for migrating from Sprig v3.2.3 or when upgrading between Sprout versions.
 {% endhint %}
 
-To configure aliases, you must use the Sprout function handler. Don't worry about backward compatibility; you can continue to use the `FuncMap()` and apply the functional configurator directly inside.
+To configure aliases, you must use the Sprout function handler.&#x20;
 
 ## How It Works
 
@@ -24,9 +24,9 @@ To configure aliases, you must use the Sprout function handler. Don't worry abou
 
 To use the function aliases feature, you just need to use the configuration function `WithAlias()` as shown below:
 
-<pre class="language-go"><code class="lang-go"><strong>funcMap := sprout.FuncMap(sprout.WithAlias("newFunc", "oldFunc"))
+<pre class="language-go"><code class="lang-go"><strong>handler:= sprout.New(sprout.WithAlias("newFunc", "oldFunc"))
 </strong>
-template.New("base").Funcs(funcMap).Parse("{{ newFunc }}")
+template.New("base").Funcs(handler.Build()).Parse("{{ newFunc }}")
 </code></pre>
 
 This creates a mapping between an old function name (`oldFunc`) and a new one (`newFunc`). Calls to `oldFunc` within the template are redirected to execute `newFunc`. This enables the template to parse and execute using the new function name seamlessly.
@@ -35,7 +35,7 @@ This creates a mapping between an old function name (`oldFunc`) and a new one (`
 
 To add more aliases for the same original function, simply add more parameters to the `WithAlias` function:
 
-<pre class="language-go"><code class="lang-go"><strong>funcMap := sprout.FuncMap(sprout.WithAlias("newFunc", "oldFunc", "secondAlias"))
+<pre class="language-go"><code class="lang-go"><strong>handler := sprout.New(sprout.WithAlias("newFunc", "oldFunc", "secondAlias"))
 </strong></code></pre>
 
 This creates two aliases for the function `newFunc`. Calling `oldFunc` or `secondAlias` will execute `newFunc`.
@@ -45,12 +45,12 @@ This creates two aliases for the function `newFunc`. Calling `oldFunc` or `secon
 To map multiple functions, use the same strategy we use for backward compatibility with Sprig by creating a `FunctionAliasMap` and injecting it into your Function Handler with the `WithAliases` function:
 
 ```go
-var myAliases = FunctionAliasMap{
+var myAliases = sprout.FunctionAliasMap{
 	"newFunc": {"oldFunc", "secondAlias"},
 	"hello":   {"hi", "greet"},
 }
 
-funcMap := sprout.FuncMap(sprout.WithAliases(myAliases))
+handler := sprout.New(sprout.WithAliases(myAliases))
 ```
 
 This creates two aliases for two methodes (4 in total). Calling `oldFunc` or `secondAlias` with execute `newFunc` and calling `hi` or `greet` will execute `hello`.
@@ -60,3 +60,7 @@ This creates two aliases for two methodes (4 in total). Calling `oldFunc` or `se
 * **Documentation:** Clearly document all aliases on your codebase to avoid confusion.
 * **Deprecation Notices:** Use comments or documentation to inform users of deprecated functions and encourage the adoption of new names.
 * **Gradual Transition:** Allow a transition period where both old and new function names are supported. For my projects, I use a version frame of 5 minors or 1 major, if this can guide you.
+
+## Add aliases on your registry
+
+To add aliases on your registry, see [how-to-create-a-registry.md](../advanced/how-to-create-a-registry.md "mention")page.

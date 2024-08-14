@@ -1,30 +1,46 @@
 # Table of contents
 
-* [📗 About](README.md)
-* [💻 Functions](functions/README.md)
-  * [Type Conversions](functions/type-conversions.md)
-* [🧦 Function Aliases](function-aliases.md)
-* [🚀 Roadmap to Sprout v1.0](roadmap-to-sprout-v1.0.md)
-* [Old documentation from sprig](old-documentation-from-sprig/README.md)
-  * [Type Conversion Functions](old-documentation-from-sprig/conversion.md)
-  * [Cryptographic and Security Functions](old-documentation-from-sprig/crypto.md)
-  * [Date Functions](old-documentation-from-sprig/date.md)
-  * [Default Functions](old-documentation-from-sprig/defaults.md)
-  * [Dictionaries and Dict Functions](old-documentation-from-sprig/dicts.md)
-  * [Encoding Functions](old-documentation-from-sprig/encoding.md)
-  * [Flow Control Functions](old-documentation-from-sprig/flow\_control.md)
-  * [Sprig Function Documentation](old-documentation-from-sprig/index.md)
-  * [Integer Slice Functions](old-documentation-from-sprig/integer\_slice.md)
-  * [Lists and List Functions](old-documentation-from-sprig/lists.md)
-  * [Integer Math Functions](old-documentation-from-sprig/math.md)
-  * [Float Math Functions](old-documentation-from-sprig/mathf.md)
-  * [Network Functions](old-documentation-from-sprig/network.md)
-  * [OS Functions](old-documentation-from-sprig/os.md)
-  * [Path and Filepath Functions](old-documentation-from-sprig/paths.md)
-  * [Reflection Functions](old-documentation-from-sprig/reflection.md)
-  * [Semantic Version Functions](old-documentation-from-sprig/semver.md)
-  * [String Slice Functions](old-documentation-from-sprig/string\_slice.md)
-  * [String Functions](old-documentation-from-sprig/strings.md)
-  * [URL Functions](old-documentation-from-sprig/url.md)
-  * [UUID Functions](old-documentation-from-sprig/uuid.md)
+* [About](README.md)
+* [Roadmap to Sprout v1.0](roadmap-to-sprout-v1.0.md)
+* [Migration from Sprig](migration-from-sprig.md)
+
+## Introduction
+
+* [Getting Started](introduction/getting-started.md)
+
+## Features
+
+* [Loader System (Registry)](features/loader-system-registry.md)
+* [Function Aliases](features/function-aliases.md)
+
+## Registries
+
+* [List of all registries](registries/list-of-all-registries.md)
+* [REGISTRYNAME](registries/registryname.md)
+* [Backward](registries/backward.md)
+* [Conversion](registries/conversion.md)
+* [Checksum](registries/checksum.md)
+* [Crypto](registries/crypto.md)
+* [Encoding](registries/encoding.md)
+* [Env](registries/env.md)
+* [Filesystem](registries/filesystem.md)
+* [Maps](registries/maps.md)
+* [Numeric](registries/numeric.md)
+* [Random](registries/random.md)
+* [Reflect](registries/reflect.md)
+* [Regexp](registries/regexp.md)
+* [Semver](registries/semver.md)
+* [Slices](registries/slices.md)
+* [Std](registries/std.md)
+* [Strings](registries/strings.md)
+* [Time](registries/time.md)
+* [Uniqueid](registries/uniqueid.md)
+
+## Advanced
+
+* [How to create a handler](advanced/how-to-create-a-handler.md)
+* [How to create a registry](advanced/how-to-create-a-registry.md)
+
+## Links
+
 * [Github repository](https://github.com/go-sprout/sprout)
