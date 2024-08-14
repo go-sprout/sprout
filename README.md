@@ -39,12 +39,12 @@ You can track our progress towards Sprout v1.0 by following the documentation pa
 - [Roadmap to Sprout v1.0](#roadmap-to-sprout-v10)
 - [Transitioning from Sprig](#transitioning-from-sprig)
 - [Usage](#usage)
-  - [Usage: Logger](#usage-logger)
-  - [Usage: Alias](#usage-alias)
-  - [Usage: Error Handling](#usage-error-handling)
-    - [Default Value](#default-value)
-    - [Panic](#panic)
-    - [Error Channel](#error-channel)
+  - [Creating a Handler](#creating-a-handler)
+  - [Customizing the Handler](#customizing-the-handler)
+  - [Working with Registries](#working-with-registries)
+  - [Building Function Maps](#building-function-maps)
+  - [Working with Templates](#working-with-templates)
+- [Usage: Quick Example (code only)](#usage-quick-example)
 - [Performence Benchmarks](#performence-benchmarks)
   - [Sprig v3.2.3 vs Sprout v0.2](#sprig-v323-vs-sprout-v02)
 - [Development Philosophy (Currently in reflexion to create our)](#development-philosophy-currently-in-reflexion-to-create-our)
@@ -52,43 +52,44 @@ You can track our progress towards Sprout v1.0 by following the documentation pa
 
 ## Transitioning from Sprig
 
-Sprout is designed to be a drop-in replacement for Sprig in the v1.0, with the same function names and behavior. To use Sprout in your project, simply replace the Sprig import with Sprout:
+Sprout provide a package `sprigin` to provide a drop-in replacement for Sprig in the v1.0, with the same function names and behavior. To use Sprout in your project, simply replace the Sprig import with sprigin:
+
+> [!IMPORTANT]
+> The `sprigin` package is a temporary solution to provide backward compatibility with Sprig. We recommend updating your code to use the Sprout package directly to take advantage of the new features and improvements.
+> 
+> A complete guide are available in the [documentation](https://docs.atom.codes/sprout/migration-from-sprig).
 
 ```diff
 import (
 -  "github.com/Masterminds/sprig/v3"
-+  "github.com/go-sprout/sprout"
++  "github.com/go-sprout/sprout/sprigin"
 )
 
 tpl := template.Must(
   template.New("base").
 -   Funcs(sprig.FuncMap()).
-+   Funcs(sprout.FuncMap()).
++   Funcs(sprigin.FuncMap()).
     ParseGlob("*.tmpl")
 )
 ```
 
 ## Usage
 
-To use Sprout in your project, import the library and use the `FuncMap` function to add the template functions to your template:
+### Creating a Handler
+A handler in Sprout is responsible for managing the function registries and functions. The DefaultHandler is the primary implementation provided by Sprout.
 
 ```go
-import (
-  "github.com/go-sprout/sprout"
-  "text/template"
-)
+import "github.com/go-sprout/sprout"
 
-tpl := template.Must(
-  template.New("base").
-    Funcs(sprout.FuncMap()).
-    ParseGlob("*.tmpl")
-)
-```
+handler := sprout.New()
+``` 
 
-You can customize the behavior of Sprout by creating a `FunctionHandler` and passing it to the `FuncMap` function or using the configuration functions provided by Sprout:
+### Customizing the Handler
+
+Sprout supports various customization options using handler options:
 
 ```go
-handler := sprout.NewFunctionHandler(
+handler := sprout.New(
   // Add your logger to the handler to log errors and debug information using the
   // standard slog package or any other logger that implements the slog.Logger interface.
   // By default, Sprout uses a slog.TextHandler.
@@ -102,99 +103,92 @@ handler := sprout.NewFunctionHandler(
   // Set the alias for a function. By default, Sprout use alias for some functions for backward compatibility with Sprig.
   sprout.WithAlias("hello", "hi"),
 )
-
-// Use the handler with the FuncMap function. The handler will be used to handle all template functions.
-tpl := template.Must(
-  template.New("base").
-    Funcs(sprout.FuncMap(sprout.WithFunctionHandler(handler))).
-    ParseGlob("*.tmpl")
-)
 ```
-### Usage: Logger
 
-Sprout uses the `slog` package for logging. You can pass your logger
-to the `WithLogger` configuration function to log errors and debug information:
+### Working with Registries
+Registries in Sprout are groups of functions that can be added to a handler. They help organize functions and optimize template performance.
+
+You can retrieve all built-ins registries and functions under [Registries](https://docs.atom.codes/sprout/registries/list-of-all-registries).
 
 ```go
-// Create a new logger using the slog package.
-logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+import (
+  "github.com/go-sprout/sprout/registry/conversion" // toString, toInt, toBool, ...
+  "github.com/go-sprout/sprout/registry/std" // default, empty, any, all, ...
+)
 
-// Use the handler with the FuncMap function.
-tpl := template.Must(
-  template.New("base").
-    Funcs(sprout.FuncMap(sprout.WithLogger(logger))).
-    ParseGlob("*.tmpl")
+//...
+
+handler.AddRegistries(
+  conversion.NewRegistry(),
+  std.NewRegistry(),
 )
 ```
 
-### Usage: Alias
+### Building Function Maps
 
-Sprout provides the ability to set an alias for a function. This feature is useful for backward compatibility with Sprig. You can set an alias for a function using the `WithAlias` or `WithAliases` configuration functions.
-
-See more about the alias in the [documentation](https://docs.atom.codes/sprout/function-aliases).
-
+To use Sprout with templating engines like `html/template` or `text/template`, you need to build the function map:
 ```go
-sprout.NewFunctionHandler(
-  sprout.WithAlias("hello", "hi"),
-)
+funcs := handler.Build()
+tpl := template.New("example").Funcs(funcs).Parse(`{{ hello }}`)
 ```
 
-### Usage: Error Handling
-
-Sprout provides three error handling behaviors:
-- `ErrHandlingReturnDefaultValue`: Sprout returns the default value of the return type without crashes or panics.
-- `ErrHandlingPanic`: Sprout panics when an error occurs.
-- `ErrHandlingErrorChannel`: Sprout sends errors to the error channel.
-
-You can set the error handling behavior using the `WithErrHandling` configuration function:
-
+### Working with Templates
+Once your function map is ready, you can use it to render templates:
 ```go
-sprout.NewFunctionHandler(
-  sprout.WithErrHandling(sprout.ErrHandlingReturnDefaultValue),
-)
-```
+tpl, err := template.New("example").Funcs(funcs).Parse(`{{ myFunc }}`)
+if err != nil {
+    log.Fatal(err)
+}
+tpl.Execute(os.Stdout, nil)
+``` 
+This will render the template with all functions and aliases available.
 
-#### Default Value
 
-If you set the error handling behavior to `ErrHandlingReturnDefaultValue`, Sprout will return the default value of the return type without crashes or panics to ensure a smooth user experience when an error occurs.
+## Usage: Quick Example 
 
-#### Panic
-
-If you set the error handling behavior to `ErrHandlingPanic`, Sprout will panic when an error occurs to ensure that the error is not ignored and sended back to template execution.
-
-#### Error Channel
-
-If you set the error handling behavior to `ErrHandlingErrorChannel`, you can pass an error channel to the `WithErrorChannel` configuration function. Sprout will send errors to the error channel:
-
+Here is a quick example of how to use Sprout with the `text/template` package:
 ```go
-errChan := make(chan error)
+package main
 
-sprout.NewFunctionHandler(
-  sprout.WithErrHandling(sprout.ErrHandlingErrorChannel),
-  sprout.WithErrorChannel(errChan),
+import (
+	"os"
+	"text/template"
+
+	"github.com/go-sprout/sprout"
+	"github.com/go-sprout/sprout/registry/std"
 )
+
+func main() {
+	handler := sprout.New()
+	handler.AddRegistry(std.NewRegistry())
+
+	tpl := template.Must(
+    template.New("example").Funcs(handler.Build()).Parse(`{{ hello }}`),
+  )
+	tpl.Execute(os.Stdout, nil)
+}
 ```
 
 ## Performence Benchmarks
 
 To see all the benchmarks, please refer to the [benchmarks](benchmarks/README.md) directory.
 
-### Sprig v3.2.3 vs Sprout v0.2
+## Sprig v3.2.3 vs Sprout v0.5
 ```
 goos: linux
 goarch: amd64
 pkg: sprout_benchmarks
 cpu: Intel(R) Core(TM) i9-9900K CPU @ 3.60GHz
-BenchmarkSprig-16              1        2152506421 ns/op        44671136 B/op      21938 allocs/op
-BenchmarkSprout-16             1        1020721871 ns/op        37916984 B/op      11173 allocs/op
+BenchmarkSprig-16              1        2991811373 ns/op        50522680 B/op      32649 allocs/op
+BenchmarkSprout-16             1        1638797544 ns/op        42171152 B/op      18061 allocs/op
 PASS
-ok      sprout_benchmarks       3.720s
+ok      sprout_benchmarks       4.921s
 ```
 
-**Time improvement**: ((2152506421 - 1020721871) / 2152506421) * 100 = 52.6%
-**Memory improvement**: ((44671136 - 37916984) / 44671136) * 100 = 15.1%
+**Time improvement**: ((2991811373 - 1638797544) / 2991811373) * 100 = 45.3%
+**Memory improvement**: ((50522680 - 42171152) / 50522680) * 100 = 16.5%
 
-So, Sprout v0.3 is approximately 52.6% faster and uses 15.1% less memory than Sprig v3.2.3. 🚀
+So, Sprout v0.5 is approximately 45.3% faster and uses 16.5% less memory than Sprig v3.2.3. 🚀
 
 You can see the full benchmark results [here](benchmarks/README.md).
 
@@ -202,13 +196,13 @@ You can see the full benchmark results [here](benchmarks/README.md).
 
 Our approach to extending and refining Sprout was guided by several key principles:
 
-- Empowering layout construction through template functions.
-- Designing template functions that avoid returning errors when possible, instead displaying default values for smoother user experiences.
-- Ensuring template functions operate solely on provided data, without external data fetching.
-- Maintaining the integrity of core Go template functionalities without overrides.
-
-
-
-
-
-
+- Build on the principles of simplicity, flexibility, and consistency. 
+- Empower developers to create robust templates without sacrificing performance or usability. 
+- Adheres strictly to Go's templating conventions, ensuring a seamless experience for those familiar with Go's native tools.
+- Naming conventions across functions are standardized for predictability and ease of use.
+- Emphasizes error handling, preferring safe defaults over panics.
+- Provide a clear and comprehensive documentation to help users understand the library and its features.
+- Maintain a high level of code quality, ensuring that the library is well-tested, performant, and reliable.
+- Continuously improve and optimize the library to meet the needs of the community.
+- Avoids any external dependencies within template functions, ensuring all operations are self-contained and reliable.
+- Performance is a key consideration, with a focus on optimizing the library for speed and efficiency.
