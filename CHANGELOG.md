@@ -1,5 +1,24 @@
 # Changelog
 
+## Release v0.5.0: Sprout Growth 🌿 (2024-08-15)
+
+> 💡 Nurturing Ideas, Harvesting Innovation!
+
+### 🌟 Major Feature: Registry System Unleashed!
+- **Revamped Architecture**: Introducing the powerful registry system (aka loader). This refactor modularizes all methods into separate registries. See (@42atomys) [PR 46](https://github.com/go-sprout/sprout/pull/46)
+- **Handler & Registry Interfaces**: New interfaces with clear rules to streamline function management.
+- **Seamless Migration**: All functions are now in registries, with backward compatibility via `FuncsMap` in `springin` [See Transitioning from Sprig](https://github.com/go-sprout/sprout?tab=readme-ov-file#transitioning-from-sprig).
+
+*Read more about the registry system in the [official documentation](https://sprout.atom.codes/features/loader-system-registry).*
+
+### 📚 Fully Documented
+- **In-Depth Docs**: Detailed documentation and a handy glossary are now available. Explore more [sprout.atom.codes](https://sprout.atom.codes).
+- **README**: Updated the documentation and README to reflect all recent changes. Check out the latest [README.md](https://raw.githubusercontent.com/go-sprout/sprout/main/README.md).
+
+### 🐛 Bug Fixes
+- **`toDuration` Doc Update**: Added a practical example showing how to convert durations to seconds using `toDuration`. This is based on real test cases to make time formatting easier. See (@cbandy) [PR 44](https://github.com/go-sprout/sprout/pull/44).
+
+
 ## Release v0.4.1: Sprout Blossom 🌸 (2024-06-17)
 
 > 💡 Cultivating Innovation, One Sprig at a Time!
