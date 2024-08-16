@@ -2,6 +2,7 @@ package sprout
 
 import (
 	"log/slog"
+	"os"
 )
 
 // HandlerOption[Handler] defines a type for functional options that configure
@@ -30,7 +31,7 @@ func New(opts ...HandlerOption[*DefaultHandler]) *DefaultHandler {
 	dh := &DefaultHandler{
 		ErrHandling: ErrHandlingReturnDefaultValue,
 		errChan:     make(chan error),
-		logger:      slog.New(&slog.TextHandler{}),
+		logger:      slog.New(slog.NewTextHandler(os.Stdout, nil)),
 		registries:  make([]Registry, 0),
 
 		cachedFuncsMap:   make(FunctionMap),
