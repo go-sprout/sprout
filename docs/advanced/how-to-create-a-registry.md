@@ -32,7 +32,7 @@ import (
 
 // OwnRegistry struct implements the Registry interface, embedding the Handler to access shared functionalities.
 type OwnRegistry struct {
-  handler *sprout.Handler // Embedding Handler for shared functionality
+  handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry initializes and returns a new instance of your registry.
@@ -47,7 +47,7 @@ func (or *OwnRegistry) Uid() string {
 
 // LinkHandler connects the Handler to your registry, enabling runtime functionalities.
 func (or *OwnRegistry) LinkHandler(fh sprout.Handler) error {
-  or.handler = &fh
+  or.handler = fh
   return nil
 }
 

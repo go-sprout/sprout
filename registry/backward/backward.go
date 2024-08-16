@@ -26,7 +26,7 @@ import (
 )
 
 type BackwardCompatibilityRegistry struct {
-	handler *sprout.Handler // Embedding Handler for shared functionality
+	handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of your registry with the embedded Handler.
@@ -41,7 +41,7 @@ func (bcr *BackwardCompatibilityRegistry) Uid() string {
 
 // LinkHandler links the handler to the registry at runtime.
 func (bcr *BackwardCompatibilityRegistry) LinkHandler(fh sprout.Handler) error {
-	bcr.handler = &fh
+	bcr.handler = fh
 	return nil
 }
 

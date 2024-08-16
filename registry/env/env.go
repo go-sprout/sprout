@@ -3,7 +3,7 @@ package env
 import "github.com/go-sprout/sprout"
 
 type EnvironmentRegistry struct {
-	handler *sprout.Handler // Embedding Handler for shared functionality
+	handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of env registry.
@@ -18,7 +18,7 @@ func (or *EnvironmentRegistry) Uid() string {
 
 // LinkHandler links the handler to the registry at runtime.
 func (or *EnvironmentRegistry) LinkHandler(fh sprout.Handler) error {
-	or.handler = &fh
+	or.handler = fh
 	return nil
 }
 

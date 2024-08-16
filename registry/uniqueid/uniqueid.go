@@ -3,7 +3,7 @@ package uniqueid
 import "github.com/go-sprout/sprout"
 
 type UniqueIDRegistry struct {
-	handler *sprout.Handler // Embedding Handler for shared functionality
+	handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of your registry with the embedded Handler.
@@ -18,7 +18,7 @@ func (ur *UniqueIDRegistry) Uid() string {
 
 // LinkHandler links the handler to the registry at runtime.
 func (ur *UniqueIDRegistry) LinkHandler(fh sprout.Handler) error {
-	ur.handler = &fh
+	ur.handler = fh
 	return nil
 }
 
