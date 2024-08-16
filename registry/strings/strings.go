@@ -73,7 +73,7 @@ func init() {
 }
 
 type StringsRegistry struct {
-	handler *sprout.Handler // Embedding Handler for shared functionality
+	handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of strings registry.
@@ -88,7 +88,7 @@ func (sr *StringsRegistry) Uid() string {
 
 // LinkHandler links the handler to the registry at runtime.
 func (sr *StringsRegistry) LinkHandler(fh sprout.Handler) error {
-	sr.handler = &fh
+	sr.handler = fh
 	return nil
 }
 

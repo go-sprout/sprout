@@ -15,7 +15,7 @@ import "github.com/go-sprout/sprout"
 type numericOperation func(float64, float64) float64
 
 type NumericRegistry struct {
-	handler *sprout.Handler // Embedding Handler for shared functionality
+	handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of numeric registry.
@@ -30,7 +30,7 @@ func (nr *NumericRegistry) Uid() string {
 
 // LinkHandler links the handler to the registry at runtime.
 func (nr *NumericRegistry) LinkHandler(fh sprout.Handler) error {
-	nr.handler = &fh
+	nr.handler = fh
 	return nil
 }
 
