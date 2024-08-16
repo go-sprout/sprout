@@ -14,8 +14,12 @@ jobs:
         go-version: ${{ matrix.go-version }}
     - name: Checkout code
       uses: actions/checkout@v4
+    - name: Install Task
+      uses: arduino/setup-task@v2
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Test
-      run: make test
+      run: task test
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
       with:

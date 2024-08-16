@@ -67,7 +67,7 @@ func BenchmarkSprout(b *testing.B) {
 			sprout.WithLogger(slog.New(&slog.TextHandler{})),
 		)
 
-		fnHandler.AddRegistries(
+		_ = fnHandler.AddRegistries(
 			std.NewRegistry(),
 			uniqueid.NewRegistry(),
 			semver.NewRegistry(),
