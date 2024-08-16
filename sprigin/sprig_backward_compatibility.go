@@ -46,7 +46,7 @@ var bc_registerSprigFuncs = sprout.FunctionAliasMap{
 	"add1":           []string{"add1f"},                         //! Deprecated: Should use add1 instead
 	"sub":            []string{"subf"},                          //! Deprecated: Should use sub instead
 	"toTitleCase":    []string{"title", "titlecase"},            //! Deprecated: Should use toTitleCase instead
-	"toCamelCase":    []string{"camel", "camelcase"},            //! Deprecated: Should use toCamelCase instead
+	"toPascalCase":   []string{"camelcase"},                     //! Deprecated: Should use toPascalCase instead
 	"toSnakeCase":    []string{"snake", "snakecase"},            //! Deprecated: Should use toSnakeCase instead
 	"toKebabCase":    []string{"kebab", "kebabcase"},            //! Deprecated: Should use toKebabCase instead
 	"swapCase":       []string{"swapcase"},                      //! Deprecated: Should use swapCase instead
