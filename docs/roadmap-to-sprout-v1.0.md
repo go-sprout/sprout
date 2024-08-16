@@ -1,6 +1,6 @@
 ---
-description: The roadmap to grow the sprout
 icon: rocket-launch
+description: The roadmap to grow the sprout
 ---
 
 # Roadmap to Sprout v1.0
@@ -25,9 +25,13 @@ This feature are implemented on v0.5.0, documentations can be found here:&#x20;
 <mark style="color:green;">You are on the official documentation site</mark> :tada:
 {% endhint %}
 
-### :hourglass:**Conventional Function Naming - **<mark style="color:orange;">**IN PROGRESS**</mark>
+### :white\_check\_mark: **Conventional Function Naming - **<mark style="color:green;">**DONE**</mark>
 
 Establish clear, consistent naming conventions for functions to enhance code readability and maintainability. Unlike Sprig, where function naming varies between camelCase, and snake\_case, and similar functions lack consistent prefixing, Sprout will introduce a standardized approach to function naming. This will make the library more intuitive and reduce the learning curve for new users.
+
+{% hint style="success" %}
+This convention are defined and writed to available here: [templating-conventions.md](introduction/templating-conventions.md "mention")
+{% endhint %}
 
 ### :hourglass:**Reduce memory fingerprint - **<mark style="color:orange;">**IN PROGRESS**</mark>
 
@@ -103,20 +107,5 @@ This page will be updated each time function are re-implemented correctly in Spr
 
 A list of functions wanted for v1 based on issues, pull requests from sprig, feedback on sprout. All functions listed here will be implemented for the v1.
 
-| Functions                                                                                         | Description                                                                  |
-| ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `toYaml`                                                                                          | Convert a struct to a YAML String                                            |
-| `fromYaml`                                                                                        | Convert YAML String to a struct                                              |
-| `flatten`                                                                                         | Flatten nested list be one level                                             |
-| `toBool`                                                                                          | Convert any to a boolean                                                     |
-| `toDuration`                                                                                      | Convert any to a `time.Duration`                                             |
-| `default`,`empty`,`coalesce`                                                                      | Dont trigger default go value as false                                       |
-| `toLocalDate`                                                                                     | Convert to a `time.Time` with a timezone support                             |
-| `dig`                                                                                             | Dig into a map without crashes in format `book.author.name`                  |
-| `cidrhost`,`cidrnetmask`,`cidrsubnet`,`cidrsubnets`                                               | A collection of functions for network ip manipulation                        |
-| `include`,`required`                                                                              | Manipulation of template logic, implemented by helm team                     |
-| `gzip`, `ungzip`,`tar`,`untar`                                                                    | A collection of function to manipulate gzip and tar archive                  |
-| `randSeed`                                                                                        | Allow to set the seed of the on a rand pipeline                              |
-| `regexpFindSubmatch`, `regexpAllSubmatches`,`regexpFindNamedSubmatch`, `regexpAllNamedSubmatches` | Collection of function to found and retrieve submatches and named submatches |
-| `sha512sum`                                                                                       | Support of SHA512                                                            |
-|                                                                                                   |                                                                              |
+<table><thead><tr><th width="94" data-type="checkbox">DONE</th><th>Functions</th><th>Description</th></tr></thead><tbody><tr><td>true</td><td><code>toYaml</code></td><td>Convert a struct to a YAML String</td></tr><tr><td>true</td><td><code>fromYaml</code></td><td>Convert YAML String to a struct</td></tr><tr><td>false</td><td><code>flatten</code></td><td>Flatten nested list be one level</td></tr><tr><td>true</td><td><code>toBool</code></td><td>Convert any to a boolean</td></tr><tr><td>true</td><td><code>toDuration</code></td><td>Convert any to a <code>time.Duration</code></td></tr><tr><td>true</td><td><code>default</code>,<code>empty</code>,<code>coalesce</code></td><td>Dont trigger default go value as false</td></tr><tr><td>false</td><td><code>toLocalDate</code></td><td>Convert to a <code>time.Time</code> with a timezone support</td></tr><tr><td>false</td><td><code>dig</code></td><td>Dig into a map without crashes in format <code>book.author.name</code></td></tr><tr><td>false</td><td><code>cidrhost</code>,<code>cidrnetmask</code>,<code>cidrsubnet</code>,<code>cidrsubnets</code></td><td>A collection of functions for network ip manipulation</td></tr><tr><td>false</td><td><code>include</code>,<code>required</code></td><td>Manipulation of template logic, implemented by helm team</td></tr><tr><td>false</td><td><code>randSeed</code></td><td>Allow to set the seed of the on a rand pipeline</td></tr><tr><td>false</td><td><code>regexpFindSubmatch</code>, <code>regexpAllSubmatches</code>,<code>regexpFindNamedSubmatch</code>, <code>regexpAllNamedSubmatches</code></td><td>Collection of function to found and retrieve submatches and named submatches</td></tr><tr><td>false</td><td><code>sha512sum</code></td><td>Support of SHA512</td></tr><tr><td>false</td><td><code>hasField</code></td><td>Detect if a field are present in an object using reflect. <a href="https://github.com/Masterminds/sprig/issues/401">Source</a></td></tr></tbody></table>
+
