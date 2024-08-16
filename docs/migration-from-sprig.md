@@ -45,12 +45,10 @@ Nothing to do, using the new handler is enough.
 ### 3. **Error Handling**
 
 * **Sprig:** Limited and inconsistent error handling, with some functions causing panics (see [#panicking-functions](migration-from-sprig.md#panicking-functions "mention")), and not fully adhering to Go template standards.
-* **Sprout:** Offers configurable error handling strategies, including returning default values, triggering panics, or using error channels, providing a more consistent and flexible approach.
+* **Sprout:** Offers configurable error handling strategies, including returning default values, or return error to stop template generation, providing a more consistent and flexible approach.
 
 {% hint style="info" %}
-**Migration Tip**
-
-Set your preferred error handling strategy using `WithErrHandling` when creating your handler.
+An RFC is currently open for feedback and discussion. You can view and participate in the RFC [here](https://github.com/orgs/go-sprout/discussions/32).
 {% endhint %}
 
 ### 4. **Function Aliases**

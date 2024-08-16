@@ -24,8 +24,6 @@ type Handler interface {
 // DefaultHandler manages function execution with configurable error handling
 // and logging.
 type DefaultHandler struct {
-	ErrHandling      ErrHandling
-	errChan          chan error
 	logger           *slog.Logger
 	registries       []Registry
 	cachedFuncsMap   FunctionMap

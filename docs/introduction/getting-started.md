@@ -46,15 +46,6 @@ Sprout supports various customization options using handler options:
     logger := slog.New(slog.NewTextHandler(os.Stdout))
     handler := sprout.New(sprout.WithLogger(logger))
     ```
-*   **Error Handling:**
-
-    You can specify how errors are handled within the handler:
-
-    ```go
-    handler := sprout.New(sprout.WithErrHandling(sprout.ErrHandlingPanic))
-    ```
-
-    Available error handling strategies include returning default values, panicking, or sending errors to a channel.
 *   **Aliases Management:**\
     You can specify your custom aliases directly on your handler:
 

@@ -94,12 +94,6 @@ handler := sprout.New(
   // standard slog package or any other logger that implements the slog.Logger interface.
   // By default, Sprout uses a slog.TextHandler.
   sprout.WithLogger(slogLogger),
-  // Set the error handling behavior for the handler. By default, Sprout returns the default value of the return type without crashes or panics.
-  sprout.WithErrHandling(sprout.ErrHandlingReturnDefaultValue),
-  // Set the error channel for the handler. By default, Sprout does not use an error channel. If you set an error channel, Sprout will send errors to it.
-  // This options is only used when the error handling behavior is set to
-  // `ErrHandlingErrorChannel`
-  sprout.WithErrorChannel(errChan),
   // Set the alias for a function. By default, Sprout use alias for some functions for backward compatibility with Sprig.
   sprout.WithAlias("hello", "hi"),
 )
