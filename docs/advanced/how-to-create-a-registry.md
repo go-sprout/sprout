@@ -9,7 +9,9 @@
 * `helpers_test.go`: Holds tests for the helper functions to validate their reliability.
 
 {% hint style="info" %}
-This structure ensures consistency and maintainability across different registries, making it easier for developers to contribute and collaborate effectively.
+This structure ensures consistency and maintainability across different registries, making it easier for developers to contribute and collaborate effectively.\
+\
+For the rest of conventions please read [templating-conventions.md](../introduction/templating-conventions.md "mention").
 {% endhint %}
 
 ## Creating a Registry
@@ -42,7 +44,7 @@ func NewRegistry() *OwnRegistry {
 
 // Uid provides a unique identifier for your registry.
 func (or *OwnRegistry) Uid() string {
-  return "ownRegistry" // Ensure this identifier is unique and uses camelCase
+  return "organization.ownRegistry" // Ensure this identifier is unique and uses camelCase, prefixed by your handler separated with a dot. 
 }
 
 // LinkHandler connects the Handler to your registry, enabling runtime functionalities.
@@ -67,7 +69,7 @@ func (or *OwnRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) error {
 }
 ```
 
-After create your registry structure and implement the `Registry` interface, you can start to define your functions in `functions.go`, you can access all features of the handler through&#x20;
+After create your registry structure and implement the `Registry` interface, you can start to define your functions in `functions.go`, you can access all features of the handler through
 
 ```go
 // YourFunction is an example function that returns a string and an error.
