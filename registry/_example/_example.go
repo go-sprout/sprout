@@ -6,7 +6,7 @@ import (
 )
 
 type ExampleRegistry struct {
-	handler *sprout.Handler // Embedding Handler for shared functionality
+	handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of your registry with the embedded Handler.
@@ -21,6 +21,6 @@ func (or *ExampleRegistry) Uid() string {
 
 // LinkHandler links the handler to the registry at runtime.
 func (or *ExampleRegistry) LinkHandler(fh registry.Handler) {
-	or.handler = &fh
+	or.handler = fh
 	return nil
 }

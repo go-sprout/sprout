@@ -7,6 +7,7 @@
 ## Introduction
 
 * [Getting Started](introduction/getting-started.md)
+* [Templating Conventions](introduction/templating-conventions.md)
 
 ## Features
 

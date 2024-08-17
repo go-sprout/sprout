@@ -2,7 +2,6 @@ package slices
 
 import (
 	"fmt"
-	"math"
 	"reflect"
 	"sort"
 	"strings"
@@ -90,24 +89,36 @@ func (sr *SlicesRegistry) Prepend(list any, v any) []any {
 //
 //	{{ ["c", "d"] | concat ["a", "b"] }} // Output: ["a", "b", "c", "d"]
 func (sr *SlicesRegistry) Concat(lists ...any) any {
-	var res []any
+	// Estimate the total length to preallocate the result slice
+	var totalLen int
 	for _, list := range lists {
 		if list == nil {
 			continue
 		}
 
 		tp := reflect.TypeOf(list).Kind()
-		switch tp {
-		case reflect.Slice, reflect.Array:
+		if tp == reflect.Slice || tp == reflect.Array {
+			totalLen += reflect.ValueOf(list).Len()
+		}
+	}
+
+	// Preallocate the result slice
+	res := make([]any, 0, totalLen)
+
+	for _, list := range lists {
+		if list == nil {
+			continue
+		}
+
+		tp := reflect.TypeOf(list).Kind()
+		if tp == reflect.Slice || tp == reflect.Array {
 			valueOfList := reflect.ValueOf(list)
 			for i := 0; i < valueOfList.Len(); i++ {
 				res = append(res, valueOfList.Index(i).Interface())
 			}
-		default:
-			continue
-			// panic(fmt.Sprintf("cannot concat type %s as list", tp))
 		}
 	}
+
 	return res
 }
 
@@ -382,9 +393,9 @@ func (sr *SlicesRegistry) SortAlpha(list any) []string {
 	kind := reflect.Indirect(reflect.ValueOf(list)).Kind()
 	switch kind {
 	case reflect.Slice, reflect.Array:
-		sortedList := sort.StringSlice(sr.StrSlice(list))
-		sortedList.Sort()
-		return sortedList
+		strList := sr.StrSlice(list)
+		sort.Strings(strList)
+		return strList
 	}
 
 	return []string{helpers.ToString(list)}
@@ -500,18 +511,28 @@ func (sr *SlicesRegistry) MustAppend(list any, v any) ([]any, error) {
 		return nil, fmt.Errorf("cannot append to nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
-	switch tp {
-	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
 
+	switch tp {
+	case reflect.Slice:
+		// If the list is already a slice, simply append the value
+		result := make([]any, valueOfList.Len()+1)
+		for i := 0; i < valueOfList.Len(); i++ {
+			result[i] = valueOfList.Index(i).Interface()
+		}
+		result[len(result)-1] = v
+		return result, nil
+
+	case reflect.Array:
+		// For arrays, we need to convert to a slice first
 		length := valueOfList.Len()
-		result := make([]any, length)
+		result := make([]any, length+1)
 		for i := 0; i < length; i++ {
 			result[i] = valueOfList.Index(i).Interface()
 		}
-
-		return append(result, v), nil
+		result[length] = v
+		return result, nil
 
 	default:
 		return nil, fmt.Errorf("cannot append on type %s", tp)
@@ -539,11 +560,10 @@ func (sr *SlicesRegistry) MustPrepend(list any, v any) ([]any, error) {
 		return nil, fmt.Errorf("cannot prepend to nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
 		result := make([]any, length)
 		for i := 0; i < length; i++ {
@@ -578,30 +598,28 @@ func (sr *SlicesRegistry) MustChunk(size int, list any) ([][]any, error) {
 		return nil, fmt.Errorf("cannot chunk nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
 
-		chunkCount := int(math.Floor(float64(length-1)/float64(size)) + 1)
+		chunkCount := (length + size - 1) / size
 		result := make([][]any, chunkCount)
 
 		for i := 0; i < chunkCount; i++ {
-			chunkLength := size
-			if i == chunkCount-1 {
-				chunkLength = int(math.Floor(math.Mod(float64(length), float64(size))))
-				if chunkLength == 0 {
-					chunkLength = size
-				}
+			start := i * size
+			end := start + size
+
+			if end > length {
+				end = length
 			}
 
+			chunkLength := end - start
 			result[i] = make([]any, chunkLength)
 
 			for j := 0; j < chunkLength; j++ {
-				ix := i*size + j
-				result[i][j] = valueOfList.Index(ix).Interface()
+				result[i][j] = valueOfList.Index(start + j).Interface()
 			}
 		}
 
@@ -632,17 +650,22 @@ func (sr *SlicesRegistry) MustUniq(list any) ([]any, error) {
 		return nil, fmt.Errorf("cannot uniq nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
-		result := []any{}
-		var item any
+		result := make([]any, 0, length)
+		// This allows for O(1) average-time complexity checks to see
+		// if an item has already been encountered, which is much faster than
+		// scanning a slice (O(n) time complexity).
+		seen := make(map[any]bool, length)
+
 		for i := 0; i < length; i++ {
-			item = valueOfList.Index(i).Interface()
-			if !sr.inList(result, item) {
+			item := valueOfList.Index(i).Interface()
+			if !seen[item] {
+				seen[item] = true
 				result = append(result, item)
 			}
 		}
@@ -672,16 +695,16 @@ func (sr *SlicesRegistry) MustCompact(list any) ([]any, error) {
 		return nil, fmt.Errorf("cannot compact nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
-		result := []any{}
-		var item any
+		result := make([]any, 0, length)
+
 		for i := 0; i < length; i++ {
-			item = valueOfList.Index(i).Interface()
+			item := valueOfList.Index(i).Interface()
 			if !helpers.Empty(item) {
 				result = append(result, item)
 			}
@@ -715,24 +738,32 @@ func (sr *SlicesRegistry) MustSlice(list any, indices ...any) (any, error) {
 		return nil, fmt.Errorf("cannot slice nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
 		if length == 0 {
 			return nil, nil
 		}
 
-		var start, end int
+		start, end := 0, length
+
+		// Handle start index
 		if len(indices) > 0 {
 			start = cast.ToInt(indices[0])
+			if start < 0 || start > length {
+				return nil, fmt.Errorf("start index out of bounds")
+			}
 		}
-		if len(indices) < 2 {
-			end = length
-		} else {
+
+		// Handle end index
+		if len(indices) > 1 {
 			end = cast.ToInt(indices[1])
+			if end < start || end > length {
+				return nil, fmt.Errorf("end index out of bounds")
+			}
 		}
 
 		return valueOfList.Slice(start, end).Interface(), nil
@@ -761,14 +792,15 @@ func (sr *SlicesRegistry) MustHas(element any, list any) (bool, error) {
 	if list == nil {
 		return false, nil
 	}
-	typeOfList := reflect.TypeOf(list).Kind()
-	switch typeOfList {
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
+	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-		var item any
 		length := valueOfList.Len()
+
 		for i := 0; i < length; i++ {
-			item = valueOfList.Index(i).Interface()
+			item := valueOfList.Index(i).Interface()
 			if reflect.DeepEqual(element, item) {
 				return true, nil
 			}
@@ -776,7 +808,7 @@ func (sr *SlicesRegistry) MustHas(element any, list any) (bool, error) {
 
 		return false, nil
 	default:
-		return false, fmt.Errorf("cannot find has on type %s", typeOfList)
+		return false, fmt.Errorf("cannot find has on type %s", tp)
 	}
 }
 
@@ -800,17 +832,24 @@ func (sr *SlicesRegistry) MustWithout(list any, omit ...any) ([]any, error) {
 		return nil, fmt.Errorf("cannot without nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
-		result := []any{}
-		var item any
+		omitSet := make(map[any]struct{}, len(omit))
+
+		// Populate the set of items to omit
+		for _, o := range omit {
+			omitSet[o] = struct{}{}
+		}
+
+		result := make([]any, 0, length)
+
 		for i := 0; i < length; i++ {
-			item = valueOfList.Index(i).Interface()
-			if !sr.inList(omit, item) {
+			item := valueOfList.Index(i).Interface()
+			if _, found := omitSet[item]; !found {
 				result = append(result, item)
 			}
 		}
@@ -840,11 +879,11 @@ func (sr *SlicesRegistry) MustRest(list any) ([]any, error) {
 		return nil, fmt.Errorf("cannot rest nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
 		if length == 0 {
 			return nil, nil
@@ -880,11 +919,11 @@ func (sr *SlicesRegistry) MustInitial(list any) ([]any, error) {
 		return nil, fmt.Errorf("cannot initial nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
 		if length == 0 {
 			return nil, nil
@@ -920,11 +959,11 @@ func (sr *SlicesRegistry) MustFirst(list any) (any, error) {
 		return nil, fmt.Errorf("cannot first nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
 		if length == 0 {
 			return nil, nil
@@ -955,11 +994,11 @@ func (sr *SlicesRegistry) MustLast(list any) (any, error) {
 		return nil, fmt.Errorf("cannot last nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
 		if length == 0 {
 			return nil, nil
@@ -990,16 +1029,17 @@ func (sr *SlicesRegistry) MustReverse(list any) ([]any, error) {
 		return nil, fmt.Errorf("cannot reverse nil")
 	}
 
-	tp := reflect.TypeOf(list).Kind()
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		valueOfList := reflect.ValueOf(list)
-
 		length := valueOfList.Len()
-		// We do not sort in place because the incoming array should not be altered.
+
+		// Create a new slice with the same length as the original
 		nl := make([]any, length)
 		for i := 0; i < length; i++ {
-			nl[length-i-1] = valueOfList.Index(i).Interface()
+			nl[i] = valueOfList.Index(length - i - 1).Interface()
 		}
 
 		return nl, nil

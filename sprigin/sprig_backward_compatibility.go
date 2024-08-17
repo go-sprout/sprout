@@ -46,7 +46,7 @@ var bc_registerSprigFuncs = sprout.FunctionAliasMap{
 	"add1":           []string{"add1f"},                         //! Deprecated: Should use add1 instead
 	"sub":            []string{"subf"},                          //! Deprecated: Should use sub instead
 	"toTitleCase":    []string{"title", "titlecase"},            //! Deprecated: Should use toTitleCase instead
-	"toCamelCase":    []string{"camel", "camelcase"},            //! Deprecated: Should use toCamelCase instead
+	"toPascalCase":   []string{"camelcase"},                     //! Deprecated: Should use toPascalCase instead
 	"toSnakeCase":    []string{"snake", "snakecase"},            //! Deprecated: Should use toSnakeCase instead
 	"toKebabCase":    []string{"kebab", "kebabcase"},            //! Deprecated: Should use toKebabCase instead
 	"swapCase":       []string{"swapcase"},                      //! Deprecated: Should use swapCase instead
@@ -221,11 +221,11 @@ func HtmlFuncMap() htemplate.FuncMap {
 	return htemplate.FuncMap(FuncMap())
 }
 
-// GenericFuncMap returns a copy of the basic function map as a map[string]interface{}.
+// GenericFuncMap returns a copy of the basic function map as a map[string]any.
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func GenericFuncMap() map[string]interface{} {
+func GenericFuncMap() map[string]any {
 	return FuncMap()
 }
 

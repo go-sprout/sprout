@@ -1,212 +1,612 @@
-{{/* all.tpl: Testing Sprig template functions */}}
-
-Hello: {{ hello }}
-
-{{- $str := "Hello, World!" -}}
-{{- $dict := dict "key" "value" -}}
-{{- $list := list 1 2 3 -}}
-{{- $tuple := tuple 1 2 3 -}}
-{{- $set := set $dict "key2" "value2" -}}
-
-{{- $d := dict "one" 1 "two" 222222 -}}
-{{- $d2 := dict "one" 1 "two" 33333 -}}
-{{- $d3 := dict "one" 1 -}}
-{{- $d4 := dict "one" 1 "two" 4444 -}}
-
-
-{{/* Date functions */}}
-Ago: {{ago 5}}
-Date: {{date "Monday, 02 Jan 2006 15:04:05 MST" 0}}
-DateInZone: {{dateInZone "Monday, 02 Jan 2006 15:04:05 MST" 0 "UTC"}}
-DateModify: {{now | dateModify "-1.5h"}}
-Duration: {{duration "1h30m"}}
-DurationRound: {{durationRound "2h10m5s"}}
-HtmlDate: {{htmlDate "2006-01-02T15:04:05Z"}}
-HtmlDateInZone: {{htmlDateInZone "2006-01-02T15:04:05Z" "UTC"}}
-MustDateModify: {{now | mustDateModify "-1.5h"}}
-MustToDate: {{mustToDate "2006-01-02" "2017-12-31" | date "02/01/2006"}}
-Now: {{now}}
-ToDate: {{toDate "2006-01-02" "2017-12-31" | date "02/01/2006"}}
-UnixEpoch: {{now | unixEpoch}}
-
-{{/* String Functions */}}
-Abbrev: {{$str | abbrev 5}}
-AbbrevBoth: {{$str | abbrevboth 1 2}}
-Trunc: {{$str | trunc 5}}
-Trim: {{trim "   hello    "}}
-Upper: {{upper $str}}
-Lower: {{lower $str}}
-Title: {{title $str}}
-UnTitle: {{untitle $str}}
-Substr: {{substr 0 5 "hello world"}}
-Repeat: {{repeat 3 "hello"}}
-TrimAll: {{trimAll "$" "$5.00"}}
-TrimSuffix: {{trimSuffix "-" "hello-"}}
-TrimPrefix: {{trimPrefix "-" "-hello"}}
-NoSpace: {{nospace "Hello, World!"}}
-Initials: {{initials "Hello, World!"}}
-RandAlphaNum: {{randAlphaNum 10}}
-RandAlpha: {{randAlpha 10}}
-RandAscii: {{randAscii 10}}
-RandNumeric: {{randNumeric 10}}
-SwapCase: {{swapcase "Hello, World!"}}
-Shuffle: {{shuffle "Hello, World!"}}
-SnakeCase: {{snakecase "Hello, World!"}}
-CamelCase: {{camelcase "Hello, World!"}}
-KebabCase: {{kebabcase "Hello, World!"}}
-Wrap: {{"Hello, World!" | wrap 5}}
-WrapWith: {{"Hello, World!" | wrapWith 5 "!"}}
-Contains: {{contains $str "World"}}
-HasPrefix: {{hasPrefix $str "Hello"}}
-HasSuffix: {{hasSuffix $str "World"}}
-Quote: {{quote $str}}
-SQuote: {{squote $str}}
-Cat: {{cat "Hello" ", " "World!"}}
-Indent: {{"Hello, World!" | indent 5}}
-Nindent: {{"Hello, World!" | nindent 5}}
-Replace: {{$str | replace "World" "Sprig"}}
-Plural: {{2 | plural "apple" "apples"}}
-Sha1sum: {{sha1sum $str}}
-Sha256sum: {{sha256sum $str}}
-Adler32sum: {{adler32sum $str}}
-toString: {{toString 5}}
-
-Atoi: {{atoi "5"}}
-Int64: {{int64 5}}
-Int: {{int 5}}
-Float64: {{float64 5}}
-ToDecimal: {{toDecimal 8}}
-
-Split: {{"Hello, World!" | split ", "}}
-SplitList: {{"Hello, World!" | splitList ", "}}
-SplitN: {{"Hello, World!" | splitn ", " 1}}
-toStrings: {{list 1 2 3 | toStrings}}
-Until: {{until 5}}
-UntilStep: {{untilStep 3 6 2}}
-
-Add1: {{add1 5}}
-Add: {{add 5 10}}
-Sub: {{sub 10 5}}
-Mul: {{mul 5 10}}
-Div: {{div 10 5}}
-Mod: {{mod 10 5}}
-RandInt: {{randInt 5 10}}
-Add1f: {{add1f 5}}
-Addf: {{addf 5 10}}
-Subf: {{subf 10 5}}
-Mulf: {{mulf 5 10}}
-Divf: {{divf 10 5}}
-Biggest: {{biggest 5 10}}
-Max: {{max 5 10}}
-Min: {{min 5 10}}
-Ceil: {{ceil 5.5}}
-Floor: {{floor 5.5}}
-Round: {{round 123.555555 3}}
-Maxf: {{maxf 5.5 10.5}}
-Minf: {{minf 5.5 10.5}}
-
-Join: {{list "Hello" "World!" | join ", "}}
-SortAlpha: {{list "Hello" "World" "from" "Sprig" | sortAlpha}}
-
-{{/* Default Functions */}}
-{{- $defaultVal := "defaultValue" -}}
-Default: {{default "DefaultValue" $defaultVal}}
-Empty: {{empty ""}}
-Coal: {{coalesce "" "Hello, World!"}}
-All: {{all "" "Hello, World!"}}
-Any: {{any "" "Hello, World!"}}
-Compact: {{list 1 "a" "foo" "" | compact}}
-MustCompact: {{list 1 "a" "foo" "" | mustCompact}}
-FromJson: {{fromJson "{\"key\": \"value\"}"}}
-MustFromJson: {{mustFromJson "{\"key\": \"value\"}"}}
-ToJson: {{toJson $dict}}
-MustToJson: {{mustToJson $dict}}
-ToPrettyJson: {{toPrettyJson $dict}}
-ToRawJson: {{toRawJson $dict}}
-Ternary: {{true | ternary "true" "false"}}
-DeepCopy: {{deepCopy $dict}}
-MustDeepCopy: {{mustDeepCopy $dict}}
-
-TypeOf: {{typeOf 5}}
-TypeIs: {{5 | typeIs "int"}}
-TypeIsLike: {{5 | typeIsLike "int"}}
-KindOf: {{kindOf 5}}
-KindIs: {{5 | kindIs "int"}}
-DeepEqual: {{deepEqual 5 5}}
-
-
-{{/* OS Functions */}}
-Env: {{env "PATH"}}
-Expandenv: {{expandenv "$PATH"}}
-GetHostByName: {{getHostByName "localhost"}}
-Base Path: {{base "/path/to/file.txt"}}
-Dir: {{dir "/path/to/file.txt"}}
-Ext: {{ext "/path/to/file.txt"}}
-Clean: {{clean "/path/to/file.txt"}}
-IsAbs: {{isAbs "/path/to/file.txt"}}
-
-OsBase: {{osBase "/path/to/file.txt"}}
-OsDir: {{osDir "/path/to/file.txt"}}
-OsExt: {{osExt "/path/to/file.txt"}}
-OsClean: {{osClean "/path/to/file.txt"}}
-OsIsAbs: {{osIsAbs "/path/to/file.txt"}}
-
-{{/* Encoding Functions */}}
-Base64Encode: {{b64enc "Hello, World!"}}
-Base64Decode: {{b64dec "SGVsbG8sIFdvcmxkIQ=="}}
-Base32Encode: {{b32enc "Hello, World!"}}
-Base32Decode: {{b32dec "JBSWY3DPEBLW64TMMQQQ===="}}
-
-{{/* Data Struct Functions */}}
-Tuple: {{tuple 1 2 3}}
-List: {{list 1 2 3}}
-Dict: {{dict "key" "value"}}
-Get: {{get $dict "key"}}
-Set: {{set $dict "key" "newValue"}}
-Unset: {{unset $dict "key"}}
-hasKey: {{hasKey $dict "key"}}
-Pluck: {{pluck "two" $d $d2 $d3 $d4}}
-Keys: {{keys $dict}}
-Pick: {{pick $dict "key"}}
-Omit: {{omit $dict "key"}}
-Merge: {{merge $dict (dict "key2" "value2")}}
-MergeOverwrite: {{mergeOverwrite $dict (dict "key" "value2")}}
-Values: {{values $dict}}
-Append: {{append (list 1 2) 3}}
-Prepend: {{prepend (list 2 3) 1}}
-First: {{first (list 1 2 3)}}
-Rest: {{rest (list 1 2 3)}}
-Last: {{last (list 1 2 3)}}
-Initial: {{initial (list 1 2 3)}}
-Reverse: {{reverse (list 1 2 3)}}
-Uniq: {{uniq (list 1 2 2 3)}}
-Without: {{without (list 1 2 3) 2}}
-Has: {{hasKey $dict "key"}}
-Slice: {{slice (list 1 2 3) 1 2}}
-Concat: {{concat (list 1 2) (list 3 4)}}
-Dig: {{ dig "b" "a" (dict "a" 1 "b" (dict "a" 2)) }}
-Chunk: {{list 1 2 3 4 5 | chunk 2}}
-
-{{/* Crypt Functions */}}
-Bcrypt: {{bcrypt "Hello, World!"}}
-Htpasswd: {{htpasswd "myUser" "myPassword"}}
-genPrivateKey: {{genPrivateKey "rsa"}}
-derivePassword: {{derivePassword 1 "long" "password" "user" "example.com"}}
-RandBytes: {{randBytes 10}}
-
-UUIDv4: {{uuidv4}}
-Semver: {{semver "1.2.3"}}
-SemverCompare: {{semverCompare "1.2.3" "1.2.4"}}
-
-{{/* Regex Functions */}}
-RegexMatch: {{regexMatch "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" "test@acme.com"}}
-RegexFindAll: {{regexFindAll "[2,4,6,8]" "123456789" -1}}
-RegexFind: {{regexFind "[a-zA-Z][1-9]" "abcd1234"}}
-RegexReplaceAll: {{regexReplaceAll "a(x*)b" "-ab-axxb-" "${1}W"}}
-RegexReplaceAllLiteral: {{regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "${1}"}}
-RegexSplit: {{regexSplit "z+" "pizza" -1}}
-RegexQuoteMeta: {{regexQuoteMeta "1.2.3"}}
-
-{{/* URL Functions */}}
-UrlParse: {{index ( urlParse "proto://auth@host:80/path?query#fragment" ) "host" }}
-UrlJoin: {{urlJoin (dict "fragment" "fragment" "host" "host:80" "path" "/path" "query" "query" "scheme" "proto")}}
+{{ urlParse "https://example.com" | urlJoin }}
+{{ urlParse "https://example.com/path" | urlJoin }}
+{{ urlParse "https://user:pass@example.com/path?query=1" | urlJoin }}
+{{sha1sum ""}}
+{{sha1sum "a"}}
+{{sha1sum "hello world"}}
+{{sha256sum ""}}
+{{sha256sum "a"}}
+{{sha256sum "hello world"}}
+{{adler32sum ""}}
+{{adler32sum "a"}}
+{{adler32sum "hello world"}}
+{{$v := int .string }}{{kindOf $v}}-{{$v}}
+{{$v := int .float }}{{kindOf $v}}-{{$v}}
+{{$v := int .bool }}{{kindOf $v}}-{{$v}}
+{{$v := int64 .string }}{{typeOf $v}}-{{$v}}
+{{$v := int64 .float }}{{typeOf $v}}-{{$v}}
+{{$v := int64 .int }}{{typeOf $v}}-{{$v}}
+{{$v := int64 .bool }}{{typeOf $v}}-{{$v}}
+{{$v := float64 .string }}{{typeOf $v}}-{{$v}}
+{{$v := float64 .float }}{{typeOf $v}}-{{$v}}
+{{$v := float64 .int }}{{typeOf $v}}-{{$v}}
+{{$v := float64 .bool }}{{typeOf $v}}-{{$v}}
+{{$v := toDecimal .string }}{{typeOf $v}}-{{$v}}
+{{$v := toDecimal .float }}{{typeOf $v}}-{{$v}}
+{{$v := toDecimal .int }}{{typeOf $v}}-{{$v}}
+{{$v := toDecimal .bool }}{{typeOf $v}}-{{$v}}
+{{$v := toString .string }}{{typeOf $v}}-{{$v}}
+{{$v := toString .int }}{{typeOf $v}}-{{$v}}
+{{$v := toString .float }}{{typeOf $v}}-{{$v}}
+{{$v := toString .bool }}{{typeOf $v}}-{{$v}}
+{{$v := toString .objectrray }}{{typeOf $v}}-{{$v}}
+{{$v := toString .time }}{{typeOf $v}}-{{$v}}
+{{$v := toString .duration }}{{typeOf $v}}-{{$v}}
+{{$v := toString .object }}{{typeOf $v}}-{{$v}}
+{{$v := toDate "2006-01-02" (.time | toString) }}{{typeOf $v}}-{{$v}}
+{{ "" | b64enc }}
+{{ "Hello World" | b64enc }}
+{{ "=" | b64enc }}
+{{ "" | b64dec }}
+{{ "SGVsbG8gV29ybGQ" | b64dec }}
+{{ "" | b32enc }}
+{{ "Hello World" | b32enc }}
+{{ "" | b32dec }}
+{{ "JBSWY3DPEBLW64TMMQ======" | b32dec }}
+{{ "JBSWY3DPEBLW64TMMQ" | b32dec }}
+{{ "" | fromJson }}
+{{ .json | fromJson }}
+{{ (.json | fromJson).foo }}
+{{ "" | toJson }}
+{{ .object | toJson }}
+{{ "" | toPrettyJson }}
+{{ .object | toPrettyJson }}
+{{ "" | toRawJson }}
+{{ .object | toRawJson }}
+{{ .json | mustFromJson }}
+{{ .object | mustToJson }}
+{{ .object | mustToPrettyJson }}
+{{ .object | mustToRawJson }}
+{{ env "" }}
+{{ env "NON_EXISTENT_ENV_VAR" }}
+{{ env "__SPROUT_TEST_ENV_KEY" }}
+{{ "__SPROUT_TEST_ENV_KEY" | env }}
+{{ expandenv "" }}
+{{ expandenv "Hey" }}
+{{ expandenv "$NON_EXISTENT_ENV_VAR" }}
+{{ expandenv "Hey $__SPROUT_TEST_ENV_KEY" }}
+{{ "Hey $__SPROUT_TEST_ENV_KEY" | expandenv }}
+{{ base "" }}
+{{ base "/" }}
+{{ base "/path/to/file" }}
+{{ base "/path/to/file.txt" }}
+{{ "/path/to/file.txt" | base }}
+{{ dir "" }}
+{{ dir "/" }}
+{{ dir "/path/to/file" }}
+{{ dir "/path/to/file.txt" }}
+{{ "/path/to/file.txt" | dir }}
+{{ ext "" }}
+{{ ext "/" }}
+{{ ext "/path/to/file" }}
+{{ ext "/path/to/file.txt" }}
+{{ "/path/to/file.txt" | ext }}
+{{ clean "" }}
+{{ clean "/" }}
+{{ clean "/path/to/file" }}
+{{ clean "/path/to/file.txt" }}
+{{ "/path/to/file.txt" | clean }}
+{{ clean "/path//to/file" }}
+{{ clean "/path/./to/file" }}
+{{ clean "/path/../to/file" }}
+{{ isAbs "" }}
+{{ isAbs "/" }}
+{{ isAbs "path/to/file" }}
+{{ isAbs "/path/to/file.txt" }}
+{{ "file.txt" | isAbs }}
+{{ floor 1.5 }}
+{{ floor 1 }}
+{{ floor -1.5 }}
+{{ floor -1 }}
+{{ floor 0 }}
+{{ floor 123 }}
+{{ floor "123" }}
+{{ floor 123.9999 }}
+{{ floor 123.0001 }}
+{{ ceil 1.5 }}
+{{ ceil 1 }}
+{{ ceil -1.5 }}
+{{ ceil -1 }}
+{{ ceil 0 }}
+{{ ceil 123 }}
+{{ ceil "123" }}
+{{ ceil 123.9999 }}
+{{ ceil 123.0001 }}
+{{ round 3.746 2 }}
+{{ round 3.746 2 0.5 }}
+{{ round 123.5555 3 }}
+{{ round "123.5555" 3 }}
+{{ round 123.500001 0 }}
+{{ round 123.49999999 0 }}
+{{ round 123.2329999 2 .3 }}
+{{ round 123.233 2 .3 }}
+{{ add }}
+{{ add 1 }}
+{{ add 1 2 3 4 5 6 7 8 9 10 }}
+{{ 10.1 | add 1.1 2.2 3.3 4.4 5.5 6.6 7.7 8.8 9.9 }}
+{{ addf }}
+{{ addf 1 }}
+{{ addf 1 2 3 4 5 6 7 8 9 10 }}
+{{ 10.1 | addf 1.1 2.2 3.3 4.4 5.5 6.6 7.7 8.8 9.9 }}
+{{ add1 -1 }}
+{{ add1f -1.0}}
+{{ add1 1 }}
+{{ add1 1.1 }}
+{{ add1f -1 }}
+{{ add1f -1.0}}
+{{ add1f 1 }}
+{{ add1f 1.1 }}
+{{ sub 1 1 }}
+{{ sub 1 2 }}
+{{ sub 1.1 1.1 }}
+{{ sub 1.1 2.2 }}
+{{ 3 | sub 14 }}
+{{ subf 1.1 1.1 }}
+{{ subf 1.1 2.2 }}
+{{ round (3 | subf 4.5 1) 1 }}
+{{ mul 1 1 }}
+{{ mul 1 2 }}
+{{ mul 1.1 1.1 }}
+{{ mul 1.1 2.2 }}
+{{ 3 | mul 14 }}
+{{ round (mulf 1.1 1.1) 2 }}
+{{ round (mulf 1.1 2.2) 2 }}
+{{ round (3.3 | mulf 14.4) 2 }}
+{{ div 1 1 }}
+{{ div 1 2 }}
+{{ div 1.1 1.1 }}
+{{ div 1.1 2.2 }}
+{{ 4 | div 5 }}
+{{ round (divf 1.1 1.1) 2 }}
+{{ round (divf 1.1 2.2) 2 }}
+{{ 2 | divf 5 4 }}
+{{ mod 10 4 }}
+{{ mod 10 3 }}
+{{ mod 10 2 }}
+{{ mod 10 1 }}
+{{ min 1 }}
+{{ min 1 "1" }}
+{{ min -1 0 1 }}
+{{ min 1 2 3 4 5 6 7 8 9 10 1 2 3 4 5 6 7 8 9 10 0 }}
+{{ minf 1 }}
+{{ minf 1 "1.1" }}
+{{ minf -1.4 .0 2.1 }}
+{{ minf .1 .2 .3 .4 .5 .6 .7 .8 .9 .10 .1 .2 .3 .4 .5 .6 .7 .8 .9 .10}}
+{{ max 1 }}
+{{ max 1 "1" }}
+{{ max -1 0 1 }}
+{{ max 1 2 3 4 5 6 7 8 9 10 1 2 3 4 5 6 7 8 9 10 0 }}
+{{ maxf 1 }}
+{{ maxf 1.0 "1.1" }}
+{{ maxf -1.5 0 1.4 }}
+{{ maxf .1 .2 .3 .4 .5 .6 .7 .8 .9 .10 .1 .2 .3 .4 .5 .6 .7 .8 .9 .10 }}
+{{typeIs "int" 42}}
+{{42 | typeIs "string"}}
+{{$var := 42}}{{typeIs "string" $var}}
+{{.object | typeIs "*reflect_test.testStruct"}}
+{{typeIsLike "int" 42}}
+{{42 | typeIsLike "string"}}
+{{$var := 42}}{{typeIsLike "string" $var}}
+{{.object | typeIsLike "*reflect_test.testStruct"}}
+{{.object | typeIsLike "reflect_test.testStruct"}}
+{{typeOf 42}}
+{{typeOf "42"}}
+{{$var := 42}}{{typeOf $var}}
+{{typeOf .object}}
+{{kindIs "int" 42}}
+{{42 | kindIs "string"}}
+{{$var := 42}}{{kindIs "string" $var}}
+{{.object | kindIs "ptr"}}
+{{kindOf 42}}
+{{kindOf "42"}}
+{{kindOf .object}}
+{{$var := 42}}{{kindOf $var}}
+{{kindOf .object}}
+{{kindOf .object}}
+{{deepEqual 42 42}}
+{{deepEqual "42" "42"}}
+{{deepEqual .object .object}}
+{{$a := 42}}{{$b := 42}}{{deepEqual $a $b}}
+{{deepEqual 42 32}}
+{{deepEqual 42 "42"}}
+{{$a := 42}}{{$b := deepCopy $a}}{{$b}}
+{{$a := "42"}}{{$b := deepCopy $a}}{{$b}}
+{{$a := .object}}{{$b := deepCopy $a}}{{$b}}
+{{$a := .object}}{{$b := deepCopy $a}}{{$b}}
+{{$a := .object}}{{$b := deepCopy $a}}{{$b}}
+{{$a := 42}}{{$b := deepCopy $a}}{{$b}}
+{{$a := 42}}{{$b := deepCopy "42"}}{{$b}}
+{{$a := 42}}{{$b := deepCopy 42.0}}{{$b}}
+{{$b := deepCopy .object}}
+{{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ values $d | sortAlpha | join "," }}
+{{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ keys $d | sortAlpha | join "," }}
+{{- $one := dict "foo" (dict "bar" "baz") "qux" true -}}{{ deepCopy $one }}
+{{ regexFind "a(b+)" "aaabbb" }}
+{{ regexFindAll "a(b+)" "aaabbb" -1 }}
+{{ regexFindAll "a{2}" "aaaabbb" -1 }}
+{{ regexFindAll "a{2}" "none" -1 }}
+{{ regexMatch "^[a-zA-Z]+$" "Hello" }}
+{{ regexMatch "^[a-zA-Z]+$" "Hello123" }}
+{{ regexMatch "^[a-zA-Z]+$" "123" }}
+{{ regexSplit "a" "banana" -1 }}
+{{ regexSplit "a" "banana" 0 }}
+{{ regexSplit "a" "banana" 1 }}
+{{ regexSplit "a" "banana" 2 }}
+{{ regexSplit "a+" "banana" 1 }}
+{{ regexReplaceAll "a(x*)b" "-ab-axxb-" "T" }}
+{{ regexReplaceAll "a(x*)b" "-ab-axxb-" "$1" }}
+{{ regexReplaceAll "a(x*)b" "-ab-axxb-" "$1W" }}
+{{ regexReplaceAll "a(x*)b" "-ab-axxb-" "${1}W" }}
+{{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "T" }}
+{{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "$1" }}
+{{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "$1W" }}
+{{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "${1}W" }}
+{{ regexQuoteMeta "Escaping $100? That's a lot." }}
+{{ regexQuoteMeta "1.2.3" }}
+{{ regexQuoteMeta "golang" }}
+{{ mustRegexFind "a(b+)" "aaabbb" }}
+{{ mustRegexFindAll "a(b+)" "aaabbb" -1 }}
+{{ mustRegexFindAll "a{2}" "aaaabbb" -1 }}
+{{ mustRegexFindAll "a{2}" "none" -1 }}
+{{ mustRegexMatch "^[a-zA-Z]+$" "Hello" }}
+{{ mustRegexMatch "^[a-zA-Z]+$" "Hello123" }}
+{{ mustRegexMatch "^[a-zA-Z]+$" "123" }}
+{{ mustRegexSplit "a" "banana" -1 }}
+{{ mustRegexSplit "a" "banana" 0 }}
+{{ mustRegexSplit "a" "banana" 1 }}
+{{ mustRegexSplit "a" "banana" 2 }}
+{{ mustRegexSplit "a+" "banana" 1 }}
+{{ mustRegexReplaceAll "a(x*)b" "-ab-axxb-" "T" }}
+{{ mustRegexReplaceAll "a(x*)b" "-ab-axxb-" "$1" }}
+{{ mustRegexReplaceAll "a(x*)b" "-ab-axxb-" "$1W" }}
+{{ mustRegexReplaceAll "a(x*)b" "-ab-axxb-" "${1}W" }}
+{{ mustRegexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "T" }}
+{{ mustRegexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "$1" }}
+{{ mustRegexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "$1W" }}
+{{ mustRegexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "${1}W" }}
+{{ semver "1.0.0" }}
+{{ semver "1.0.0-alpha" }}
+{{ semver "1.0.0-alpha.1" }}
+{{ semver "1.0.0-alpha.1+build" }}
+{{ semverCompare "1.0.0" "1.0.0" }}
+{{ semverCompare "1.0.0" "1.0.1" }}
+{{ semverCompare "1.0.1" "1.0.0" }}
+{{ semverCompare "~1.0.0" "1.0.0" }}
+{{ semverCompare ">=1.0.0" "1.0.0-alpha" }}
+{{ semverCompare ">1.0.0-alpha" "1.0.0-alpha.1" }}
+{{ semverCompare "1.0.0-alpha.1" "1.0.0-alpha" }}
+{{ semverCompare "1.0.0-alpha.1" "1.0.0-alpha.1" }}
+{{ list }}
+{{ .string | list "ab" true 4 5 }}
+{{ append .array "a" }}
+{{ prepend .array "a" }}
+{{ concat .array (list 1 2 3) }}
+{{ list 4 5 | concat (list 1 2 3) }}
+{{ chunk 2 .array }}
+{{ uniq .array }}
+{{ compact .array }}
+{{ list 1 0 "" "hello" | compact }}
+{{ list "" "" | compact }}
+{{ list | compact }}
+{{ slice .array }}
+{{ slice .array 1 }}
+{{ slice .array 1 3 }}
+{{ slice .array 0 1 }}
+{{ .array | has "foo" }}
+{{ .array | has "a" }}
+{{ .array | has 1 }}
+{{ .array | has .nil }}
+{{ .array | has "nope" }}
+{{ without .array "a" }}
+{{ rest .array }}
+{{ initial .array }}
+{{ first .array }}
+{{ last .array }}
+{{ reverse .array }}
+{{ sortAlpha .array }}
+{{ .arrayCommas | splitList "," }}
+{{ toStrings .arrayCommas }}
+{{range $i, $e := until 5}}({{$i}}{{$e}}){{end}}
+{{range $i, $e := until -5}}({{$i}}{{$e}}){{end}}
+{{range $i, $e := untilStep 0 5 1}}({{$i}}{{$e}}){{end}}
+{{range $i, $e := untilStep 3 6 1}}({{$i}}{{$e}}){{end}}
+{{range $i, $e := untilStep 0 -10 -2}}({{$i}}{{$e}}){{end}}
+{{range $i, $e := untilStep 3 0 1}}({{$i}}{{$e}}){{end}}
+{{range $i, $e := untilStep 3 99 0}}({{$i}}{{$e}}){{end}}
+{{range $i, $e := untilStep 3 99 -1}}({{$i}}{{$e}}){{end}}
+{{range $i, $e := untilStep 3 0 0}}({{$i}}{{$e}}){{end}}
+{{ mustAppend .array "a" }}
+{{ mustPrepend .array "a" }}
+{{ mustChunk 2 .array }}
+{{ mustUniq .array }}
+{{ mustCompact .array }}
+{{ mustSlice .array }}
+{{ mustSlice .array 1 }}
+{{ mustSlice .array 1 3 }}
+{{ mustSlice .array 0 1 }}
+{{ .array | mustHas "foo" }}
+{{ .array | mustHas "a" }}
+{{ .array | mustHas 1 }}
+{{ .array | mustHas .Nil }}
+{{ .array | mustHas "nope" }}
+{{ .array | mustHas 1 }}
+{{ mustWithout .array "a" }}
+{{ mustRest .array }}
+{{ mustInitial .array }}
+{{ mustFirst .array }}
+{{ mustLast .array }}
+{{ mustReverse .array }}
+{{hello}}
+{{default "default" ""}}
+{{default "default" "given"}}
+{{default "default" 42}}
+{{default "default" 2.42}}
+{{default "default" true}}
+{{default "default" false}}
+{{default "default" nil}}
+{{default "default" .nil}}
+{{"first" | default "default" "second"}}
+{{if empty ""}}1{{else}}0{{end}}
+{{if empty "given"}}1{{else}}0{{end}}
+{{if empty 42}}1{{else}}0{{end}}
+{{if empty .int}}1{{else}}0{{end}}
+{{if empty .string}}1{{else}}0{{end}}
+{{if empty 2.42}}1{{else}}0{{end}}
+{{if empty true}}1{{else}}0{{end}}
+{{if empty false}}1{{else}}0{{end}}
+{{if empty nil}}1{{else}}0{{end}}
+{{if empty .nil}}1{{else}}0{{end}}
+{{if all ""}}1{{else}}0{{end}}
+{{if all "given"}}1{{else}}0{{end}}
+{{if all 42 0 1}}1{{else}}0{{end}}
+{{ $two := 2 }}{{if all "" 0 nil $two }}1{{else}}0{{end}}
+{{ $two := 2 }}{{if all "" $two 0 0 0 }}1{{else}}0{{end}}
+{{ $two := 2 }}{{if all "" $two 3 4 5 }}1{{else}}0{{end}}
+{{if all }}1{{else}}0{{end}}
+{{if any ""}}1{{else}}0{{end}}
+{{if any "given"}}1{{else}}0{{end}}
+{{if any 42 0 1}}1{{else}}0{{end}}
+{{ $two := 2 }}{{if any "" 0 nil $two }}1{{else}}0{{end}}
+{{ $two := 2 }}{{if any "" $two 3 4 5 }}1{{else}}0{{end}}
+{{ $zero := 0 }}{{if any "" $zero 0 0 0 }}1{{else}}0{{end}}
+{{if any }}1{{else}}0{{end}}
+{{coalesce ""}}
+{{coalesce "given"}}
+{{ coalesce "" 0 nil 42 }}
+{{ $two := 2 }}{{ coalesce "" 0 nil $two }}
+{{ $two := 2 }}{{ coalesce "" $two 0 0 0 }}
+{{ $two := 2 }}{{ coalesce "" $two 3 4 5 }}
+{{ coalesce }}
+{{true | ternary "foo" "bar"}}
+{{ternary "foo" "bar" true}}
+{{false | ternary "foo" "bar"}}
+{{ternary "foo" "bar" false}}
+{{cat ""}}
+{{cat "given"}}
+{{cat 42}}
+{{cat 2.42}}
+{{cat true}}
+{{cat false}}
+{{cat nil}}
+{{cat .nil}}
+{{cat "first" "second"}}
+{{"first" | cat "second"}}
+{{$b := "b"}}{{"c" | cat "a" $b}}
+{{.string | cat "a" "b"}}
+{{ "" | nospace }}
+{{ " " | nospace }}
+{{ " foo" | nospace }}
+{{ "foo " | nospace }}
+{{ " foo " | nospace }}
+{{ " foo bar " | nospace }}
+{{ "" | trim }}
+{{ " " | trim }}
+{{ " foo" | trim }}
+{{ "foo " | trim }}
+{{ " foo " | trim }}
+{{ " foo bar " | trim }}
+{{ "" | trimAll "-" }}
+{{ "---------" | trimAll "-" }}
+{{ "foo" | trimAll "-" }}
+{{ "-f--o-o-" | trimAll "-" }}
+{{ "-f--o-o-" | trimAll "-o" }}
+{{ "" | trimPrefix "-" }}
+{{ "--" | trimPrefix "-" }}
+{{ "foo" | trimPrefix "-" }}
+{{ "-foo-" | trimPrefix "-" }}
+{{ "-foo-" | trimPrefix "-f" }}
+{{ "" | trimSuffix "-" }}
+{{ "--" | trimSuffix "-" }}
+{{ "foo" | trimSuffix "-" }}
+{{ "-foo-" | trimSuffix "-" }}
+{{ "-foo-" | trimSuffix "o-" }}
+{{ "" | contains "-" }}
+{{ "foo" | contains "o" }}
+{{ "foo" | contains "x" }}
+{{ "" | hasPrefix "-" }}
+{{ "foo" | hasPrefix "f" }}
+{{ "foo" | hasPrefix "o" }}
+{{ "" | hasSuffix "-" }}
+{{ "foo" | hasSuffix "o" }}
+{{ "foo" | hasSuffix "f" }}
+{{ "" | lower }}
+{{ "foo" | lower }}
+{{ "FOO" | lower }}
+{{ "" | upper }}
+{{ "foo" | upper }}
+{{ "FOO" | upper }}
+{{ "" | replace "-" "x" }}
+{{ "foo" | replace "o" "x" }}
+{{ "foo" | replace "x" "y" }}
+{{ "foo" | replace "o" "x" | replace "f" "y" }}
+{{ "" | repeat 3 }}
+{{ "foo" | repeat 3 }}
+{{ "foo" | repeat 0 }}
+{{ .nil | join "-" }}
+{{ .test | join "-" }}
+{{ .test | join "-" }}
+{{ .test | join "-" }}
+{{ .test | join "-" }}
+{{ "" | trunc 3 }}
+{{ "foooooo" | trunc 3 }}
+{{ "foobar" | trunc -3 }}
+{{ "foobar" | trunc -999 }}
+{{ "foobar" | trunc 0 }}
+{{ "" | abbrev 3 }}
+{{ "foo" | abbrev 5 }}
+{{ "foooooo" | abbrev 6 }}
+{{ "foobar" | abbrev 0 }}
+{{ "" | abbrevboth 3 5 }}
+{{ "foo" | abbrevboth 5 4 }}
+{{ "foooboooooo" | abbrevboth 4 9 }}
+{{ "foobar" | abbrevboth 0 0 }}
+{{ "" | initials }}
+{{ "f" | initials }}
+{{ "foo" | initials }}
+{{ "foo bar" | initials }}
+{{ "foo  bar" | initials }}
+{{ " Foo bar" | initials }}
+{{ 0 | plural "single" "many" }}
+{{ 1 | plural "single" "many" }}
+{{ 2 | plural "single" "many" }}
+{{ -1 | plural "single" "many" }}
+{{ "" | wrap 10 }}
+{{ wrap -1 "With a negative wrap." }}
+{{ "This is a long string that needs to be wrapped." | wrap 10 }}
+{{ "" | wrapWith 10 "\t" }}
+{{ "This is a long string that needs to be wrapped." | wrapWith 10 "\t" }}
+{{ "This is a long string that needs to be wrapped with a looooooooooooooooooooooooooooooooooooong word." | wrapWith 10 "\t" }}
+{{ "" | quote }}
+{{ quote .nil }}
+{{ "foo" | quote }}
+{{ "foo bar" | quote }}
+{{ "foo \"bar\"" | quote }}
+{{ "foo\nbar" | quote }}
+{{ "foo\\bar" | quote }}
+{{ "foo\\\"bar" | quote }}
+{{ quote "foo" "👍" }}
+{{ "" | squote }}
+{{ squote .nil }}
+{{ "foo" | squote }}
+{{ "foo bar" | squote }}
+{{ "foo 'bar'" | squote }}
+{{ "foo\nbar" | squote }}
+{{ "foo\\bar" | squote }}
+{{ "foo\\'bar" | squote }}
+{{ squote "foo" "👍" }}
+{{ "" | camelcase }}
+{{ "foo bar" | camelcase }}
+{{ "FoO  bar" | camelcase }}
+{{ "foo  bar" | camelcase }}
+{{ "foo_bar" | camelcase }}
+{{ "foo-bar" | camelcase }}
+{{ "foo-bar_baz" | camelcase }}
+{{ camelcase "___complex__case_" }}
+{{ camelcase "_camel_case" }}
+{{ camelcase "http_server" }}
+{{ camelcase "no_https" }}
+{{ camelcase "all" }}
+{{ "" | kebabcase }}
+{{ "foo bar" | kebabcase }}
+{{ "foo  bar" | kebabcase }}
+{{ "foo_bar" | kebabcase }}
+{{ "foo-bar" | kebabcase }}
+{{ "foo-bar_baz" | kebabcase }}
+{{ kebabcase "HTTPServer" }}
+{{ kebabcase "FirstName" }}
+{{ kebabcase "NoHTTPS" }}
+{{ kebabcase "GO_PATH" }}
+{{ kebabcase "GO PATH" }}
+{{ kebabcase "GO-PATH" }}
+{{ "" | snakecase }}
+{{ "foo bar" | snakecase }}
+{{ "foo  bar" | snakecase }}
+{{ "foo_bar" | snakecase }}
+{{ "foo-bar" | snakecase }}
+{{ "foo-bar_baz" | snakecase }}
+{{ snakecase "http2xx" }}
+{{ snakecase "HTTP20xOK" }}
+{{ snakecase "Duration2m3s" }}
+{{ snakecase "Bld4Floor3rd" }}
+{{ snakecase "FirstName" }}
+{{ snakecase "HTTPServer" }}
+{{ snakecase "NoHTTPS" }}
+{{ snakecase "GO_PATH" }}
+{{ snakecase "GO PATH" }}
+{{ snakecase "GO-PATH" }}
+{{ "" | title }}
+{{ "foo bar" | title }}
+{{ "foo  bar" | title }}
+{{ "foo_bar" | title }}
+{{ "foo-bar" | title }}
+{{ "foo-bar_baz" | title }}
+{{ "" | untitle }}
+{{ "Foo Bar" | untitle }}
+{{ "Foo  Bar" | untitle }}
+{{ "Foo_bar" | untitle }}
+{{ "Foo-Bar" | untitle }}
+{{ "Foo-Bar_baz" | untitle }}
+{{ "" | swapcase }}
+{{ "Foo Bar" | swapcase }}
+{{ "Foo  Bar" | swapcase }}
+{{ "Foo_bar" | swapcase }}
+{{ "Foo-Bar" | swapcase }}
+{{ "Foo-Bar_baz" | swapcase }}
+{{ $v := ("" | split "-") }}{{$v._0}}
+{{ $v := ("foo$bar$baz" | split "$") }}{{$v._0}} {{$v._1}} {{$v._2}}
+{{ $v := ("foo$bar$" | split "$") }}{{$v._0}} {{$v._1}} {{$v._2}}
+{{ $v := ("" | splitn "-" 3) }}{{$v._0}}
+{{ $v := ("foo$bar$baz" | splitn "$" 2) }}{{$v._0}} {{$v._1}}
+{{ $v := ("foo$bar$" | splitn "$" 2) }}{{$v._0}} {{$v._1}}
+{{ "" | substr 0 3 }}
+{{ "foobar" | substr 0 3 }}
+{{ "foobar" | substr 0 -3 }}
+{{ "foobar" | substr -3 6 }}
+{{ "" | indent 3 }}
+{{ "foo\nbar" | indent 3 }}
+{{ "foo\n bar" | indent 3 }}
+{{ "foo\n\tbar" | indent 3 }}
+{{ "" | nindent 3 }}
+{{ "foo\nbar" | nindent 3 }}
+{{ "foo\n bar" | nindent 3 }}
+{{ "foo\n\tbar" | nindent 3 }}
+{{ seq 0 1 3 }}
+{{ seq 0 3 10 }}
+{{ seq 3 3 2 }}
+{{ seq 3 -3 2 }}
+{{ seq }}
+{{ seq 0 4 }}
+{{ seq 5 }}
+{{ seq -5 }}
+{{ seq 0 }}
+{{ seq 0 1 2 3 }}
+{{ seq 0 -4 }}
+{{ .data265 | date "02 Jan 06 15:04 -0700" }}
+{{ .data266 | date "02 Jan 06 15:04 -0700" }}
+{{ .data267 | date "02 Jan 06 15:04 -0700" }}
+{{ .data268 | date "02 Jan 06 15:04 -0700" }}
+{{ dateInZone "02 Jan 06 15:04 -0700" .data269 "UTC" }}
+{{ dateInZone "02 Jan 06 15:04 -0700" .data270 "UTC" }}
+{{ dateInZone "02 Jan 06 15:04 -0700" .data271 "UTC" }}
+{{ dateInZone "02 Jan 06 15:04 -0700" .data272 "UTC" }}
+{{ dateInZone "02 Jan 06 15:04 -0700" .data273 "UTC" }}
+{{ dateInZone "02 Jan 06 15:04 -0700" .data274 "UTC" }}
+{{ dateInZone "02 Jan 06 15:04 -0700" .data275 "invalid" }}
+{{ .duration | duration }}
+{{ .time | ago | substr 0 5 }}
+{{ now | date "02 Jan 06 15:04 -0700" }}
+{{ .time | unixEpoch }}
+{{ .time | dateModify "1h" | date "02 Jan 06 15:04 -0700" }}
+{{ .time | dateModify "+1h" | date "02 Jan 06 15:04 -0700" }}
+{{ .time | dateModify "-1h" | date "02 Jan 06 15:04 -0700" }}
+{{ .time | dateModify "10m" | date "02 Jan 06 15:04 -0700" }}
+{{ .time | dateModify "-10s" | date "02 Jan 06 15:04 -0700" }}
+{{ .time | dateModify "zz" | date "02 Jan 06 15:04 -0700" }}
+{{ .duration | durationRound }}
+{{ .time | htmlDate }}
+{{ htmlDateInZone .time "UTC" }}
+{{ .time | mustDateModify "1h" | date "02 Jan 06 15:04 -0700" }}
+{{ .time | mustDateModify "+1h" | date "02 Jan 06 15:04 -0700" }}
+{{ .time | mustDateModify "-1h" | date "02 Jan 06 15:04 -0700" }}
+{{ .time | mustDateModify "10m" | date "02 Jan 06 15:04 -0700" }}
+{{ .time | mustDateModify "-10s" | date "02 Jan 06 15:04 -0700" }}

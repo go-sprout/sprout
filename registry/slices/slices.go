@@ -3,7 +3,7 @@ package slices
 import "github.com/go-sprout/sprout"
 
 type SlicesRegistry struct {
-	handler *sprout.Handler // Embedding Handler for shared functionality
+	handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of your registry with the embedded Handler.
@@ -18,7 +18,7 @@ func (sr *SlicesRegistry) Uid() string {
 
 // LinkHandler links the handler to the registry at runtime.
 func (sr *SlicesRegistry) LinkHandler(fh sprout.Handler) error {
-	sr.handler = &fh
+	sr.handler = fh
 	return nil
 }
 

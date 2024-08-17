@@ -53,7 +53,7 @@ func init() {
 }
 
 type RandomRegistry struct {
-	handler *sprout.Handler // Embedding Handler for shared functionality
+	handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of regexp registry.
@@ -68,7 +68,7 @@ func (rr *RandomRegistry) Uid() string {
 
 // LinkHandler links the handler to the registry at runtime.
 func (rr *RandomRegistry) LinkHandler(fh sprout.Handler) error {
-	rr.handler = &fh
+	rr.handler = fh
 	return nil
 }
 

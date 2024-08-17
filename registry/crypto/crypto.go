@@ -7,7 +7,7 @@ import (
 )
 
 type CryptoRegistry struct {
-	handler *sprout.Handler // Embedding Handler for shared functionality
+	handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // DSAKeyFormat stores the format for DSA keys.
@@ -60,7 +60,7 @@ func (ch *CryptoRegistry) Uid() string {
 }
 
 func (ch *CryptoRegistry) LinkHandler(fh sprout.Handler) error {
-	ch.handler = &fh
+	ch.handler = fh
 	return nil
 }
 

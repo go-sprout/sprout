@@ -1,220 +1,620 @@
-{{/* compare.tpl: Used to compare sprig to sprout */}}
+IMPORTANT NOTE:
 
-Hello: {{ hello }}
+This file is used to compare the output of the Sprig functions with the Sprout
+output to ensure no breaking changes are introduced. This is important to ensure
+that the Sprout functions are compatible with the Sprig functions.
 
-{{- $str := "Hello, World!" -}}
-{{- $dict := dict "key" "value" -}}
-{{- $list := list 1 2 3 -}}
-{{- $tuple := tuple 1 2 3 -}}
-{{- $set := set $dict "key2" "value2" -}}
-{{- $date := toDate "2006-01-02" "2017-12-31" -}}
+To test the compatibility, run the following command: `task compare`.
 
-{{- $d := dict "one" 1 "two" 222222 -}}
-{{- $d2 := dict "one" 1 "two" 33333 -}}
-{{- $d3 := dict "one" 1 -}}
-{{- $d4 := dict "one" 1 "two" 4444 -}}
+Somes entries are excluded from the comparison by comment `excluded due to fixed output in Sprig`,
+this is because the output of the function is fixed in Sprout due to bugs not fixed in Sprig.
 
-{{/* Date functions */}}
-Ago: {{ago $date }}
-Date: {{date "Monday, 02 Jan 2006 15:04:05 MST" 0}}
-DateInZone: {{dateInZone "Monday, 02 Jan 2006 15:04:05 MST" 0 "UTC"}}
-DateModify: {{$date | dateModify "-1.5h"}}
-Duration: {{duration "1h30m"}}
-DurationRound: {{durationRound "2h10m5s"}} | {{ durationRound "2400h10m5s" }}
-HtmlDate: {{htmlDate "2006-01-02T15:04:05Z"}}
-HtmlDateInZone: {{htmlDateInZone "2006-01-02T15:04:05Z" "UTC"}}
-MustDateModify: {{$date | mustDateModify "-1.5h"}}
-MustToDate: {{mustToDate "2006-01-02" "2017-12-31" | date "02/01/2006"}}
-Now: {{now | date "02/01/2006"}}
-ToDate: {{toDate "2006-01-02" "2017-12-31" | date "02/01/2006"}}
-UnixEpoch: {{$date | unixEpoch}}
-
-
-{{/* String Functions */}}
-Abbrev: {{$str | abbrev 5}}
-AbbrevBoth: {{$str | abbrevboth 1 2}}
-Trunc: {{$str | trunc 5}} | {{$str | trunc -5}}
-Trim: {{trim "   hello    "}}
-Upper: {{upper $str}}
-Lower: {{lower $str}}
-Title: {{title $str}}
-UnTitle: {{untitle $str}}
-Substr: {{substr 0 5 "hello world"}}
-Repeat: {{repeat 3 "hello"}}
-TrimAll: {{trimAll "$" "$5.00"}}
-TrimSuffix: {{trimSuffix "-" "hello-"}}
-TrimPrefix: {{trimPrefix "-" "-hello"}}
-NoSpace: {{nospace "Hello, World!"}}
-Initials: {{initials "Hello, World!"}}
-SwapCase: {{swapcase "Hello, World!"}}
-SnakeCase: {{snakecase "Hello, World!"}}
-CamelCase: {{camelcase "Hello, World!"}}
-KebabCase: {{kebabcase "Hello, World!"}}
-Wrap: {{"Hello, World!" | wrap 5}}
-WrapWith: {{"Hello World!" | wrapWith 10 "\\n"}}
-Contains: {{contains $str "World"}}
-HasPrefix: {{hasPrefix $str "Hello"}}
-HasSuffix: {{hasSuffix $str "World"}}
-Quote: {{quote $str}}
-SQuote: {{squote $str}}
-Cat: {{cat "Hello" ", " "World!"}}
-Indent: {{"Hello, World!" | indent 5}}
-Nindent: {{"Hello, World!" | nindent 5}}
-Replace: {{$str | replace "World" "Sprig"}}
-Plural: {{2 | plural "apple" "apples"}} | {{1 | plural "apple" "apples"}}
-Sha1sum: {{sha1sum $str}}
-Sha256sum: {{sha256sum $str}}
-Adler32sum: {{adler32sum $str}}
-toString: {{toString 5}}
-
-Atoi: {{atoi "5"}}
-Int64: {{int64 5}}
-Int: {{int 5}}
-Float64: {{float64 5}}
-ToDecimal: {{toDecimal "0777"}}
-
-Split: {{"Hello, World!" | split ", "}}
-SplitList: {{"Hello, World!" | splitList ", "}}
-SplitN: {{"Hello, World!" | splitn ", " 1}}
-toStrings: {{list 1 2 3 | toStrings}}
-Until: {{until 5}}
-UntilStep: {{untilStep 3 6 2}}
-
-Add1: {{add1 5}}
-Add: {{add 5 10}}
-Sub: {{sub 10 5}}
-Mul: {{mul 5 10}}
-Div: {{div 10 5}}
-Mod: {{mod 10 5}}
-Add1f: {{add1f 5}}
-Addf: {{addf 5 10}}
-Subf: {{subf 10 5}}
-Mulf: {{mulf 5 10}}
-Divf: {{divf 10 5}}
-Biggest: {{biggest 5 10}}
-Max: {{max 5 6 10}}
-Min: {{min 5 6 10}}
-Ceil: {{ceil 123.001}}
-Floor: {{floor 123.9999}}
-Round: {{round 123.555555 3}}
-Maxf: {{maxf 5.5 10.5}}
-Minf: {{minf 5.5 10.5}}
-Seq: {{seq 5}} | {{seq -3}} | {{seq 0 2}} | {{seq 2 -2}} | {{seq 0 2 10}} | {{seq 0 -2 -5}}
-
-Join: {{list "Hello" "World!" | join ", "}} | {{list 1  2 3 | join "+"}}
-SortAlpha: {{list "Hello" "World" "from" "Sprig" | sortAlpha}}
-
-{{/* Default Functions */}}
-{{- $defaultVal := "defaultValue" -}}
-Default: {{default "DefaultValue" $defaultVal}}
-Empty: {{empty ""}}
-Coal: {{coalesce "" "Hello, World!"}}
-All: {{all "" "Hello, World!"}}
-Any: {{any "" "Hello, World!"}}
-Compact: {{list 1 "a" "foo" "" | compact}}
-MustCompact: {{list 1 "a" "foo" "" | mustCompact}}
-FromJson: {{fromJson "{\"key\": \"value\"}"}}
-MustFromJson: {{mustFromJson "{\"key\": \"value\"}"}}
-ToJson: {{toJson $dict}}
-MustToJson: {{mustToJson $dict}}
-ToPrettyJson: {{toPrettyJson $dict}}
-ToRawJson: {{toRawJson $dict}}
-Ternary: {{true | ternary "true" "false"}}
-DeepCopy: {{deepCopy $dict}}
-MustDeepCopy: {{mustDeepCopy $dict}}
-
-TypeOf: {{typeOf 5}}
-TypeIs: {{5 | typeIs "int"}}
-TypeIsLike: {{5 | typeIsLike "int"}}
-KindOf: {{kindOf 5}}
-KindIs: {{5 | kindIs "int"}}
-DeepEqual: {{ deepEqual (list 1 2 3) (list 1 2 3) }}
-
-
-{{/* OS Functions */}}
-Env: {{env "PATH"}}
-Expandenv: {{expandenv "$PATH"}}
-Base Path: {{base "/path/to/file.txt"}}
-Dir: {{dir "/path/to/file.txt"}}
-Ext: {{ext "/path/to/file.txt"}}
-Clean: {{clean "/path/to/file.txt"}}
-IsAbs: {{isAbs "/path/to/file.txt"}}
-
-OsBase: {{osBase "/path/to/file.txt"}}
-OsDir: {{osDir "/path/to/file.txt"}}
-OsExt: {{osExt "/path/to/file.txt"}}
-OsClean: {{osClean "/path/to/file.txt"}}
-OsIsAbs: {{osIsAbs "/path/to/file.txt"}}
-
-{{/* Encoding Functions */}}
-Base64Encode: {{b64enc "Hello, World!"}}
-Base64Decode: {{b64dec "SGVsbG8sIFdvcmxkIQ=="}}
-Base32Encode: {{b32enc "Hello, World!"}}
-Base32Decode: {{b32dec "JBSWY3DPEBLW64TMMQQQ===="}}
-
-{{/* Data Struct Functions */}}
-Tuple: {{tuple 1 2 3}}
-List: {{list 1 2 3}}
-Dict: {{dict "key" "value"}}
-Get: {{get $dict "key"}}
-Set: {{set $dict "key" "newValue"}}
-Unset: {{unset $dict "key"}}
-has: {{has 4 (list 1 2 4)}}
-Pluck: {{pluck "two" $d $d2 $d3 $d4}}
-Keys: {{keys $dict}}
-Pick: {{pick $dict "key"}}
-Omit: {{omit $dict "key"}}
-Merge: {{merge $dict (dict "key2" "value2")}}
-MergeOverwrite: {{mergeOverwrite $dict (dict "key" "value2")}}
-Values: {{values $dict}}
-Append: {{append (list 1 2) 3}}
-Prepend: {{prepend (list 2 3) 1}}
-First: {{first (list 1 2 3)}}
-Rest: {{rest (list 1 2 3)}}
-Last: {{last (list 1 2 3)}}
-Initial: {{initial (list 1 2 3)}}
-Reverse: {{reverse (list 1 2 3)}}
-Uniq: {{uniq (list 1 2 2 3)}}
-Without: {{without (list 1 2 3) 2}} | {{without (list 1 2 3) 2 3}}
-HasKey: {{hasKey $dict "key"}}
-Slice: {{slice (list 1 2 3) 1 2}} | {{slice (list 1 2 3) 1}}
-Concat: {{concat (list 1 2) (list 3 4)}}
-# Incompatible with sprig
-# Dig: {{/* dig "b" "a" (dict "a" 1 "b" (dict "a" 2)) */}}
-Chunk: {{list 1 2 3 4 5 | chunk 2}}
-
-{{/* Crypt Functions */}}
-derivePassword: {{derivePassword 1 "long" "password" "user" "example.com"}}
-
-Semver: {{semver "1.2.3"}}
-SemverCompare: {{semverCompare "^1.2.0" "1.2.3"}}
-
-{{/* Regex Functions */}}
-RegexMatch: {{regexMatch "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" "test@acme.com"}}
-RegexFindAll: {{regexFindAll "[2,4,6,8]" "123456789" -1}}
-RegexFind: {{regexFind "[a-zA-Z][1-9]" "abcd1234"}}
-RegexReplaceAll: {{regexReplaceAll "a(x*)b" "-ab-axxb-" "${1}W"}}
-RegexReplaceAllLiteral: {{regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "${1}"}}
-RegexSplit: {{regexSplit "z+" "pizza" -1}}
-RegexQuoteMeta: {{regexQuoteMeta "1.2.3"}}
-
-{{/* URL Functions */}}
-UrlParse: {{index ( urlParse "proto://auth@host:80/path?query#fragment" ) "host" }}
-UrlJoin: {{urlJoin (dict "fragment" "fragment" "host" "host:80" "path" "/path" "query" "query" "scheme" "proto")}}
-
-
-{{/* Cannot be matched due to random */}}
-{{/* UUIDv4: {{uuidv4}} */}}
-{{/* RandBytes: {{randBytes 10}} */}}
-{{/* EncryptAES: {{encryptAES "secretkey" "plaintext"}} */}}
-{{/* DecryptAES: {{"30tEfhuJSVRhpG97XCuWgz2okj7L8vQ1s6V9zVUPeDQ=" | decryptAES "secretkey"}} */}}
-{{/* Bcrypt: {{bcrypt "Hello, World!"}} */}}
-{{/* Htpasswd: {{htpasswd "myUser" "myPassword"}} */}}
-{{/* genPrivateKey: {{genPrivateKey "rsa"}} | {{genPrivateKey "dsa"}} | {{genPrivateKey "ecdsa"}} | {{genPrivateKey "ed25519"}} */}}
-{{/* RandInt: {{randInt 5 10}} */}}
-{{/* RandAlphaNum: {{randAlphaNum 10}} */}}
-{{/* RandAlpha: {{randAlpha 10}} */}}
-{{/* RandAscii: {{randAscii 10}} */}}
-{{/* RandNumeric: {{randNumeric 10}} */}}
-{{/* Shuffle: {{shuffle "Hello, World!"}} */}}
-{{/* GetHostByName: {{getHostByName "localhost"}} */}}
+[CODE_000012]    {{ hello }}
+[CODE_000013]    {{ urlParse "https://example.com" | urlJoin }}
+[CODE_000014]    {{ urlParse "https://example.com/path" | urlJoin }}
+[CODE_000015]    {{ urlParse "https://user:pass@example.com/path?query=1" | urlJoin }}
+[CODE_000016]    {{sha1sum ""}}
+[CODE_000017]    {{sha1sum "a"}}
+[CODE_000018]    {{sha1sum "hello world"}}
+[CODE_000019]    {{sha256sum ""}}
+[CODE_000020]    {{sha256sum "a"}}
+[CODE_000021]    {{sha256sum "hello world"}}
+[CODE_000022]    {{adler32sum ""}}
+[CODE_000023]    {{adler32sum "a"}}
+[CODE_000024]    {{adler32sum "hello world"}}
+[CODE_000025]    {{$v := int .string }}{{kindOf $v}}-{{$v}}
+[CODE_000026]    {{$v := int .float }}{{kindOf $v}}-{{$v}}
+[CODE_000027]    {{$v := int .bool }}{{kindOf $v}}-{{$v}}
+[CODE_000028]    {{$v := int64 .string }}{{typeOf $v}}-{{$v}}
+[CODE_000029]    {{$v := int64 .float }}{{typeOf $v}}-{{$v}}
+[CODE_000030]    {{$v := int64 .int }}{{typeOf $v}}-{{$v}}
+[CODE_000031]    {{$v := int64 .bool }}{{typeOf $v}}-{{$v}}
+[CODE_000032]    {{$v := float64 .string }}{{typeOf $v}}-{{$v}}
+[CODE_000033]    {{$v := float64 .float }}{{typeOf $v}}-{{$v}}
+[CODE_000034]    {{$v := float64 .int }}{{typeOf $v}}-{{$v}}
+[CODE_000035]    {{$v := float64 .bool }}{{typeOf $v}}-{{$v}}
+[CODE_000036]    {{$v := toDecimal .string }}{{typeOf $v}}-{{$v}}
+[CODE_000037]    {{$v := toDecimal .float }}{{typeOf $v}}-{{$v}}
+[CODE_000038]    {{$v := toDecimal .int }}{{typeOf $v}}-{{$v}}
+[CODE_000039]    {{$v := toDecimal .bool }}{{typeOf $v}}-{{$v}}
+[CODE_000040]    {{$v := toString .string }}{{typeOf $v}}-{{$v}}
+[CODE_000041]    {{$v := toString .int }}{{typeOf $v}}-{{$v}}
+[CODE_000042]    {{$v := toString .float }}{{typeOf $v}}-{{$v}}
+[CODE_000043]    {{$v := toString .bool }}{{typeOf $v}}-{{$v}}
+[CODE_000044]    {{$v := toString .objectrray }}{{typeOf $v}}-{{$v}}
+[CODE_000045]    {{$v := toString .time }}{{typeOf $v}}-{{$v}}
+[CODE_000046]    {{$v := toString .duration }}{{typeOf $v}}-{{$v}}
+[CODE_000047]    {{$v := toString .object }}{{typeOf $v}}-{{$v}}
+[CODE_000048]    {{$v := toDate "2006-01-02" (.time | toString) }}{{typeOf $v}}-{{$v}}
+[CODE_000049]    {{ "" | b64enc }}
+[CODE_000050]    {{ "Hello World" | b64enc }}
+[CODE_000051]    {{ "SGVsbG8gV29ybGQ=" | b64dec }}
+[CODE_000052]    {{ "" | b32enc }}
+[CODE_000053]    {{ "Hello World" | b32enc }}
+[CODE_000054]    {{ "JBSWY3DPEBLW64TMMQ======" | b32dec }}
+[CODE_000055]    {{ "" | fromJson }}
+[CODE_000056]    {{ .json | fromJson }}
+[CODE_000057]    {{ (.json | fromJson).foo }}
+[CODE_000058]    {{ "" | toJson }}
+[CODE_000059]    {{ .object | toJson }}
+[CODE_000060]    {{ "" | toPrettyJson }}
+[CODE_000061]    {{ .object | toPrettyJson }}
+[CODE_000062]    {{ "" | toRawJson }}
+[CODE_000063]    {{ .object | toRawJson }}
+[CODE_000064]    {{ .json | mustFromJson }}
+[CODE_000065]    {{ .object | mustToJson }}
+[CODE_000066]    {{ .object | mustToPrettyJson }}
+[CODE_000067]    {{ .object | mustToRawJson }}
+[CODE_000068]    {{ env "" }}
+[CODE_000069]    {{ env "NON_EXISTENT_ENV_VAR" }}
+[CODE_000070]    {{ env "__SPROUT_TEST_ENV_KEY" }}
+[CODE_000071]    {{ "__SPROUT_TEST_ENV_KEY" | env }}
+[CODE_000072]    {{ expandenv "" }}
+[CODE_000073]    {{ expandenv "Hey" }}
+[CODE_000074]    {{ expandenv "$NON_EXISTENT_ENV_VAR" }}
+[CODE_000075]    {{ expandenv "Hey $__SPROUT_TEST_ENV_KEY" }}
+[CODE_000076]    {{ "Hey $__SPROUT_TEST_ENV_KEY" | expandenv }}
+[CODE_000077]    {{ base "" }}
+[CODE_000078]    {{ base "/" }}
+[CODE_000079]    {{ base "/path/to/file" }}
+[CODE_000080]    {{ base "/path/to/file.txt" }}
+[CODE_000081]    {{ "/path/to/file.txt" | base }}
+[CODE_000082]    {{ dir "" }}
+[CODE_000083]    {{ dir "/" }}
+[CODE_000084]    {{ dir "/path/to/file" }}
+[CODE_000085]    {{ dir "/path/to/file.txt" }}
+[CODE_000086]    {{ "/path/to/file.txt" | dir }}
+[CODE_000087]    {{ ext "" }}
+[CODE_000088]    {{ ext "/" }}
+[CODE_000089]    {{ ext "/path/to/file" }}
+[CODE_000090]    {{ ext "/path/to/file.txt" }}
+[CODE_000091]    {{ "/path/to/file.txt" | ext }}
+[CODE_000092]    {{ clean "" }}
+[CODE_000093]    {{ clean "/" }}
+[CODE_000094]    {{ clean "/path/to/file" }}
+[CODE_000095]    {{ clean "/path/to/file.txt" }}
+[CODE_000096]    {{ "/path/to/file.txt" | clean }}
+[CODE_000097]    {{ clean "/path//to/file" }}
+[CODE_000098]    {{ clean "/path/./to/file" }}
+[CODE_000099]    {{ clean "/path/../to/file" }}
+[CODE_000100]    {{ isAbs "" }}
+[CODE_000101]    {{ isAbs "/" }}
+[CODE_000102]    {{ isAbs "path/to/file" }}
+[CODE_000103]    {{ isAbs "/path/to/file.txt" }}
+[CODE_000104]    {{ "file.txt" | isAbs }}
+[CODE_000105]    {{ floor 1.5 }}
+[CODE_000106]    {{ floor 1 }}
+[CODE_000107]    {{ floor -1.5 }}
+[CODE_000108]    {{ floor -1 }}
+[CODE_000109]    {{ floor 0 }}
+[CODE_000110]    {{ floor 123 }}
+[CODE_000111]    {{ floor "123" }}
+[CODE_000112]    {{ floor 123.9999 }}
+[CODE_000113]    {{ floor 123.0001 }}
+[CODE_000114]    {{ ceil 1.5 }}
+[CODE_000115]    {{ ceil 1 }}
+[CODE_000116]    {{ ceil -1.5 }}
+[CODE_000117]    {{ ceil -1 }}
+[CODE_000118]    {{ ceil 0 }}
+[CODE_000119]    {{ ceil 123 }}
+[CODE_000120]    {{ ceil "123" }}
+[CODE_000121]    {{ ceil 123.9999 }}
+[CODE_000122]    {{ ceil 123.0001 }}
+[CODE_000123]    {{ round 3.746 2 }}
+[CODE_000124]    {{ round 3.746 2 0.5 }}
+[CODE_000125]    {{ round 123.5555 3 }}
+[CODE_000126]    {{ round "123.5555" 3 }}
+[CODE_000127]    {{ round 123.500001 0 }}
+[CODE_000128]    {{ round 123.49999999 0 }}
+[CODE_000129]    {{ round 123.2329999 2 .3 }}
+[CODE_000130]    {{ round 123.233 2 .3 }}
+[CODE_000131]    {{ add }}
+[CODE_000132]    {{ add 1 }}
+[CODE_000133]    {{ add 1 2 3 4 5 6 7 8 9 10 }}
+[CODE_000134]    {{ 10.1 | addf 1.1 2.2 3.3 4.4 5.5 6.6 7.7 8.8 9.9 }}
+[CODE_000135]    {{ addf }}
+[CODE_000136]    {{ addf 1 }}
+[CODE_000137]    {{ addf 1 2 3 4 5 6 7 8 9 10 }}
+[CODE_000138]    {{ 10.1 | addf 1.1 2.2 3.3 4.4 5.5 6.6 7.7 8.8 9.9 }}
+[CODE_000139]    {{ add1 -1 }}
+[CODE_000140]    {{ add1f -1.0}}
+[CODE_000141]    {{ add1 1 }}
+[CODE_000142]    {{ add1f 1.1 }}
+[CODE_000143]    {{ add1f -1 }}
+[CODE_000144]    {{ add1f -1.0}}
+[CODE_000145]    {{ add1f 1 }}
+[CODE_000146]    {{ add1f 1.1 }}
+[CODE_000147]    {{ sub 1 1 }}
+[CODE_000148]    {{ sub 1 2 }}
+[CODE_000149]    {{ subf 1.1 1.1 }}
+[CODE_000150]    {{ subf 1.1 2.2 }}
+[CODE_000151]    {{ 3 | sub 14 }}
+[CODE_000152]    {{ subf 1.1 1.1 }}
+[CODE_000153]    {{ subf 1.1 2.2 }}
+[CODE_000154]    {{ round (3 | subf 4.5 1) 1 }}
+[CODE_000155]    {{ mul 1 1 }}
+[CODE_000156]    {{ mul 1 2 }}
+[CODE_000157]    {{ mul 1.1 1.1 }}
+[CODE_000158]    {{ mul 1.1 2.2 }}
+[CODE_000159]    {{ 3 | mul 14 }}
+[CODE_000160]    {{ round (mulf 1.1 1.1) 2 }}
+[CODE_000161]    {{ round (mulf 1.1 2.2) 2 }}
+[CODE_000162]    {{ round (3.3 | mulf 14.4) 2 }}
+[CODE_000163]    {{ div 1 1 }}
+[CODE_000164]    {{ div 1 2 }}
+[CODE_000165]    {{ div 1.1 1.1 }}
+[CODE_000166]    {{ div 1.1 2.2 }}
+[CODE_000167]    {{ 4 | div 5 }}
+[CODE_000168]    {{ round (divf 1.1 1.1) 2 }}
+[CODE_000169]    {{ round (divf 1.1 2.2) 2 }}
+[CODE_000170]    {{ 2 | divf 5 4 }}
+[CODE_000171]    {{ mod 10 4 }}
+[CODE_000172]    {{ mod 10 3 }}
+[CODE_000173]    {{ mod 10 2 }}
+[CODE_000174]    {{ mod 10 1 }}
+[CODE_000175]    {{ min 1 }}
+[CODE_000176]    {{ min 1 "1" }}
+[CODE_000177]    {{ min -1 0 1 }}
+[CODE_000178]    {{ min 1 2 3 4 5 6 7 8 9 10 1 2 3 4 5 6 7 8 9 10 0 }}
+[CODE_000179]    {{ minf 1 }}
+[CODE_000180]    {{ minf 1 "1.1" }}
+[CODE_000181]    {{ minf -1.4 .0 2.1 }}
+[CODE_000182]    {{ minf .1 .2 .3 .4 .5 .6 .7 .8 .9 .10 .1 .2 .3 .4 .5 .6 .7 .8 .9 .10}}
+[CODE_000183]    {{ max 1 }}
+[CODE_000184]    {{ max 1 "1" }}
+[CODE_000185]    {{ max -1 0 1 }}
+[CODE_000186]    {{ max 1 2 3 4 5 6 7 8 9 10 1 2 3 4 5 6 7 8 9 10 0 }}
+[CODE_000187]    {{ maxf 1 }}
+[CODE_000188]    {{ maxf 1.0 "1.1" }}
+[CODE_000189]    {{ maxf -1.5 0 1.4 }}
+[CODE_000190]    {{ maxf .1 .2 .3 .4 .5 .6 .7 .8 .9 .10 .1 .2 .3 .4 .5 .6 .7 .8 .9 .10 }}
+[CODE_000191]    {{typeIs "int" 42}}
+[CODE_000192]    {{42 | typeIs "string"}}
+[CODE_000193]    {{$var := 42}}{{typeIs "string" $var}}
+[CODE_000194]    {{.object | typeIs "*reflect_test.testStruct"}}
+[CODE_000195]    {{typeIsLike "int" 42}}
+[CODE_000196]    {{42 | typeIsLike "string"}}
+[CODE_000197]    {{$var := 42}}{{typeIsLike "string" $var}}
+[CODE_000198]    {{.object | typeIsLike "*reflect_test.testStruct"}}
+[CODE_000199]    {{.object | typeIsLike "reflect_test.testStruct"}}
+[CODE_000200]    {{typeOf 42}}
+[CODE_000201]    {{typeOf "42"}}
+[CODE_000202]    {{$var := 42}}{{typeOf $var}}
+[CODE_000203]    {{typeOf .object}}
+[CODE_000204]    {{kindIs "int" 42}}
+[CODE_000205]    {{42 | kindIs "string"}}
+[CODE_000206]    {{$var := 42}}{{kindIs "string" $var}}
+[CODE_000207]    {{.object | kindIs "ptr"}}
+[CODE_000208]    {{kindOf 42}}
+[CODE_000209]    {{kindOf "42"}}
+[CODE_000210]    {{kindOf .object}}
+[CODE_000211]    {{$var := 42}}{{kindOf $var}}
+[CODE_000212]    {{kindOf .object}}
+[CODE_000213]    {{kindOf .object}}
+[CODE_000214]    {{deepEqual 42 42}}
+[CODE_000215]    {{deepEqual "42" "42"}}
+[CODE_000216]    {{deepEqual .object .object}}
+[CODE_000217]    {{$a := 42}}{{$b := 42}}{{deepEqual $a $b}}
+[CODE_000218]    {{deepEqual 42 32}}
+[CODE_000219]    {{deepEqual 42 "42"}}
+[CODE_000220]    {{$a := 42}}{{$b := deepCopy $a}}{{$b}}
+[CODE_000221]    {{$a := "42"}}{{$b := deepCopy $a}}{{$b}}
+[CODE_000222]    {{$a := .object}}{{$b := deepCopy $a}}{{$b}}
+[CODE_000223]    {{$a := .object}}{{$b := deepCopy $a}}{{$b}}
+[CODE_000224]    {{$a := .object}}{{$b := deepCopy $a}}{{$b}}
+[CODE_000225]    {{$a := 42}}{{$b := deepCopy $a}}{{$b}}
+[CODE_000226]    {{$a := 42}}{{$b := deepCopy "42"}}{{$b}}
+[CODE_000227]    {{$a := 42}}{{$b := deepCopy 42.0}}{{$b}}
+[CODE_000228]    {{$b := deepCopy .object}}
+[CODE_000229]    {{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ values $d | sortAlpha | join "," }}
+[CODE_000230]    {{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ keys $d | sortAlpha | join "," }}
+[CODE_000231]    {{- $one := dict "foo" (dict "bar" "baz") "qux" true -}}{{ deepCopy $one }}
+[CODE_000232]    {{ regexFind "a(b+)" "aaabbb" }}
+[CODE_000233]    {{ regexFindAll "a(b+)" "aaabbb" -1 }}
+[CODE_000234]    {{ regexFindAll "a{2}" "aaaabbb" -1 }}
+[CODE_000235]    {{ regexFindAll "a{2}" "none" -1 }}
+[CODE_000236]    {{ regexMatch "^[a-zA-Z]+$" "Hello" }}
+[CODE_000237]    {{ regexMatch "^[a-zA-Z]+$" "Hello123" }}
+[CODE_000238]    {{ regexMatch "^[a-zA-Z]+$" "123" }}
+[CODE_000239]    {{ regexSplit "a" "banana" -1 }}
+[CODE_000240]    {{ regexSplit "a" "banana" 0 }}
+[CODE_000241]    {{ regexSplit "a" "banana" 1 }}
+[CODE_000242]    {{ regexSplit "a" "banana" 2 }}
+[CODE_000243]    {{ regexSplit "a+" "banana" 1 }}
+[CODE_000244]    {{ regexReplaceAll "a(x*)b" "-ab-axxb-" "T" }}
+[CODE_000245]    {{ regexReplaceAll "a(x*)b" "-ab-axxb-" "$1" }}
+[CODE_000246]    {{ regexReplaceAll "a(x*)b" "-ab-axxb-" "$1W" }}
+[CODE_000247]    {{ regexReplaceAll "a(x*)b" "-ab-axxb-" "${1}W" }}
+[CODE_000248]    {{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "T" }}
+[CODE_000249]    {{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "$1" }}
+[CODE_000250]    {{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "$1W" }}
+[CODE_000251]    {{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "${1}W" }}
+[CODE_000252]    {{ regexQuoteMeta "Escaping $100? That's a lot." }}
+[CODE_000253]    {{ regexQuoteMeta "1.2.3" }}
+[CODE_000254]    {{ regexQuoteMeta "golang" }}
+[CODE_000255]    {{ mustRegexFind "a(b+)" "aaabbb" }}
+[CODE_000256]    {{ mustRegexFindAll "a(b+)" "aaabbb" -1 }}
+[CODE_000257]    {{ mustRegexFindAll "a{2}" "aaaabbb" -1 }}
+[CODE_000258]    {{ mustRegexFindAll "a{2}" "none" -1 }}
+[CODE_000259]    {{ mustRegexMatch "^[a-zA-Z]+$" "Hello" }}
+[CODE_000260]    {{ mustRegexMatch "^[a-zA-Z]+$" "Hello123" }}
+[CODE_000261]    {{ mustRegexMatch "^[a-zA-Z]+$" "123" }}
+[CODE_000262]    {{ mustRegexSplit "a" "banana" -1 }}
+[CODE_000263]    {{ mustRegexSplit "a" "banana" 0 }}
+[CODE_000264]    {{ mustRegexSplit "a" "banana" 1 }}
+[CODE_000265]    {{ mustRegexSplit "a" "banana" 2 }}
+[CODE_000266]    {{ mustRegexSplit "a+" "banana" 1 }}
+[CODE_000267]    {{ mustRegexReplaceAll "a(x*)b" "-ab-axxb-" "T" }}
+[CODE_000268]    {{ mustRegexReplaceAll "a(x*)b" "-ab-axxb-" "$1" }}
+[CODE_000269]    {{ mustRegexReplaceAll "a(x*)b" "-ab-axxb-" "$1W" }}
+[CODE_000270]    {{ mustRegexReplaceAll "a(x*)b" "-ab-axxb-" "${1}W" }}
+[CODE_000271]    {{ mustRegexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "T" }}
+[CODE_000272]    {{ mustRegexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "$1" }}
+[CODE_000273]    {{ mustRegexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "$1W" }}
+[CODE_000274]    {{ mustRegexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "${1}W" }}
+[CODE_000275]    {{ semver "1.0.0" }}
+[CODE_000276]    {{ semver "1.0.0-alpha" }}
+[CODE_000277]    {{ semver "1.0.0-alpha.1" }}
+[CODE_000278]    {{ semver "1.0.0-alpha.1+build" }}
+[CODE_000279]    {{ semverCompare "1.0.0" "1.0.0" }}
+[CODE_000280]    {{ semverCompare "1.0.0" "1.0.1" }}
+[CODE_000281]    {{ semverCompare "1.0.1" "1.0.0" }}
+[CODE_000282]    {{ semverCompare "~1.0.0" "1.0.0" }}
+[CODE_000283]    {{ semverCompare ">=1.0.0" "1.0.0-alpha" }}
+[CODE_000284]    {{ semverCompare ">1.0.0-alpha" "1.0.0-alpha.1" }}
+[CODE_000285]    {{ semverCompare "1.0.0-alpha.1" "1.0.0-alpha" }}
+[CODE_000286]    {{ semverCompare "1.0.0-alpha.1" "1.0.0-alpha.1" }}
+[CODE_000287]    {{ list }}
+[CODE_000288]    {{ .string | list "ab" true 4 5 }}
+[CODE_000289]    {{ append .array "a" }}
+[CODE_000290]    {{ prepend .array "a" }}
+[CODE_000291]    {{ concat .array (list 1 2 3) }}
+[CODE_000292]    {{ list 4 5 | concat (list 1 2 3) }}
+[CODE_000293]    {{ chunk 2 .array }}
+[CODE_000294]    {{ uniq .array }}
+[CODE_000295]    {{ compact .array }}
+[CODE_000296]    {{ list 1 0 "" "hello" | compact }}
+[CODE_000297]    {{ list "" "" | compact }}
+[CODE_000298]    {{ list | compact }}
+[CODE_000299]    {{ slice .array }}
+[CODE_000300]    {{ slice .array 1 }}
+[CODE_000301]    {{ slice .array 1 3 }}
+[CODE_000302]    {{ slice .array 0 1 }}
+[CODE_000303]    {{ .array | has "foo" }}
+[CODE_000304]    {{ .array | has "a" }}
+[CODE_000305]    {{ .array | has 1 }}
+[CODE_000306]    {{ .array | has .nil }}
+[CODE_000307]    {{ .array | has "nope" }}
+[CODE_000308]    {{ without .array "a" }}
+[CODE_000309]    {{ rest .array }}
+[CODE_000310]    {{ initial .array }}
+[CODE_000311]    {{ first .array }}
+[CODE_000312]    {{ last .array }}
+[CODE_000313]    {{ reverse .array }}
+[CODE_000314]    {{ sortAlpha .array }}
+[CODE_000315]    {{ .arrayCommas | splitList "," }}
+[CODE_000316]    {{ toStrings .arrayCommas }}
+[CODE_000317]    {{range $i, $e := until 5}}({{$i}}{{$e}}){{end}}
+[CODE_000318]    {{range $i, $e := until -5}}({{$i}}{{$e}}){{end}}
+[CODE_000319]    {{range $i, $e := untilStep 0 5 1}}({{$i}}{{$e}}){{end}}
+[CODE_000320]    {{range $i, $e := untilStep 3 6 1}}({{$i}}{{$e}}){{end}}
+[CODE_000321]    {{range $i, $e := untilStep 0 -10 -2}}({{$i}}{{$e}}){{end}}
+[CODE_000322]    {{range $i, $e := untilStep 3 0 1}}({{$i}}{{$e}}){{end}}
+[CODE_000323]    {{range $i, $e := untilStep 3 99 0}}({{$i}}{{$e}}){{end}}
+[CODE_000324]    {{range $i, $e := untilStep 3 99 -1}}({{$i}}{{$e}}){{end}}
+[CODE_000325]    {{range $i, $e := untilStep 3 0 0}}({{$i}}{{$e}}){{end}}
+[CODE_000326]    {{ mustAppend .array "a" }}
+[CODE_000327]    {{ mustPrepend .array "a" }}
+[CODE_000328]    {{ mustChunk 2 .array }}
+[CODE_000329]    {{ mustUniq .array }}
+[CODE_000330]    {{ mustCompact .array }}
+[CODE_000331]    {{ mustSlice .array }}
+[CODE_000332]    {{ mustSlice .array 1 }}
+[CODE_000333]    {{ mustSlice .array 1 3 }}
+[CODE_000334]    {{ mustSlice .array 0 1 }}
+[CODE_000335]    {{ .array | mustHas "foo" }}
+[CODE_000336]    {{ .array | mustHas "a" }}
+[CODE_000337]    {{ .array | mustHas 1 }}
+[CODE_000338]    {{ .array | mustHas .Nil }}
+[CODE_000339]    {{ .array | mustHas "nope" }}
+[CODE_000340]    {{ .array | mustHas 1 }}
+[CODE_000341]    {{ mustWithout .array "a" }}
+[CODE_000342]    {{ mustRest .array }}
+[CODE_000343]    {{ mustInitial .array }}
+[CODE_000344]    {{ mustFirst .array }}
+[CODE_000345]    {{ mustLast .array }}
+[CODE_000346]    {{ mustReverse .array }}
+[CODE_000347]    {{hello}}
+[CODE_000348]    {{default "default" ""}}
+[CODE_000349]    {{default "default" "given"}}
+[CODE_000350]    {{default "default" 42}}
+[CODE_000351]    {{default "default" 2.42}}
+[CODE_000352]    {{default "default" true}}
+[CODE_000353]    {{default "default" false}}
+[CODE_000354]    {{default "default" nil}}
+[CODE_000355]    {{default "default" .nil}}
+[CODE_000356]    {{"first" | default "default" "second"}}
+[CODE_000357]    {{if empty ""}}1{{else}}0{{end}}
+[CODE_000358]    {{if empty "given"}}1{{else}}0{{end}}
+[CODE_000359]    {{if empty 42}}1{{else}}0{{end}}
+[CODE_000360]    {{if empty .int}}1{{else}}0{{end}}
+[CODE_000361]    {{if empty .string}}1{{else}}0{{end}}
+[CODE_000362]    {{if empty 2.42}}1{{else}}0{{end}}
+[CODE_000363]    {{if empty true}}1{{else}}0{{end}}
+[CODE_000364]    {{if empty false}}1{{else}}0{{end}}
+[CODE_000365]    {{if empty nil}}1{{else}}0{{end}}
+[CODE_000366]    {{if empty .nil}}1{{else}}0{{end}}
+[CODE_000367]    {{if all ""}}1{{else}}0{{end}}
+[CODE_000368]    {{if all "given"}}1{{else}}0{{end}}
+[CODE_000369]    {{if all 42 0 1}}1{{else}}0{{end}}
+[CODE_000370]    {{ $two := 2 }}{{if all "" 0 nil $two }}1{{else}}0{{end}}
+[CODE_000371]    {{ $two := 2 }}{{if all "" $two 0 0 0 }}1{{else}}0{{end}}
+[CODE_000372]    {{ $two := 2 }}{{if all "" $two 3 4 5 }}1{{else}}0{{end}}
+[CODE_000373]    {{if all }}1{{else}}0{{end}}
+[CODE_000374]    {{if any ""}}1{{else}}0{{end}}
+[CODE_000375]    {{if any "given"}}1{{else}}0{{end}}
+[CODE_000376]    {{if any 42 0 1}}1{{else}}0{{end}}
+[CODE_000377]    {{ $two := 2 }}{{if any "" 0 nil $two }}1{{else}}0{{end}}
+[CODE_000378]    {{ $two := 2 }}{{if any "" $two 3 4 5 }}1{{else}}0{{end}}
+[CODE_000379]    {{ $zero := 0 }}{{if any "" $zero 0 0 0 }}1{{else}}0{{end}}
+[CODE_000380]    {{if any }}1{{else}}0{{end}}
+[CODE_000381]    {{coalesce ""}}
+[CODE_000382]    {{coalesce "given"}}
+[CODE_000383]    {{ coalesce "" 0 nil 42 }}
+[CODE_000384]    {{ $two := 2 }}{{ coalesce "" 0 nil $two }}
+[CODE_000385]    {{ $two := 2 }}{{ coalesce "" $two 0 0 0 }}
+[CODE_000386]    {{ $two := 2 }}{{ coalesce "" $two 3 4 5 }}
+[CODE_000387]    {{ coalesce }}
+[CODE_000388]    {{true | ternary "foo" "bar"}}
+[CODE_000389]    {{ternary "foo" "bar" true}}
+[CODE_000390]    {{false | ternary "foo" "bar"}}
+[CODE_000391]    {{ternary "foo" "bar" false}}
+[CODE_000392]    {{cat ""}}
+[CODE_000393]    {{cat "given"}}
+[CODE_000394]    {{cat 42}}
+[CODE_000395]    {{cat 2.42}}
+[CODE_000396]    {{cat true}}
+[CODE_000397]    {{cat false}}
+[CODE_000398]    {{cat nil}}
+[CODE_000399]    {{cat .nil}}
+[CODE_000400]    {{cat "first" "second"}}
+[CODE_000401]    {{"first" | cat "second"}}
+[CODE_000402]    {{$b := "b"}}{{"c" | cat "a" $b}}
+[CODE_000403]    {{.string | cat "a" "b"}}
+[CODE_000404]    {{ "" | nospace }}
+[CODE_000405]    {{ " " | nospace }}
+[CODE_000406]    {{ " foo" | nospace }}
+[CODE_000407]    {{ "foo " | nospace }}
+[CODE_000408]    {{ " foo " | nospace }}
+[CODE_000409]    {{ " foo bar " | nospace }}
+[CODE_000410]    {{ "" | trim }}
+[CODE_000411]    {{ " " | trim }}
+[CODE_000412]    {{ " foo" | trim }}
+[CODE_000413]    {{ "foo " | trim }}
+[CODE_000414]    {{ " foo " | trim }}
+[CODE_000415]    {{ " foo bar " | trim }}
+[CODE_000416]    {{ "" | trimAll "-" }}
+[CODE_000417]    {{ "---------" | trimAll "-" }}
+[CODE_000418]    {{ "foo" | trimAll "-" }}
+[CODE_000419]    {{ "-f--o-o-" | trimAll "-" }}
+[CODE_000420]    {{ "-f--o-o-" | trimAll "-o" }}
+[CODE_000421]    {{ "" | trimPrefix "-" }}
+[CODE_000422]    {{ "--" | trimPrefix "-" }}
+[CODE_000423]    {{ "foo" | trimPrefix "-" }}
+[CODE_000424]    {{ "-foo-" | trimPrefix "-" }}
+[CODE_000425]    {{ "-foo-" | trimPrefix "-f" }}
+[CODE_000426]    {{ "" | trimSuffix "-" }}
+[CODE_000427]    {{ "--" | trimSuffix "-" }}
+[CODE_000428]    {{ "foo" | trimSuffix "-" }}
+[CODE_000429]    {{ "-foo-" | trimSuffix "-" }}
+[CODE_000430]    {{ "-foo-" | trimSuffix "o-" }}
+[CODE_000431]    {{ "" | contains "-" }}
+[CODE_000432]    {{ "foo" | contains "o" }}
+[CODE_000433]    {{ "foo" | contains "x" }}
+[CODE_000434]    {{ "" | hasPrefix "-" }}
+[CODE_000435]    {{ "foo" | hasPrefix "f" }}
+[CODE_000436]    {{ "foo" | hasPrefix "o" }}
+[CODE_000437]    {{ "" | hasSuffix "-" }}
+[CODE_000438]    {{ "foo" | hasSuffix "o" }}
+[CODE_000439]    {{ "foo" | hasSuffix "f" }}
+[CODE_000440]    {{ "" | lower }}
+[CODE_000441]    {{ "foo" | lower }}
+[CODE_000442]    {{ "FOO" | lower }}
+[CODE_000443]    {{ "" | upper }}
+[CODE_000444]    {{ "foo" | upper }}
+[CODE_000445]    {{ "FOO" | upper }}
+[CODE_000446]    {{ "" | replace "-" "x" }}
+[CODE_000447]    {{ "foo" | replace "o" "x" }}
+[CODE_000448]    {{ "foo" | replace "x" "y" }}
+[CODE_000449]    {{ "foo" | replace "o" "x" | replace "f" "y" }}
+[CODE_000450]    {{ "" | repeat 3 }}
+[CODE_000451]    {{ "foo" | repeat 3 }}
+[CODE_000452]    {{ "foo" | repeat 0 }}
+[CODE_000453]    {{ .nil | join "-" }}
+[CODE_000454]    {{ .test | join "-" }}
+[CODE_000455]    {{ .test | join "-" }}
+[CODE_000456]    {{ .test | join "-" }}
+[CODE_000457]    {{ .test | join "-" }}
+[CODE_000458]    {{ "" | trunc 3 }}
+[CODE_000459]    {{ "foooooo" | trunc 3 }}
+[CODE_000460]    {{ "foobar" | trunc -3 }}
+[CODE_000461]    {{ "foobar" | trunc -999 }}
+[CODE_000462]    {{ "foobar" | trunc 0 }}
+[CODE_000463]    {{ "" | abbrev 3 }}
+[CODE_000464]    {{ "foo" | abbrev 5 }}
+[CODE_000465]    {{ "foooooo" | abbrev 6 }}
+[CODE_000466]    {{ "foobar" | abbrev 0 }}
+[CODE_000467]    {{ "" | abbrevboth 3 5 }}
+[CODE_000468]    {{ "foo" | abbrevboth 5 4 }}
+[CODE_000469]    `"foooboooooo" | abbrevboth 4 9` excluded due to fixed output in Sprig
+[CODE_000470]    {{ "foobar" | abbrevboth 0 0 }}
+[CODE_000471]    {{ "" | initials }}
+[CODE_000472]    {{ "f" | initials }}
+[CODE_000473]    {{ "foo" | initials }}
+[CODE_000474]    {{ "foo bar" | initials }}
+[CODE_000475]    {{ "foo  bar" | initials }}
+[CODE_000476]    {{ " Foo bar" | initials }}
+[CODE_000477]    {{ 0 | plural "single" "many" }}
+[CODE_000478]    {{ 1 | plural "single" "many" }}
+[CODE_000479]    {{ 2 | plural "single" "many" }}
+[CODE_000480]    {{ -1 | plural "single" "many" }}
+[CODE_000481]    {{ "" | wrap 10 }}
+[CODE_000482]    {{ wrap -1 "With a negative wrap." }}
+[CODE_000483]    {{ "This is a long string that needs to be wrapped." | wrap 10 }}
+[CODE_000484]    {{ "" | wrapWith 10 "\t" }}
+[CODE_000485]    {{ "This is a long string that needs to be wrapped." | wrapWith 10 "\t" }}
+[CODE_000486]    {{ "This is a long string that needs to be wrapped with a looooooooooooooooooooooooooooooooooooong word." | wrapWith 10 "\t" }}
+[CODE_000487]    {{ "" | quote }}
+[CODE_000488]    {{ quote .nil }}
+[CODE_000489]    {{ "foo" | quote }}
+[CODE_000490]    {{ "foo bar" | quote }}
+[CODE_000491]    {{ "foo \"bar\"" | quote }}
+[CODE_000492]    {{ "foo\nbar" | quote }}
+[CODE_000493]    {{ "foo\\bar" | quote }}
+[CODE_000494]    {{ "foo\\\"bar" | quote }}
+[CODE_000495]    {{ quote "foo" "👍" }}
+[CODE_000496]    {{ "" | squote }}
+[CODE_000497]    {{ squote .nil }}
+[CODE_000498]    {{ "foo" | squote }}
+[CODE_000499]    {{ "foo bar" | squote }}
+[CODE_000500]    {{ "foo 'bar'" | squote }}
+[CODE_000501]    {{ "foo\nbar" | squote }}
+[CODE_000502]    {{ "foo\\bar" | squote }}
+[CODE_000503]    {{ "foo\\'bar" | squote }}
+[CODE_000504]    {{ squote "foo" "👍" }}
+[CODE_000505]    {{ "" | camelcase }}
+[CODE_000506]    {{ "foo bar" | camelcase }}
+[CODE_000507]    `"FoO  bar" | camelcase` excluded due to fixed output in Sprig
+[CODE_000508]    `"foo  bar" | camelcase` excluded due to fixed output in Sprig
+[CODE_000509]    {{ "foo_bar" | camelcase }}
+[CODE_000510]    {{ "foo-bar" | camelcase }}
+[CODE_000511]    {{ "foo-bar_baz" | camelcase }}
+[CODE_000512]    `camelcase "___complex__case_"` excluded due to fixed output in Sprig
+[CODE_000513]    `camelcase "_camel_case"` excluded due to fixed output in Sprig
+[CODE_000514]    {{ camelcase "http_server" }}
+[CODE_000515]    {{ camelcase "no_https" }}
+[CODE_000516]    {{ camelcase "all" }}
+[CODE_000517]    {{ "" | kebabcase }}
+[CODE_000518]    {{ "foo bar" | kebabcase }}
+[CODE_000519]    `"foo  bar" | kebabcase` excluded due to fixed output in Sprig
+[CODE_000520]    {{ "foo_bar" | kebabcase }}
+[CODE_000521]    {{ "foo-bar" | kebabcase }}
+[CODE_000522]    {{ "foo-bar_baz" | kebabcase }}
+[CODE_000523]    {{ kebabcase "HTTPServer" }}
+[CODE_000524]    {{ kebabcase "FirstName" }}
+[CODE_000525]    {{ kebabcase "NoHTTPS" }}
+[CODE_000526]    {{ kebabcase "GO_PATH" }}
+[CODE_000527]    {{ kebabcase "GO PATH" }}
+[CODE_000528]    {{ kebabcase "GO-PATH" }}
+[CODE_000529]    {{ "" | snakecase }}
+[CODE_000530]    {{ "foo bar" | snakecase }}
+[CODE_000531]    `"foo  bar" | snakecase` excluded due to fixed output in Sprig
+[CODE_000532]    {{ "foo_bar" | snakecase }}
+[CODE_000533]    {{ "foo-bar" | snakecase }}
+[CODE_000534]    {{ "foo-bar_baz" | snakecase }}
+[CODE_000535]    {{ snakecase "http2xx" }}
+[CODE_000536]    {{ snakecase "HTTP20xOK" }}
+[CODE_000537]    `snakecase "Duration2m3s"` excluded due to fixed output in Sprig
+[CODE_000538]    `snakecase "Bld4Floor3rd"` excluded due to fixed output in Sprig
+[CODE_000539]    {{ snakecase "FirstName" }}
+[CODE_000540]    {{ snakecase "HTTPServer" }}
+[CODE_000541]    {{ snakecase "NoHTTPS" }}
+[CODE_000542]    {{ snakecase "GO_PATH" }}
+[CODE_000543]    {{ snakecase "GO PATH" }}
+[CODE_000544]    {{ snakecase "GO-PATH" }}
+[CODE_000545]    {{ "" | title }}
+[CODE_000546]    {{ "foo bar" | title }}
+[CODE_000547]    {{ "foo  bar" | title }}
+[CODE_000548]    {{ "foo_bar" | title }}
+[CODE_000549]    {{ "foo-bar" | title }}
+[CODE_000550]    {{ "foo-bar_baz" | title }}
+[CODE_000551]    {{ "" | untitle }}
+[CODE_000552]    {{ "Foo Bar" | untitle }}
+[CODE_000553]    {{ "Foo  Bar" | untitle }}
+[CODE_000554]    {{ "Foo_bar" | untitle }}
+[CODE_000555]    {{ "Foo-Bar" | untitle }}
+[CODE_000556]    {{ "Foo-Bar_baz" | untitle }}
+[CODE_000557]    {{ "" | swapcase }}
+[CODE_000558]    {{ "Foo Bar" | swapcase }}
+[CODE_000559]    {{ "Foo  Bar" | swapcase }}
+[CODE_000560]    {{ "Foo_bar" | swapcase }}
+[CODE_000561]    {{ "Foo-Bar" | swapcase }}
+[CODE_000562]    {{ "Foo-Bar_baz" | swapcase }}
+[CODE_000563]    {{ $v := ("" | split "-") }}{{$v._0}}
+[CODE_000564]    {{ $v := ("foo$bar$baz" | split "$") }}{{$v._0}} {{$v._1}} {{$v._2}}
+[CODE_000565]    {{ $v := ("foo$bar$" | split "$") }}{{$v._0}} {{$v._1}} {{$v._2}}
+[CODE_000566]    {{ $v := ("" | splitn "-" 3) }}{{$v._0}}
+[CODE_000567]    {{ $v := ("foo$bar$baz" | splitn "$" 2) }}{{$v._0}} {{$v._1}}
+[CODE_000568]    {{ $v := ("foo$bar$" | splitn "$" 2) }}{{$v._0}} {{$v._1}}
+[CODE_000569]    {{ "" | substr 0 3 }}
+[CODE_000570]    {{ "foobar" | substr 0 3 }}
+[CODE_000571]    `"foobar" | substr 0 -3` excluded due to fixed output in Sprig
+[CODE_000572]    `"foobar" | substr -3 6` excluded due to fixed output in Sprig
+[CODE_000573]    {{ "" | indent 3 }}
+[CODE_000574]    {{ "foo\nbar" | indent 3 }}
+[CODE_000575]    {{ "foo\n bar" | indent 3 }}
+[CODE_000576]    {{ "foo\n\tbar" | indent 3 }}
+[CODE_000577]    {{ "" | nindent 3 }}
+[CODE_000578]    {{ "foo\nbar" | nindent 3 }}
+[CODE_000579]    {{ "foo\n bar" | nindent 3 }}
+[CODE_000580]    {{ "foo\n\tbar" | nindent 3 }}
+[CODE_000581]    {{ seq 0 1 3 }}
+[CODE_000582]    {{ seq 0 3 10 }}
+[CODE_000583]    {{ seq 3 3 2 }}
+[CODE_000584]    {{ seq 3 -3 2 }}
+[CODE_000585]    {{ seq }}
+[CODE_000586]    {{ seq 0 4 }}
+[CODE_000587]    {{ seq 5 }}
+[CODE_000588]    {{ seq -5 }}
+[CODE_000589]    {{ seq 0 }}
+[CODE_000590]    {{ seq 0 1 2 3 }}
+[CODE_000591]    {{ seq 0 -4 }}
+[CODE_000592]    {{ .data265 | date "02 Jan 06 15:04 -0700" }}
+[CODE_000593]    {{ .data266 | date "02 Jan 06 15:04 -0700" }}
+[CODE_000594]    {{ .data267 | date "02 Jan 06 15:04 -0700" }}
+[CODE_000595]    {{ .data268 | date "02 Jan 06 15:04 -0700" }}
+[CODE_000596]    {{ dateInZone "02 Jan 06 15:04 -0700" .data269 "UTC" }}
+[CODE_000597]    {{ dateInZone "02 Jan 06 15:04 -0700" .data270 "UTC" }}
+[CODE_000598]    {{ dateInZone "02 Jan 06 15:04 -0700" .data271 "UTC" }}
+[CODE_000599]    {{ dateInZone "02 Jan 06 15:04 -0700" .data272 "UTC" }}
+[CODE_000600]    {{ dateInZone "02 Jan 06 15:04 -0700" .data273 "UTC" }}
+[CODE_000601]    {{ dateInZone "02 Jan 06 15:04 -0700" .data274 "UTC" }}
+[CODE_000602]    {{ dateInZone "02 Jan 06 15:04 -0700" .data275 "invalid" }}
+[CODE_000603]    {{ .duration | duration }}
+[CODE_000604]    {{ .time | ago | substr 0 5 }}
+[CODE_000605]    {{ now | date "02 Jan 06 15:04 -0700" }}
+[CODE_000606]    {{ .time | unixEpoch }}
+[CODE_000607]    {{ .time | dateModify "1h" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000608]    {{ .time | dateModify "+1h" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000609]    {{ .time | dateModify "-1h" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000610]    {{ .time | dateModify "10m" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000611]    {{ .time | dateModify "-10s" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000612]    {{ .time | dateModify "zz" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000613]    {{ .duration | duration | durationRound }}
+[CODE_000614]    {{ .time | htmlDate }}
+[CODE_000615]    {{ htmlDateInZone .time "UTC" }}
+[CODE_000616]    {{ .time | mustDateModify "1h" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000617]    {{ .time | mustDateModify "+1h" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000618]    {{ .time | mustDateModify "-1h" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000619]    {{ .time | mustDateModify "10m" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000620]    {{ .time | mustDateModify "-10s" | date "02 Jan 06 15:04 -0700" }}

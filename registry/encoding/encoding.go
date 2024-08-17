@@ -3,7 +3,7 @@ package encoding
 import "github.com/go-sprout/sprout"
 
 type EncodingRegistry struct {
-	handler *sprout.Handler // Embedding Handler for shared functionality
+	handler sprout.Handler // Embedding Handler for shared functionality
 }
 
 // NewRegistry creates a new instance of conversion registry.
@@ -18,7 +18,7 @@ func (or *EncodingRegistry) Uid() string {
 
 // LinkHandler links the handler to the registry at runtime.
 func (or *EncodingRegistry) LinkHandler(fh sprout.Handler) error {
-	or.handler = &fh
+	or.handler = fh
 	return nil
 }
 
