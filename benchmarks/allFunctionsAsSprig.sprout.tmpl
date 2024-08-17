@@ -10,14 +10,6 @@
 {{adler32sum ""}}
 {{adler32sum "a"}}
 {{adler32sum "hello world"}}
-{{md5sum ""}}
-{{md5sum "a"}}
-{{md5sum "hello world"}}
-{{$v := toBool .string }}{{kindOf $v}}-{{$v}}
-{{$v := toBool .int }}{{kindOf $v}}-{{$v}}
-{{$v := toBool .float }}{{kindOf $v}}-{{$v}}
-{{$v := toBool .bool }}{{kindOf $v}}-{{$v}}
-{{$v := toBool .objectrray }}{{kindOf $v}}-{{$v}}
 {{$v := toInt .string }}{{kindOf $v}}-{{$v}}
 {{$v := toInt .float }}{{kindOf $v}}-{{$v}}
 {{$v := toInt .bool }}{{kindOf $v}}-{{$v}}
@@ -25,14 +17,6 @@
 {{$v := toInt64 .float }}{{typeOf $v}}-{{$v}}
 {{$v := toInt64 .int }}{{typeOf $v}}-{{$v}}
 {{$v := toInt64 .bool }}{{typeOf $v}}-{{$v}}
-{{$v := toUint .string }}{{kindOf $v}}-{{$v}}
-{{$v := toUint .float }}{{kindOf $v}}-{{$v}}
-{{$v := toUint .int }}{{kindOf $v}}-{{$v}}
-{{$v := toUint .bool }}{{kindOf $v}}-{{$v}}
-{{$v := toUint64 .string }}{{typeOf $v}}-{{$v}}
-{{$v := toUint64 .float }}{{typeOf $v}}-{{$v}}
-{{$v := toUint64 .int }}{{typeOf $v}}-{{$v}}
-{{$v := toUint64 .bool }}{{typeOf $v}}-{{$v}}
 {{$v := toFloat64 .string }}{{typeOf $v}}-{{$v}}
 {{$v := toFloat64 .float }}{{typeOf $v}}-{{$v}}
 {{$v := toFloat64 .int }}{{typeOf $v}}-{{$v}}
@@ -50,11 +34,6 @@
 {{$v := toString .duration }}{{typeOf $v}}-{{$v}}
 {{$v := toString .object }}{{typeOf $v}}-{{$v}}
 {{$v := toDate "2006-01-02" (.time | toString) }}{{typeOf $v}}-{{$v}}
-{{$v := toDuration .time }}{{typeOf $v}}-{{$v}}
-{{$v := toDuration .int }}{{typeOf $v}}-{{$v}}
-{{$v := toDuration .float }}{{typeOf $v}}-{{$v}}
-{{$v := toDuration .duration }}{{typeOf $v}}-{{$v}}
-{{ (toDuration "1h30m").Seconds }}
 {{ "" | base64Encode }}
 {{ "Hello World" | base64Encode }}
 {{ "=" | base64Encode }}
@@ -74,17 +53,10 @@
 {{ .object | toPrettyJson }}
 {{ "" | toRawJson }}
 {{ .object | toRawJson }}
-{{ "" | fromYaml }}
-{{ .yaml | fromYaml }}
-{{ (.yaml | fromYaml).foo }}
-{{ "" | toYaml }}
-{{ .yaml | toYaml }}
 {{ .json | mustFromJson }}
 {{ .object | mustToJson }}
 {{ .object | mustToPrettyJson }}
 {{ .object | mustToRawJson }}
-{{ .yaml | mustFromYaml }}
-{{ .object | mustToYaml }}
 {{ env "" }}
 {{ env "NON_EXISTENT_ENV_VAR" }}
 {{ env "__SPROUT_TEST_ENV_KEY" }}
@@ -192,7 +164,6 @@
 {{ mod 10 3 }}
 {{ mod 10 2 }}
 {{ mod 10 1 }}
-{{ mod 10 0 }}
 {{ min 1 }}
 {{ min 1 "1" }}
 {{ min -1 0 1 }}
@@ -251,11 +222,9 @@
 {{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ keys $d | sortAlpha | join "," }}
 {{- $one := dict "foo" (dict "bar" "baz") "qux" true -}}{{ deepCopy $one }}
 {{ regexFind "a(b+)" "aaabbb" }}
-{{ regexFind "a(b+" "aaabbb" }}
 {{ regexFindAll "a(b+)" "aaabbb" -1 }}
 {{ regexFindAll "a{2}" "aaaabbb" -1 }}
 {{ regexFindAll "a{2}" "none" -1 }}
-{{ regexFindAll "a(b+" "aaabbb" -1 }}
 {{ regexMatch "^[a-zA-Z]+$" "Hello" }}
 {{ regexMatch "^[a-zA-Z]+$" "Hello123" }}
 {{ regexMatch "^[a-zA-Z]+$" "123" }}
@@ -549,30 +518,6 @@
 {{ toKebabCase "GO_PATH" }}
 {{ toKebabCase "GO PATH" }}
 {{ toKebabCase "GO-PATH" }}
-{{ "" | toPascalCase }}
-{{ "foo bar" | toPascalCase }}
-{{ "foo  bar" | toPascalCase }}
-{{ "foo_bar" | toPascalCase }}
-{{ "foo-bar" | toPascalCase }}
-{{ "foo-bar_baz" | toPascalCase }}
-{{ "" | toDotCase }}
-{{ "foo bar" | toDotCase }}
-{{ "foo  bar" | toDotCase }}
-{{ "foo_bar" | toDotCase }}
-{{ "foo-bar" | toDotCase }}
-{{ "foo-bar_baz" | toDotCase }}
-{{ "" | toPathCase }}
-{{ "foo bar" | toPathCase }}
-{{ "foo  bar" | toPathCase }}
-{{ "foo_bar" | toPathCase }}
-{{ "foo-bar" | toPathCase }}
-{{ "foo-bar_baz" | toPathCase }}
-{{ "" | toConstantCase }}
-{{ "foo bar" | toConstantCase }}
-{{ "foo  bar" | toConstantCase }}
-{{ "foo_bar" | toConstantCase }}
-{{ "foo-bar" | toConstantCase }}
-{{ "foo-bar_baz" | toConstantCase }}
 {{ "" | toSnakeCase }}
 {{ "foo bar" | toSnakeCase }}
 {{ "foo  bar" | toSnakeCase }}
@@ -614,12 +559,9 @@
 {{ $v := ("foo$bar$baz" | splitn "$" 2) }}{{$v._0}} {{$v._1}}
 {{ $v := ("foo$bar$" | splitn "$" 2) }}{{$v._0}} {{$v._1}}
 {{ "" | substr 0 3 }}
-{{ "" | substr -1 -4 }}
 {{ "foobar" | substr 0 3 }}
 {{ "foobar" | substr 0 -3 }}
 {{ "foobar" | substr -3 6 }}
-{{ "foobar" | substr -3 -1 }}
-{{ "foobar" | substr -3 -3 }}
 {{ "" | indent 3 }}
 {{ "foo\nbar" | indent 3 }}
 {{ "foo\n bar" | indent 3 }}

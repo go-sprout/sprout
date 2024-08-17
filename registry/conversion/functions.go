@@ -156,7 +156,7 @@ func (cr *ConversionRegistry) ToString(v any) string {
 	case fmt.Stringer:
 		return v.String()
 	default:
-		return fmt.Sprintf("%v", v)
+		return fmt.Sprint(v)
 	}
 }
 

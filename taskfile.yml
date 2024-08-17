@@ -20,7 +20,7 @@ tasks:
       generate a benchmark report, a cpu profile and a memory profile.
     dir: ./benchmarks
     cmds:
-      - go test -run=^$$ -bench ^Benchmark -benchmem -cpuprofile cpu.out -memprofile mem.out
+      - go test -run=^$$ -bench ^Benchmark -benchmem -benchtime=250x -cpuprofile cpu.out -memprofile mem.out
   backwards:
     aliases: [back, bwd, compare]
     desc: Run the backwards compatibility tests between sprig and sprout

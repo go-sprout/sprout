@@ -221,11 +221,11 @@ func HtmlFuncMap() htemplate.FuncMap {
 	return htemplate.FuncMap(FuncMap())
 }
 
-// GenericFuncMap returns a copy of the basic function map as a map[string]interface{}.
+// GenericFuncMap returns a copy of the basic function map as a map[string]any.
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func GenericFuncMap() map[string]interface{} {
+func GenericFuncMap() map[string]any {
 	return FuncMap()
 }
 

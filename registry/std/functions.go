@@ -41,7 +41,7 @@ func (sr *StdRegistry) Hello() string {
 //	{{ "first" | default "default" }} // Output: "first"
 //	{{ "first" | default "default" "second" }} // Output: "second"
 func (sr *StdRegistry) Default(defaultValue any, given ...any) any {
-	if helpers.Empty(given) || helpers.Empty(given[0]) {
+	if len(given) == 0 || helpers.Empty(given[0]) {
 		return defaultValue
 	}
 	return given[0]
