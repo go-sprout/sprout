@@ -40,7 +40,10 @@ func TestDateInZone(t *testing.T) {
 func TestDuration(t *testing.T) {
 	tc := []pesticide.TestCase{
 		{Name: "InvalidInput", Input: `{{ .V | duration }}`, Expected: "0s", Data: map[string]any{"V": "1h"}},
+		{Name: "TestDurationWithInt", Input: `{{ .V | duration }}`, Expected: "10s", Data: map[string]any{"V": int(10)}},
 		{Name: "TestDurationWithInt64", Input: `{{ .V | duration }}`, Expected: "10s", Data: map[string]any{"V": int64(10)}},
+		{Name: "TestDurationWithFloat32", Input: `{{ .V | duration }}`, Expected: "10s", Data: map[string]any{"V": float32(10)}},
+		{Name: "TestDurationWithFloat64", Input: `{{ .V | duration }}`, Expected: "10s", Data: map[string]any{"V": float64(10)}},
 		{Name: "TestDurationWithString", Input: `{{ .V | duration }}`, Expected: "26h3m4s", Data: map[string]any{"V": "93784"}},
 		{Name: "TestDurationWithInvalidType", Input: `{{ .V | duration }}`, Expected: "0s", Data: map[string]any{"V": make(chan int)}},
 	}
@@ -104,6 +107,7 @@ func TestDurationRound(t *testing.T) {
 		{Name: "RoundToMonth", Input: `{{ .V | durationRound }}`, Expected: "3mo", Data: map[string]any{"V": "2400h5s"}},
 		{Name: "RoundToMinute", Input: `{{ .V | durationRound }}`, Expected: "45m", Data: map[string]any{"V": int64(45*goTime.Minute + 30*goTime.Second)}},
 		{Name: "RoundToSecond", Input: `{{ .V | durationRound }}`, Expected: "1s", Data: map[string]any{"V": int64(1*goTime.Second + 500*goTime.Millisecond)}},
+		{Name: "RoundaDuration", Input: `{{ .V | durationRound }}`, Expected: "2s", Data: map[string]any{"V": 2 * goTime.Second}},
 		{Name: "RoundToYear", Input: `{{ .V | durationRound }}`, Expected: "1y", Data: map[string]any{"V": int64(365*24*goTime.Hour + 12*goTime.Hour)}},
 		{Name: "RoundToYearNegative", Input: `{{ .V | durationRound }}`, Expected: "1y", Data: map[string]any{"V": goTime.Now().Add(-365*24*goTime.Hour - 72*goTime.Hour)}},
 		{Name: "InvalidInput", Input: `{{ .V | durationRound }}`, Expected: "0s", Data: map[string]any{"V": make(chan int)}},

@@ -45,7 +45,7 @@ func TestEmpty(t *testing.T) {
 		{Name: "TestEmptyStructInput", Input: `{{if empty .s}}1{{else}}0{{end}}`, Expected: "0", Data: map[string]any{"s": struct{}{}}},
 		{Name: "TestEmptyNilInput", Input: `{{if empty nil}}1{{else}}0{{end}}`, Expected: "1"},
 		{Name: "TestEmptyNothingInput", Input: `{{if empty .Nothing}}1{{else}}0{{end}}`, Expected: "1"},
-		{Name: "TestEmptyNestedInput", Input: `{{if empty .top.NoSuchThing}}1{{else}}0{{end}}`, Expected: "1", Data: map[string]any{"top": map[string]interface{}{}}},
+		{Name: "TestEmptyNestedInput", Input: `{{if empty .top.NoSuchThing}}1{{else}}0{{end}}`, Expected: "1", Data: map[string]any{"top": map[string]any{}}},
 		{Name: "TestEmptyNestedNoDataInput", Input: `{{if empty .bottom.NoSuchThing}}1{{else}}0{{end}}`, Expected: "1"},
 		{Name: "TestEmptyNimPointerInput", Input: `{{if empty .nilPtr}}1{{else}}0{{end}}`, Expected: "1", Data: map[string]any{"nilPtr": (*int)(nil)}},
 	}
@@ -119,7 +119,7 @@ func TestCat(t *testing.T) {
 		{Name: "TestCatMultipleInput", Input: `{{cat "first" "second"}}`, Expected: "first second"},
 		{Name: "TestCatMultipleArgument", Input: `{{"first" | cat "second"}}`, Expected: "second first"},
 		{Name: "TestCatVariableInput", Input: `{{$b := "b"}}{{"c" | cat "a" $b}}`, Expected: "a b c"},
-		{Name: "TestCatDataInput", Input: `{{.text | cat "a" "b"}}`, Expected: "a b cd", Data: map[string]interface{}{"text": "cd"}},
+		{Name: "TestCatDataInput", Input: `{{.text | cat "a" "b"}}`, Expected: "a b cd", Data: map[string]any{"text": "cd"}},
 	}
 
 	pesticide.RunTestCases(t, std.NewRegistry(), tc)

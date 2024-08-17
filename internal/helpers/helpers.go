@@ -174,9 +174,9 @@ func Empty(given any) bool {
 		return g.Uint() == 0
 	case reflect.Float32, reflect.Float64:
 		return g.Float() == 0
-	case reflect.Struct:
-		return false
-	default:
+	case reflect.Interface, reflect.Ptr:
 		return g.IsNil()
+	default:
+		return false
 	}
 }

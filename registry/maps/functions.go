@@ -166,7 +166,8 @@ func (mr *MapsRegistry) Values(dict map[string]any) []any {
 //	{{ $d2 := dict "key" "value2" }}
 //	{{ pluck "key"	$d1 $d2 }} // Output: ["value1", "value2"]
 func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
-	result := []any{}
+	result := make([]any, 0, len(dicts))
+
 	for _, dict := range dicts {
 		if val, ok := dict[key]; ok {
 			result = append(result, val)
@@ -191,7 +192,9 @@ func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
 //	{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
 //	{{ pick $d "key1" "key3" }} // Output: {"key1": "value1", "key3": "value3"}
 func (mr *MapsRegistry) Pick(dict map[string]any, keys ...string) map[string]any {
-	result := map[string]any{}
+	// Pre-allocate result map with the size of keys to avoid multiple allocations
+	result := make(map[string]any, len(keys))
+
 	for _, k := range keys {
 		if v, ok := dict[k]; ok {
 			result[k] = v
@@ -216,11 +219,14 @@ func (mr *MapsRegistry) Pick(dict map[string]any, keys ...string) map[string]any
 //	{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
 //	{{ omit $d "key1" "key3" }} // Output: {"key2": "value2"}
 func (mr *MapsRegistry) Omit(dict map[string]any, keys ...string) map[string]any {
-	result := map[string]any{}
+	// Pre-allocate result map with the size of the original dictionary to avoid
+	// multiple allocations
+	result := make(map[string]any, len(dict))
 
-	omit := make(map[string]bool, len(keys))
+	// Use a map for keys to omit for O(1) lookups
+	omit := make(map[string]struct{}, len(keys))
 	for _, key := range keys {
-		omit[key] = true
+		omit[key] = struct{}{}
 	}
 
 	for key, value := range dict {

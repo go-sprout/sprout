@@ -35,6 +35,14 @@ func operateNumeric(values []any, op numericOperation, initial any) any {
 		result = op(result, cast.ToFloat64(value))
 	}
 
+	// Direct type assertion for common types to avoid reflection overhead
 	initialType := reflect.TypeOf(values[0])
-	return reflect.ValueOf(result).Convert(initialType).Interface()
+	switch initialType.Kind() {
+	case reflect.Int:
+		return int(result)
+	case reflect.Float64:
+		return result
+	default:
+		return reflect.ValueOf(result).Convert(initialType).Interface()
+	}
 }

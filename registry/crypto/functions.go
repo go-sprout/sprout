@@ -116,7 +116,7 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 //
 //	{{ generatePrivateKey "rsa" }} // Output: "-----BEGIN RSA PRIVATE KEY-----"
 func (ch *CryptoRegistry) GeneratePrivateKey(typ string) string {
-	var priv interface{}
+	var priv any
 	var err error
 	switch typ {
 	case "", "rsa":
@@ -261,8 +261,8 @@ func (ch *CryptoRegistry) GenerateCertificateAuthorityWithPEMKey(
 //	{{ generateSelfSignedCertificate "example.com" ["127.0.0.1"] ["localhost"] 365 }} // Output: {"Cert":"b64cert","Key":"b64key"}
 func (ch *CryptoRegistry) GenerateSelfSignedCertificate(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 ) (Certificate, error) {
 	priv, err := rsa.GenerateKey(cryptorand.Reader, 2048)
@@ -290,8 +290,8 @@ func (ch *CryptoRegistry) GenerateSelfSignedCertificate(
 //	{{ generateSelfSignedCertificateWithPEMKey "example.com" ["127.0.0.1"] ["localhost"] 365 "privPEM" }} // Output: {"Cert":"b64cert","Key":"b64key"}
 func (ch *CryptoRegistry) GenerateSelfSignedCertificateWithPEMKey(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 	privPEM string,
 ) (Certificate, error) {
@@ -320,8 +320,8 @@ func (ch *CryptoRegistry) GenerateSelfSignedCertificateWithPEMKey(
 //	{{ generateSignedCertificate "example.com" ["127.0.0.1"] ["localhost"] 365 ca }} // Output: {"Cert":"b64cert","Key":"b64key"}
 func (ch *CryptoRegistry) GenerateSignedCertificate(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 	ca Certificate,
 ) (Certificate, error) {
@@ -351,8 +351,8 @@ func (ch *CryptoRegistry) GenerateSignedCertificate(
 //	{{ generateSignedCertificateWithPEMKey "example.com" ["127.0.0.1"] ["localhost"] 365 ca "privPEM" }} // Output: {"Cert":"b64cert","Key":"b64key"}
 func (ch *CryptoRegistry) GenerateSignedCertificateWithPEMKey(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 	ca Certificate,
 	privPEM string,

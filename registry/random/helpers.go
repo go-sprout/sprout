@@ -27,37 +27,41 @@ func (rr *RandomRegistry) randomString(count int, opts *randomOpts) string {
 		return ""
 	}
 
-	if len(opts.withChars) > 0 {
-		goto GENERATE
-	}
-
-	if opts.withAscii {
-		for i := 32; i <= 126; i++ {
-			opts.withChars = append(opts.withChars, rune(i))
+	if len(opts.withChars) == 0 {
+		if opts.withAscii {
+			opts.withChars = make([]rune, 95) // 95 printable ASCII characters
+			for i := 32; i <= 126; i++ {
+				opts.withChars[i-32] = rune(i)
+			}
+		} else {
+			var buffer []rune
+			if opts.withLetters {
+				buffer = make([]rune, 52) // 26 lowercase + 26 uppercase letters
+				for i := 0; i < 26; i++ {
+					buffer[i] = 'a' + rune(i)
+					buffer[i+26] = 'A' + rune(i)
+				}
+			}
+			if opts.withNumbers {
+				if buffer == nil {
+					buffer = make([]rune, 10) // 10 digits
+				} else {
+					buffer = append(buffer, make([]rune, 10)...)
+				}
+				for i := 0; i < 10; i++ {
+					buffer[len(buffer)-10+i] = '0' + rune(i)
+				}
+			}
+			opts.withChars = buffer
 		}
 	}
 
-	if opts.withLetters {
-		for i := 'a'; i <= 'z'; i++ {
-			opts.withChars = append(opts.withChars, i)
-		}
-		for i := 'A'; i <= 'Z'; i++ {
-			opts.withChars = append(opts.withChars, i)
-		}
-	}
-
-	if opts.withNumbers {
-		for i := '0'; i <= '9'; i++ {
-			opts.withChars = append(opts.withChars, i)
-		}
-	}
-
-GENERATE:
 	var builder strings.Builder
 	builder.Grow(count)
 
+	maxIndex := big.NewInt(int64(len(opts.withChars)))
 	for i := 0; i < count; i++ {
-		index, _ := cryptorand.Int(cryptorand.Reader, big.NewInt(int64(len(opts.withChars))))
+		index, _ := cryptorand.Int(cryptorand.Reader, maxIndex)
 		builder.WriteRune(opts.withChars[index.Int64()])
 	}
 

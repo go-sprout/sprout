@@ -149,8 +149,8 @@ The function generates a new, self-signed x509 certificate using a 2048-bit RSA 
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">GenerateSelfSignedCertificate(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 ) (Certificate, error)
 </code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
@@ -170,8 +170,8 @@ The function generates a new, self-signed x509 certificate using a provided priv
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">GenerateSelfSignedCertificateWithPEMKey(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 	privPEM string,
 ) (Certificate, error)
@@ -192,8 +192,8 @@ The function generates a new x509 certificate that is signed by a given Certific
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">GenerateSignedCertificate(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 	ca Certificate,
 ) (Certificate, error)
@@ -214,8 +214,8 @@ The function generates a new, signed x509 certificate using a given Certificate 
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">GenerateSignedCertificateWithPEMKey(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 	ca Certificate,
 	privPEM string,

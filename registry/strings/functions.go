@@ -643,7 +643,7 @@ func (sr *StringsRegistry) Untitle(str string) string {
 	// Process each rune in the input string
 	startOfWord := true
 	for _, r := range str {
-		if r == ' ' {
+		if unicode.IsSpace(r) {
 			startOfWord = true
 			result.WriteRune(r)
 		} else {
@@ -740,17 +740,19 @@ func (sr *StringsRegistry) Splitn(sep string, n int, orig string) map[string]str
 //
 //	{{ "Hello World" | substring 0 5 }} // Output: "Hello"
 func (sr *StringsRegistry) Substring(start, end int, str string) string {
+	length := len(str)
+
 	if start < 0 {
-		start = len(str) + start
+		start = length + start
 	}
 	if end < 0 {
-		end = len(str) + end
+		end = length + end
 	}
 	if start < 0 {
 		start = 0
 	}
-	if end > len(str) {
-		end = len(str)
+	if end > length {
+		end = length
 	}
 	if start > end {
 		return ""
@@ -832,6 +834,14 @@ func (sr *StringsRegistry) Seq(params ...int) string {
 			increment = -1
 		}
 		return sr.convertIntArrayToString(helpers.UntilStep(start, end+increment, increment), " ")
+	case 2:
+		start := params[0]
+		end := params[1]
+		step := 1
+		if end < start {
+			step = -1
+		}
+		return sr.convertIntArrayToString(helpers.UntilStep(start, end+step, step), " ")
 	case 3:
 		start := params[0]
 		end := params[2]
@@ -843,14 +853,6 @@ func (sr *StringsRegistry) Seq(params ...int) string {
 			}
 		}
 		return sr.convertIntArrayToString(helpers.UntilStep(start, end+increment, step), " ")
-	case 2:
-		start := params[0]
-		end := params[1]
-		step := 1
-		if end < start {
-			step = -1
-		}
-		return sr.convertIntArrayToString(helpers.UntilStep(start, end+step, step), " ")
 	default:
 		return ""
 	}

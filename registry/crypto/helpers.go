@@ -19,7 +19,7 @@ import (
 	"time"
 )
 
-func (ch *CryptoRegistry) getNetIPs(ips []interface{}) ([]net.IP, error) {
+func (ch *CryptoRegistry) getNetIPs(ips []any) ([]net.IP, error) {
 	if ips == nil {
 		return []net.IP{}, nil
 	}
@@ -41,7 +41,7 @@ func (ch *CryptoRegistry) getNetIPs(ips []interface{}) ([]net.IP, error) {
 	return netIPs, nil
 }
 
-func (ch *CryptoRegistry) getAlternateDNSStrs(alternateDNS []interface{}) ([]string, error) {
+func (ch *CryptoRegistry) getAlternateDNSStrs(alternateDNS []any) ([]string, error) {
 	if alternateDNS == nil {
 		return []string{}, nil
 	}
@@ -63,8 +63,8 @@ func (ch *CryptoRegistry) getAlternateDNSStrs(alternateDNS []interface{}) ([]str
 
 func (ch *CryptoRegistry) getBaseCertTemplate(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 ) (*x509.Certificate, error) {
 	ipAddresses, err := ch.getNetIPs(ips)
@@ -98,7 +98,7 @@ func (ch *CryptoRegistry) getBaseCertTemplate(
 	}, nil
 }
 
-func (ch *CryptoRegistry) pemBlockForKey(priv interface{}) *pem.Block {
+func (ch *CryptoRegistry) pemBlockForKey(priv any) *pem.Block {
 	switch k := priv.(type) {
 	case *rsa.PrivateKey:
 		return &pem.Block{Type: "RSA PRIVATE KEY", Bytes: x509.MarshalPKCS1PrivateKey(k)}
@@ -207,8 +207,8 @@ func (ch *CryptoRegistry) generateCertificateAuthorityWithKeyInternal(
 
 func (ch *CryptoRegistry) generateSelfSignedCertificateWithKeyInternal(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 	priv crypto.PrivateKey,
 ) (Certificate, error) {
@@ -226,8 +226,8 @@ func (ch *CryptoRegistry) generateSelfSignedCertificateWithKeyInternal(
 
 func (ch *CryptoRegistry) generateSignedCertificateWithKeyInternal(
 	cn string,
-	ips []interface{},
-	alternateDNS []interface{},
+	ips []any,
+	alternateDNS []any,
 	daysValid int,
 	ca Certificate,
 	priv crypto.PrivateKey,

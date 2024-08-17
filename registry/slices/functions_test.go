@@ -22,6 +22,7 @@ func TestAppend(t *testing.T) {
 		{Input: `{{ append .V "a" }}`, Expected: "[a]", Data: map[string]any{"V": []string(nil)}},
 		{Input: `{{ append .V "a" }}`, Expected: "[]", Data: map[string]any{"V": nil}},
 		{Input: `{{ append .V "a" }}`, Expected: "[x a]", Data: map[string]any{"V": []string{"x"}}},
+		{Input: `{{ append .V "a" }}`, Expected: "[x a]", Data: map[string]any{"V": [1]string{"x"}}},
 	}
 
 	pesticide.RunTestCases(t, slices.NewRegistry(), tc)
@@ -33,6 +34,7 @@ func TestPrepend(t *testing.T) {
 		{Input: `{{ prepend .V "a" }}`, Expected: "[a]", Data: map[string]any{"V": []string(nil)}},
 		{Input: `{{ prepend .V "a" }}`, Expected: "[]", Data: map[string]any{"V": nil}},
 		{Input: `{{ prepend .V "a" }}`, Expected: "[a x]", Data: map[string]any{"V": []string{"x"}}},
+		{Input: `{{ prepend .V "a" }}`, Expected: "[a x]", Data: map[string]any{"V": [1]string{"x"}}},
 	}
 
 	pesticide.RunTestCases(t, slices.NewRegistry(), tc)
@@ -315,6 +317,8 @@ func TestMustSlice(t *testing.T) {
 		{TestCase: pesticide.TestCase{Input: `{{ mustSlice .V 0 1 }}`, Expected: "[a]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}}, ExpectedErr: ""},
 		{TestCase: pesticide.TestCase{Input: `{{ mustSlice .V 0 1 }}`, Expected: "", Data: map[string]any{"V": nil}}, ExpectedErr: "cannot slice nil"},
 		{TestCase: pesticide.TestCase{Input: `{{ mustSlice .V 0 1 }}`, Expected: "", Data: map[string]any{"V": 1}}, ExpectedErr: "list should be type of slice or array but int"},
+		{TestCase: pesticide.TestCase{Input: `{{ mustSlice .V -1 1 }}`, Expected: "", Data: map[string]any{"V": []string{"a"}}}, ExpectedErr: "start index out of bounds"},
+		{TestCase: pesticide.TestCase{Input: `{{ mustSlice .V 0 52 }}`, Expected: "", Data: map[string]any{"V": []string{"a"}}}, ExpectedErr: "end index out of bounds"},
 	}
 
 	pesticide.RunMustTestCases(t, slices.NewRegistry(), tc)

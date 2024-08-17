@@ -80,12 +80,18 @@ func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) string {
 func (tr *TimeRegistry) Duration(sec any) string {
 	var n int64
 	switch value := sec.(type) {
-	default:
-		n = 0
 	case string:
 		n, _ = strconv.ParseInt(value, 10, 64)
 	case int64:
 		n = value
+	case int:
+		n = int64(value)
+	case float64:
+		n = int64(value)
+	case float32:
+		n = int64(value)
+	default:
+		n = 0
 	}
 	return (time.Duration(n) * time.Second).String()
 }
@@ -191,11 +197,14 @@ func (tr *TimeRegistry) DateModify(fmt string, date time.Time) time.Time {
 //	{{ "3600s" | durationRound }} // Output: "1h"
 func (tr *TimeRegistry) DurationRound(duration any) string {
 	var d time.Duration
+
 	switch duration := duration.(type) {
 	case string:
 		d, _ = time.ParseDuration(duration)
 	case int64:
 		d = time.Duration(duration)
+	case time.Duration:
+		d = duration
 	case time.Time:
 		d = time.Since(duration)
 	default:
@@ -212,7 +221,7 @@ func (tr *TimeRegistry) DurationRound(duration any) string {
 		return "0s"
 	}
 
-	var (
+	const (
 		year   = uint64(time.Hour) * 24 * 365
 		month  = uint64(time.Hour) * 24 * 30
 		day    = uint64(time.Hour) * 24
@@ -227,6 +236,7 @@ func (tr *TimeRegistry) DurationRound(duration any) string {
 	if neg {
 		b.WriteByte('-')
 	}
+
 	switch {
 	case u > year:
 		b.WriteString(strconv.FormatUint(u/year, 10))
