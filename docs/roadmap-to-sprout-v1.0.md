@@ -33,7 +33,7 @@ Establish clear, consistent naming conventions for functions to enhance code rea
 This convention are defined and writed to available here: [templating-conventions.md](introduction/templating-conventions.md "mention")
 {% endhint %}
 
-### :hourglass:**Reduce memory fingerprint - **<mark style="color:orange;">**IN PROGRESS**</mark>
+### :white\_check\_mark: **Reduce memory fingerprint - **<mark style="color:green;">**DONE**</mark>
 
 Aim to minimize memory allocations as much as possible to alleviate the burden on the garbage collector in large-scale applications. By optimizing the way memory is used within the framework, we ensure that Sprout is not only efficient in its functionality but also in its resource consumption. This approach contributes to overall better performance and scalability of applications using Sprout.
 
