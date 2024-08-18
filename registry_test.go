@@ -19,17 +19,17 @@ func TestAddFunction(t *testing.T) {
 	assert.Contains(t, funcsMap, "testFunc", "Function 'testFunc' should be added to the FunctionMap")
 
 	// Call the function and check the result
-	result := funcsMap["testFunc"].(func() string)()
+	result := funcsMap["testFunc"].Interface().(func() string)()
 	assert.Equal(t, "Hello, World!", result, "Function 'testFunc' should return 'Hello, World!'")
 
 	// Test trying to overwrite an existing function
 	AddFunction(funcsMap, "testFunc", testFunc2)
-	result = funcsMap["testFunc"].(func() string)()
+	result = funcsMap["testFunc"].Interface().(func() string)()
 	assert.Equal(t, "Hello, World!", result, "Function 'testFunc' should not be overwritten and should still return 'Hello, World!'")
 
 	// Test adding a new function after the previous one
 	AddFunction(funcsMap, "testFunc2", testFunc3)
-	result = funcsMap["testFunc2"].(func() string)()
+	result = funcsMap["testFunc2"].Interface().(func() string)()
 	assert.Equal(t, "Should Be Defined", result, "Function 'testFunc2' should be added and return 'Should Be Defined'")
 }
 

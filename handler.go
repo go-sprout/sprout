@@ -1,6 +1,11 @@
 package sprout
 
-import "log/slog"
+import (
+	"log/slog"
+	"reflect"
+	"sync"
+	"text/template"
+)
 
 // Handler is the interface that wraps the basic methods of a handler to manage
 // all registries and functions.
@@ -18,7 +23,7 @@ type Handler interface {
 	Functions() FunctionMap
 	Aliases() FunctionAliasMap
 
-	Build() FunctionMap
+	Build() CompiledFunctionMap
 }
 
 // DefaultHandler manages function execution with configurable error handling
@@ -28,6 +33,8 @@ type DefaultHandler struct {
 	registries       []Registry
 	cachedFuncsMap   FunctionMap
 	cachedFuncsAlias FunctionAliasMap
+
+	rwmu sync.RWMutex
 }
 
 // RegisterHandler registers a single FunctionRegistry implementation (e.g., a handler)
@@ -71,9 +78,23 @@ func (dh *DefaultHandler) AddRegistries(registries ...Registry) error {
 // that accept FuncMap, such as html/template or text/template.
 //
 // NOTE: This will replace the `FuncsMap()`, `TxtFuncMap()` and `HtmlFuncMap()` from sprig
-func (dh *DefaultHandler) Build() FunctionMap {
+func (dh *DefaultHandler) Build() CompiledFunctionMap {
 	AssignAliases(dh) // Ensure all aliases are processed before returning the registry
-	return dh.cachedFuncsMap
+
+	var funcsMap = make(template.FuncMap, len(dh.cachedFuncsMap))
+	for name := range dh.cachedFuncsMap {
+		funcsMap[name] = func(args ...any) (any, error) {
+			// Convert args to []reflect.Value
+			reflectArgs := make([]reflect.Value, len(args))
+			for i, arg := range args {
+				reflectArgs[i] = safeReflectValueOf(arg)
+			}
+
+			return dh.ExecFunction(name, reflectArgs...)
+		}
+	}
+
+	return funcsMap
 }
 
 // Logger returns the logger instance associated with the DefaultHandler.

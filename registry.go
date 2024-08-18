@@ -1,10 +1,18 @@
 package sprout
 
-import "text/template"
+import (
+	"reflect"
+	"text/template"
+)
 
-// FunctionMap is an alias for template.FuncMap, which maps function names
+// FunctionMap is an alias for map[string]reflect.Value, which maps function names
+// to functions. This registry is used to register all functions before compiling
+// the template.
+type FunctionMap = map[string]reflect.Value
+
+// CompiledFunctionMap is an alias for template.FuncMap, which maps function names
 // to functions. This registry is used to register all template functions.
-type FunctionMap = template.FuncMap
+type CompiledFunctionMap = template.FuncMap
 
 // Registry is an interface that defines the method to register functions
 // within a given Handler.
@@ -40,7 +48,13 @@ func AddFunction(funcsMap FunctionMap, name string, function any) {
 	if _, ok := funcsMap[name]; ok {
 		return // Prevent overwriting existing functions
 	}
-	funcsMap[name] = function
+
+	fVal := reflect.ValueOf(function)
+	if fVal.Kind() != reflect.Func {
+		return // Only functions can be registered
+	}
+
+	funcsMap[name] = fVal
 }
 
 // AddAlias adds an alias for the original function name. The original function

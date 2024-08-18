@@ -151,7 +151,7 @@ func TestMustMerge(t *testing.T) {
 	var tc = []pesticide.MustTestCase{
 		{pesticide.TestCase{"TestWithNotEnoughArgs", `{{mustMerge .}}`, "map[a:1]", map[string]any{"a": 1}}, ""},
 		{pesticide.TestCase{"TestWithDestNonInitialized", `{{mustMerge .Dest .Src1}}`, "map[b:2]", map[string]any{"Dest": dest, "Src1": map[string]any{"b": 2}}}, ""},
-		{pesticide.TestCase{"TestWithDestNotMap", `{{mustMerge .Dest .Src1}}`, "", map[string]any{"Dest": 1, "Src1": map[string]any{"b": 2}}}, "wrong type for value"},
+		{pesticide.TestCase{"TestWithDestNotMap", `{{mustMerge .Dest .Src1}}`, "", map[string]any{"Dest": 1, "Src1": map[string]any{"b": 2}}}, "arg 0: value has type int; should be map[string]interface {}"},
 	}
 
 	pesticide.RunMustTestCases(t, maps.NewRegistry(), tc)
@@ -162,7 +162,7 @@ func TestMustMergeOverwrite(t *testing.T) {
 	var tc = []pesticide.MustTestCase{
 		{pesticide.TestCase{"TestWithNotEnoughArgs", `{{mustMergeOverwrite .}}`, "map[a:1]", map[string]any{"a": 1}}, ""},
 		{pesticide.TestCase{"TestWithDestNonInitialized", `{{mustMergeOverwrite .A .B}}`, "map[b:2]", map[string]any{"A": dest, "B": map[string]any{"b": 2}}}, ""},
-		{pesticide.TestCase{"TestWithDestNotMap", `{{mustMergeOverwrite .A .B}}`, "", map[string]any{"A": 1, "B": map[string]any{"b": 2}}}, "wrong type for value"},
+		{pesticide.TestCase{"TestWithDestNotMap", `{{mustMergeOverwrite .A .B}}`, "", map[string]any{"A": 1, "B": map[string]any{"b": 2}}}, "arg 0: value has type int; should be map[string]interface {}"},
 	}
 
 	pesticide.RunMustTestCases(t, maps.NewRegistry(), tc)

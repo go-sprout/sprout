@@ -3,7 +3,6 @@ package sprout
 import (
 	"bytes"
 	"html/template"
-	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,7 +10,7 @@ import (
 
 // TestWithAlias checks that aliases are correctly added to a function.
 func TestWithAlias(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc := "originalFunc"
 	alias1 := "alias1"
 	alias2 := "alias2"
@@ -27,7 +26,7 @@ func TestWithAlias(t *testing.T) {
 }
 
 func TestWithAlias_Empty(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc := "originalFunc"
 
 	// Apply the WithAlias option with no aliases.
@@ -38,7 +37,7 @@ func TestWithAlias_Empty(t *testing.T) {
 }
 
 func TestWithAliases(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc1 := "originalFunc1"
 	alias1 := "alias1"
 	alias2 := "alias2"
@@ -64,33 +63,33 @@ func TestWithAliases(t *testing.T) {
 
 // TestRegisterAliases checks that aliases are correctly registered in the function map.
 func TestRegisterAliases(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc := "originalFunc"
 	alias1 := "alias1"
 	alias2 := "alias2"
 
 	// Mock a function for originalFunc and add it to funcsRegistry.
 	mockFunc := func() {}
-	handler.cachedFuncsMap[originalFunc] = mockFunc
+	AddFunction(handler.cachedFuncsMap, originalFunc, mockFunc)
 
 	// Apply the WithAlias option and then register the aliases.
 	WithAlias(originalFunc, alias1, alias2)(handler)
 	AssignAliases(handler)
 
 	// Check that the aliases are mapped to the same function as the original function in funcsRegistry.
-	assert.True(t, reflect.ValueOf(handler.cachedFuncsMap[originalFunc]).Pointer() == reflect.ValueOf(handler.cachedFuncsMap[alias1]).Pointer())
-	assert.True(t, reflect.ValueOf(handler.cachedFuncsMap[originalFunc]).Pointer() == reflect.ValueOf(handler.cachedFuncsMap[alias2]).Pointer())
+	assert.True(t, handler.cachedFuncsMap[originalFunc].Pointer() == handler.cachedFuncsMap[alias1].Pointer())
+	assert.True(t, handler.cachedFuncsMap[originalFunc].Pointer() == handler.cachedFuncsMap[alias2].Pointer())
 }
 
 func TestAliasesInTemplate(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFuncName := "originalFunc"
 	alias1 := "alias1"
 	alias2 := "alias2"
 
 	// Mock a function for originalFunc and add it to funcsRegistry.
 	mockFunc := func() string { return "cheese" }
-	handler.cachedFuncsMap[originalFuncName] = mockFunc
+	AddFunction(handler.cachedFuncsMap, originalFuncName, mockFunc)
 
 	// Apply the WithAlias option and then register the aliases.
 	WithAlias(originalFuncName, alias1, alias2)(handler)

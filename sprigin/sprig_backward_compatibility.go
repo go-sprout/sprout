@@ -144,7 +144,7 @@ func (sh *SprigHandler) Aliases() sprout.FunctionAliasMap {
 	return sh.funcsAlias
 }
 
-func (sh *SprigHandler) Build() sprout.FunctionMap {
+func (sh *SprigHandler) Build() sprout.CompiledFunctionMap {
 	_ = sh.AddRegistries(
 		std.NewRegistry(),
 		uniqueid.NewRegistry(),
@@ -178,7 +178,12 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 	}
 	//\ BACKWARDS COMPATIBILITY
 
-	return sh.funcsMap
+	var funcsMap = make(sprout.CompiledFunctionMap, len(sh.funcsMap))
+	for name, value := range sh.funcsMap {
+		funcsMap[name] = value.Interface()
+	}
+
+	return funcsMap
 }
 
 // HermeticTxtFuncMap returns a 'text/template'.FuncMap with only repeatable functions.
