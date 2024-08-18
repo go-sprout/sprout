@@ -29,6 +29,7 @@ description: >-
   * **Boolean Return Functions:** Functions that return a Boolean value should be named starting with `is` or `has`. This clearly communicates that the function is checking a condition or validating a state.\
     Use `is` for functions that check a state or condition.\
     Use `has` for functions that check for the existence or presence of something.
+  * Follow the style guide for Idiomatic Naming Convention (e.g., [Initialisms](https://google.github.io/styleguide/go/decisions#initialisms))
 * **Function Comments:** For all exported functions and methods, provide comments describing their behavior, input parameters, and return values.
 
 #### Raw examples of registration names with function signatures
