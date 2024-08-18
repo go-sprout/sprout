@@ -2,6 +2,7 @@ package benchmarks_test
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"log/slog"
 	"runtime"
@@ -52,6 +53,24 @@ var data = map[string]any{
 	"json":        `{"foo": "bar"}`,
 	"yaml":        "foo: bar",
 	"nil":         nil,
+}
+
+type noopHandler struct{}
+
+func (h *noopHandler) Enabled(ctx context.Context, level slog.Level) bool {
+	return false // Disable logging
+}
+
+func (h *noopHandler) Handle(_ context.Context, _ slog.Record) error {
+	return nil // Do nothing
+}
+
+func (h *noopHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
+	return h
+}
+
+func (h *noopHandler) WithGroup(name string) slog.Handler {
+	return h
 }
 
 func BenchmarkComparison(b *testing.B) {
@@ -106,7 +125,7 @@ func sprigBench() {
  */
 func sproutBench(templatePath string) {
 	fnHandler := sprout.New(
-		sprout.WithLogger(slog.New(&slog.TextHandler{})),
+		sprout.WithLogger(slog.New(&noopHandler{})),
 	)
 
 	_ = fnHandler.AddRegistries(

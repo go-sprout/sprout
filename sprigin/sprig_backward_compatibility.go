@@ -100,6 +100,8 @@ var nonhermeticFunctions = []string{
 
 type SprigHandler struct {
 	registries []sprout.Registry
+	notices    []sprout.FunctionNotice
+
 	funcsMap   sprout.FunctionMap
 	funcsAlias sprout.FunctionAliasMap
 }
@@ -122,6 +124,10 @@ func (sh *SprigHandler) AddRegistry(registry sprout.Registry) error {
 		_ = regAlias.RegisterAliases(sh.funcsAlias)
 	}
 
+	if regNotice, ok := registry.(sprout.RegistryWithNotice); ok {
+		_ = regNotice.RegisterNotices(&sh.notices)
+	}
+
 	return nil
 }
 
@@ -142,6 +148,10 @@ func (sh *SprigHandler) Functions() sprout.FunctionMap {
 
 func (sh *SprigHandler) Aliases() sprout.FunctionAliasMap {
 	return sh.funcsAlias
+}
+
+func (sh *SprigHandler) Notices() []sprout.FunctionNotice {
+	return sh.notices
 }
 
 func (sh *SprigHandler) Build() sprout.FunctionMap {
@@ -173,10 +183,14 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 		for _, alias := range aliases {
 			if fn, ok := sh.funcsMap[originalFunction]; ok {
 				sh.funcsMap[alias] = fn
+				sh.notices = append(sh.notices, *sprout.NewDeprecatedNotice(alias, "please use `"+originalFunction+"` instead"))
 			}
 		}
 	}
 	//\ BACKWARDS COMPATIBILITY
+
+	sprout.AssignAliases(sh)
+	sprout.AssignNotices(sh)
 
 	return sh.funcsMap
 }

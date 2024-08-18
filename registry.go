@@ -33,6 +33,12 @@ type RegistryWithAlias interface {
 	RegisterAliases(aliasMap FunctionAliasMap) error
 }
 
+type RegistryWithNotice interface {
+	// RegisterNotices adds the provided notices into the given notice list.
+	// This method is called by an Handler to register all notices of a registry.
+	RegisterNotices(notices *[]FunctionNotice) error
+}
+
 // AddFunction adds a new function under the specified name to the given registry.
 // If the function name already exists in the registry, this method does nothing to
 // prevent accidental overwriting of existing registered functions.
@@ -56,4 +62,9 @@ func AddAlias(aliasMap FunctionAliasMap, originalFunction string, aliases ...str
 	}
 
 	aliasMap[originalFunction] = append(aliasMap[originalFunction], aliases...)
+}
+
+// AddNotice adds a new function notice to the given function
+func AddNotice(notices *[]FunctionNotice, notice *FunctionNotice) {
+	*notices = append(*notices, *notice)
 }

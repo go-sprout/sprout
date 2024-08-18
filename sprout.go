@@ -31,6 +31,7 @@ func New(opts ...HandlerOption[*DefaultHandler]) *DefaultHandler {
 	dh := &DefaultHandler{
 		logger:     slog.New(slog.NewTextHandler(os.Stdout, nil)),
 		registries: make([]Registry, 0),
+		notices:    make([]FunctionNotice, 0),
 
 		cachedFuncsMap:   make(FunctionMap),
 		cachedFuncsAlias: make(FunctionAliasMap),

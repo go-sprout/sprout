@@ -60,3 +60,10 @@ func (nr *NumericRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) err
 	sprout.AddAlias(aliasMap, "sub", "subf")
 	return nil
 }
+
+func (nr *NumericRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("addf", "please use `add` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("add1f", "please use `add1` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("subf", "please use `sub` instead"))
+	return nil
+}
