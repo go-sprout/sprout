@@ -29,10 +29,8 @@ type HandlerOption[T Handler] func(T)
 // a specific registry.
 func New(opts ...HandlerOption[*DefaultHandler]) *DefaultHandler {
 	dh := &DefaultHandler{
-		ErrHandling: ErrHandlingReturnDefaultValue,
-		errChan:     make(chan error),
-		logger:      slog.New(slog.NewTextHandler(os.Stdout, nil)),
-		registries:  make([]Registry, 0),
+		logger:     slog.New(slog.NewTextHandler(os.Stdout, nil)),
+		registries: make([]Registry, 0),
 
 		cachedFuncsMap:   make(FunctionMap),
 		cachedFuncsAlias: make(FunctionAliasMap),
