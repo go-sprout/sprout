@@ -1,5 +1,20 @@
 # Changelog
 
+## Release v0.5.1: Sprout Growth 🌿 (2024-09-15)
+
+> 💡 Cultivating Code, Growing Solutions!
+
+### ⚡ Performance Improvements
+- **Memory Footprint Reduction**: Reduced overall memory footprint for better performance. See (@42atomys) [PR 56](https://github.com/go-sprout/sprout/pull/56).
+
+### 🐛 Bug Fixes
+- **Default Logger Initialization**: Fixed an issue where the default logger had a bad initialization. See (@42atomys) [PR 48](https://github.com/go-sprout/sprout/pull/48).
+- **Logger Accessibility**: Resolved a problem where loggers were not accessible due to duplicated pointers. See (@42atomys) [PR 50](https://github.com/go-sprout/sprout/pull/50).
+- **Sprigin CamelCase Consistency**: Ensured that `sprigin` camelcase returns are consistent. See (@42atomys) [PR 55](https://github.com/go-sprout/sprout/pull/55).
+
+### 🛠️ Chores
+- **Go Task Integration**: Replaced Makefile with Go Task for better task management. See (@42atomys) [PR 54](https://github.com/go-sprout/sprout/pull/54).
+
 ## Release v0.5.0: Sprout Growth 🌿 (2024-08-15)
 
 > 💡 Nurturing Ideas, Harvesting Innovation!
