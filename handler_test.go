@@ -18,6 +18,7 @@ type MockRegistry struct {
 	linkHandlerMustCrash     bool
 	registerFuncsMustCrash   bool
 	registerAliasesMustCrash bool
+	registerNoticesMustCrash bool
 }
 
 var errMock = errors.New("mock error")
@@ -50,6 +51,18 @@ type MockRegistryWithAlias struct {
 func (m *MockRegistryWithAlias) RegisterAliases(aliasMap FunctionAliasMap) error {
 	m.Called(aliasMap)
 	if m.registerAliasesMustCrash {
+		return errMock
+	}
+	return nil
+}
+
+type MockRegistryWithNotices struct {
+	MockRegistry
+}
+
+func (m *MockRegistryWithNotices) RegisterNotices(notices *[]FunctionNotice) error {
+	m.Called(notices)
+	if m.registerNoticesMustCrash {
 		return errMock
 	}
 	return nil
@@ -102,8 +115,7 @@ func TestDefaultHandler_AddRegistry_Error_RegisterFuiesctions(t *testing.T) {
 	mockRegistry.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
 }
 
-// TestDefaultHandler_AddRegistries_Error tests the AddRegistry method of DefaultHandler when the registry returns an error.
-func TestDefaultHandler_AddRegistry_Error_Registeriesliases(t *testing.T) {
+func TestDefaultHandler_AddRegistry_Error_RegisteriesAliases(t *testing.T) {
 	mockRegistry := new(MockRegistryWithAlias)
 	mockRegistry.registerAliasesMustCrash = true
 	mockRegistry.On("Uid").Return("mockRegistry")
@@ -123,6 +135,31 @@ func TestDefaultHandler_AddRegistry_Error_Registeriesliases(t *testing.T) {
 	mockRegistry.AssertCalled(t, "LinkHandler", dh)
 	mockRegistry.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
 	mockRegistry.AssertCalled(t, "RegisterAliases", dh.cachedFuncsAlias)
+}
+
+func TestDefaultHandler_AddRegistry_Error_RegisteriesNotices(t *testing.T) {
+	mockRegistry := new(MockRegistryWithNotices)
+	mockRegistry.registerNoticesMustCrash = true
+	mockRegistry.On("Uid").Return("mockRegistryWithNotices")
+	mockRegistry.On("LinkHandler", mock.Anything).Return()
+	mockRegistry.On("RegisterFunctions", mock.Anything).Return()
+	mockRegistry.On("RegisterNotices", mock.Anything).Return()
+
+	dh := &DefaultHandler{
+		cachedFuncsMap:   make(FunctionMap),
+		cachedFuncsAlias: make(FunctionAliasMap),
+		notices: []FunctionNotice{
+			*NewInfoNotice("", "amazing"),
+		},
+	}
+
+	err := dh.AddRegistry(mockRegistry)
+	assert.Error(t, err, "AddRegistry should return an error")
+	assert.Equal(t, errMock, err, "Error should match the mock error")
+
+	mockRegistry.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
+	mockRegistry.AssertCalled(t, "RegisterNotices", &dh.notices)
+
 }
 
 // TestDefaultHandler_AddRegistry tests the AddRegistry method of DefaultHandler.
@@ -197,6 +234,30 @@ func TestDefaultHandler_AddRegistryWithAlias(t *testing.T) {
 	mockRegistry.AssertCalled(t, "LinkHandler", dh)
 	mockRegistry.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
 	mockRegistry.AssertCalled(t, "RegisterAliases", dh.cachedFuncsAlias)
+}
+
+func TestDefaultHandler_AddRegistryWithNotices(t *testing.T) {
+	mockRegistry := new(MockRegistryWithNotices)
+	mockRegistry.On("Uid").Return("mockRegistryWithNotices")
+	mockRegistry.On("LinkHandler", mock.Anything).Return()
+	mockRegistry.On("RegisterFunctions", mock.Anything).Return()
+	mockRegistry.On("RegisterNotices", mock.Anything).Return()
+
+	dh := &DefaultHandler{
+		cachedFuncsMap:   make(FunctionMap),
+		cachedFuncsAlias: make(FunctionAliasMap),
+		notices: []FunctionNotice{
+			*NewInfoNotice("", "amazing"),
+		},
+	}
+
+	err := dh.AddRegistry(mockRegistry)
+	assert.NoError(t, err, "AddRegistry should not return an error")
+
+	require.Len(t, dh.notices, 1, "Registry should be added to the DefaultHandler")
+
+	mockRegistry.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
+	mockRegistry.AssertCalled(t, "RegisterNotices", &dh.notices)
 }
 
 func TestDefaultHandler_Registries(t *testing.T) {

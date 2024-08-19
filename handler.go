@@ -12,20 +12,41 @@ import "log/slog"
 type Handler interface {
 	Logger() *slog.Logger
 
+	// AddRegistry registers a single registry,  into the Handler.
+	// This method allows for integrating additional functions into the template
+	// processing environment.
 	AddRegistry(registry Registry) error
+
+	// AddRegistries registers multiple registries into the Handler. This method
+	// simplifies the process of adding multiple sets of functionalities into the
+	// template engine at once.
 	AddRegistries(registries ...Registry) error
 
+	// Functions returns the map of registered functions managed by the Handler.
 	Functions() FunctionMap
+
+	// Aliases returns the map of function aliases managed by the Handler.
 	Aliases() FunctionAliasMap
 
+	// Notices returns the list of function notices managed by the Handler.
+	Notices() []FunctionNotice
+
+	// Build retrieves the complete suite of functions and aliases that has been
+	// configured within this Handler. This handler is ready to be used with
+	// template engines that accept FuncMap, such as html/template or text/template.
+	//
+	// Build should call AssignAliases and AssignNotices to ensure that all aliases
+	// and notices are properly associated with their original functions.
 	Build() FunctionMap
 }
 
 // DefaultHandler manages function execution with configurable error handling
 // and logging.
 type DefaultHandler struct {
-	logger           *slog.Logger
-	registries       []Registry
+	logger     *slog.Logger
+	registries []Registry
+	notices    []FunctionNotice
+
 	cachedFuncsMap   FunctionMap
 	cachedFuncsAlias FunctionAliasMap
 }
@@ -48,7 +69,12 @@ func (dh *DefaultHandler) AddRegistry(reg Registry) error {
 		if err := regAlias.RegisterAliases(dh.cachedFuncsAlias); err != nil {
 			return err
 		}
+	}
 
+	if regNotice, ok := reg.(RegistryWithNotice); ok {
+		if err := regNotice.RegisterNotices(&dh.notices); err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -73,6 +99,7 @@ func (dh *DefaultHandler) AddRegistries(registries ...Registry) error {
 // NOTE: This will replace the `FuncsMap()`, `TxtFuncMap()` and `HtmlFuncMap()` from sprig
 func (dh *DefaultHandler) Build() FunctionMap {
 	AssignAliases(dh) // Ensure all aliases are processed before returning the registry
+	AssignNotices(dh) // Ensure all notices are processed before returning the registry
 	return dh.cachedFuncsMap
 }
 
@@ -106,6 +133,16 @@ func (dh *DefaultHandler) Functions() FunctionMap {
 // name with a list of aliases that can be used interchangeably.
 func (dh *DefaultHandler) Aliases() FunctionAliasMap {
 	return dh.cachedFuncsAlias
+}
+
+// Notices returns the list of function notices managed by the DefaultHandler.
+//
+// The notices list contains information about functions that have been deprecated
+// or are otherwise subject to special handling. Each notice includes the name of
+// the function, a message describing the notice, and the kind of notice (e.g., info
+// or deprecated).
+func (dh *DefaultHandler) Notices() []FunctionNotice {
+	return dh.notices
 }
 
 // WithLogger sets the logger used by a DefaultHandler.

@@ -1,6 +1,8 @@
 package numeric
 
-import "github.com/go-sprout/sprout"
+import (
+	"github.com/go-sprout/sprout"
+)
 
 // numericOperation defines a function type that performs a binary operation on
 // two float64 values. It is used to abstract arithmetic operations like
@@ -58,5 +60,12 @@ func (nr *NumericRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) err
 	sprout.AddAlias(aliasMap, "add", "addf")
 	sprout.AddAlias(aliasMap, "add1", "add1f")
 	sprout.AddAlias(aliasMap, "sub", "subf")
+	return nil
+}
+
+func (nr *NumericRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("addf", "please use `add` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("add1f", "please use `add1` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("subf", "please use `sub` instead"))
 	return nil
 }
