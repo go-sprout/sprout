@@ -13,6 +13,7 @@
 
 * [Loader System (Registry)](features/loader-system-registry.md)
 * [Function Aliases](features/function-aliases.md)
+* [Function Notices](features/function-notices.md)
 
 ## Registries
 
