@@ -51,7 +51,7 @@ func TestSprigHandler(t *testing.T) {
 	handler.Build()
 
 	assert.GreaterOrEqual(t, len(handler.Functions()), sprigFunctionCount)
-	assert.Len(t, handler.Aliases(), 3)
+	assert.Len(t, handler.Aliases(), 7)
 
 	assert.Len(t, handler.registries, 18)
 
