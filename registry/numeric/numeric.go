@@ -1,6 +1,8 @@
 package numeric
 
-import "github.com/go-sprout/sprout"
+import (
+	"github.com/go-sprout/sprout"
+)
 
 // numericOperation defines a function type that performs a binary operation on
 // two float64 values. It is used to abstract arithmetic operations like

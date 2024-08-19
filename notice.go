@@ -68,6 +68,15 @@ func NewInfoNotice(functionName, message string) *FunctionNotice {
 	return NewNotice(NoticeKindInfo, []string{functionName}, message)
 }
 
+// NewDebugNotice creates a new debug function notice with the given function
+// name and message. The function name is case-sensitive. The message is a
+// string that provides additional information for debugging purposes. The
+// message can contain the "$out" placeholder which will be replaced with the
+// output of the function.
+func NewDebugNotice(functionName, message string) *FunctionNotice {
+	return NewNotice(NoticeKindDebug, []string{functionName}, message)
+}
+
 // AssignNotices assigns all notices defined in the handler to their original
 // functions. This function is used to ensure that all notices are properly
 // associated with their original functions in the handler instance.
