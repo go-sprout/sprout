@@ -56,13 +56,22 @@ func TestWithNotice(t *testing.T) {
 	assert.Contains(t, handler.Notices(), *notice2)
 	assert.Len(t, handler.notices, 3, "there should be exactly 3 notices")
 
-	// Try to apply a notice with an empty function name.
-	notice3 := &FunctionNotice{}
+	// Apply the WithNotices option with an empty message
+	notice3 := NewDebugNotice(originalFunc, "")
 	WithNotices(notice3)(handler)
 
+	assert.Contains(t, handler.Notices(), *notice)
+	assert.Contains(t, handler.Notices(), *notice2)
+	assert.Contains(t, handler.Notices(), *notice3)
+	assert.Len(t, handler.notices, 4, "there should be exactly 3 notices")
+
+	// Try to apply a notice with an empty function name.
+	notice4 := &FunctionNotice{}
+	WithNotices(notice4)(handler)
+
 	// Check that the aliases were not added.
-	assert.NotContains(t, handler.Notices(), *notice3)
-	assert.Len(t, handler.notices, 3, "there should still be exactly 3 notices")
+	assert.NotContains(t, handler.Notices(), *notice4)
+	assert.Len(t, handler.notices, 4, "there should still be exactly 3 notices")
 }
 
 func TestAssignNotices(t *testing.T) {
