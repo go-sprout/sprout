@@ -7,8 +7,15 @@ import (
 	"strings"
 )
 
+// wrappedFunc is a type alias for a function that accepts a variadic number of
+// arguments of any type and returns a single result of any type along with an
+// error. This is typically used for functions that need to be wrapped with
+// additional logic, such as logging or notice handling.
 type wrappedFunc = func(args ...any) (any, error)
 
+// NoticeKind represents the type of notice that can be applied to a function.
+// It is an enumeration with different possible values that dictate how the
+// notice should behave.
 type NoticeKind int
 
 type FunctionNotice struct {
@@ -34,14 +41,14 @@ const (
 	NoticeKindDebug
 )
 
-// NewNotice creates a new function notice with the given function name, kind,
-// and message. The function name is case-sensitive. The kind should be one of
+// NewNotice creates a new function notice with the given function names, kind,
+// and message. The function names are case-sensitive. The kind should be one of
 // the predefined NoticeKind values. The message is a string that describes the
 // notice.
 //
 // Example:
 //
-//	notice := NewNotice(NoticeKindDeprecated, "myFunc", "please use myNewFunc instead")
+//	notice := NewNotice(NoticeKindDeprecated, []string{"myFunc"}, "please use myNewFunc instead")
 //
 // This example creates a new notice that indicates the function "myFunc" is
 // deprecated and should be replaced with "myNewFunc" during template rendering.
@@ -61,9 +68,9 @@ func NewDeprecatedNotice(functionName, message string) *FunctionNotice {
 	return NewNotice(NoticeKindDeprecated, []string{functionName}, message)
 }
 
-// NewInfoNotice creates a new information function notice with the given
+// NewInfoNotice creates a new informational function notice with the given
 // function name and message. The function name is case-sensitive. The message
-// is a string that provides additional informatio
+// is a string that provides additional information.
 func NewInfoNotice(functionName, message string) *FunctionNotice {
 	return NewNotice(NoticeKindInfo, []string{functionName}, message)
 }
@@ -71,7 +78,7 @@ func NewInfoNotice(functionName, message string) *FunctionNotice {
 // NewDebugNotice creates a new debug function notice with the given function
 // name and message. The function name is case-sensitive. The message is a
 // string that provides additional information for debugging purposes. The
-// message can contain the "$out" placeholder which will be replaced with the
+// message can contain the "$out" placeholder, which will be replaced with the
 // output of the function.
 func NewDebugNotice(functionName, message string) *FunctionNotice {
 	return NewNotice(NoticeKindDebug, []string{functionName}, message)
@@ -97,7 +104,9 @@ func AssignNotices(h Handler) {
 
 // createWrappedFunction creates a wrapped function that logs a notice after
 // calling the original function. The notice is logged using the handler's
-// logger instance. The wrapped function is returned as a HandlerFunc.
+// logger instance. The wrapped function is returned as a wrappedFunc, which
+// is a type alias for a function that takes a variadic list of arguments
+// and returns an `any` result and an `error`.
 func createWrappedFunction(h Handler, notice FunctionNotice, functionName string, fn any) wrappedFunc {
 	return func(args ...any) (any, error) {
 		out, err := safeCall(fn, args...)
@@ -141,6 +150,11 @@ func WithNotices(notices ...*FunctionNotice) HandlerOption[*DefaultHandler] {
 	}
 }
 
+// safeCall safely calls a function using reflection. It handles potential
+// panics by recovering and returning an error. The function `fn` is expected
+// to be a function, and `args` are the arguments to pass to that function.
+// It returns the result of the function call (if any) and an error if one
+// occurred during the call or if a panic was recovered.
 func safeCall(fn any, args ...any) (result any, err error) {
 	// Ensure fn is a function
 	v := reflect.ValueOf(fn)
