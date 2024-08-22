@@ -531,6 +531,8 @@ Uppercases the first letter of a string while leaving the rest of the string unc
 {% tab title="Template Example" %}
 ```go
 {{ "hello world" | capitalize }} // Output: "Hello world"
+{{ "123boo_bar" | capitalize }} // Output: 123Boo_bar
+{{ " Fe bar" | capitalize }} // Output: " Fe bar"
 ```
 {% endtab %}
 {% endtabs %}
@@ -546,6 +548,8 @@ Lowercases the first letter of a string while leaving the rest of the string unc
 {% tab title="Template Example" %}
 ```go
 {{ "Hello World" | uncapitalize }} // Output: "hello World"
+{{ "123Boo_bar" | uncapitalize }} // Output: 123boo_bar
+{{ " Fe bar" | uncapitalize }} // Output: " fe bar"
 ```
 {% endtab %}
 {% endtabs %}
