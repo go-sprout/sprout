@@ -446,6 +446,9 @@ func TestUncapitalize(t *testing.T) {
 		{Name: "UncapitalizeWithSpace", Input: `{{ " Foo bar" | uncapitalize }}`, Expected: " foo bar"},
 		{Name: "UncapitalizeWithNumber", Input: `{{ "123Boo_bar" | uncapitalize }}`, Expected: "123boo_bar"},
 		{Name: "UncapitalizeWithUnderscore", Input: `{{ "Boo_bar" | uncapitalize }}`, Expected: "boo_bar"},
+		{Name: "UncapitalizeWithEmoji", Input: `{{ "👍 Good" | uncapitalize }}`, Expected: "👍 good"},
+		{Name: "UncapitalizeWithUnicode", Input: `{{ "Été" | uncapitalize }}`, Expected: "été"},
+		{Name: "UncapitalizeWithArabic", Input: `{{ "مرحبا" | uncapitalize }}`, Expected: "مرحبا"},
 	}
 
 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
