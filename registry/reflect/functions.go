@@ -111,7 +111,7 @@ func (rr *ReflectRegistry) KindOf(src any) string {
 //
 // Returns:
 //
-//	bool - true if the struct 's' contains a field with the name 'name', false otherwise.
+//	bool - true if the struct 'src' contains a field with the name 'name', false otherwise.
 //
 // Example:
 //
