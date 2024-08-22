@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Registry
+metadata:
+  name: conversion
+  author: sprout
+  description: |
+    The Conversion registry includes a collection of functions designed to
+    convert one data type to another directly within your templates.
+    This allows for seamless type transformations.
+spec:
+  notices:
+  - functions: [bool, bobo, toto]
+    kind: deprecated
+    message: Use the `toBool` function instead.
+  functions:
+    - name: toBool
+      description: |
+        toBool converts a value from any types reasonably be converted to a boolean.
+        Using the [cast](https://github.com/spf13/cast) package.
+      aliases: [bool, bobo, toto]
+      parameters:
+        - name: value
+          type: bool
+          description: The value to convert.
+      returns:
+        type: bool
+        description: The boolean value.
+      examples:
+        - template: '{{ "true" | toBool }}'
+          result: 'true'
+        - template: '{{ "t" | toBool }}'
+          result: 'true'
+        - template: '{{ 1 | toBool }}'
+          result: 'true'
+        - template: '{{ 0.0 | toBool }}'
+          result: 'false'
+        - template: '{{ "invalid" | toBool }}'
+          result: 'false'

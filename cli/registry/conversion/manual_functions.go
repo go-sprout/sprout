@@ -1,3 +1,5 @@
+//go:build exclude
+
 package conversion
 
 import (
@@ -141,18 +143,18 @@ func (cr *ConversionRegistry) ToOctal(v any) (int64, error) {
 // Example:
 //
 //	{{ 123 | toString }} // Output: "123"
-func (cr *ConversionRegistry) ToString(v any) string {
+func (cr *ConversionRegistry) ToString(v any) (string, error) {
 	switch v := v.(type) {
 	case string:
-		return v
+		return v, nil
 	case []byte:
-		return string(v)
+		return string(v), nil
 	case error:
-		return v.Error()
+		return v.Error(), nil
 	case fmt.Stringer:
-		return v.String()
+		return v.String(), nil
 	default:
-		return fmt.Sprint(v)
+		return fmt.Sprint(v), nil
 	}
 }
 
@@ -171,7 +173,7 @@ func (cr *ConversionRegistry) ToString(v any) string {
 //
 //	{{ "2006-01-02", "2023-05-04" | toDate }} // Output: 2023-05-04 00:00:00 +0000 UTC
 func (cr *ConversionRegistry) ToDate(fmt, str string) (time.Time, error) {
-	return cr.MustToDate(fmt, str)
+	return time.ParseInLocation(fmt, str, time.Local)
 }
 
 // ToDuration converts a value to a time.Duration.
@@ -189,24 +191,4 @@ func (cr *ConversionRegistry) ToDate(fmt, str string) (time.Time, error) {
 //	{{ (toDuration "1h30m").Seconds }} // Output: 5400
 func (cr *ConversionRegistry) ToDuration(v any) (time.Duration, error) {
 	return cast.ToDurationE(v)
-}
-
-// MustToDate tries to parse a string into a time.Time object based on a format,
-// returning an error if parsing fails.
-//
-// Parameters:
-//
-//	fmt string - the date format string.
-//	str string - the date string to parse.
-//
-// Returns:
-//
-//	time.Time - the parsed date.
-//	error - error if the date string does not conform to the format.
-//
-// Example:
-//
-//	{{ "2006-01-02", "2023-05-04" | mustToDate }} // Output: 2023-05-04 00:00:00 +0000 UTC, nil
-func (cr *ConversionRegistry) MustToDate(fmt, str string) (time.Time, error) {
-	return time.ParseInLocation(fmt, str, time.Local)
 }

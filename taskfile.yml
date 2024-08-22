@@ -6,6 +6,13 @@ vars:
   GREETING: Hello, World!
 
 tasks:
+  generate:
+    aliases: [gen, g]
+    desc: Generate the sprout functions
+    summary: Generate the sprout functions from the sprig functions
+    dir: ./cli
+    cmds:
+      - go run main.go
   test:
     aliases: [tests, t]
     desc: Run tests with coverage

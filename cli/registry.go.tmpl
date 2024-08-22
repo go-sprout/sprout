@@ -1,0 +1,59 @@
+{{- $registryType := print .Metadata.Name " Registry" | toPascalCase -}}
+{{- $registryShort := print .Metadata.Name " Registry" | toLower | initials -}}
+// {{ .Metadata.Name | capitalize }} Registry by {{ .Metadata.Author }}.
+// 
+// {{ .Metadata.Description | wrapWith 77 "\n// " }}
+//
+// Generated on {{ now | date "Mon Jan _2 2006, 15:04:05" }} by sprout/cli
+package {{ .Metadata.Name | toLower }}
+
+import "github.com/go-sprout/sprout"
+
+type {{ $registryType }} struct {
+	handler sprout.Handler // Embedding Handler for shared functionality
+}
+
+// New{{ $registryType }} creates a new instance of the {{ $registryType }} registry
+func New{{ $registryType }}() *{{ $registryType }} {
+	return &{{ $registryType }}{}
+}
+
+// Uid returns the unique identifier of the registry.
+func ({{ $registryShort }} *{{ $registryType }}) Uid() string {
+	return "{{ .Metadata.Author | toLower }}.{{ .Metadata.Name | uncapitalize }}"
+}
+
+// LinkHandler links the handler to the registry at runtime.
+func ({{ $registryShort }} *{{ $registryType }}) LinkHandler(fh sprout.Handler) error {
+	{{ $registryShort }}.handler = fh
+	return nil
+}
+
+// RegisterFunctions registers all functions in the registry. 
+func ({{ $registryShort }} *{{ $registryType }}) RegisterFunctions(funcsMap sprout.FunctionMap) error {
+	{{- range .Spec.Functions }}
+	sprout.AddFunction(funcsMap, "{{ .Name | uncapitalize }}", {{ $registryShort }}.Must{{ .Name | capitalize }})
+	sprout.AddFunction(funcsMap, "safe{{ .Name | capitalize }}", {{ $registryShort }}.Safe{{ .Name | capitalize }})
+	{{- end }}
+	return nil
+}
+
+// RegisterAliases registers all aliases in the registry.
+func ({{ $registryShort }} *{{ $registryType }}) RegisterAliases(aliasMap sprout.FunctionAliasMap) error {
+	{{- range $func := .Spec.Functions }}
+	{{- if $func.Aliases }}
+	sprout.AddAlias(aliasMap, "{{ $func.Name | uncapitalize }}", {{ range $i, $alias := $func.Aliases }}{{ if gt $i 0 }}, {{ end }}"{{ $alias }}"{{ end }})
+	{{- end }}
+	{{- end }}
+	return nil
+}
+
+// RegisterNotices registers all notices in the registry.
+func ({{ $registryShort }} *{{ $registryType }}) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	{{- range $notice := .Spec.Notices }}
+	{{- range $function := $notice.Functions}}
+	sprout.AddNotice(notices, sprout.New{{ $notice.Kind | capitalize }}Notice("{{ $function | uncapitalize }}", "{{ $notice.Message }}"))
+	{{- end }}
+	{{- end }}
+	return nil
+}
