@@ -696,10 +696,6 @@ func (sr *StringsRegistry) SwapCase(str string) string {
 //
 //	{{ "hello world" | capitalize }} // Output: "Hello world"
 func (sr *StringsRegistry) Capitalize(str string) string {
-	if str == "" {
-		return ""
-	}
-
 	for i, r := range str {
 		if unicode.IsLetter(r) {
 			return str[:i] + string(unicode.ToUpper(r)) + str[i+1:]
@@ -723,10 +719,6 @@ func (sr *StringsRegistry) Capitalize(str string) string {
 //
 //	{{ "Hello World" | uncapitalize }} // Output: "hello World"
 func (sr *StringsRegistry) Uncapitalize(str string) string {
-	if str == "" {
-		return ""
-	}
-
 	for i, r := range str {
 		if unicode.IsLetter(r) {
 			return str[:i] + string(unicode.ToLower(r)) + str[i+1:]
