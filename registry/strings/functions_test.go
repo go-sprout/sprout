@@ -424,6 +424,30 @@ func TestSwapCase(t *testing.T) {
 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
+func TestCapitalize(t *testing.T) {
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | capitalize }}`, Expected: ""},
+		{Name: "CapitalizeAlreadyUpper", Input: `{{ "Foo Bar" | capitalize }}`, Expected: "Foo Bar"},
+		{Name: "CapitalizeWithSpace", Input: `{{ " fe bar" | capitalize }}`, Expected: " Fe bar"},
+		{Name: "CapitalizeWithNumber", Input: `{{ "123boo_bar" | capitalize }}`, Expected: "123Boo_bar"},
+		{Name: "CapitalizeWithUnderscore", Input: `{{ "boo_bar" | capitalize }}`, Expected: "Boo_bar"},
+	}
+
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
+}
+
+func TestUncapitalize(t *testing.T) {
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | uncapitalize }}`, Expected: ""},
+		{Name: "UncapitalizeAlreadyLower", Input: `{{ "foo bar" | uncapitalize }}`, Expected: "foo bar"},
+		{Name: "UncapitalizeWithSpace", Input: `{{ " Foo bar" | uncapitalize }}`, Expected: " foo bar"},
+		{Name: "UncapitalizeWithNumber", Input: `{{ "123Boo_bar" | uncapitalize }}`, Expected: "123boo_bar"},
+		{Name: "UncapitalizeWithUnderscore", Input: `{{ "Boo_bar" | uncapitalize }}`, Expected: "boo_bar"},
+	}
+
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
+}
+
 func TestSplit(t *testing.T) {
 	var tc = []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ $v := ("" | split "-") }}{{$v._0}}`, Expected: ""},

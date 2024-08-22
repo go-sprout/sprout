@@ -520,6 +520,40 @@ Switches the case of each letter in a string, converting lowercase to uppercase 
 {% endtab %}
 {% endtabs %}
 
+### <mark style="color:purple;">capitalize</mark>
+
+Uppercases the first letter of a string while leaving the rest of the string unchanged.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">capitalize(str string) string
+</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ "hello world" | capitalize }} // Output: "Hello world"
+{{ "123boo_bar" | capitalize }} // Output: 123Boo_bar
+{{ " Fe bar" | capitalize }} // Output: " Fe bar"
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">uncapitalize</mark>
+
+Lowercases the first letter of a string while leaving the rest of the string unchanged.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">uncapitalize(str string) string
+</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ "Hello World" | uncapitalize }} // Output: "hello World"
+{{ "123Boo_bar" | uncapitalize }} // Output: 123boo_bar
+{{ " Fe bar" | uncapitalize }} // Output: " fe bar"
+```
+{% endtab %}
+{% endtabs %}
+
 ### <mark style="color:purple;">split</mark>
 
 Divides a string into a map of parts based on a specified separator, returning a collection of the split components.

@@ -127,6 +127,8 @@ func (sr *StringsRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error 
 	sprout.AddFunction(funcsMap, "toTitleCase", sr.ToTitleCase)
 	sprout.AddFunction(funcsMap, "untitle", sr.Untitle)
 	sprout.AddFunction(funcsMap, "swapCase", sr.SwapCase)
+	sprout.AddFunction(funcsMap, "capitalize", sr.Capitalize)
+	sprout.AddFunction(funcsMap, "uncapitalize", sr.Uncapitalize)
 	sprout.AddFunction(funcsMap, "split", sr.Split)
 	sprout.AddFunction(funcsMap, "splitn", sr.Splitn)
 	sprout.AddFunction(funcsMap, "substr", sr.Substring)

@@ -682,6 +682,52 @@ func (sr *StringsRegistry) SwapCase(str string) string {
 	}, str)
 }
 
+// Capitalize capitalizes the first letter of 'str'.
+//
+// Parameters:
+//
+//	str string - the string to capitalize.
+//
+// Returns:
+//
+//	string - the string with the first letter capitalized.
+//
+// Example:
+//
+//	{{ "hello world" | capitalize }} // Output: "Hello world"
+func (sr *StringsRegistry) Capitalize(str string) string {
+	for i, r := range str {
+		if unicode.IsLetter(r) {
+			return str[:i] + string(unicode.ToUpper(r)) + str[i+1:]
+		}
+	}
+
+	return str
+}
+
+// Uncapitalize converts the first letter of 'str' to lowercase.
+//
+// Parameters:
+//
+//	str string - the string to uncapitalize.
+//
+// Returns:
+//
+//	string - the string with the first letter in lowercase.
+//
+// Example:
+//
+//	{{ "Hello World" | uncapitalize }} // Output: "hello World"
+func (sr *StringsRegistry) Uncapitalize(str string) string {
+	for i, r := range str {
+		if unicode.IsLetter(r) {
+			return str[:i] + string(unicode.ToLower(r)) + str[i+1:]
+		}
+	}
+
+	return str
+}
+
 // Split divides 'orig' into a map of string parts using 'sep' as the separator.
 //
 // Parameters:
