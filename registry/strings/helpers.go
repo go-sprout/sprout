@@ -7,6 +7,16 @@ import (
 	"unicode/utf8"
 )
 
+// casingType represents the type of casingType to apply to a string.
+type casingType int
+
+const (
+	// cassingUpper casing represents the uppercase casing.
+	cassingUpper casingType = iota + 1
+	// cassingLower casing represents the lowercase casing.
+	cassingLower
+)
+
 // ellipsis truncates 'str' from both ends, preserving the middle part of
 // the string and appending ellipses to both ends if needed.
 //
@@ -271,4 +281,51 @@ func (sr *StringsRegistry) wordWrap(wrapLength int, newLineCharacter string, wra
 	}
 
 	return resultBuilder.String()
+}
+
+// swapFirstLetter swaps the first letter of the string 'str' to uppercase or
+// lowercase. The casing is determined by the 'casing' parameter.
+//
+// Parameters:
+//
+//	str string - the string to modify.
+//	casing casingType - the casing to apply to the first letter.
+//
+// Returns:
+//
+//	string - the modified string with the first letter in the desired casing.
+//
+// Example:
+//
+//	result := sr.swapFirstLetter("123hello", cassingUpper)
+//	fmt.Println(result) // Output: "123Hello"
+func swapFirstLetter(str string, casing casingType) string {
+	var conditionFunc func(r rune) bool
+	var updateFunc func(r rune) rune
+
+	if casing == cassingUpper {
+		conditionFunc = unicode.IsUpper
+		updateFunc = unicode.ToUpper
+	} else {
+		conditionFunc = unicode.IsLower
+		updateFunc = unicode.ToLower
+	}
+	buf := []byte(str)
+	for i := 0; i < len(buf); {
+		r, size := utf8.DecodeRune(buf[i:])
+
+		if unicode.IsLetter(r) {
+			if conditionFunc(r) {
+				return str
+			}
+
+			upperRune := updateFunc(r)
+			utf8.EncodeRune(buf[i:i+size], upperRune)
+
+			return string(buf)
+		}
+
+		i += size
+	}
+	return str
 }
