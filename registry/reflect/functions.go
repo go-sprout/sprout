@@ -102,6 +102,29 @@ func (rr *ReflectRegistry) KindOf(src any) string {
 	return reflect.ValueOf(src).Kind().String()
 }
 
+// HasField checks whether a struct has a field with a given name.
+//
+// Parameters:
+//
+//	name string - the name of the field that is being checked.
+//	src any - the struct that is being checked.
+//
+// Returns:
+//
+//	bool - true if the struct 'src' contains a field with the name 'name', false otherwise.
+//
+// Example:
+//
+//	{{ hasField "someExistingField" .someStruct }} // Output: true
+//	{{ hasField "someNonExistingField" .someStruct }} // Output: false
+func (rr *ReflectRegistry) HasField(name string, src any) bool {
+	rv := reflect.Indirect(reflect.ValueOf(src))
+	if rv.Kind() != reflect.Struct {
+		return false
+	}
+	return rv.FieldByName(name).IsValid()
+}
+
 // DeepEqual determines if two variables, 'x' and 'y', are deeply equal.
 // It uses reflect.DeepEqual to evaluate equality.
 //
