@@ -23,14 +23,15 @@ func (rr *ReflectRegistry) LinkHandler(fh sprout.Handler) error {
 }
 
 // RegisterFunctions registers all functions of the registry.
-func (nr *ReflectRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
-	sprout.AddFunction(funcsMap, "typeIs", nr.TypeIs)
-	sprout.AddFunction(funcsMap, "typeIsLike", nr.TypeIsLike)
-	sprout.AddFunction(funcsMap, "typeOf", nr.TypeOf)
-	sprout.AddFunction(funcsMap, "kindIs", nr.KindIs)
-	sprout.AddFunction(funcsMap, "kindOf", nr.KindOf)
-	sprout.AddFunction(funcsMap, "deepEqual", nr.DeepEqual)
-	sprout.AddFunction(funcsMap, "deepCopy", nr.DeepCopy)
-	sprout.AddFunction(funcsMap, "mustDeepCopy", nr.MustDeepCopy)
+func (rr *ReflectRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
+	sprout.AddFunction(funcsMap, "typeIs", rr.TypeIs)
+	sprout.AddFunction(funcsMap, "typeIsLike", rr.TypeIsLike)
+	sprout.AddFunction(funcsMap, "typeOf", rr.TypeOf)
+	sprout.AddFunction(funcsMap, "kindIs", rr.KindIs)
+	sprout.AddFunction(funcsMap, "kindOf", rr.KindOf)
+	sprout.AddFunction(funcsMap, "deepEqual", rr.DeepEqual)
+	sprout.AddFunction(funcsMap, "deepCopy", rr.DeepCopy)
+	sprout.AddFunction(funcsMap, "mustDeepCopy", rr.MustDeepCopy)
+	sprout.AddFunction(funcsMap, "hasField", rr.HasField)
 	return nil
 }

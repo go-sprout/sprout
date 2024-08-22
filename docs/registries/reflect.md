@@ -127,3 +127,19 @@ MustDeepCopy(element any) (any, error)
 ```
 {% endtab %}
 {% endtabs %}
+
+### <mark style="color:purple;">hasField</mark>
+
+The function checks the struct `s` for the presence of a field with the name `name`, returning `true` if the field is present and `false` otherwise.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">HasField(s any, name string) bool
+</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ hasField .someStruct "someExistingField" }} // Output: true
+{{ hasField .someStruct "someNonExistingField" }} // Output: false
+```
+{% endtab %}
+{% endtabs %}

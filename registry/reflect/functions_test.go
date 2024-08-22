@@ -123,3 +123,29 @@ func TestDeepCopy(t *testing.T) {
 		})
 	}
 }
+
+func TestHasField(t *testing.T) {
+	type A struct {
+		Foo string
+	}
+	type B struct {
+		Bar string
+	}
+	const tpl = `{{if hasField .sut "Foo"}}SUT has Foo.{{else}}SUT has no Foo.{{end}}`
+	var tc = []pesticide.TestCase{
+		{Name: "TestHasFieldStructTrue", Input: tpl, Expected: "SUT has Foo.", Data: map[string]any{"sut": &A{Foo: "Lorem"}}},
+		{Name: "TestHasFieldStructFalse", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": &B{Bar: "Ipsum"}}},
+		{Name: "TestHasFieldInt", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": 123}},
+		{Name: "TestHasFieldMap", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": map[string]string{"Foo": "bar"}}},
+		{Name: "TestHasFieldSlice", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": []int{1, 2, 3}}},
+		{Name: "TestHasFieldString", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": "foobar"}},
+		{Name: "TestHasFieldNil", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": nil}},
+	}
+	for _, test := range tc {
+		t.Run(test.Name, func(t *testing.T) {
+			tmplResponse, err := pesticide.TestTemplate(t, reflect.NewRegistry(), test.Input, test.Data)
+			assert.NoError(t, err)
+			assert.Equal(t, test.Expected, tmplResponse)
+		})
+	}
+}

@@ -149,3 +149,26 @@ func (rr *ReflectRegistry) MustDeepCopy(element any) (any, error) {
 	}
 	return copystructure.Copy(element)
 }
+
+// HasField checks whether a struct has a field with a given name.
+//
+// Parameters:
+//
+//	s any - the struct that is being checked.
+//	name string - the name of the field that is being checked.
+//
+// Returns:
+//
+//	bool - true if the struct 's' contains a field with the name 'name', false otherwise.
+//
+// Example:
+//
+//	{{ hasField .someStruct "someExistingField" }} // Output: true
+//	{{ hasField .someStruct "someNonExistingField" }} // Output: false
+func (rr *ReflectRegistry) HasField(s any, name string) bool {
+	rv := reflect.Indirect(reflect.ValueOf(s))
+	if rv.Kind() != reflect.Struct {
+		return false
+	}
+	return rv.FieldByName(name).IsValid()
+}
