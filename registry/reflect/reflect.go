@@ -29,9 +29,9 @@ func (rr *ReflectRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error 
 	sprout.AddFunction(funcsMap, "typeOf", rr.TypeOf)
 	sprout.AddFunction(funcsMap, "kindIs", rr.KindIs)
 	sprout.AddFunction(funcsMap, "kindOf", rr.KindOf)
+	sprout.AddFunction(funcsMap, "hasField", rr.HasField)
 	sprout.AddFunction(funcsMap, "deepEqual", rr.DeepEqual)
 	sprout.AddFunction(funcsMap, "deepCopy", rr.DeepCopy)
 	sprout.AddFunction(funcsMap, "mustDeepCopy", rr.MustDeepCopy)
-	sprout.AddFunction(funcsMap, "hasField", rr.HasField)
 	return nil
 }

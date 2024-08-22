@@ -76,6 +76,29 @@ func TestKindOf(t *testing.T) {
 	pesticide.RunTestCases(t, reflect.NewRegistry(), tc)
 }
 
+func TestHasField(t *testing.T) {
+	type A struct {
+		Foo string
+	}
+	type B struct {
+		Bar string
+	}
+
+	var tc = []pesticide.TestCase{
+		{Name: "TestHasFieldStructPointerTrue", Input: `{{ .V |hasField "Foo" }}`, Expected: "true", Data: map[string]any{"V": &A{Foo: "bar"}}},
+		{Name: "TestHasFieldStructPointerFalse", Input: `{{ .V |hasField "Foo" }}`, Expected: "false", Data: map[string]any{"V": &B{Bar: "boo"}}},
+		{Name: "TestHasFieldStructTrue", Input: `{{ .V |hasField "Foo" }}`, Expected: "true", Data: map[string]any{"V": A{Foo: "bar"}}},
+		{Name: "TestHasFieldStructFalse", Input: `{{ .V |hasField "Foo" }}`, Expected: "false", Data: map[string]any{"V": B{Bar: "boo"}}},
+		{Name: "TestHasFieldInt", Input: `{{ .V |hasField "Foo" }}`, Expected: "false", Data: map[string]any{"V": 123}},
+		{Name: "TestHasFieldMap", Input: `{{ .V |hasField "Foo" }}`, Expected: "false", Data: map[string]any{"V": map[string]string{"Foo": "bar"}}},
+		{Name: "TestHasFieldSlice", Input: `{{ .V |hasField "Foo" }}`, Expected: "false", Data: map[string]any{"V": []int{1, 2, 3}}},
+		{Name: "TestHasFieldString", Input: `{{ .V |hasField "Foo" }}`, Expected: "false", Data: map[string]any{"V": "foobar"}},
+		{Name: "TestHasFieldNil", Input: `{{ .V |hasField "Foo" }}`, Expected: "false", Data: map[string]any{"V": nil}},
+	}
+
+	pesticide.RunTestCases(t, reflect.NewRegistry(), tc)
+}
+
 func TestDeepEqual(t *testing.T) {
 	var tc = []pesticide.TestCase{
 		{Name: "TestDeepEqualInt", Input: `{{deepEqual 42 42}}`, Expected: "true"},
@@ -120,32 +143,6 @@ func TestDeepCopy(t *testing.T) {
 			if test.Data != nil {
 				assert.NotEqual(t, test.Data["a"], test.Expected)
 			}
-		})
-	}
-}
-
-func TestHasField(t *testing.T) {
-	type A struct {
-		Foo string
-	}
-	type B struct {
-		Bar string
-	}
-	const tpl = `{{if hasField .sut "Foo"}}SUT has Foo.{{else}}SUT has no Foo.{{end}}`
-	var tc = []pesticide.TestCase{
-		{Name: "TestHasFieldStructTrue", Input: tpl, Expected: "SUT has Foo.", Data: map[string]any{"sut": &A{Foo: "Lorem"}}},
-		{Name: "TestHasFieldStructFalse", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": &B{Bar: "Ipsum"}}},
-		{Name: "TestHasFieldInt", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": 123}},
-		{Name: "TestHasFieldMap", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": map[string]string{"Foo": "bar"}}},
-		{Name: "TestHasFieldSlice", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": []int{1, 2, 3}}},
-		{Name: "TestHasFieldString", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": "foobar"}},
-		{Name: "TestHasFieldNil", Input: tpl, Expected: "SUT has no Foo.", Data: map[string]any{"sut": nil}},
-	}
-	for _, test := range tc {
-		t.Run(test.Name, func(t *testing.T) {
-			tmplResponse, err := pesticide.TestTemplate(t, reflect.NewRegistry(), test.Input, test.Data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.Expected, tmplResponse)
 		})
 	}
 }
