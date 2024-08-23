@@ -696,7 +696,7 @@ func (sr *StringsRegistry) SwapCase(str string) string {
 //
 //	{{ "hello world" | capitalize }} // Output: "Hello world"
 func (sr *StringsRegistry) Capitalize(str string) string {
-	return swapFirstLetter(str, cassingUpper)
+	return swapFirstLetter(str, true)
 }
 
 // Uncapitalize converts the first letter of 'str' to lowercase.
@@ -713,7 +713,7 @@ func (sr *StringsRegistry) Capitalize(str string) string {
 //
 //	{{ "Hello World" | uncapitalize }} // Output: "hello World"
 func (sr *StringsRegistry) Uncapitalize(str string) string {
-	return swapFirstLetter(str, cassingLower)
+	return swapFirstLetter(str, false)
 }
 
 // Split divides 'orig' into a map of string parts using 'sep' as the separator.
