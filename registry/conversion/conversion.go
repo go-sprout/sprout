@@ -33,6 +33,15 @@ func (cr *ConversionRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) err
 	sprout.AddFunction(funcsMap, "toString", cr.ToString)
 	sprout.AddFunction(funcsMap, "toDate", cr.ToDate)
 	sprout.AddFunction(funcsMap, "toDuration", cr.ToDuration)
-	sprout.AddFunction(funcsMap, "mustToDate", cr.MustToDate)
+	return nil
+}
+
+func (cr *ConversionRegistry) RegisterAliases(aliasesMap sprout.FunctionAliasMap) error {
+	sprout.AddAlias(aliasesMap, "toDate", "mustToDate")
+	return nil
+}
+
+func (cr *ConversionRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustToDate", "please use `toDate` instead"))
 	return nil
 }
