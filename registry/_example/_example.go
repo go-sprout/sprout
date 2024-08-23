@@ -24,3 +24,19 @@ func (or *ExampleRegistry) LinkHandler(fh registry.Handler) {
 	or.handler = fh
 	return nil
 }
+
+// RegisterFunctions registers all functions of the registry.
+func (or *ExampleRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
+	sprout.AddFunction(funcsMap, "example", or.ExampleFunction)
+	return nil
+}
+
+func (or *ExampleRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) error {
+	// Register your alias here if you have any or remove this method
+	return nil
+}
+
+func (or *ExampleRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	// Register your notices here if you have any or remove this method
+	return nil
+}
