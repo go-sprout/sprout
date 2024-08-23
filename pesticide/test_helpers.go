@@ -20,19 +20,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type TestCase struct {
+type SafeTestCase struct {
 	Name     string
 	Input    string
 	Expected string
 	Data     map[string]any
 }
 
-type MustTestCase struct {
-	TestCase
-	ExpectedErr string
+type TestCase struct {
+	Name           string
+	Input          string
+	Data           map[string]any
+	ExpectedOutput string
+	ExpectedErr    string
 }
 
-func RunTestCases(t *testing.T, registry sprout.Registry, tc []TestCase) {
+func RunSafeTestCases(t *testing.T, registry sprout.Registry, tc []SafeTestCase) {
 	t.Helper()
 
 	for _, test := range tc {
@@ -46,7 +49,7 @@ func RunTestCases(t *testing.T, registry sprout.Registry, tc []TestCase) {
 	}
 }
 
-func RunMustTestCases(t *testing.T, registry sprout.Registry, tc []MustTestCase) {
+func RunTestCases(t *testing.T, registry sprout.Registry, tc []TestCase) {
 	t.Helper()
 
 	for _, test := range tc {
@@ -59,7 +62,7 @@ func RunMustTestCases(t *testing.T, registry sprout.Registry, tc []MustTestCase)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, test.Expected, tmplResponse)
+			assert.Equal(t, test.ExpectedOutput, tmplResponse)
 		})
 	}
 }
