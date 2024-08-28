@@ -9,19 +9,19 @@ import (
 
 func TestFail(t *testing.T) {
 
-	var tc = []pesticide.MustTestCase{
-		{TestCase: pesticide.TestCase{Input: `{{fail "This is an error"}}`}, ExpectedErr: "This is an error"},
+	var tc = []pesticide.TestCase{
+		{Input: `{{fail "This is an error"}}`, ExpectedErr: "This is an error"},
 	}
 
-	pesticide.RunMustTestCases(t, backward.NewRegistry(), tc)
+	pesticide.RunTestCases(t, backward.NewRegistry(), tc)
 }
 
 func TestUrlParse(t *testing.T) {
 
 	var tc = []pesticide.TestCase{
-		{Input: `{{ urlParse "https://example.com" | urlJoin }}`, Expected: "https://example.com"},
-		{Input: `{{ urlParse "https://example.com/path" | urlJoin }}`, Expected: "https://example.com/path"},
-		{Input: `{{ urlParse "https://user:pass@example.com/path?query=1" | urlJoin }}`, Expected: "https://user:pass@example.com/path?query=1"},
+		{Input: `{{ urlParse "https://example.com" | urlJoin }}`, ExpectedOutput: "https://example.com"},
+		{Input: `{{ urlParse "https://example.com/path" | urlJoin }}`, ExpectedOutput: "https://example.com/path"},
+		{Input: `{{ urlParse "https://user:pass@example.com/path?query=1" | urlJoin }}`, ExpectedOutput: "https://user:pass@example.com/path?query=1"},
 	}
 
 	pesticide.RunTestCases(t, backward.NewRegistry(), tc)
