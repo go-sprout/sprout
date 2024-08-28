@@ -37,7 +37,17 @@ func (mr *MapsRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "hasKey", mr.HasKey)
 	sprout.AddFunction(funcsMap, "merge", mr.Merge)
 	sprout.AddFunction(funcsMap, "mergeOverwrite", mr.MergeOverwrite)
-	sprout.AddFunction(funcsMap, "mustMerge", mr.MustMerge)
-	sprout.AddFunction(funcsMap, "mustMergeOverwrite", mr.MustMergeOverwrite)
+	return nil
+}
+
+func (mr *MapsRegistry) RegisterAliases(aliasesMap sprout.FunctionAliasMap) error {
+	sprout.AddAlias(aliasesMap, "merge", "mustMerge")
+	sprout.AddAlias(aliasesMap, "mergeOverwrite", "mustMergeOverwrite")
+	return nil
+}
+
+func (mr *MapsRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustMerge", "please use `merge` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustMergeOverwrite", "please use `mergeOverwrite` instead"))
 	return nil
 }

@@ -1,9 +1,11 @@
 package maps
 
 import (
+	"errors"
 	"fmt"
 
 	"dario.cat/mergo"
+	"github.com/go-sprout/sprout/deprecated"
 	"github.com/go-sprout/sprout/internal/helpers"
 )
 
@@ -16,11 +18,12 @@ import (
 // Returns:
 //
 //	map[string]any - the created dictionary.
+//	error - an error if the number of values is not even.
 //
 // Example:
 //
 //	{{ dict "key1", "value1", "key2", "value2" }} // Output: {"key1": "value1", "key2": "value2"}
-func (mr *MapsRegistry) Dict(values ...any) map[string]any {
+func (mr *MapsRegistry) Dict(values ...any) (map[string]any, error) {
 	// Ensure even number of values for key-value pairs
 	if len(values)%2 != 0 {
 		values = append(values, "")
@@ -34,67 +37,133 @@ func (mr *MapsRegistry) Dict(values ...any) map[string]any {
 		dict[helpers.ToString(values[i])] = values[i+1]
 	}
 
-	return dict
+	return dict, nil
 }
 
 // Get retrieves the value associated with the specified key from the dictionary.
 //
 // Parameters:
 //
-//	dict map[string]any - the dictionary.
 //	key string - the key to look up.
+//	dict map[string]any - the dictionary.
 //
 // Returns:
 //
 //	any - the value associated with the key, or an empty string if the key does not exist.
+//	error - a placeholder for future error handling.
 //
 // Example:
 //
-//	{{ get {"key": "value"}, "key" }} // Output: "value"
-func (mr *MapsRegistry) Get(dict map[string]any, key string) any {
-	if value, ok := dict[key]; ok {
-		return value
+//	{{ {"key": "value"} | get "key" }} // Output: "value"
+func (mr *MapsRegistry) Get(args ...any) (any, error) {
+	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	//! Due to change in signature, this function still supports the old signature
+	//! to let users transition to the new signature.
+	//* Old signature: Get(map[string]any, string)
+	//* New signature: Get(string, map[string]any)
+	if len(args) != 2 {
+		return "", deprecated.ErrArgsCount(2, len(args))
 	}
-	return ""
+
+	switch arg0 := args[0].(type) {
+	case map[string]any:
+		// Old signature
+		deprecated.SignatureWarn(mr.handler.Logger(), "get", "{{ get dict key }}", "{{ dict | get key }}")
+		return mr.deprecatedGet(arg0, args[1].(string))
+	case string:
+		// New signature
+		if value, ok := args[1].(map[string]any)[arg0]; ok {
+			return value, nil
+		}
+		return "", nil
+	default:
+		return "", fmt.Errorf("expected map or string, got %T", arg0)
+	}
 }
 
 // Set adds or updates a key with a specified value in the dictionary.
 //
 // Parameters:
 //
-//	dict map[string]any - the dictionary.
 //	key string - the key to set.
 //	value any - the value to associate with the key.
+//	dict map[string]any - the dictionary.
 //
 // Returns:
 //
 //	map[string]any - the updated dictionary.
+//	error - a placeholder for future error handling.
 //
 // Example:
 //
-//	{{ set {"key": "oldValue"}, "key", "newValue" }} // Output: {"key": "newValue"}
-func (mr *MapsRegistry) Set(dict map[string]any, key string, value any) map[string]any {
-	dict[key] = value
-	return dict
+//	{{ {"key": "oldValue"} | set "key", "newValue" }} // Output: {"key": "newValue"}
+func (mr *MapsRegistry) Set(args ...any) (map[string]any, error) {
+	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	//! Due to change in signature, this function still supports the old signature
+	//! to let users transition to the new signature.
+	//* Old signature: Set(map[string]any, string, string)
+	//* New signature: Set(string, any, map[string]any)
+	if len(args) != 3 {
+		return nil, deprecated.ErrArgsCount(3, len(args))
+	}
+
+	switch arg0 := args[0].(type) {
+	case map[string]any:
+		// Old signature
+		deprecated.SignatureWarn(mr.handler.Logger(), "set", "{{ set dict key value }}", "{{ dict | set key value }}")
+		return mr.deprecatedSet(arg0, args[1].(string), args[2])
+	case string:
+		// New signature
+		if dict, ok := args[2].(map[string]any); ok {
+			dict[arg0] = args[1]
+			return dict, nil
+		}
+		return nil, errors.New("last argument must be a map[string]any")
+	default:
+		return nil, fmt.Errorf("expected map or string, got %T", arg0)
+	}
 }
 
 // Unset removes a key from the dictionary.
 //
 // Parameters:
 //
-//	dict map[string]any - the dictionary.
 //	key string - the key to remove.
+//	dict map[string]any - the dictionary.
 //
 // Returns:
 //
 //	map[string]any - the dictionary after removing the key.
+//	error - a placeholder for future error handling.
 //
 // Example:
 //
-//	{{ {"key": "value"}, "key" | unset }} // Output: {}
-func (mr *MapsRegistry) Unset(dict map[string]any, key string) map[string]any {
-	delete(dict, key)
-	return dict
+//	{{ {"key": "value"} | unset "key" }} // Output: {}
+func (mr *MapsRegistry) Unset(args ...any) (map[string]any, error) {
+	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	//! Due to change in signature, this function still supports the old signature
+	//! to let users transition to the new signature.
+	//* Old signature: Unset(map[string]any, string)
+	//* New signature: Unset(string, map[string]any)
+	if len(args) != 2 {
+		return nil, deprecated.ErrArgsCount(2, len(args))
+	}
+
+	switch arg0 := args[0].(type) {
+	case map[string]any:
+		// Old signature
+		deprecated.SignatureWarn(mr.handler.Logger(), "unset", "{{ unset dict key }}", "{{ dict | unset key }}")
+		return mr.deprecatedUnset(arg0, args[1].(string))
+	case string:
+		// New signature
+		if dict, ok := args[1].(map[string]any); ok {
+			delete(dict, arg0)
+			return dict, nil
+		}
+		return nil, errors.New("last argument must be a map[string]any")
+	default:
+		return nil, fmt.Errorf("expected map or string, got %T", arg0)
+	}
 }
 
 // Keys retrieves all keys from one or more dictionaries.
@@ -106,11 +175,12 @@ func (mr *MapsRegistry) Unset(dict map[string]any, key string) map[string]any {
 // Returns:
 //
 //	[]string - a list of all keys from the dictionaries.
+//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ keys {"key1": "value1", "key2": "value2"} }} // Output: ["key1", "key2"]
-func (mr *MapsRegistry) Keys(dicts ...map[string]any) []string {
+func (mr *MapsRegistry) Keys(dicts ...map[string]any) ([]string, error) {
 	var keyCount int
 	for i := range dicts {
 		keyCount += len(dicts[i])
@@ -124,10 +194,10 @@ func (mr *MapsRegistry) Keys(dicts ...map[string]any) []string {
 		}
 	}
 
-	return keys
+	return keys, nil
 }
 
-// Values retrieves all values from a dictionary.
+// Values retrieves all values from one or more dictionaries.
 //
 // Parameters:
 //
@@ -136,17 +206,26 @@ func (mr *MapsRegistry) Keys(dicts ...map[string]any) []string {
 // Returns:
 //
 //	[]any - a list of all values from the dictionary.
+//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ values {"key1": "value1", "key2": "value2"} }} // Output: ["value1", "value2"]
-func (mr *MapsRegistry) Values(dict map[string]any) []any {
-	var values = make([]any, 0, len(dict))
-	for _, value := range dict {
-		values = append(values, value)
+func (mr *MapsRegistry) Values(dicts ...map[string]any) ([]any, error) {
+	var keyCount int
+	for i := range dicts {
+		keyCount += len(dicts[i])
 	}
 
-	return values
+	values := make([]any, 0, keyCount)
+
+	for _, dict := range dicts {
+		for _, value := range dict {
+			values = append(values, value)
+		}
+	}
+
+	return values, nil
 }
 
 // Pluck extracts values associated with a specified key from a list of dictionaries.
@@ -159,13 +238,14 @@ func (mr *MapsRegistry) Values(dict map[string]any) []any {
 // Returns:
 //
 //	[]any - a list of values associated with the key from each dictionary.
+//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ $d1 := dict "key" "value1"}}
 //	{{ $d2 := dict "key" "value2" }}
 //	{{ pluck "key"	$d1 $d2 }} // Output: ["value1", "value2"]
-func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
+func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) ([]any, error) {
 	result := make([]any, 0, len(dicts))
 
 	for _, dict := range dicts {
@@ -173,34 +253,61 @@ func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
 			result = append(result, val)
 		}
 	}
-	return result
+	return result, nil
 }
 
-// Pick creates a new dictionary containing only the specified keys from the original dictionary.
+// Pick creates a new dictionary containing only the specified keys from the
+// original dictionary.
 //
 // Parameters:
 //
-//	dict map[string]any - the source dictionary.
 //	keys ...string - the keys to include in the new dictionary.
+//	dict map[string]any - the source dictionary.
 //
 // Returns:
 //
 //	map[string]any - a dictionary containing only the picked keys and their values.
+//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
-//	{{ pick $d "key1" "key3" }} // Output: {"key1": "value1", "key3": "value3"}
-func (mr *MapsRegistry) Pick(dict map[string]any, keys ...string) map[string]any {
-	// Pre-allocate result map with the size of keys to avoid multiple allocations
-	result := make(map[string]any, len(keys))
-
-	for _, k := range keys {
-		if v, ok := dict[k]; ok {
-			result[k] = v
-		}
+//	{{ $d | pick "key1" "key3" }} // Output: {"key1": "value1", "key3": "value3"}
+func (mr *MapsRegistry) Pick(args ...any) (map[string]any, error) {
+	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	//! Due to change in signature, this function still supports the old signature
+	//! to let users transition to the new signature.
+	//* Old signature: Pick(map[string]any, ...string)
+	//* New signature: Pick(...string, map[string]any)
+	if len(args) < 2 {
+		return nil, deprecated.ErrArgsCount(2, len(args))
 	}
-	return result
+
+	// Pre-allocate result map with the size of keys to avoid multiple allocations
+	result := make(map[string]any, len(args)-1) // Remove the last argument which is the dictionary
+
+	switch arg0 := args[0].(type) {
+	case map[string]any:
+		// Old signature
+		deprecated.SignatureWarn(mr.handler.Logger(), "pick", "{{ pick dict key1 key2 }}", "{{ dict | pick key1 key2 }}")
+		return mr.deprecatedPick(arg0, args[1:]...)
+	case string:
+		// New signature
+		keys := args[:len(args)-1]
+		dict, ok := args[len(args)-1].(map[string]any)
+		if !ok {
+			return nil, errors.New("last argument must be a map[string]any")
+		}
+
+		for _, key := range keys {
+			if value, ok := dict[key.(string)]; ok {
+				result[key.(string)] = value
+			}
+		}
+		return result, nil
+	default:
+		return nil, fmt.Errorf("expected map or string, got %T", arg0)
+	}
 }
 
 // Omit creates a new dictionary by excluding specified keys from the original dictionary.
@@ -213,28 +320,55 @@ func (mr *MapsRegistry) Pick(dict map[string]any, keys ...string) map[string]any
 // Returns:
 //
 //	map[string]any - a dictionary without the omitted keys.
+//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
 //	{{ omit $d "key1" "key3" }} // Output: {"key2": "value2"}
-func (mr *MapsRegistry) Omit(dict map[string]any, keys ...string) map[string]any {
-	// Pre-allocate result map with the size of the original dictionary to avoid
-	// multiple allocations
-	result := make(map[string]any, len(dict))
-
-	// Use a map for keys to omit for O(1) lookups
-	omit := make(map[string]struct{}, len(keys))
-	for _, key := range keys {
-		omit[key] = struct{}{}
+func (mr *MapsRegistry) Omit(args ...any) (map[string]any, error) {
+	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	//! Due to change in signature, this function still supports the old signature
+	//! to let users transition to the new signature.
+	//* Old signature: Omit(map[string]any, ...string)
+	//* New signature: Omit(...string, map[string]any)
+	if len(args) < 2 {
+		return nil, deprecated.ErrArgsCount(2, len(args))
 	}
 
-	for key, value := range dict {
-		if _, ok := omit[key]; !ok {
-			result[key] = value
+	// Pre-allocate result map with the size of keys to avoid multiple allocations
+	result := make(map[string]any, len(args)-1) // Remove the last argument which is the dictionary
+
+	switch arg0 := args[0].(type) {
+	case map[string]any:
+		// Old signature
+		deprecated.SignatureWarn(mr.handler.Logger(), "omit", "{{ omit dict key1 key2 }}", "{{ dict | omit key1 key2 }}")
+		return mr.deprecatedOmit(arg0, args[1:]...)
+	case string:
+		// New signature
+		keys := args[:len(args)-1]
+		dict, ok := args[len(args)-1].(map[string]any)
+		if !ok {
+			return nil, errors.New("last argument must be a map[string]any")
 		}
+		omit := make(map[string]struct{}, len(keys))
+		for _, k := range keys {
+			key, ok := k.(string)
+			if !ok {
+				return nil, errors.New("all keys must be strings")
+			}
+			omit[key] = struct{}{}
+		}
+
+		for key, value := range dict {
+			if _, ok := omit[key]; !ok {
+				result[key] = value
+			}
+		}
+		return result, nil
+	default:
+		return nil, fmt.Errorf("expected map or string, got %T", arg0)
 	}
-	return result
 }
 
 // Dig navigates through a nested dictionary structure using a sequence of keys
@@ -252,19 +386,20 @@ func (mr *MapsRegistry) Omit(dict map[string]any, keys ...string) map[string]any
 // Example:
 //
 //	{{ dig "user", "profile", "name", {"user": {"profile": {"name": "John Doe"}}} }} // Output: "John Doe", nil
+//	{{ dig "user.profile.age", {"user": {"profile": {"name": "John Doe"}}} }} // Output: nil, nil
 func (mr *MapsRegistry) Dig(args ...any) (any, error) {
 	if len(args) < 2 {
-		return nil, fmt.Errorf("dig requires at least two arguments: a sequence of keys and a dictionary")
+		return nil, errors.New("dig requires at least two arguments: a sequence of keys and a dictionary")
 	}
 
 	dict, ok := args[len(args)-1].(map[string]any)
 	if !ok {
-		return nil, fmt.Errorf("last argument must be a map[string]any")
+		return nil, errors.New("last argument must be a map[string]any")
 	}
 
 	keys, err := mr.parseKeys(args[:len(args)-1])
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot parse keys: %w", err)
 	}
 
 	return mr.digIntoDict(dict, keys)
@@ -274,62 +409,42 @@ func (mr *MapsRegistry) Dig(args ...any) (any, error) {
 //
 // Parameters:
 //
-//	dict map[string]any - the dictionary to check.
 //	key string - the key to look for.
+//	dict map[string]any - the dictionary to check.
 //
 // Returns:
 //
 //	bool - true if the key exists, otherwise false.
+//	error - a placeholder for future error handling.
 //
 // Example:
 //
-//	{{ hasKey {"key": "value"}, "key" }} // Output: true
-func (mr *MapsRegistry) HasKey(dict map[string]any, key string) bool {
-	_, ok := dict[key]
-	return ok
+//	{{ {"key": "value"} | hasKey "key" }} // Output: true
+func (mr *MapsRegistry) HasKey(args ...any) (bool, error) {
+	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	//! Due to change in signature, this function still supports the old signature
+	//! to let users transition to the new signature.
+	//* Old signature: HasKey(dict map[string]any, key string)
+	//* New signature: HasKey(key string, map[string]any)
+	if len(args) != 2 {
+		return false, deprecated.ErrArgsCount(2, len(args))
+	}
+
+	switch arg0 := args[0].(type) {
+	case map[string]any:
+		// Old signature
+		deprecated.SignatureWarn(mr.handler.Logger(), "hasKey", "{{ hasKey dict key }}", "{{ dict | hasKey key }}")
+		return mr.deprecatedHasKey(arg0, args[1].(string))
+	case string:
+		// New signature
+		_, ok := args[1].(map[string]any)[arg0]
+		return ok, nil
+	default:
+		return false, fmt.Errorf("expected map or string, got %T", arg0)
+	}
 }
 
-// Merge combines multiple source maps into a destination map without
-// overwriting existing keys.
-//
-// Parameters:
-//
-//	dest map[string]any - the destination map.
-//	srcs ...map[string]any - one or more source maps to merge into the destination.
-//
-// Returns:
-//
-//	any - the merged destination map.
-//
-// Example:
-//
-//	{{ merge {}, {"a": 1}, {"b": 2} }} // Output: {"a": 1, "b": 2}
-func (mr *MapsRegistry) Merge(dest map[string]any, srcs ...map[string]any) any {
-	result, _ := mr.MustMerge(dest, srcs...)
-	return result
-}
-
-// MergeOverwrite combines multiple source maps into a destination map,
-// overwriting existing keys.
-//
-// Parameters:
-//
-//	dest map[string]any - the destination map.
-//	srcs ...map[string]any - one or more source maps to merge into the destination, with overwriting.
-//
-// Returns:
-//
-//	any - the merged destination map with overwritten values where applicable.
-//
-// Example:
-//
-//	{{ mergeOverwrite {}, {"a": 1}, {"a": 2, "b": 3} }} // Output: {"a": 2, "b": 3}
-func (mr *MapsRegistry) MergeOverwrite(dest map[string]any, srcs ...map[string]any) any {
-	result, _ := mr.MustMergeOverwrite(dest, srcs...)
-	return result
-}
-
-// MustMerge merges multiple source maps into a destination map without
+// Merge merges multiple source maps into a destination map without
 // overwriting existing keys in the destination.
 // If an error occurs during merging, it returns nil and the error.
 //
@@ -345,8 +460,8 @@ func (mr *MapsRegistry) MergeOverwrite(dest map[string]any, srcs ...map[string]a
 //
 // Example:
 //
-//	{{ mustMerge {}, {"a": 1, "b": 2}, {"b": 3, "c": 4}  }} // Output: {"a": 1, "b": 2, "c": 4}, nil
-func (mr *MapsRegistry) MustMerge(dest map[string]any, srcs ...map[string]any) (any, error) {
+//	{{ merge {}, {"a": 1, "b": 2}, {"b": 3, "c": 4}  }} // Output: {"a": 1, "b": 2, "c": 4}, nil
+func (mr *MapsRegistry) Merge(dest map[string]any, srcs ...map[string]any) (any, error) {
 	for _, src := range srcs {
 		if err := mergo.Merge(&dest, src, mergo.WithoutDereference); err != nil {
 			// This error is not expected to occur, as we ensure types are correct in
@@ -357,7 +472,7 @@ func (mr *MapsRegistry) MustMerge(dest map[string]any, srcs ...map[string]any) (
 	return dest, nil
 }
 
-// MustMergeOverwrite merges multiple source maps into a destination map,
+// MergeOverwrite merges multiple source maps into a destination map,
 // overwriting existing keys in the destination.
 // If an error occurs during merging, it returns nil and the error.
 //
@@ -373,8 +488,8 @@ func (mr *MapsRegistry) MustMerge(dest map[string]any, srcs ...map[string]any) (
 //
 // Example:
 //
-//	{{ mustMergeOverwrite {}, {"a": 1, "b": 2}, {"b": 3, "c": 4} }} // Output: {"a": 1, "b": 3, "c": 4}, nil
-func (mr *MapsRegistry) MustMergeOverwrite(dest map[string]any, srcs ...map[string]any) (any, error) {
+//	{{ mergeOverwrite {}, {"a": 1, "b": 2}, {"b": 3, "c": 4} }} // Output: {"a": 1, "b": 3, "c": 4}, nil
+func (mr *MapsRegistry) MergeOverwrite(dest map[string]any, srcs ...map[string]any) (any, error) {
 	for _, src := range srcs {
 		if err := mergo.Merge(&dest, src, mergo.WithOverride, mergo.WithoutDereference); err != nil {
 			// This error is not expected to occur, as we ensure types are correct in
