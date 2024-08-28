@@ -15,11 +15,12 @@ import (
 // Returns:
 //
 //	string - the randomly generated alphanumeric string.
+//	error - error if the random string generation fails.
 //
 // Example:
 //
 //	{{ 10 | randAlphaNumeric }} // Output: "a1b2c3d4e5" (output will vary)
-func (rr *RandomRegistry) RandAlphaNumeric(count int) string {
+func (rr *RandomRegistry) RandAlphaNumeric(count int) (string, error) {
 	return rr.randomString(count, &randomOpts{withLetters: true, withNumbers: true})
 }
 
@@ -32,11 +33,12 @@ func (rr *RandomRegistry) RandAlphaNumeric(count int) string {
 // Returns:
 //
 //	string - the randomly generated alphabetic string.
+//	error - error if the random string generation fails.
 //
 // Example:
 //
 //	{{ 10 | randAlpha }} // Output: "abcdefghij" (output will vary)
-func (rr *RandomRegistry) RandAlpha(count int) string {
+func (rr *RandomRegistry) RandAlpha(count int) (string, error) {
 	return rr.randomString(count, &randomOpts{withLetters: true})
 }
 
@@ -49,11 +51,12 @@ func (rr *RandomRegistry) RandAlpha(count int) string {
 // Returns:
 //
 //	string - the randomly generated ASCII string.
+//	error - error if the random string generation fails.
 //
 // Example:
 //
 //	{{ 10 | randAscii }} // Output: "}]~>_<:^%" (output will vary)
-func (rr *RandomRegistry) RandAscii(count int) string {
+func (rr *RandomRegistry) RandAscii(count int) (string, error) {
 	return rr.randomString(count, &randomOpts{withAscii: true})
 }
 
@@ -66,11 +69,12 @@ func (rr *RandomRegistry) RandAscii(count int) string {
 // Returns:
 //
 //	string - the randomly generated numeric string.
+//	error - error if the random string generation fails.
 //
 // Example:
 //
 //	{{ 10 | randNumeric }} // Output: "0123456789" (output will vary)
-func (rr *RandomRegistry) RandNumeric(count int) string {
+func (rr *RandomRegistry) RandNumeric(count int) (string, error) {
 	return rr.randomString(count, &randomOpts{withNumbers: true})
 }
 
@@ -107,9 +111,10 @@ func (rr *RandomRegistry) RandBytes(count int) (string, error) {
 //
 // Returns:
 // - int: the randomly generated integer.
+// - error: placeholder for future error handling.
 //
 // Example:
 // {{ randInt 1 10 }} // Output: 5
-func (rr *RandomRegistry) RandInt(min, max int) int {
-	return mathrand.Intn(max-min) + min
+func (rr *RandomRegistry) RandInt(min, max int) (int, error) {
+	return mathrand.Intn(max-min) + min, nil
 }
