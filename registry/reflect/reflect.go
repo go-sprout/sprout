@@ -32,6 +32,15 @@ func (rr *ReflectRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error 
 	sprout.AddFunction(funcsMap, "hasField", rr.HasField)
 	sprout.AddFunction(funcsMap, "deepEqual", rr.DeepEqual)
 	sprout.AddFunction(funcsMap, "deepCopy", rr.DeepCopy)
-	sprout.AddFunction(funcsMap, "mustDeepCopy", rr.MustDeepCopy)
+	return nil
+}
+
+func (rr *ReflectRegistry) RegisterAliases(aliasesMap sprout.FunctionAliasMap) error {
+	sprout.AddAlias(aliasesMap, "deepCopy", "mustDeepCopy")
+	return nil
+}
+
+func (rr *ReflectRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustDeepCopy", "please use `deepCopy` instead"))
 	return nil
 }
