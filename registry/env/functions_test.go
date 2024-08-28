@@ -10,7 +10,7 @@ import (
 
 func TestEnv(t *testing.T) {
 	os.Setenv("__SPROUT_TEST_ENV_KEY", "sprout will grow!")
-	var tc = []pesticide.TestCase{
+	var tc = []pesticide.SafeTestCase{
 		{Name: "TestEmpty", Input: `{{ env "" }}`, Expected: ""},
 		{Name: "TestNonExistent", Input: `{{ env "NON_EXISTENT_ENV_VAR" }}`, Expected: ""},
 		{Name: "TestExisting", Input: `{{ env "__SPROUT_TEST_ENV_KEY" }}`, Expected: "sprout will grow!"},
@@ -18,12 +18,12 @@ func TestEnv(t *testing.T) {
 		{Name: "TestVariableInput", Input: `{{ .V | env }}`, Expected: "sprout will grow!", Data: map[string]any{"V": "__SPROUT_TEST_ENV_KEY"}},
 	}
 
-	pesticide.RunTestCases(t, env.NewRegistry(), tc)
+	pesticide.RunSafeTestCases(t, env.NewRegistry(), tc)
 }
 
 func TestExpandEnv(t *testing.T) {
 	os.Setenv("__SPROUT_TEST_ENV_KEY", "sprout will grow!")
-	var tc = []pesticide.TestCase{
+	var tc = []pesticide.SafeTestCase{
 		{Name: "TestEmpty", Input: `{{ expandEnv "" }}`, Expected: ""},
 		{Name: "TestNonExistent", Input: `{{ expandEnv "Hey" }}`, Expected: "Hey"},
 		{Name: "TestNonExistent", Input: `{{ expandEnv "$NON_EXISTENT_ENV_VAR" }}`, Expected: ""},
@@ -32,5 +32,5 @@ func TestExpandEnv(t *testing.T) {
 		{Name: "TestVariableInput", Input: `{{ .V | expandEnv }}`, Expected: "Hey sprout will grow!", Data: map[string]any{"V": "Hey $__SPROUT_TEST_ENV_KEY"}},
 	}
 
-	pesticide.RunTestCases(t, env.NewRegistry(), tc)
+	pesticide.RunSafeTestCases(t, env.NewRegistry(), tc)
 }
