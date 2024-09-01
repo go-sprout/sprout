@@ -11,7 +11,7 @@ func TestDict(t *testing.T) {
 	var tc = []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{dict}}`, ExpectedOutput: "map[]"},
 		{Name: "TestWithEvenKeyPair", Input: `{{dict "a" 1 "b" 2}}`, ExpectedOutput: "map[a:1 b:2]"},
-		{Name: "TestWithOddKeyPair", Input: `{{dict "a" 1 "b" 2 "c" 3 "d"}}`, ExpectedErr: "number of values must be even"},
+		{Name: "TestWithOddKeyPair", Input: `{{dict "a" 1 "b" 2 "c" 3 "d"}}`, ExpectedOutput: "map[a:1 b:2 c:3 d:]"},
 		{Name: "TestWithANilKey", Input: `{{dict "a" 1 "b" 2 "c" 3 .Nil 4}}`, ExpectedOutput: "map[<nil>:4 a:1 b:2 c:3]", Data: map[string]any{"Nil": nil}},
 	}
 

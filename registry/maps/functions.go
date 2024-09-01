@@ -69,7 +69,7 @@ func (mr *MapsRegistry) Get(args ...any) (any, error) {
 	case map[string]any:
 		// Old signature
 		deprecated.SignatureWarn(mr.handler.Logger(), "get", "{{ get dict key }}", "{{ dict | get key }}")
-		return mr.deprecatedGet(arg0, args[1].(string))
+		return mr.Get(args[1].(string), arg0)
 	case string:
 		// New signature
 		if value, ok := args[1].(map[string]any)[arg0]; ok {
@@ -111,7 +111,7 @@ func (mr *MapsRegistry) Set(args ...any) (map[string]any, error) {
 	case map[string]any:
 		// Old signature
 		deprecated.SignatureWarn(mr.handler.Logger(), "set", "{{ set dict key value }}", "{{ dict | set key value }}")
-		return mr.deprecatedSet(arg0, args[1].(string), args[2])
+		return mr.Set(args[1].(string), args[2], arg0)
 	case string:
 		// New signature
 		if dict, ok := args[2].(map[string]any); ok {
@@ -153,7 +153,7 @@ func (mr *MapsRegistry) Unset(args ...any) (map[string]any, error) {
 	case map[string]any:
 		// Old signature
 		deprecated.SignatureWarn(mr.handler.Logger(), "unset", "{{ unset dict key }}", "{{ dict | unset key }}")
-		return mr.deprecatedUnset(arg0, args[1].(string))
+		return mr.Unset(args[1].(string), arg0)
 	case string:
 		// New signature
 		if dict, ok := args[1].(map[string]any); ok {
@@ -290,7 +290,7 @@ func (mr *MapsRegistry) Pick(args ...any) (map[string]any, error) {
 	case map[string]any:
 		// Old signature
 		deprecated.SignatureWarn(mr.handler.Logger(), "pick", "{{ pick dict key1 key2 }}", "{{ dict | pick key1 key2 }}")
-		return mr.deprecatedPick(arg0, args[1:]...)
+		return mr.Pick(append(args[1:], args[0])...)
 	case string:
 		// New signature
 		keys := args[:len(args)-1]
@@ -300,8 +300,12 @@ func (mr *MapsRegistry) Pick(args ...any) (map[string]any, error) {
 		}
 
 		for _, key := range keys {
-			if value, ok := dict[key.(string)]; ok {
-				result[key.(string)] = value
+			keyStr, ok := key.(string)
+			if !ok {
+				return nil, errors.New("all keys must be strings")
+			}
+			if value, ok := dict[keyStr]; ok {
+				result[keyStr] = value
 			}
 		}
 		return result, nil
@@ -343,7 +347,7 @@ func (mr *MapsRegistry) Omit(args ...any) (map[string]any, error) {
 	case map[string]any:
 		// Old signature
 		deprecated.SignatureWarn(mr.handler.Logger(), "omit", "{{ omit dict key1 key2 }}", "{{ dict | omit key1 key2 }}")
-		return mr.deprecatedOmit(arg0, args[1:]...)
+		return mr.Omit(append(args[1:], args[0])...)
 	case string:
 		// New signature
 		keys := args[:len(args)-1]
@@ -434,7 +438,7 @@ func (mr *MapsRegistry) HasKey(args ...any) (bool, error) {
 	case map[string]any:
 		// Old signature
 		deprecated.SignatureWarn(mr.handler.Logger(), "hasKey", "{{ hasKey dict key }}", "{{ dict | hasKey key }}")
-		return mr.deprecatedHasKey(arg0, args[1].(string))
+		return mr.HasKey(args[1].(string), arg0)
 	case string:
 		// New signature
 		_, ok := args[1].(map[string]any)[arg0]
