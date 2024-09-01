@@ -8,160 +8,160 @@ import (
 )
 
 func TestNoSpace(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | nospace }}`, Expected: ""},
-		{Name: "TestSpaceOnly", Input: `{{ " " | nospace }}`, Expected: ""},
-		{Name: "TestLeadingSpace", Input: `{{ " foo" | nospace }}`, Expected: "foo"},
-		{Name: "TestTrailingSpace", Input: `{{ "foo " | nospace }}`, Expected: "foo"},
-		{Name: "TestLeadingAndTrailingSpace", Input: `{{ " foo " | nospace }}`, Expected: "foo"},
-		{Name: "TestMultipleSpaces", Input: `{{ " foo bar " | nospace }}`, Expected: "foobar"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | nospace }}`, ExpectedOutput: ""},
+		{Name: "TestSpaceOnly", Input: `{{ " " | nospace }}`, ExpectedOutput: ""},
+		{Name: "TestLeadingSpace", Input: `{{ " foo" | nospace }}`, ExpectedOutput: "foo"},
+		{Name: "TestTrailingSpace", Input: `{{ "foo " | nospace }}`, ExpectedOutput: "foo"},
+		{Name: "TestLeadingAndTrailingSpace", Input: `{{ " foo " | nospace }}`, ExpectedOutput: "foo"},
+		{Name: "TestMultipleSpaces", Input: `{{ " foo bar " | nospace }}`, ExpectedOutput: "foobar"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestTrim(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | trim }}`, Expected: ""},
-		{Name: "TestSpaceOnly", Input: `{{ " " | trim }}`, Expected: ""},
-		{Name: "TestLeadingSpace", Input: `{{ " foo" | trim }}`, Expected: "foo"},
-		{Name: "TestTrailingSpace", Input: `{{ "foo " | trim }}`, Expected: "foo"},
-		{Name: "TestLeadingAndTrailingSpace", Input: `{{ " foo " | trim }}`, Expected: "foo"},
-		{Name: "TestMultipleSpaces", Input: `{{ " foo bar " | trim }}`, Expected: "foo bar"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | trim }}`, ExpectedOutput: ""},
+		{Name: "TestSpaceOnly", Input: `{{ " " | trim }}`, ExpectedOutput: ""},
+		{Name: "TestLeadingSpace", Input: `{{ " foo" | trim }}`, ExpectedOutput: "foo"},
+		{Name: "TestTrailingSpace", Input: `{{ "foo " | trim }}`, ExpectedOutput: "foo"},
+		{Name: "TestLeadingAndTrailingSpace", Input: `{{ " foo " | trim }}`, ExpectedOutput: "foo"},
+		{Name: "TestMultipleSpaces", Input: `{{ " foo bar " | trim }}`, ExpectedOutput: "foo bar"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestTrimAll(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | trimAll "-" }}`, Expected: ""},
-		{Name: "TestAllDashes", Input: `{{ "---------" | trimAll "-" }}`, Expected: ""},
-		{Name: "TestNoDashes", Input: `{{ "foo" | trimAll "-" }}`, Expected: "foo"},
-		{Name: "TestSomeDashes", Input: `{{ "-f--o-o-" | trimAll "-" }}`, Expected: "f--o-o"},
-		{Name: "TestOtherDashes", Input: `{{ "-f--o-o-" | trimAll "-o" }}`, Expected: "f"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | trimAll "-" }}`, ExpectedOutput: ""},
+		{Name: "TestAllDashes", Input: `{{ "---------" | trimAll "-" }}`, ExpectedOutput: ""},
+		{Name: "TestNoDashes", Input: `{{ "foo" | trimAll "-" }}`, ExpectedOutput: "foo"},
+		{Name: "TestSomeDashes", Input: `{{ "-f--o-o-" | trimAll "-" }}`, ExpectedOutput: "f--o-o"},
+		{Name: "TestOtherDashes", Input: `{{ "-f--o-o-" | trimAll "-o" }}`, ExpectedOutput: "f"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestTrimPrefix(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | trimPrefix "-" }}`, Expected: ""},
-		{Name: "TestDoubleDash", Input: `{{ "--" | trimPrefix "-" }}`, Expected: "-"},
-		{Name: "TestNoPrefix", Input: `{{ "foo" | trimPrefix "-" }}`, Expected: "foo"},
-		{Name: "TestSinglePrefix", Input: `{{ "-foo-" | trimPrefix "-" }}`, Expected: "foo-"},
-		{Name: "TestMultiplePrefix", Input: `{{ "-foo-" | trimPrefix "-f" }}`, Expected: "oo-"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | trimPrefix "-" }}`, ExpectedOutput: ""},
+		{Name: "TestDoubleDash", Input: `{{ "--" | trimPrefix "-" }}`, ExpectedOutput: "-"},
+		{Name: "TestNoPrefix", Input: `{{ "foo" | trimPrefix "-" }}`, ExpectedOutput: "foo"},
+		{Name: "TestSinglePrefix", Input: `{{ "-foo-" | trimPrefix "-" }}`, ExpectedOutput: "foo-"},
+		{Name: "TestMultiplePrefix", Input: `{{ "-foo-" | trimPrefix "-f" }}`, ExpectedOutput: "oo-"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestTrimSuffix(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | trimSuffix "-" }}`, Expected: ""},
-		{Name: "TestDoubleDash", Input: `{{ "--" | trimSuffix "-" }}`, Expected: "-"},
-		{Name: "TestNoSuffix", Input: `{{ "foo" | trimSuffix "-" }}`, Expected: "foo"},
-		{Name: "TestSingleSuffix", Input: `{{ "-foo-" | trimSuffix "-" }}`, Expected: "-foo"},
-		{Name: "TestMultipleSuffix", Input: `{{ "-foo-" | trimSuffix "o-" }}`, Expected: "-fo"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | trimSuffix "-" }}`, ExpectedOutput: ""},
+		{Name: "TestDoubleDash", Input: `{{ "--" | trimSuffix "-" }}`, ExpectedOutput: "-"},
+		{Name: "TestNoSuffix", Input: `{{ "foo" | trimSuffix "-" }}`, ExpectedOutput: "foo"},
+		{Name: "TestSingleSuffix", Input: `{{ "-foo-" | trimSuffix "-" }}`, ExpectedOutput: "-foo"},
+		{Name: "TestMultipleSuffix", Input: `{{ "-foo-" | trimSuffix "o-" }}`, ExpectedOutput: "-fo"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestContains(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | contains "-" }}`, Expected: "false"},
-		{Name: "TestContains", Input: `{{ "foo" | contains "o" }}`, Expected: "true"},
-		{Name: "TestNotContains", Input: `{{ "foo" | contains "x" }}`, Expected: "false"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | contains "-" }}`, ExpectedOutput: "false"},
+		{Name: "TestContains", Input: `{{ "foo" | contains "o" }}`, ExpectedOutput: "true"},
+		{Name: "TestNotContains", Input: `{{ "foo" | contains "x" }}`, ExpectedOutput: "false"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestHasPrefix(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | hasPrefix "-" }}`, Expected: "false"},
-		{Name: "TestHasPrefix", Input: `{{ "foo" | hasPrefix "f" }}`, Expected: "true"},
-		{Name: "TestNotHasPrefix", Input: `{{ "foo" | hasPrefix "o" }}`, Expected: "false"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | hasPrefix "-" }}`, ExpectedOutput: "false"},
+		{Name: "TestHasPrefix", Input: `{{ "foo" | hasPrefix "f" }}`, ExpectedOutput: "true"},
+		{Name: "TestNotHasPrefix", Input: `{{ "foo" | hasPrefix "o" }}`, ExpectedOutput: "false"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestHasSuffix(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | hasSuffix "-" }}`, Expected: "false"},
-		{Name: "TestHasSuffix", Input: `{{ "foo" | hasSuffix "o" }}`, Expected: "true"},
-		{Name: "TestNotHasSuffix", Input: `{{ "foo" | hasSuffix "f" }}`, Expected: "false"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | hasSuffix "-" }}`, ExpectedOutput: "false"},
+		{Name: "TestHasSuffix", Input: `{{ "foo" | hasSuffix "o" }}`, ExpectedOutput: "true"},
+		{Name: "TestNotHasSuffix", Input: `{{ "foo" | hasSuffix "f" }}`, ExpectedOutput: "false"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestToLower(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | toLower }}`, Expected: ""},
-		{Name: "TestLower", Input: `{{ "foo" | toLower }}`, Expected: "foo"},
-		{Name: "TestUpper", Input: `{{ "FOO" | toLower }}`, Expected: "foo"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | toLower }}`, ExpectedOutput: ""},
+		{Name: "TestLower", Input: `{{ "foo" | toLower }}`, ExpectedOutput: "foo"},
+		{Name: "TestUpper", Input: `{{ "FOO" | toLower }}`, ExpectedOutput: "foo"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestToUpper(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | toUpper }}`, Expected: ""},
-		{Name: "TestLower", Input: `{{ "foo" | toUpper }}`, Expected: "FOO"},
-		{Name: "TestUpper", Input: `{{ "FOO" | toUpper }}`, Expected: "FOO"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | toUpper }}`, ExpectedOutput: ""},
+		{Name: "TestLower", Input: `{{ "foo" | toUpper }}`, ExpectedOutput: "FOO"},
+		{Name: "TestUpper", Input: `{{ "FOO" | toUpper }}`, ExpectedOutput: "FOO"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestReplace(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | replace "-" "x" }}`, Expected: ""},
-		{Name: "TestReplace", Input: `{{ "foo" | replace "o" "x" }}`, Expected: "fxx"},
-		{Name: "TestNotReplace", Input: `{{ "foo" | replace "x" "y" }}`, Expected: "foo"},
-		{Name: "TestMultipleReplace", Input: `{{ "foo" | replace "o" "x" | replace "f" "y" }}`, Expected: "yxx"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | replace "-" "x" }}`, ExpectedOutput: ""},
+		{Name: "TestReplace", Input: `{{ "foo" | replace "o" "x" }}`, ExpectedOutput: "fxx"},
+		{Name: "TestNotReplace", Input: `{{ "foo" | replace "x" "y" }}`, ExpectedOutput: "foo"},
+		{Name: "TestMultipleReplace", Input: `{{ "foo" | replace "o" "x" | replace "f" "y" }}`, ExpectedOutput: "yxx"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestRepeat(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | repeat 3 }}`, Expected: ""},
-		{Name: "TestRepeat", Input: `{{ "foo" | repeat 3 }}`, Expected: "foofoofoo"},
-		{Name: "TestRepeatZero", Input: `{{ "foo" | repeat 0 }}`, Expected: ""},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | repeat 3 }}`, ExpectedOutput: ""},
+		{Name: "TestRepeat", Input: `{{ "foo" | repeat 3 }}`, ExpectedOutput: "foofoofoo"},
+		{Name: "TestRepeatZero", Input: `{{ "foo" | repeat 0 }}`, ExpectedOutput: ""},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestJoin(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestNil", Input: `{{ .nil | join "-" }}`, Expected: "", Data: map[string]any{"nil": nil}},
-		{Name: "TestIntSlice", Input: `{{ .test | join "-" }}`, Expected: "1-2-3", Data: map[string]any{"test": []int{1, 2, 3}}},
-		{Name: "TestStringSlice", Input: `{{ .test | join "-" }}`, Expected: "a-b-c", Data: map[string]any{"test": []string{"a", "b", "c"}}},
-		{Name: "TestString", Input: `{{ .test | join "-" }}`, Expected: "abc", Data: map[string]any{"test": "abc"}},
-		{Name: "TestMixedSlice", Input: `{{ .test | join "-" }}`, Expected: "a-1-true", Data: map[string]any{"test": []any{"a", nil, 1, true}}},
+	var tc = []pesticide.TestCase{
+		{Name: "TestNil", Input: `{{ .nil | join "-" }}`, ExpectedOutput: "", Data: map[string]any{"nil": nil}},
+		{Name: "TestIntSlice", Input: `{{ .test | join "-" }}`, ExpectedOutput: "1-2-3", Data: map[string]any{"test": []int{1, 2, 3}}},
+		{Name: "TestStringSlice", Input: `{{ .test | join "-" }}`, ExpectedOutput: "a-b-c", Data: map[string]any{"test": []string{"a", "b", "c"}}},
+		{Name: "TestString", Input: `{{ .test | join "-" }}`, ExpectedOutput: "abc", Data: map[string]any{"test": "abc"}},
+		{Name: "TestMixedSlice", Input: `{{ .test | join "-" }}`, ExpectedOutput: "a-1-true", Data: map[string]any{"test": []any{"a", nil, 1, true}}},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestTrunc(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | trunc 3 }}`, Expected: ""},
-		{Name: "TestTruncate", Input: `{{ "foooooo" | trunc 3 }}`, Expected: "foo"},
-		{Name: "TestNegativeTruncate", Input: `{{ "foobar" | trunc -3 }}`, Expected: "bar"},
-		{Name: "TestNegativeLargeTruncate", Input: `{{ "foobar" | trunc -999 }}`, Expected: "foobar"},
-		{Name: "TestZeroTruncate", Input: `{{ "foobar" | trunc 0 }}`, Expected: ""},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | trunc 3 }}`, ExpectedOutput: ""},
+		{Name: "TestTruncate", Input: `{{ "foooooo" | trunc 3 }}`, ExpectedOutput: "foo"},
+		{Name: "TestNegativeTruncate", Input: `{{ "foobar" | trunc -3 }}`, ExpectedOutput: "bar"},
+		{Name: "TestNegativeLargeTruncate", Input: `{{ "foobar" | trunc -999 }}`, ExpectedOutput: "foobar"},
+		{Name: "TestZeroTruncate", Input: `{{ "foobar" | trunc 0 }}`, ExpectedOutput: ""},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestShuffle(t *testing.T) {
@@ -175,349 +175,349 @@ func TestShuffle(t *testing.T) {
 }
 
 func TestEllipsis(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | ellipsis 3 }}`, Expected: ""},
-		{Name: "TestShort", Input: `{{ "foo" | ellipsis 5 }}`, Expected: "foo"},
-		{Name: "TestTruncate", Input: `{{ "foooooo" | ellipsis 6 }}`, Expected: "foo..."},
-		{Name: "TestZeroTruncate", Input: `{{ "foobar" | ellipsis 0 }}`, Expected: "foobar"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | ellipsis 3 }}`, ExpectedOutput: ""},
+		{Name: "TestShort", Input: `{{ "foo" | ellipsis 5 }}`, ExpectedOutput: "foo"},
+		{Name: "TestTruncate", Input: `{{ "foooooo" | ellipsis 6 }}`, ExpectedOutput: "foo..."},
+		{Name: "TestZeroTruncate", Input: `{{ "foobar" | ellipsis 0 }}`, ExpectedOutput: "foobar"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestEllipsisBoth(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | ellipsisBoth 3 5 }}`, Expected: ""},
-		{Name: "TestShort", Input: `{{ "foo" | ellipsisBoth 5 4 }}`, Expected: "foo"},
-		{Name: "TestTruncate", Input: `{{ "foooboooooo" | ellipsisBoth 4 9 }}`, Expected: "...boo..."},
-		{Name: "TestZeroTruncate", Input: `{{ "foobar" | ellipsisBoth 0 0 }}`, Expected: "foobar"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | ellipsisBoth 3 5 }}`, ExpectedOutput: ""},
+		{Name: "TestShort", Input: `{{ "foo" | ellipsisBoth 5 4 }}`, ExpectedOutput: "foo"},
+		{Name: "TestTruncate", Input: `{{ "foooboooooo" | ellipsisBoth 4 9 }}`, ExpectedOutput: "...boo..."},
+		{Name: "TestZeroTruncate", Input: `{{ "foobar" | ellipsisBoth 0 0 }}`, ExpectedOutput: "foobar"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestInitials(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | initials }}`, Expected: ""},
-		{Name: "TestSingle", Input: `{{ "f" | initials }}`, Expected: "f"},
-		{Name: "TestTwo", Input: `{{ "foo" | initials }}`, Expected: "f"},
-		{Name: "TestThree", Input: `{{ "foo bar" | initials }}`, Expected: "fb"},
-		{Name: "TestMultipleSpaces", Input: `{{ "foo  bar" | initials }}`, Expected: "fb"},
-		{Name: "TestWithUppercased", Input: `{{ " Foo bar" | initials }}`, Expected: "Fb"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | initials }}`, ExpectedOutput: ""},
+		{Name: "TestSingle", Input: `{{ "f" | initials }}`, ExpectedOutput: "f"},
+		{Name: "TestTwo", Input: `{{ "foo" | initials }}`, ExpectedOutput: "f"},
+		{Name: "TestThree", Input: `{{ "foo bar" | initials }}`, ExpectedOutput: "fb"},
+		{Name: "TestMultipleSpaces", Input: `{{ "foo  bar" | initials }}`, ExpectedOutput: "fb"},
+		{Name: "TestWithUppercased", Input: `{{ " Foo bar" | initials }}`, ExpectedOutput: "Fb"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestPlural(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestZero", Input: `{{ 0 | plural "single" "many" }}`, Expected: "many"},
-		{Name: "TestSingle", Input: `{{ 1 | plural "single" "many" }}`, Expected: "single"},
-		{Name: "TestMultiple", Input: `{{ 2 | plural "single" "many" }}`, Expected: "many"},
-		{Name: "TestNegative", Input: `{{ -1 | plural "single" "many" }}`, Expected: "many"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestZero", Input: `{{ 0 | plural "single" "many" }}`, ExpectedOutput: "many"},
+		{Name: "TestSingle", Input: `{{ 1 | plural "single" "many" }}`, ExpectedOutput: "single"},
+		{Name: "TestMultiple", Input: `{{ 2 | plural "single" "many" }}`, ExpectedOutput: "many"},
+		{Name: "TestNegative", Input: `{{ -1 | plural "single" "many" }}`, ExpectedOutput: "many"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestWrap(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | wrap 10 }}`, Expected: ""},
-		{Name: "TestNegativeWrap", Input: `{{ wrap -1 "With a negative wrap." }}`, Expected: "With\na\nnegative\nwrap."},
-		{Name: "TestWrap", Input: `{{ "This is a long string that needs to be wrapped." | wrap 10 }}`, Expected: "This is a\nlong\nstring\nthat needs\nto be\nwrapped."},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | wrap 10 }}`, ExpectedOutput: ""},
+		{Name: "TestNegativeWrap", Input: `{{ wrap -1 "With a negative wrap." }}`, ExpectedOutput: "With\na\nnegative\nwrap."},
+		{Name: "TestWrap", Input: `{{ "This is a long string that needs to be wrapped." | wrap 10 }}`, ExpectedOutput: "This is a\nlong\nstring\nthat needs\nto be\nwrapped."},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestWrapWith(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | wrapWith 10 "\t" }}`, Expected: ""},
-		{Name: "TestWrap", Input: `{{ "This is a long string that needs to be wrapped." | wrapWith 10 "\t" }}`, Expected: "This is a\tlong\tstring\tthat needs\tto be\twrapped."},
-		{Name: "TestWrapWithLongWord", Input: `{{ "This is a long string that needs to be wrapped with a looooooooooooooooooooooooooooooooooooong word." | wrapWith 10 "\t" }}`, Expected: "This is a\tlong\tstring\tthat needs\tto be\twrapped\twith a\tlooooooooo\toooooooooo\toooooooooo\toooooooong\tword."},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | wrapWith 10 "\t" }}`, ExpectedOutput: ""},
+		{Name: "TestWrap", Input: `{{ "This is a long string that needs to be wrapped." | wrapWith 10 "\t" }}`, ExpectedOutput: "This is a\tlong\tstring\tthat needs\tto be\twrapped."},
+		{Name: "TestWrapWithLongWord", Input: `{{ "This is a long string that needs to be wrapped with a looooooooooooooooooooooooooooooooooooong word." | wrapWith 10 "\t" }}`, ExpectedOutput: "This is a\tlong\tstring\tthat needs\tto be\twrapped\twith a\tlooooooooo\toooooooooo\toooooooooo\toooooooong\tword."},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestQuote(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | quote }}`, Expected: `""`},
-		{Name: "TestNil", Input: `{{ quote .nil }}`, Expected: ``, Data: map[string]any{"nil": nil}},
-		{Name: "TestQuote", Input: `{{ "foo" | quote }}`, Expected: `"foo"`},
-		{Name: "TestSpace", Input: `{{ "foo bar" | quote }}`, Expected: `"foo bar"`},
-		{Name: "TestQuote", Input: `{{ "foo \"bar\"" | quote }}`, Expected: `"foo \"bar\""`},
-		{Name: "TestNewline", Input: `{{ "foo\nbar" | quote }}`, Expected: `"foo\nbar"`},
-		{Name: "TestBackslash", Input: `{{ "foo\\bar" | quote }}`, Expected: `"foo\\bar"`},
-		{Name: "TestBackslashAndQuote", Input: `{{ "foo\\\"bar" | quote }}`, Expected: `"foo\\\"bar"`},
-		{Name: "TestUnicode", Input: `{{ quote "foo" "👍" }}`, Expected: `"foo" "👍"`},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | quote }}`, ExpectedOutput: `""`},
+		{Name: "TestNil", Input: `{{ quote .nil }}`, ExpectedOutput: ``, Data: map[string]any{"nil": nil}},
+		{Name: "TestQuote", Input: `{{ "foo" | quote }}`, ExpectedOutput: `"foo"`},
+		{Name: "TestSpace", Input: `{{ "foo bar" | quote }}`, ExpectedOutput: `"foo bar"`},
+		{Name: "TestQuote", Input: `{{ "foo \"bar\"" | quote }}`, ExpectedOutput: `"foo \"bar\""`},
+		{Name: "TestNewline", Input: `{{ "foo\nbar" | quote }}`, ExpectedOutput: `"foo\nbar"`},
+		{Name: "TestBackslash", Input: `{{ "foo\\bar" | quote }}`, ExpectedOutput: `"foo\\bar"`},
+		{Name: "TestBackslashAndQuote", Input: `{{ "foo\\\"bar" | quote }}`, ExpectedOutput: `"foo\\\"bar"`},
+		{Name: "TestUnicode", Input: `{{ quote "foo" "👍" }}`, ExpectedOutput: `"foo" "👍"`},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestSquote(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | squote }}`, Expected: "''"},
-		{Name: "TestNil", Input: `{{ squote .nil }}`, Expected: "", Data: map[string]any{"nil": nil}},
-		{Name: "TestQuote", Input: `{{ "foo" | squote }}`, Expected: "'foo'"},
-		{Name: "TestSpace", Input: `{{ "foo bar" | squote }}`, Expected: "'foo bar'"},
-		{Name: "TestQuote", Input: `{{ "foo 'bar'" | squote }}`, Expected: "'foo 'bar''"},
-		{Name: "TestNewline", Input: `{{ "foo\nbar" | squote }}`, Expected: "'foo\nbar'"},
-		{Name: "TestBackslash", Input: `{{ "foo\\bar" | squote }}`, Expected: "'foo\\bar'"},
-		{Name: "TestBackslashAndQuote", Input: `{{ "foo\\'bar" | squote }}`, Expected: "'foo\\'bar'"},
-		{Name: "TestUnicode", Input: `{{ squote "foo" "👍" }}`, Expected: "'foo' '👍'"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | squote }}`, ExpectedOutput: "''"},
+		{Name: "TestNil", Input: `{{ squote .nil }}`, ExpectedOutput: "", Data: map[string]any{"nil": nil}},
+		{Name: "TestQuote", Input: `{{ "foo" | squote }}`, ExpectedOutput: "'foo'"},
+		{Name: "TestSpace", Input: `{{ "foo bar" | squote }}`, ExpectedOutput: "'foo bar'"},
+		{Name: "TestQuote", Input: `{{ "foo 'bar'" | squote }}`, ExpectedOutput: "'foo 'bar''"},
+		{Name: "TestNewline", Input: `{{ "foo\nbar" | squote }}`, ExpectedOutput: "'foo\nbar'"},
+		{Name: "TestBackslash", Input: `{{ "foo\\bar" | squote }}`, ExpectedOutput: "'foo\\bar'"},
+		{Name: "TestBackslashAndQuote", Input: `{{ "foo\\'bar" | squote }}`, ExpectedOutput: "'foo\\'bar'"},
+		{Name: "TestUnicode", Input: `{{ squote "foo" "👍" }}`, ExpectedOutput: "'foo' '👍'"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestToCamelCase(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | toCamelCase }}`, Expected: ""},
-		{Name: "TestCamelCase", Input: `{{ "foo bar" | toCamelCase }}`, Expected: "fooBar"},
-		{Name: "TestCamelCaseWithUpperCase", Input: `{{ "FoO  bar" | toCamelCase }}`, Expected: "fooBar"},
-		{Name: "TestCamelCaseWithSpace", Input: `{{ "foo  bar" | toCamelCase }}`, Expected: "fooBar"},
-		{Name: "TestCamelCaseWithUnderscore", Input: `{{ "foo_bar" | toCamelCase }}`, Expected: "fooBar"},
-		{Name: "TestCamelCaseWithHyphen", Input: `{{ "foo-bar" | toCamelCase }}`, Expected: "fooBar"},
-		{Name: "TestCamelCaseWithMixed", Input: `{{ "foo-bar_baz" | toCamelCase }}`, Expected: "fooBarBaz"},
-		{Name: "TestComplexCase", Input: `{{ toCamelCase "___complex__case_" }}`, Expected: "complexCase"},
-		{Name: "TestCamelCaseWithUnderscorePrefix", Input: `{{ toCamelCase "_camel_case" }}`, Expected: "camelCase"},
-		{Name: "TestCamelCaseWithUnderscoreSuffix", Input: `{{ toCamelCase "http_server" }}`, Expected: "httpServer"},
-		{Name: "TestCamelCaseWithHyphenSuffix", Input: `{{ toCamelCase "no_https" }}`, Expected: "noHttps"},
-		{Name: "TestCamelCaseWithAllLowercase", Input: `{{ toCamelCase "all" }}`, Expected: "all"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | toCamelCase }}`, ExpectedOutput: ""},
+		{Name: "TestCamelCase", Input: `{{ "foo bar" | toCamelCase }}`, ExpectedOutput: "fooBar"},
+		{Name: "TestCamelCaseWithUpperCase", Input: `{{ "FoO  bar" | toCamelCase }}`, ExpectedOutput: "fooBar"},
+		{Name: "TestCamelCaseWithSpace", Input: `{{ "foo  bar" | toCamelCase }}`, ExpectedOutput: "fooBar"},
+		{Name: "TestCamelCaseWithUnderscore", Input: `{{ "foo_bar" | toCamelCase }}`, ExpectedOutput: "fooBar"},
+		{Name: "TestCamelCaseWithHyphen", Input: `{{ "foo-bar" | toCamelCase }}`, ExpectedOutput: "fooBar"},
+		{Name: "TestCamelCaseWithMixed", Input: `{{ "foo-bar_baz" | toCamelCase }}`, ExpectedOutput: "fooBarBaz"},
+		{Name: "TestComplexCase", Input: `{{ toCamelCase "___complex__case_" }}`, ExpectedOutput: "complexCase"},
+		{Name: "TestCamelCaseWithUnderscorePrefix", Input: `{{ toCamelCase "_camel_case" }}`, ExpectedOutput: "camelCase"},
+		{Name: "TestCamelCaseWithUnderscoreSuffix", Input: `{{ toCamelCase "http_server" }}`, ExpectedOutput: "httpServer"},
+		{Name: "TestCamelCaseWithHyphenSuffix", Input: `{{ toCamelCase "no_https" }}`, ExpectedOutput: "noHttps"},
+		{Name: "TestCamelCaseWithAllLowercase", Input: `{{ toCamelCase "all" }}`, ExpectedOutput: "all"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestToKebakCase(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | toKebabCase }}`, Expected: ""},
-		{Name: "TestKebabCase", Input: `{{ "foo bar" | toKebabCase }}`, Expected: "foo-bar"},
-		{Name: "TestKebabCaseWithSpace", Input: `{{ "foo  bar" | toKebabCase }}`, Expected: "foo-bar"},
-		{Name: "TestKebabCaseWithUnderscore", Input: `{{ "foo_bar" | toKebabCase }}`, Expected: "foo-bar"},
-		{Name: "TestKebabCaseWithHyphen", Input: `{{ "foo-bar" | toKebabCase }}`, Expected: "foo-bar"},
-		{Name: "TestKebabCaseWithMixed", Input: `{{ "foo-bar_baz" | toKebabCase }}`, Expected: "foo-bar-baz"},
-		{Input: `{{ toKebabCase "HTTPServer" }}`, Expected: "http-server"},
-		{Input: `{{ toKebabCase "FirstName" }}`, Expected: "first-name"},
-		{Input: `{{ toKebabCase "NoHTTPS" }}`, Expected: "no-https"},
-		{Input: `{{ toKebabCase "GO_PATH" }}`, Expected: "go-path"},
-		{Input: `{{ toKebabCase "GO PATH" }}`, Expected: "go-path"},
-		{Input: `{{ toKebabCase "GO-PATH" }}`, Expected: "go-path"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | toKebabCase }}`, ExpectedOutput: ""},
+		{Name: "TestKebabCase", Input: `{{ "foo bar" | toKebabCase }}`, ExpectedOutput: "foo-bar"},
+		{Name: "TestKebabCaseWithSpace", Input: `{{ "foo  bar" | toKebabCase }}`, ExpectedOutput: "foo-bar"},
+		{Name: "TestKebabCaseWithUnderscore", Input: `{{ "foo_bar" | toKebabCase }}`, ExpectedOutput: "foo-bar"},
+		{Name: "TestKebabCaseWithHyphen", Input: `{{ "foo-bar" | toKebabCase }}`, ExpectedOutput: "foo-bar"},
+		{Name: "TestKebabCaseWithMixed", Input: `{{ "foo-bar_baz" | toKebabCase }}`, ExpectedOutput: "foo-bar-baz"},
+		{Input: `{{ toKebabCase "HTTPServer" }}`, ExpectedOutput: "http-server"},
+		{Input: `{{ toKebabCase "FirstName" }}`, ExpectedOutput: "first-name"},
+		{Input: `{{ toKebabCase "NoHTTPS" }}`, ExpectedOutput: "no-https"},
+		{Input: `{{ toKebabCase "GO_PATH" }}`, ExpectedOutput: "go-path"},
+		{Input: `{{ toKebabCase "GO PATH" }}`, ExpectedOutput: "go-path"},
+		{Input: `{{ toKebabCase "GO-PATH" }}`, ExpectedOutput: "go-path"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestToPascalCase(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | toPascalCase }}`, Expected: ""},
-		{Name: "TestPascalCase", Input: `{{ "foo bar" | toPascalCase }}`, Expected: "FooBar"},
-		{Name: "TestPascalCaseWithSpace", Input: `{{ "foo  bar" | toPascalCase }}`, Expected: "FooBar"},
-		{Name: "TestPascalCaseWithUnderscore", Input: `{{ "foo_bar" | toPascalCase }}`, Expected: "FooBar"},
-		{Name: "TestPascalCaseWithHyphen", Input: `{{ "foo-bar" | toPascalCase }}`, Expected: "FooBar"},
-		{Name: "TestPascalCaseWithMixed", Input: `{{ "foo-bar_baz" | toPascalCase }}`, Expected: "FooBarBaz"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | toPascalCase }}`, ExpectedOutput: ""},
+		{Name: "TestPascalCase", Input: `{{ "foo bar" | toPascalCase }}`, ExpectedOutput: "FooBar"},
+		{Name: "TestPascalCaseWithSpace", Input: `{{ "foo  bar" | toPascalCase }}`, ExpectedOutput: "FooBar"},
+		{Name: "TestPascalCaseWithUnderscore", Input: `{{ "foo_bar" | toPascalCase }}`, ExpectedOutput: "FooBar"},
+		{Name: "TestPascalCaseWithHyphen", Input: `{{ "foo-bar" | toPascalCase }}`, ExpectedOutput: "FooBar"},
+		{Name: "TestPascalCaseWithMixed", Input: `{{ "foo-bar_baz" | toPascalCase }}`, ExpectedOutput: "FooBarBaz"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestToDotCase(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | toDotCase }}`, Expected: ""},
-		{Name: "TestDotCase", Input: `{{ "foo bar" | toDotCase }}`, Expected: "foo.bar"},
-		{Name: "TestDotCaseWithSpace", Input: `{{ "foo  bar" | toDotCase }}`, Expected: "foo.bar"},
-		{Name: "TestDotCaseWithUnderscore", Input: `{{ "foo_bar" | toDotCase }}`, Expected: "foo.bar"},
-		{Name: "TestDotCaseWithHyphen", Input: `{{ "foo-bar" | toDotCase }}`, Expected: "foo.bar"},
-		{Name: "TestDotCaseWithMixed", Input: `{{ "foo-bar_baz" | toDotCase }}`, Expected: "foo.bar.baz"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | toDotCase }}`, ExpectedOutput: ""},
+		{Name: "TestDotCase", Input: `{{ "foo bar" | toDotCase }}`, ExpectedOutput: "foo.bar"},
+		{Name: "TestDotCaseWithSpace", Input: `{{ "foo  bar" | toDotCase }}`, ExpectedOutput: "foo.bar"},
+		{Name: "TestDotCaseWithUnderscore", Input: `{{ "foo_bar" | toDotCase }}`, ExpectedOutput: "foo.bar"},
+		{Name: "TestDotCaseWithHyphen", Input: `{{ "foo-bar" | toDotCase }}`, ExpectedOutput: "foo.bar"},
+		{Name: "TestDotCaseWithMixed", Input: `{{ "foo-bar_baz" | toDotCase }}`, ExpectedOutput: "foo.bar.baz"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestToPathCase(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | toPathCase }}`, Expected: ""},
-		{Name: "TestPathCase", Input: `{{ "foo bar" | toPathCase }}`, Expected: "foo/bar"},
-		{Name: "TestPathCaseWithSpace", Input: `{{ "foo  bar" | toPathCase }}`, Expected: "foo/bar"},
-		{Name: "TestPathCaseWithUnderscore", Input: `{{ "foo_bar" | toPathCase }}`, Expected: "foo/bar"},
-		{Name: "TestPathCaseWithHyphen", Input: `{{ "foo-bar" | toPathCase }}`, Expected: "foo/bar"},
-		{Name: "TestPathCaseWithMixed", Input: `{{ "foo-bar_baz" | toPathCase }}`, Expected: "foo/bar/baz"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | toPathCase }}`, ExpectedOutput: ""},
+		{Name: "TestPathCase", Input: `{{ "foo bar" | toPathCase }}`, ExpectedOutput: "foo/bar"},
+		{Name: "TestPathCaseWithSpace", Input: `{{ "foo  bar" | toPathCase }}`, ExpectedOutput: "foo/bar"},
+		{Name: "TestPathCaseWithUnderscore", Input: `{{ "foo_bar" | toPathCase }}`, ExpectedOutput: "foo/bar"},
+		{Name: "TestPathCaseWithHyphen", Input: `{{ "foo-bar" | toPathCase }}`, ExpectedOutput: "foo/bar"},
+		{Name: "TestPathCaseWithMixed", Input: `{{ "foo-bar_baz" | toPathCase }}`, ExpectedOutput: "foo/bar/baz"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestToConstantCase(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | toConstantCase }}`, Expected: ""},
-		{Name: "TestConstantCase", Input: `{{ "foo bar" | toConstantCase }}`, Expected: "FOO_BAR"},
-		{Name: "TestConstantCaseWithSpace", Input: `{{ "foo  bar" | toConstantCase }}`, Expected: "FOO_BAR"},
-		{Name: "TestConstantCaseWithUnderscore", Input: `{{ "foo_bar" | toConstantCase }}`, Expected: "FOO_BAR"},
-		{Name: "TestConstantCaseWithHyphen", Input: `{{ "foo-bar" | toConstantCase }}`, Expected: "FOO_BAR"},
-		{Name: "TestConstantCaseWithMixed", Input: `{{ "foo-bar_baz" | toConstantCase }}`, Expected: "FOO_BAR_BAZ"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | toConstantCase }}`, ExpectedOutput: ""},
+		{Name: "TestConstantCase", Input: `{{ "foo bar" | toConstantCase }}`, ExpectedOutput: "FOO_BAR"},
+		{Name: "TestConstantCaseWithSpace", Input: `{{ "foo  bar" | toConstantCase }}`, ExpectedOutput: "FOO_BAR"},
+		{Name: "TestConstantCaseWithUnderscore", Input: `{{ "foo_bar" | toConstantCase }}`, ExpectedOutput: "FOO_BAR"},
+		{Name: "TestConstantCaseWithHyphen", Input: `{{ "foo-bar" | toConstantCase }}`, ExpectedOutput: "FOO_BAR"},
+		{Name: "TestConstantCaseWithMixed", Input: `{{ "foo-bar_baz" | toConstantCase }}`, ExpectedOutput: "FOO_BAR_BAZ"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestToSnakeCase(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | toSnakeCase }}`, Expected: ""},
-		{Name: "TestSnakeCase", Input: `{{ "foo bar" | toSnakeCase }}`, Expected: "foo_bar"},
-		{Name: "TestSnakeCaseWithSpace", Input: `{{ "foo  bar" | toSnakeCase }}`, Expected: "foo_bar"},
-		{Name: "TestSnakeCaseWithUnderscore", Input: `{{ "foo_bar" | toSnakeCase }}`, Expected: "foo_bar"},
-		{Name: "TestSnakeCaseWithHyphen", Input: `{{ "foo-bar" | toSnakeCase }}`, Expected: "foo_bar"},
-		{Name: "TestSnakeCaseWithMixed", Input: `{{ "foo-bar_baz" | toSnakeCase }}`, Expected: "foo_bar_baz"},
-		{Input: `{{ toSnakeCase "http2xx" }}`, Expected: "http_2xx"},
-		{Input: `{{ toSnakeCase "HTTP20xOK" }}`, Expected: "http_20x_ok"},
-		{Input: `{{ toSnakeCase "Duration2m3s" }}`, Expected: "duration_2m_3s"},
-		{Input: `{{ toSnakeCase "Bld4Floor3rd" }}`, Expected: "bld_4floor_3rd"},
-		{Input: `{{ toSnakeCase "FirstName" }}`, Expected: "first_name"},
-		{Input: `{{ toSnakeCase "HTTPServer" }}`, Expected: "http_server"},
-		{Input: `{{ toSnakeCase "NoHTTPS" }}`, Expected: "no_https"},
-		{Input: `{{ toSnakeCase "GO_PATH" }}`, Expected: "go_path"},
-		{Input: `{{ toSnakeCase "GO PATH" }}`, Expected: "go_path"},
-		{Input: `{{ toSnakeCase "GO-PATH" }}`, Expected: "go_path"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | toSnakeCase }}`, ExpectedOutput: ""},
+		{Name: "TestSnakeCase", Input: `{{ "foo bar" | toSnakeCase }}`, ExpectedOutput: "foo_bar"},
+		{Name: "TestSnakeCaseWithSpace", Input: `{{ "foo  bar" | toSnakeCase }}`, ExpectedOutput: "foo_bar"},
+		{Name: "TestSnakeCaseWithUnderscore", Input: `{{ "foo_bar" | toSnakeCase }}`, ExpectedOutput: "foo_bar"},
+		{Name: "TestSnakeCaseWithHyphen", Input: `{{ "foo-bar" | toSnakeCase }}`, ExpectedOutput: "foo_bar"},
+		{Name: "TestSnakeCaseWithMixed", Input: `{{ "foo-bar_baz" | toSnakeCase }}`, ExpectedOutput: "foo_bar_baz"},
+		{Input: `{{ toSnakeCase "http2xx" }}`, ExpectedOutput: "http_2xx"},
+		{Input: `{{ toSnakeCase "HTTP20xOK" }}`, ExpectedOutput: "http_20x_ok"},
+		{Input: `{{ toSnakeCase "Duration2m3s" }}`, ExpectedOutput: "duration_2m_3s"},
+		{Input: `{{ toSnakeCase "Bld4Floor3rd" }}`, ExpectedOutput: "bld_4floor_3rd"},
+		{Input: `{{ toSnakeCase "FirstName" }}`, ExpectedOutput: "first_name"},
+		{Input: `{{ toSnakeCase "HTTPServer" }}`, ExpectedOutput: "http_server"},
+		{Input: `{{ toSnakeCase "NoHTTPS" }}`, ExpectedOutput: "no_https"},
+		{Input: `{{ toSnakeCase "GO_PATH" }}`, ExpectedOutput: "go_path"},
+		{Input: `{{ toSnakeCase "GO PATH" }}`, ExpectedOutput: "go_path"},
+		{Input: `{{ toSnakeCase "GO-PATH" }}`, ExpectedOutput: "go_path"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestToTitleCase(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | toTitleCase }}`, Expected: ""},
-		{Name: "TestTitleCase", Input: `{{ "foo bar" | toTitleCase }}`, Expected: "Foo Bar"},
-		{Name: "TestTitleCaseWithSpace", Input: `{{ "foo  bar" | toTitleCase }}`, Expected: "Foo  Bar"},
-		{Name: "TestTitleCaseWithUnderscore", Input: `{{ "foo_bar" | toTitleCase }}`, Expected: "Foo_bar"},
-		{Name: "TestTitleCaseWithHyphen", Input: `{{ "foo-bar" | toTitleCase }}`, Expected: "Foo-Bar"},
-		{Name: "TestTitleCaseWithMixed", Input: `{{ "foo-bar_baz" | toTitleCase }}`, Expected: "Foo-Bar_baz"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | toTitleCase }}`, ExpectedOutput: ""},
+		{Name: "TestTitleCase", Input: `{{ "foo bar" | toTitleCase }}`, ExpectedOutput: "Foo Bar"},
+		{Name: "TestTitleCaseWithSpace", Input: `{{ "foo  bar" | toTitleCase }}`, ExpectedOutput: "Foo  Bar"},
+		{Name: "TestTitleCaseWithUnderscore", Input: `{{ "foo_bar" | toTitleCase }}`, ExpectedOutput: "Foo_bar"},
+		{Name: "TestTitleCaseWithHyphen", Input: `{{ "foo-bar" | toTitleCase }}`, ExpectedOutput: "Foo-Bar"},
+		{Name: "TestTitleCaseWithMixed", Input: `{{ "foo-bar_baz" | toTitleCase }}`, ExpectedOutput: "Foo-Bar_baz"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestUntitle(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | untitle }}`, Expected: ""},
-		{Name: "TestUnTitle", Input: `{{ "Foo Bar" | untitle }}`, Expected: "foo bar"},
-		{Name: "TestUnTitleWithSpace", Input: `{{ "Foo  Bar" | untitle }}`, Expected: "foo  bar"},
-		{Name: "TestUnTitleWithUnderscore", Input: `{{ "Foo_bar" | untitle }}`, Expected: "foo_bar"},
-		{Name: "TestUnTitleWithHyphen", Input: `{{ "Foo-Bar" | untitle }}`, Expected: "foo-Bar"},
-		{Name: "TestUnTitleWithMixed", Input: `{{ "Foo-Bar_baz" | untitle }}`, Expected: "foo-Bar_baz"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | untitle }}`, ExpectedOutput: ""},
+		{Name: "TestUnTitle", Input: `{{ "Foo Bar" | untitle }}`, ExpectedOutput: "foo bar"},
+		{Name: "TestUnTitleWithSpace", Input: `{{ "Foo  Bar" | untitle }}`, ExpectedOutput: "foo  bar"},
+		{Name: "TestUnTitleWithUnderscore", Input: `{{ "Foo_bar" | untitle }}`, ExpectedOutput: "foo_bar"},
+		{Name: "TestUnTitleWithHyphen", Input: `{{ "Foo-Bar" | untitle }}`, ExpectedOutput: "foo-Bar"},
+		{Name: "TestUnTitleWithMixed", Input: `{{ "Foo-Bar_baz" | untitle }}`, ExpectedOutput: "foo-Bar_baz"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestSwapCase(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | swapCase }}`, Expected: ""},
-		{Name: "TestSwapCase", Input: `{{ "Foo Bar" | swapCase }}`, Expected: "fOO bAR"},
-		{Name: "TestSwapCaseWithSpace", Input: `{{ "Foo  Bar" | swapCase }}`, Expected: "fOO  bAR"},
-		{Name: "TestSwapCaseWithUnderscore", Input: `{{ "Foo_bar" | swapCase }}`, Expected: "fOO_BAR"},
-		{Name: "TestSwapCaseWithHyphen", Input: `{{ "Foo-Bar" | swapCase }}`, Expected: "fOO-bAR"},
-		{Name: "TestSwapCaseWithMixed", Input: `{{ "Foo-Bar_baz" | swapCase }}`, Expected: "fOO-bAR_BAZ"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | swapCase }}`, ExpectedOutput: ""},
+		{Name: "TestSwapCase", Input: `{{ "Foo Bar" | swapCase }}`, ExpectedOutput: "fOO bAR"},
+		{Name: "TestSwapCaseWithSpace", Input: `{{ "Foo  Bar" | swapCase }}`, ExpectedOutput: "fOO  bAR"},
+		{Name: "TestSwapCaseWithUnderscore", Input: `{{ "Foo_bar" | swapCase }}`, ExpectedOutput: "fOO_BAR"},
+		{Name: "TestSwapCaseWithHyphen", Input: `{{ "Foo-Bar" | swapCase }}`, ExpectedOutput: "fOO-bAR"},
+		{Name: "TestSwapCaseWithMixed", Input: `{{ "Foo-Bar_baz" | swapCase }}`, ExpectedOutput: "fOO-bAR_BAZ"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestCapitalize(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | capitalize }}`, Expected: ""},
-		{Name: "CapitalizeAlreadyUpper", Input: `{{ "Foo Bar" | capitalize }}`, Expected: "Foo Bar"},
-		{Name: "CapitalizeWithSpace", Input: `{{ " fe bar" | capitalize }}`, Expected: " Fe bar"},
-		{Name: "CapitalizeWithNumber", Input: `{{ "123boo_bar" | capitalize }}`, Expected: "123Boo_bar"},
-		{Name: "CapitalizeWithUnderscore", Input: `{{ "boo_bar" | capitalize }}`, Expected: "Boo_bar"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | capitalize }}`, ExpectedOutput: ""},
+		{Name: "CapitalizeAlreadyUpper", Input: `{{ "Foo Bar" | capitalize }}`, ExpectedOutput: "Foo Bar"},
+		{Name: "CapitalizeWithSpace", Input: `{{ " fe bar" | capitalize }}`, ExpectedOutput: " Fe bar"},
+		{Name: "CapitalizeWithNumber", Input: `{{ "123boo_bar" | capitalize }}`, ExpectedOutput: "123Boo_bar"},
+		{Name: "CapitalizeWithUnderscore", Input: `{{ "boo_bar" | capitalize }}`, ExpectedOutput: "Boo_bar"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestUncapitalize(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | uncapitalize }}`, Expected: ""},
-		{Name: "UncapitalizeAlreadyLower", Input: `{{ "foo bar" | uncapitalize }}`, Expected: "foo bar"},
-		{Name: "UncapitalizeWithSpace", Input: `{{ " Foo bar" | uncapitalize }}`, Expected: " foo bar"},
-		{Name: "UncapitalizeWithNumber", Input: `{{ "123Boo_bar" | uncapitalize }}`, Expected: "123boo_bar"},
-		{Name: "UncapitalizeWithUnderscore", Input: `{{ "Boo_bar" | uncapitalize }}`, Expected: "boo_bar"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | uncapitalize }}`, ExpectedOutput: ""},
+		{Name: "UncapitalizeAlreadyLower", Input: `{{ "foo bar" | uncapitalize }}`, ExpectedOutput: "foo bar"},
+		{Name: "UncapitalizeWithSpace", Input: `{{ " Foo bar" | uncapitalize }}`, ExpectedOutput: " foo bar"},
+		{Name: "UncapitalizeWithNumber", Input: `{{ "123Boo_bar" | uncapitalize }}`, ExpectedOutput: "123boo_bar"},
+		{Name: "UncapitalizeWithUnderscore", Input: `{{ "Boo_bar" | uncapitalize }}`, ExpectedOutput: "boo_bar"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestSplit(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ $v := ("" | split "-") }}{{$v._0}}`, Expected: ""},
-		{Name: "TestSplit", Input: `{{ $v := ("foo$bar$baz" | split "$") }}{{$v._0}} {{$v._1}} {{$v._2}}`, Expected: "foo bar baz"},
-		{Name: "TestSplitWithEmpty", Input: `{{ $v := ("foo$bar$" | split "$") }}{{$v._0}} {{$v._1}} {{$v._2}}`, Expected: "foo bar "},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ $v := ("" | split "-") }}{{$v._0}}`, ExpectedOutput: ""},
+		{Name: "TestSplit", Input: `{{ $v := ("foo$bar$baz" | split "$") }}{{$v._0}} {{$v._1}} {{$v._2}}`, ExpectedOutput: "foo bar baz"},
+		{Name: "TestSplitWithEmpty", Input: `{{ $v := ("foo$bar$" | split "$") }}{{$v._0}} {{$v._1}} {{$v._2}}`, ExpectedOutput: "foo bar "},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestSplitn(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ $v := ("" | splitn "-" 3) }}{{$v._0}}`, Expected: ""},
-		{Name: "TestSplit", Input: `{{ $v := ("foo$bar$baz" | splitn "$" 2) }}{{$v._0}} {{$v._1}}`, Expected: "foo bar$baz"},
-		{Name: "TestSplitWithEmpty", Input: `{{ $v := ("foo$bar$" | splitn "$" 2) }}{{$v._0}} {{$v._1}}`, Expected: "foo bar$"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ $v := ("" | splitn "-" 3) }}{{$v._0}}`, ExpectedOutput: ""},
+		{Name: "TestSplit", Input: `{{ $v := ("foo$bar$baz" | splitn "$" 2) }}{{$v._0}} {{$v._1}}`, ExpectedOutput: "foo bar$baz"},
+		{Name: "TestSplitWithEmpty", Input: `{{ $v := ("foo$bar$" | splitn "$" 2) }}{{$v._0}} {{$v._1}}`, ExpectedOutput: "foo bar$"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestSubstring(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | substr 0 3 }}`, Expected: ""},
-		{Name: "TestEmptyWithNegativeValue", Input: `{{ "" | substr -1 -4 }}`, Expected: ""},
-		{Name: "TestSubstring", Input: `{{ "foobar" | substr 0 3 }}`, Expected: "foo"},
-		{Name: "TestSubstringNegativeEnd", Input: `{{ "foobar" | substr 0 -3 }}`, Expected: "foo"},
-		{Name: "TestSubstringNegativeStart", Input: `{{ "foobar" | substr -3 6 }}`, Expected: "bar"},
-		{Name: "TestSubstringNegativeStartAndEnd", Input: `{{ "foobar" | substr -3 -1 }}`, Expected: "ba"},
-		{Name: "TestSubstringInvalidRange", Input: `{{ "foobar" | substr -3 -3 }}`, Expected: ""},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | substr 0 3 }}`, ExpectedOutput: ""},
+		{Name: "TestEmptyWithNegativeValue", Input: `{{ "" | substr -1 -4 }}`, ExpectedOutput: ""},
+		{Name: "TestSubstring", Input: `{{ "foobar" | substr 0 3 }}`, ExpectedOutput: "foo"},
+		{Name: "TestSubstringNegativeEnd", Input: `{{ "foobar" | substr 0 -3 }}`, ExpectedOutput: "foo"},
+		{Name: "TestSubstringNegativeStart", Input: `{{ "foobar" | substr -3 6 }}`, ExpectedOutput: "bar"},
+		{Name: "TestSubstringNegativeStartAndEnd", Input: `{{ "foobar" | substr -3 -1 }}`, ExpectedOutput: "ba"},
+		{Name: "TestSubstringInvalidRange", Input: `{{ "foobar" | substr -3 -3 }}`, ExpectedOutput: ""},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestIndent(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | indent 3 }}`, Expected: "   "},
-		{Name: "TestIndent", Input: `{{ "foo\nbar" | indent 3 }}`, Expected: "   foo\n   bar"},
-		{Name: "TestIndentWithSpace", Input: `{{ "foo\n bar" | indent 3 }}`, Expected: "   foo\n    bar"},
-		{Name: "TestIndentWithTab", Input: `{{ "foo\n\tbar" | indent 3 }}`, Expected: "   foo\n   \tbar"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | indent 3 }}`, ExpectedOutput: "   "},
+		{Name: "TestIndent", Input: `{{ "foo\nbar" | indent 3 }}`, ExpectedOutput: "   foo\n   bar"},
+		{Name: "TestIndentWithSpace", Input: `{{ "foo\n bar" | indent 3 }}`, ExpectedOutput: "   foo\n    bar"},
+		{Name: "TestIndentWithTab", Input: `{{ "foo\n\tbar" | indent 3 }}`, ExpectedOutput: "   foo\n   \tbar"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestNindent(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Name: "TestEmpty", Input: `{{ "" | nindent 3 }}`, Expected: "\n   "},
-		{Name: "TestIndent", Input: `{{ "foo\nbar" | nindent 3 }}`, Expected: "\n   foo\n   bar"},
-		{Name: "TestIndentWithSpace", Input: `{{ "foo\n bar" | nindent 3 }}`, Expected: "\n   foo\n    bar"},
-		{Name: "TestIndentWithTab", Input: `{{ "foo\n\tbar" | nindent 3 }}`, Expected: "\n   foo\n   \tbar"},
+	var tc = []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ "" | nindent 3 }}`, ExpectedOutput: "\n   "},
+		{Name: "TestIndent", Input: `{{ "foo\nbar" | nindent 3 }}`, ExpectedOutput: "\n   foo\n   bar"},
+		{Name: "TestIndentWithSpace", Input: `{{ "foo\n bar" | nindent 3 }}`, ExpectedOutput: "\n   foo\n    bar"},
+		{Name: "TestIndentWithTab", Input: `{{ "foo\n\tbar" | nindent 3 }}`, ExpectedOutput: "\n   foo\n   \tbar"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
 
 func TestSeq(t *testing.T) {
-	var tc = []pesticide.SafeTestCase{
-		{Input: `{{ seq 0 1 3 }}`, Expected: "0 1 2 3"},
-		{Input: `{{ seq 0 3 10 }}`, Expected: "0 3 6 9"},
-		{Input: `{{ seq 3 3 2 }}`, Expected: ""},
-		{Input: `{{ seq 3 -3 2 }}`, Expected: "3"},
-		{Input: `{{ seq }}`, Expected: ""},
-		{Input: `{{ seq 0 4 }}`, Expected: "0 1 2 3 4"},
-		{Input: `{{ seq 5 }}`, Expected: "1 2 3 4 5"},
-		{Input: `{{ seq -5 }}`, Expected: "1 0 -1 -2 -3 -4 -5"},
-		{Input: `{{ seq 0 }}`, Expected: "1 0"},
-		{Input: `{{ seq 0 1 2 3 }}`, Expected: ""},
-		{Input: `{{ seq 0 -4 }}`, Expected: "0 -1 -2 -3 -4"},
+	var tc = []pesticide.TestCase{
+		{Input: `{{ seq 0 1 3 }}`, ExpectedOutput: "0 1 2 3"},
+		{Input: `{{ seq 0 3 10 }}`, ExpectedOutput: "0 3 6 9"},
+		{Input: `{{ seq 3 3 2 }}`, ExpectedOutput: ""},
+		{Input: `{{ seq 3 -3 2 }}`, ExpectedOutput: "3"},
+		{Input: `{{ seq }}`, ExpectedOutput: ""},
+		{Input: `{{ seq 0 4 }}`, ExpectedOutput: "0 1 2 3 4"},
+		{Input: `{{ seq 5 }}`, ExpectedOutput: "1 2 3 4 5"},
+		{Input: `{{ seq -5 }}`, ExpectedOutput: "1 0 -1 -2 -3 -4 -5"},
+		{Input: `{{ seq 0 }}`, ExpectedOutput: "1 0"},
+		{Input: `{{ seq 0 1 2 3 }}`, ExpectedOutput: ""},
+		{Input: `{{ seq 0 -4 }}`, ExpectedOutput: "0 -1 -2 -3 -4"},
 	}
 
-	pesticide.RunSafeTestCases(t, strings.NewRegistry(), tc)
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
