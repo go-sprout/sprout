@@ -20,33 +20,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type SafeTestCase struct {
-	Name     string
-	Input    string
-	Expected string
-	Data     map[string]any
-}
-
 type TestCase struct {
 	Name           string
 	Input          string
 	Data           map[string]any
 	ExpectedOutput string
 	ExpectedErr    string
-}
-
-func RunSafeTestCases(t *testing.T, registry sprout.Registry, tc []SafeTestCase) {
-	t.Helper()
-
-	for _, test := range tc {
-		t.Run(test.Name, func(t *testing.T) {
-			t.Helper()
-
-			tmplResponse, err := runTemplate(t, testHandler(registry), test.Input, test.Data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.Expected, tmplResponse)
-		})
-	}
 }
 
 func RunTestCases(t *testing.T, registry sprout.Registry, tc []TestCase) {
