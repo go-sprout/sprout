@@ -3,9 +3,11 @@ package sprigin
 import (
 	htemplate "html/template"
 	"log/slog"
+	gostrings "strings"
 	ttemplate "text/template"
 
 	"github.com/go-sprout/sprout"
+	"github.com/go-sprout/sprout/internal/runtime"
 	"github.com/go-sprout/sprout/registry/backward"
 	"github.com/go-sprout/sprout/registry/checksum"
 	"github.com/go-sprout/sprout/registry/conversion"
@@ -191,6 +193,18 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 
 	sprout.AssignAliases(sh)
 	sprout.AssignNotices(sh)
+
+	// BACKWARDS COMPATIBILITY
+	// Ensure error handling is consistent with sprig functions
+	for funcName, fn := range sh.funcsMap {
+		if !gostrings.HasPrefix(funcName, "must") {
+			sh.funcsMap[funcName] = func(args ...any) (any, error) {
+				out, _ := runtime.SafeCall(fn, args...)
+				return out, nil
+			}
+		}
+	}
+	//\ BACKWARDS COMPATIBILITY
 
 	return sh.funcsMap
 }
