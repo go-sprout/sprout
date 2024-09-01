@@ -33,13 +33,13 @@ import (
 // Example:
 //
 //	{{ "Hello World" | bcrypt }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
-func (ch *CryptoRegistry) Bcrypt(input string) string {
+func (ch *CryptoRegistry) Bcrypt(input string) (string, error) {
 	hash, err := bcrypt_lib.GenerateFromPassword([]byte(input), bcrypt_lib.DefaultCost)
 	if err != nil {
-		return fmt.Sprintf("failed to encrypt string with bcrypt: %s", err)
+		return "", fmt.Errorf("failed to encrypt string with bcrypt: %s", err)
 	}
 
-	return string(hash)
+	return string(hash), nil
 }
 
 // Htpasswd generates an Htpasswd hash from the given username and password strings.
@@ -51,11 +51,15 @@ func (ch *CryptoRegistry) Bcrypt(input string) string {
 // Example:
 //
 //	{{ htpasswd "username" "password" }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
-func (ch *CryptoRegistry) Htpasswd(username string, password string) string {
+func (ch *CryptoRegistry) Htpasswd(username string, password string) (string, error) {
 	if strings.Contains(username, ":") {
-		return fmt.Sprintf("invalid username: %s", username)
+		return "", fmt.Errorf("invalid username: %s", username)
 	}
-	return fmt.Sprintf("%s:%s", username, ch.Bcrypt(password))
+	bcryptHash, err := ch.Bcrypt(password)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%s:%s", username, bcryptHash), nil
 }
 
 // DerivePassword derives a password based on the given counter, password type, password, user, and site.
@@ -70,10 +74,10 @@ func (ch *CryptoRegistry) Htpasswd(username string, password string) string {
 // Example:
 //
 //	{{ derivePassword 0 "bcrypt" "password" "user" "site" }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
-func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password, user, site string) string {
+func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password, user, site string) (string, error) {
 	var templates = passwordTypeTemplates[passwordType]
 	if templates == nil {
-		return fmt.Sprintf("cannot find password template %s", passwordType)
+		return "", fmt.Errorf("cannot find password template %s", passwordType)
 	}
 
 	var buffer bytes.Buffer
@@ -84,7 +88,7 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 	salt := buffer.Bytes()
 	key, err := scrypt.Key([]byte(password), salt, 32768, 8, 2, 64)
 	if err != nil {
-		return fmt.Sprintf("failed to derive password: %s", err)
+		return "", fmt.Errorf("failed to derive password: %s", err)
 	}
 
 	buffer.Truncate(len(masterPasswordSeed))
@@ -104,7 +108,7 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 		buffer.WriteByte(passChar)
 	}
 
-	return buffer.String()
+	return buffer.String(), nil
 }
 
 // GeneratePrivateKey generates a private key of the specified type.
@@ -115,7 +119,7 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 // Example:
 //
 //	{{ generatePrivateKey "rsa" }} // Output: "-----BEGIN RSA PRIVATE KEY-----"
-func (ch *CryptoRegistry) GeneratePrivateKey(typ string) string {
+func (ch *CryptoRegistry) GeneratePrivateKey(typ string) (string, error) {
 	var priv any
 	var err error
 	switch typ {
@@ -126,7 +130,7 @@ func (ch *CryptoRegistry) GeneratePrivateKey(typ string) string {
 		key := new(dsa.PrivateKey)
 		// again, good enough for government work
 		if err = dsa.GenerateParameters(&key.Parameters, cryptorand.Reader, dsa.L2048N256); err != nil {
-			return fmt.Sprintf("failed to generate dsa params: %s", err)
+			return "", fmt.Errorf("failed to generate dsa params: %s", err)
 		}
 		err = dsa.GenerateKey(key, cryptorand.Reader)
 		priv = key
@@ -136,13 +140,13 @@ func (ch *CryptoRegistry) GeneratePrivateKey(typ string) string {
 	case "ed25519":
 		_, priv, err = ed25519.GenerateKey(cryptorand.Reader)
 	default:
-		return "Unknown type " + typ
+		return "", fmt.Errorf("Unknown type %s", typ)
 	}
 	if err != nil {
-		return fmt.Sprintf("failed to generate private key: %s", err)
+		return "", fmt.Errorf("failed to generate private key: %s", err)
 	}
 
-	return string(pem.EncodeToMemory(ch.pemBlockForKey(priv)))
+	return string(pem.EncodeToMemory(ch.pemBlockForKey(priv))), nil
 }
 
 // BuildCustomCertificate builds a custom certificate from a base64 encoded certificate and private key.

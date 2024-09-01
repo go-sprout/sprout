@@ -41,15 +41,16 @@ func (bcr *BackwardCompatibilityRegistry) Fail(message string) (*uint, error) {
 //
 //	map[string]any - a map containing the URL components: "scheme", "host",
 //									"hostname", "path", "query", "opaque", "fragment", and "userinfo".
+//	error - an error object if the URL string is invalid.
 //
 // Example:
 //
 //	{{ "https://example.com/path?query=1#fragment" | urlParse }} // Output: map[fragment:fragment host:example.com hostname:example.com path:path query:query scheme:https]
-func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) map[string]any {
+func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) (map[string]any, error) {
 	dict := map[string]any{}
 	parsedURL, err := url.Parse(v)
 	if err != nil {
-		panic(fmt.Sprintf("unable to parse url: %s", err))
+		return dict, fmt.Errorf("unable to parse url: %s", err)
 	}
 	dict["scheme"] = parsedURL.Scheme
 	dict["host"] = parsedURL.Host
@@ -64,7 +65,7 @@ func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) map[string]any {
 		dict["userinfo"] = ""
 	}
 
-	return dict
+	return dict, nil
 }
 
 // ! DEPRECATED: This should be removed in the next major version.
@@ -78,11 +79,12 @@ func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) map[string]any {
 // Returns:
 //
 //	string - the constructed URL string.
+//	error - an error object if the URL components are invalid.
 //
 // Example:
 //
 //	{{ dict scheme="https" host="example.com" path="/path" query="query=1" opaque="opaque" fragment="fragment" | urlJoin }} // Output: "https://example.com/path?query=1#fragment"
-func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) string {
+func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) (string, error) {
 
 	resURL := url.URL{
 		Scheme:   bcr.get(d, "scheme").(string),
@@ -97,13 +99,13 @@ func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) string {
 	if userinfo != "" {
 		tempURL, err := url.Parse(fmt.Sprintf("proto://%s@host", userinfo))
 		if err != nil {
-			panic(fmt.Sprintf("unable to parse userinfo in dict: %s", err))
+			return "", fmt.Errorf("unable to parse userinfo in dict: %s", err)
 		}
 		user = tempURL.User
 	}
 
 	resURL.User = user
-	return resURL.String()
+	return resURL.String(), nil
 }
 
 // ! DEPRECATED: This should be removed in the next major version.
@@ -116,13 +118,17 @@ func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) string {
 // Returns:
 //
 //	string - a randomly selected IP address associated with the hostname.
+//	error - an error object if the hostname cannot be resolved.
 //
 // Note: This function currently lacks error handling
 //
 // Example:
 //
 //	{{ getHostByName "example.com" }} // Output: "237.84.2.178"
-func (bcr *BackwardCompatibilityRegistry) GetHostByName(name string) string {
-	addrs, _ := net.LookupHost(name)
-	return addrs[rand.Intn(len(addrs))]
+func (bcr *BackwardCompatibilityRegistry) GetHostByName(name string) (string, error) {
+	addrs, err := net.LookupHost(name)
+	if err != nil {
+		return "", fmt.Errorf("unable to resolve hostname: %s", err)
+	}
+	return addrs[rand.Intn(len(addrs))], nil
 }
