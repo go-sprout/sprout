@@ -44,18 +44,39 @@ func (sr *SlicesRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "strSlice", sr.StrSlice)
 	sprout.AddFunction(funcsMap, "until", sr.Until)
 	sprout.AddFunction(funcsMap, "untilStep", sr.UntilStep)
-	sprout.AddFunction(funcsMap, "mustAppend", sr.MustAppend)
-	sprout.AddFunction(funcsMap, "mustPrepend", sr.MustPrepend)
-	sprout.AddFunction(funcsMap, "mustChunk", sr.MustChunk)
-	sprout.AddFunction(funcsMap, "mustUniq", sr.MustUniq)
-	sprout.AddFunction(funcsMap, "mustCompact", sr.MustCompact)
-	sprout.AddFunction(funcsMap, "mustSlice", sr.MustSlice)
-	sprout.AddFunction(funcsMap, "mustHas", sr.MustHas)
-	sprout.AddFunction(funcsMap, "mustWithout", sr.MustWithout)
-	sprout.AddFunction(funcsMap, "mustRest", sr.MustRest)
-	sprout.AddFunction(funcsMap, "mustInitial", sr.MustInitial)
-	sprout.AddFunction(funcsMap, "mustFirst", sr.MustFirst)
-	sprout.AddFunction(funcsMap, "mustLast", sr.MustLast)
-	sprout.AddFunction(funcsMap, "mustReverse", sr.MustReverse)
+	return nil
+}
+
+func (sr *SlicesRegistry) RegisterAliases(aliasesMap sprout.FunctionAliasMap) error {
+	sprout.AddAlias(aliasesMap, "append", "mustAppend")
+	sprout.AddAlias(aliasesMap, "prepend", "mustPrepend")
+	sprout.AddAlias(aliasesMap, "chunk", "mustChunk")
+	sprout.AddAlias(aliasesMap, "uniq", "mustUniq")
+	sprout.AddAlias(aliasesMap, "compact", "mustCompact")
+	sprout.AddAlias(aliasesMap, "slice", "mustSlice")
+	sprout.AddAlias(aliasesMap, "has", "mustHas")
+	sprout.AddAlias(aliasesMap, "without", "mustWithout")
+	sprout.AddAlias(aliasesMap, "rest", "mustRest")
+	sprout.AddAlias(aliasesMap, "initial", "mustInitial")
+	sprout.AddAlias(aliasesMap, "first", "mustFirst")
+	sprout.AddAlias(aliasesMap, "last", "mustLast")
+	sprout.AddAlias(aliasesMap, "reverse", "mustReverse")
+	return nil
+}
+
+func (sr *SlicesRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustAppend", "please use `append` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustPrepend", "please use `prepend` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustChunk", "please use `chunk` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustUniq", "please use `uniq` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustCompact", "please use `compact` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustSlice", "please use `slice` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustHas", "please use `has` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustWithout", "please use `without` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustRest", "please use `rest` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustInitial", "please use `initial` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustFirst", "please use `first` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustLast", "please use `last` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustReverse", "please use `reverse` instead"))
 	return nil
 }

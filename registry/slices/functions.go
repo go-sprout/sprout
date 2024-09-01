@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/go-sprout/sprout/deprecated"
 	"github.com/go-sprout/sprout/internal/helpers"
 	"github.com/spf13/cast"
 )
@@ -19,478 +20,16 @@ import (
 // Returns:
 //
 //	[]any - the created list containing the provided elements.
+//	error - error placeholder for future use.
 //
 // Example:
 //
 //	{{ 1, 2, 3 | list }} // Output: [1, 2, 3]
-func (sr *SlicesRegistry) List(values ...any) []any {
-	return values
+func (sr *SlicesRegistry) List(values ...any) ([]any, error) {
+	return values, nil
 }
 
-// Append adds an element to the end of the list.
-//
-// Parameters:
-//
-//	list any - the original list to append to.
-//	v any - the element to append.
-//
-// Returns:
-//
-//	[]any - the new list with the element appended.
-//
-// Example:
-//
-//	{{ append ["a", "b"], "c" }} // Output: ["a", "b", "c"]
-func (sr *SlicesRegistry) Append(list any, v any) []any {
-	result, err := sr.MustAppend(list, v)
-	if err != nil {
-		return []any{}
-		// panic(err)
-	}
-
-	return result
-}
-
-// Prepend adds an element to the beginning of the list.
-//
-// Parameters:
-//
-//	list any - the original list to prepend to.
-//	v any - the element to prepend.
-//
-// Returns:
-//
-//	[]any - the new list with the element prepended.
-//
-// Example:
-//
-//	{{ prepend  ["b", "c"], "a" }} // Output: ["a", "b", "c"]
-func (sr *SlicesRegistry) Prepend(list any, v any) []any {
-	result, err := sr.MustPrepend(list, v)
-	if err != nil {
-		return []any{}
-		// panic(err)
-	}
-
-	return result
-}
-
-// Concat merges multiple lists into a single list.
-//
-// Parameters:
-//
-//	lists ...any - the lists to concatenate.
-//
-// Returns:
-//
-//	any - a single concatenated list containing elements from all provided lists.
-//
-// Example:
-//
-//	{{ ["c", "d"] | concat ["a", "b"] }} // Output: ["a", "b", "c", "d"]
-func (sr *SlicesRegistry) Concat(lists ...any) any {
-	// Estimate the total length to preallocate the result slice
-	var totalLen int
-	for _, list := range lists {
-		if list == nil {
-			continue
-		}
-
-		tp := reflect.TypeOf(list).Kind()
-		if tp == reflect.Slice || tp == reflect.Array {
-			totalLen += reflect.ValueOf(list).Len()
-		}
-	}
-
-	// Preallocate the result slice
-	res := make([]any, 0, totalLen)
-
-	for _, list := range lists {
-		if list == nil {
-			continue
-		}
-
-		tp := reflect.TypeOf(list).Kind()
-		if tp == reflect.Slice || tp == reflect.Array {
-			valueOfList := reflect.ValueOf(list)
-			for i := 0; i < valueOfList.Len(); i++ {
-				res = append(res, valueOfList.Index(i).Interface())
-			}
-		}
-	}
-
-	return res
-}
-
-// Chunk divides a list into chunks of specified size.
-//
-// Parameters:
-//
-//	size int - the size of each chunk.
-//	list any - the list to divide.
-//
-// Returns:
-//
-//	[][]any - a list of chunks.
-//
-// Example:
-//
-//	{{ chunk 2, ["a", "b", "c", "d"] }} // Output: [["a", "b"], ["c", "d"]]
-func (sr *SlicesRegistry) Chunk(size int, list any) [][]any {
-	result, err := sr.MustChunk(size, list)
-	if err != nil {
-		return [][]any{}
-		// panic(err)
-	}
-
-	return result
-}
-
-// Uniq removes duplicate elements from a list.
-//
-// Parameters:
-//
-//	list any - the list from which to remove duplicates.
-//
-// Returns:
-//
-//	[]any - a list containing only unique elements.
-//
-// Example:
-//
-//	{{ ["a", "b", "a", "c"] | uniq }} // Output: ["a", "b", "c"]
-func (sr *SlicesRegistry) Uniq(list any) []any {
-	result, err := sr.MustUniq(list)
-	if err != nil {
-		return []any{}
-		// panic(err)
-	}
-
-	return result
-}
-
-// Compact removes nil and zero-value elements from a list.
-//
-// Parameters:
-//
-//	list any - the list to compact.
-//
-// Returns:
-//
-//	[]any - the list without nil or zero-value elements.
-//
-// Example:
-//
-//	{{ [0, 1, nil, 2, "", 3] | compact }} // Output: [1, 2, 3]
-func (sr *SlicesRegistry) Compact(list any) []any {
-	result, err := sr.MustCompact(list)
-	if err != nil {
-		return []any{}
-		// panic(err)
-	}
-
-	return result
-}
-
-// Slice extracts a slice from a list between two indices.
-//
-// Parameters:
-//
-//	list any - the list to slice.
-//	indices ...any - the start and optional end indices; if end is omitted,
-//
-// slices to the end.
-//
-// Returns:
-//
-//	any - the sliced part of the list.
-//
-// Example:
-//
-//	{{ slice [1, 2, 3, 4, 5], 1, 3 }} // Output: [2, 3]
-func (sr *SlicesRegistry) Slice(list any, indices ...any) any {
-	result, err := sr.MustSlice(list, indices...)
-	if err != nil {
-		return []any{}
-		// panic(err)
-	}
-
-	return result
-}
-
-// Has checks if the specified element is present in the collection.
-//
-// Parameters:
-//
-//	element any - the element to search for.
-//	list any - the collection to search.
-//
-// Returns:
-//
-//	bool - true if the element is found, otherwise false.
-//
-// Example:
-//
-//	{{ ["value", "other"] | has "value" }} // Output: true
-func (sr *SlicesRegistry) Has(element any, list any) bool {
-	result, _ := sr.MustHas(element, list)
-	return result
-}
-
-// Without returns a new list excluding specified elements.
-//
-// Parameters:
-//
-//	list any - the original list.
-//	omit ...any - elements to exclude from the new list.
-//
-// Returns:
-//
-//	[]any - the list excluding the specified elements.
-//
-// Example:
-//
-//	{{ without [1, 2, 3, 4], 2, 4 }} // Output: [1, 3]
-func (sr *SlicesRegistry) Without(list any, omit ...any) []any {
-	result, err := sr.MustWithout(list, omit...)
-	if err != nil {
-		return []any{}
-		// panic(err)
-	}
-
-	return result
-}
-
-// Rest returns all elements of a list except the first.
-//
-// Parameters:
-//
-//	list any - the list to process.
-//
-// Returns:
-//
-//	[]any - the list without the first element.
-//
-// Example:
-//
-//	{{ [1, 2, 3, 4] | rest }} // Output: [2, 3, 4]
-func (sr *SlicesRegistry) Rest(list any) []any {
-	result, err := sr.MustRest(list)
-	if err != nil {
-		return []any{}
-		// panic(err)
-	}
-
-	return result
-}
-
-// Initial returns all elements of a list except the last.
-//
-// Parameters:
-//
-//	list any - the list to process.
-//
-// Returns:
-//
-//	[]any - the list without the last element.
-//
-// Example:
-//
-//	{{ [1, 2, 3, 4] | initial }} // Output: [1, 2, 3]
-func (sr *SlicesRegistry) Initial(list any) []any {
-	result, err := sr.MustInitial(list)
-	if err != nil {
-		return []any{}
-		// panic(err)
-	}
-
-	return result
-}
-
-// First returns the first element of a list.
-//
-// Parameters:
-//
-//	list any - the list from which to take the first element.
-//
-// Returns:
-//
-//	any - the first element of the list.
-//
-// Example:
-//
-//	{{ [1, 2, 3, 4] | first }} // Output: 1
-func (sr *SlicesRegistry) First(list any) any {
-	result, err := sr.MustFirst(list)
-	if err != nil {
-		return nil
-		// panic(err)
-	}
-
-	return result
-}
-
-// Last returns the last element of a list.
-//
-// Parameters:
-//
-//	list any - the list from which to take the last element.
-//
-// Returns:
-//
-//	any - the last element of the list.
-//
-// Example:
-//
-//	{{ [1, 2, 3, 4] | last }} // Output: 4
-func (sr *SlicesRegistry) Last(list any) any {
-	result, err := sr.MustLast(list)
-	if err != nil {
-		return nil
-		// panic(err)
-	}
-
-	return result
-}
-
-// Reverse returns a new list with the elements in reverse order.
-//
-// Parameters:
-//
-//	list any - the list to reverse.
-//
-// Returns:
-//
-//	[]any - the list in reverse order.
-//
-// Example:
-//
-//	{{ [1, 2, 3, 4] | reverse }} // Output: [4, 3, 2, 1]
-func (sr *SlicesRegistry) Reverse(list any) []any {
-	result, err := sr.MustReverse(list)
-	if err != nil {
-		return []any{}
-		// panic(err)
-	}
-
-	return result
-}
-
-// SortAlpha sorts a list of strings in alphabetical order.
-//
-// Parameters:
-//
-//	list any - the list of strings to sort.
-//
-// Returns:
-//
-//	[]string - the sorted list.
-//
-// Example:
-//
-//	{{ ["d", "b", "a", "c"] | sortAlpha }} // Output: ["a", "b", "c", "d"]
-func (sr *SlicesRegistry) SortAlpha(list any) []string {
-	kind := reflect.Indirect(reflect.ValueOf(list)).Kind()
-	switch kind {
-	case reflect.Slice, reflect.Array:
-		strList := sr.StrSlice(list)
-		sort.Strings(strList)
-		return strList
-	}
-
-	return []string{helpers.ToString(list)}
-}
-
-// SplitList divides a string into a slice of substrings separated by the
-// specified separator.
-//
-// ! FUTURE: Rename this function to be more explicit
-//
-// Parameters:
-//
-//	sep string - the delimiter used to split the string.
-//	str string - the string to split.
-//
-// Returns:
-//
-//	[]string - a slice containing the substrings obtained from splitting the input string.
-//
-// Example:
-//
-//	{{ "one, two, three" | splitList ", " }} // Output: ["one", "two", "three"]
-func (sr *SlicesRegistry) SplitList(sep string, str string) []string {
-	return strings.Split(str, sep)
-}
-
-// StrSlice converts a value to a slice of strings, handling various types
-// including []string, []any, and other slice types.
-//
-// Parameters:
-//
-//	value any - the value to convert to a slice of strings.
-//
-// Returns:
-//
-//	[]string - the converted slice of strings.
-//
-// Example:
-//
-//	{{ strSlice any["a", "b", "c"] }} // Output: ["a", "b", "c"]
-func (sr *SlicesRegistry) StrSlice(value any) []string {
-	return helpers.StrSlice(value)
-}
-
-// Until generates a slice of integers from 0 up to but not including 'count'.
-// If 'count' is negative, it produces a descending slice from 0 down to 'count',
-// inclusive, with a step of -1. The function leverages UntilStep to specify
-// the range and step dynamically.
-//
-// Parameters:
-//   count int - the endpoint (exclusive) of the range to generate.
-//
-// Returns:
-//   []int - a slice of integers from 0 to 'count' with the appropriate step
-//           depending on whether 'count' is positive or negative.
-//
-// Example:
-//   {{ 5 | until }} // Output: [0 1 2 3 4]
-//   {{ -3 | until }} // Output: [0 -1 -2]
-
-func (sr *SlicesRegistry) Until(count int) []int {
-	step := 1
-	if count < 0 {
-		step = -1
-	}
-	return sr.UntilStep(0, count, step)
-}
-
-// UntilStep generates a slice of integers from 'start' to 'stop' (exclusive),
-// incrementing by 'step'. If 'step' is positive, the sequence increases; if
-// negative, it decreases. The function returns an empty slice if the sequence
-// does not make logical sense (e.g., positive step when start is greater than
-// stop or vice versa).
-//
-// Parameters:
-//
-//	start int - the starting point of the sequence.
-//	stop int - the endpoint (exclusive) of the sequence.
-//	step int - the increment between elements in the sequence.
-//
-// Returns:
-//
-//	[]int - a dynamically generated slice of integers based on the input
-//	        parameters, or an empty slice if the parameters are inconsistent
-//	        with the desired range and step.
-//
-// Example:
-//
-//	{{ 0, 10, 2 | untilStep }} // Output: [0 2 4 6 8]
-//	{{ 10, 0, -2 | untilStep }} // Output: [10 8 6 4 2]
-func (sr *SlicesRegistry) UntilStep(start, stop, step int) []int {
-	return helpers.UntilStep(start, stop, step)
-}
-
-// MustAppend appends an element to a slice or array, returning an error if the
+// Append appends an element to a slice or array, returning an error if the
 // operation isn't applicable.
 //
 // Parameters:
@@ -505,8 +44,29 @@ func (sr *SlicesRegistry) UntilStep(start, stop, step int) []int {
 //
 // Example:
 //
-//	{{ mustAppend ["a", "b"], "c"  }} // Output: ["a", "b", "c"], nil
-func (sr *SlicesRegistry) MustAppend(list any, v any) ([]any, error) {
+//	{{ ["a", "b"] | append "c"  }} // Output: ["a", "b", "c"], nil
+func (sr *SlicesRegistry) Append(args ...any) ([]any, error) {
+	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	//! Due to change in signature, this function still supports the old signature
+	//! to let users transition to the new signature.
+	//* Old signature: Append(list any, v any)
+	//* New signature: Append(v any, list any)
+	if len(args) != 2 {
+		return []any{}, deprecated.ErrArgsCount(2, len(args))
+	}
+
+	switch reflect.ValueOf(args[0]).Kind() {
+	case reflect.Array, reflect.Slice, reflect.Invalid:
+		// Old signature
+		deprecated.SignatureWarn(sr.handler.Logger(), "append", "{{ append list v }}", "{{ list | append v }}")
+		return sr.Append(append(args[1:], args[0])...)
+	}
+
+	// New signature
+	list := args[1]
+	v := args[0]
+	// ! END OF BACKWARDS COMPATIBILITY
+
 	if list == nil {
 		return nil, fmt.Errorf("cannot append to nil")
 	}
@@ -539,7 +99,7 @@ func (sr *SlicesRegistry) MustAppend(list any, v any) ([]any, error) {
 	}
 }
 
-// MustPrepend prepends an element to a slice or array, returning an error if
+// Prepend prepends an element to a slice or array, returning an error if
 // the operation isn't applicable.
 //
 // Parameters:
@@ -554,8 +114,29 @@ func (sr *SlicesRegistry) MustAppend(list any, v any) ([]any, error) {
 //
 // Example:
 //
-//	{{ mustPrepend ["b", "c"], "a" }} // Output: ["a", "b", "c"], nil
-func (sr *SlicesRegistry) MustPrepend(list any, v any) ([]any, error) {
+//	{{ ["b", "c"] | prepend "a" }} // Output: ["a", "b", "c"], nil
+func (sr *SlicesRegistry) Prepend(args ...any) ([]any, error) {
+	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	//! Due to change in signature, this function still supports the old signature
+	//! to let users transition to the new signature.
+	//* Old signature: Prepend(list any, v any)
+	//* New signature: Prepend(v any, list any)
+	if len(args) != 2 {
+		return []any{}, deprecated.ErrArgsCount(2, len(args))
+	}
+
+	switch reflect.ValueOf(args[0]).Kind() {
+	case reflect.Array, reflect.Slice, reflect.Invalid:
+		// Old signature
+		deprecated.SignatureWarn(sr.handler.Logger(), "prepend", "{{ prepend list v }}", "{{ list | prepend v }}")
+		return sr.Prepend(append(args[1:], args[0])...)
+	}
+
+	// New signature
+	list := args[1]
+	v := args[0]
+	// ! END OF BACKWARDS COMPATIBILITY
+
 	if list == nil {
 		return nil, fmt.Errorf("cannot prepend to nil")
 	}
@@ -577,7 +158,55 @@ func (sr *SlicesRegistry) MustPrepend(list any, v any) ([]any, error) {
 	}
 }
 
-// MustChunk divides a list into chunks of specified size, returning an error
+// Concat merges multiple lists into a single list.
+//
+// Parameters:
+//
+//	lists ...any - the lists to concatenate.
+//
+// Returns:
+//
+//	any - a single concatenated list containing elements from all provided lists.
+//	error - error placeholder for future use.
+//
+// Example:
+//
+//	{{ ["c", "d"] | concat ["a", "b"] }} // Output: ["a", "b", "c", "d"]
+func (sr *SlicesRegistry) Concat(lists ...any) (any, error) {
+	// Estimate the total length to preallocate the result slice
+	var totalLen int
+	for _, list := range lists {
+		if list == nil {
+			continue
+		}
+
+		tp := reflect.TypeOf(list).Kind()
+		if tp == reflect.Slice || tp == reflect.Array {
+			totalLen += reflect.ValueOf(list).Len()
+		}
+	}
+
+	// Preallocate the result slice
+	res := make([]any, 0, totalLen)
+
+	for _, list := range lists {
+		if list == nil {
+			continue
+		}
+
+		tp := reflect.TypeOf(list).Kind()
+		if tp == reflect.Slice || tp == reflect.Array {
+			valueOfList := reflect.ValueOf(list)
+			for i := 0; i < valueOfList.Len(); i++ {
+				res = append(res, valueOfList.Index(i).Interface())
+			}
+		}
+	}
+
+	return res, nil
+}
+
+// Chunk divides a list into chunks of specified size, returning an error
 // if the list is nil or not a slice/array.
 //
 // Parameters:
@@ -592,8 +221,8 @@ func (sr *SlicesRegistry) MustPrepend(list any, v any) ([]any, error) {
 //
 // Example:
 //
-//	{{ ["a", "b", "c", "d"] | mustChunk 2 }} // Output: [["a", "b"], ["c", "d"]], nil
-func (sr *SlicesRegistry) MustChunk(size int, list any) ([][]any, error) {
+//	{{ ["a", "b", "c", "d"] | chunk 2 }} // Output: [["a", "b"], ["c", "d"]], nil
+func (sr *SlicesRegistry) Chunk(size int, list any) ([][]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot chunk nil")
 	}
@@ -630,7 +259,7 @@ func (sr *SlicesRegistry) MustChunk(size int, list any) ([][]any, error) {
 	}
 }
 
-// MustUniq returns a new slice containing unique elements of the given list,
+// Uniq returns a new slice containing unique elements of the given list,
 // preserving order.
 //
 // Parameters:
@@ -644,8 +273,8 @@ func (sr *SlicesRegistry) MustChunk(size int, list any) ([][]any, error) {
 //
 // Example:
 //
-//	{{ ["a", "b", "a", "c"] | mustUniq }} // Output: ["a", "b", "c"], nil
-func (sr *SlicesRegistry) MustUniq(list any) ([]any, error) {
+//	{{ ["a", "b", "a", "c"] | uniq }} // Output: ["a", "b", "c"], nil
+func (sr *SlicesRegistry) Uniq(list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot uniq nil")
 	}
@@ -676,7 +305,7 @@ func (sr *SlicesRegistry) MustUniq(list any) ([]any, error) {
 	}
 }
 
-// MustCompact removes nil or zero-value elements from a list.
+// Compact removes nil or zero-value elements from a list.
 //
 // Parameters:
 //
@@ -689,8 +318,8 @@ func (sr *SlicesRegistry) MustUniq(list any) ([]any, error) {
 //
 // Example:
 //
-//	{{ [0, 1, nil, 2, "", 3] | mustCompact }} // Output: [1, 2, 3], nil
-func (sr *SlicesRegistry) MustCompact(list any) ([]any, error) {
+//	{{ [0, 1, nil, 2, "", 3] | compact }} // Output: [1, 2, 3], nil
+func (sr *SlicesRegistry) Compact(list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot compact nil")
 	}
@@ -716,7 +345,7 @@ func (sr *SlicesRegistry) MustCompact(list any) ([]any, error) {
 	}
 }
 
-// MustSlice extracts a slice from a list between two indices.
+// Slice extracts a slice from a list between two indices.
 //
 // Parameters:
 //
@@ -732,8 +361,33 @@ func (sr *SlicesRegistry) MustCompact(list any) ([]any, error) {
 //
 // Example:
 //
-//	{{ mustSlice [1, 2, 3, 4, 5], 1, 3 }} // Output: [2, 3], nil
-func (sr *SlicesRegistry) MustSlice(list any, indices ...any) (any, error) {
+//	{{ [1, 2, 3, 4, 5] | slice 1, 3 }} // Output: [2, 3], nil
+func (sr *SlicesRegistry) Slice(args ...any) (any, error) {
+	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	//! Due to change in signature, this function still supports the old signature
+	//! to let users transition to the new signature.
+	//* Old signature: Slice(list any, indices ...any)
+	//* New signature: Slice(indices ...any, list any)
+	if len(args) < 1 {
+		return []any{}, deprecated.ErrArgsCount(2, len(args))
+	}
+
+	if len(args) == 1 {
+		return args[0], nil
+	}
+
+	switch reflect.ValueOf(args[0]).Kind() {
+	case reflect.Array, reflect.Slice, reflect.Invalid:
+		// Old signature
+		deprecated.SignatureWarn(sr.handler.Logger(), "slice", "{{ slice list 1 2 }}", "{{ list | slice 1 2 }}")
+		return sr.Slice(append(args[1:], args[0])...)
+	}
+
+	// New signature
+	list := args[len(args)-1]
+	indices := args[:len(args)-1]
+	// ! END OF BACKWARDS COMPATIBILITY
+
 	if list == nil {
 		return nil, fmt.Errorf("cannot slice nil")
 	}
@@ -768,11 +422,11 @@ func (sr *SlicesRegistry) MustSlice(list any, indices ...any) (any, error) {
 
 		return valueOfList.Slice(start, end).Interface(), nil
 	default:
-		return nil, fmt.Errorf("list should be type of slice or array but %s", tp)
+		return nil, fmt.Errorf("last argument must be a slice but got %T", args[len(args)-1])
 	}
 }
 
-// MustHas checks if a specified element is present in a collection and handles
+// Has checks if a specified element is present in a collection and handles
 // type errors.
 //
 // Parameters:
@@ -787,8 +441,8 @@ func (sr *SlicesRegistry) MustSlice(list any, indices ...any) (any, error) {
 //
 // Example:
 //
-//	{{ [1, 2, 3, 4] | mustHas 3 }} // Output: true, nil
-func (sr *SlicesRegistry) MustHas(element any, list any) (bool, error) {
+//	{{ [1, 2, 3, 4] | has 3 }} // Output: true, nil
+func (sr *SlicesRegistry) Has(element any, list any) (bool, error) {
 	if list == nil {
 		return false, nil
 	}
@@ -812,7 +466,7 @@ func (sr *SlicesRegistry) MustHas(element any, list any) (bool, error) {
 	}
 }
 
-// MustWithout returns a new list excluding specified elements.
+// Without returns a new list excluding specified elements.
 //
 // Parameters:
 //
@@ -826,8 +480,29 @@ func (sr *SlicesRegistry) MustHas(element any, list any) (bool, error) {
 //
 // Example:
 //
-//	{{ mustWithout [1, 2, 3, 4], 2, 4 }} // Output: [1, 3], nil
-func (sr *SlicesRegistry) MustWithout(list any, omit ...any) ([]any, error) {
+//	{{ [1, 2, 3, 4] | without 2, 4 }} // Output: [1, 3], nil
+func (sr *SlicesRegistry) Without(args ...any) ([]any, error) {
+	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	//! Due to change in signature, this function still supports the old signature
+	//! to let users transition to the new signature.
+	//* Old signature: Without(list any, omit ...any)
+	//* New signature: Without(omit ...any, list any)
+	if len(args) < 2 {
+		return []any{}, deprecated.ErrArgsCount(2, len(args))
+	}
+
+	switch reflect.ValueOf(args[0]).Kind() {
+	case reflect.Array, reflect.Slice, reflect.Invalid:
+		// Old signature
+		deprecated.SignatureWarn(sr.handler.Logger(), "without", "{{ without list 1 2 }}", "{{ list | without 1 2 }}")
+		return sr.Without(append(args[1:], args[0])...)
+	}
+
+	// New signature
+	list := args[len(args)-1]
+	omit := args[:len(args)-1]
+	// ! END OF BACKWARDS COMPATIBILITY
+
 	if list == nil {
 		return nil, fmt.Errorf("cannot without nil")
 	}
@@ -856,11 +531,11 @@ func (sr *SlicesRegistry) MustWithout(list any, omit ...any) ([]any, error) {
 
 		return result, nil
 	default:
-		return nil, fmt.Errorf("cannot find without on type %s", tp)
+		return nil, fmt.Errorf("last argument must be a slice but got %T", args[len(args)-1])
 	}
 }
 
-// MustRest returns all elements of a list except the first.
+// Rest returns all elements of a list except the first.
 //
 // Parameters:
 //
@@ -873,8 +548,8 @@ func (sr *SlicesRegistry) MustWithout(list any, omit ...any) ([]any, error) {
 //
 // Example:
 //
-//	{{ [1, 2, 3, 4] | mustRest }} // Output: [2, 3, 4], nil
-func (sr *SlicesRegistry) MustRest(list any) ([]any, error) {
+//	{{ [1, 2, 3, 4] | rest }} // Output: [2, 3, 4], nil
+func (sr *SlicesRegistry) Rest(list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot rest nil")
 	}
@@ -900,7 +575,7 @@ func (sr *SlicesRegistry) MustRest(list any) ([]any, error) {
 	}
 }
 
-// MustInitial returns all elements of a list except the last.
+// Initial returns all elements of a list except the last.
 //
 // Parameters:
 //
@@ -913,8 +588,8 @@ func (sr *SlicesRegistry) MustRest(list any) ([]any, error) {
 //
 // Example:
 //
-//	{{ [1, 2, 3, 4] | mustInitial }} // Output: [1, 2, 3], nil
-func (sr *SlicesRegistry) MustInitial(list any) ([]any, error) {
+//	{{ [1, 2, 3, 4] | initial }} // Output: [1, 2, 3], nil
+func (sr *SlicesRegistry) Initial(list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot initial nil")
 	}
@@ -940,7 +615,7 @@ func (sr *SlicesRegistry) MustInitial(list any) ([]any, error) {
 	}
 }
 
-// MustFirst returns the first element of a list.
+// First returns the first element of a list.
 //
 // Parameters:
 //
@@ -953,8 +628,8 @@ func (sr *SlicesRegistry) MustInitial(list any) ([]any, error) {
 //
 // Example:
 //
-//	{{ [1, 2, 3, 4] | mustFirst }} // Output: 1, nil
-func (sr *SlicesRegistry) MustFirst(list any) (any, error) {
+//	{{ [1, 2, 3, 4] | first }} // Output: 1, nil
+func (sr *SlicesRegistry) First(list any) (any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot first nil")
 	}
@@ -975,7 +650,7 @@ func (sr *SlicesRegistry) MustFirst(list any) (any, error) {
 	}
 }
 
-// MustLast returns the last element of a list.
+// Last returns the last element of a list.
 //
 // Parameters:
 //
@@ -988,8 +663,8 @@ func (sr *SlicesRegistry) MustFirst(list any) (any, error) {
 //
 // Example:
 //
-//	{{ [1, 2, 3, 4] | mustLast }} // Output: 4, nil
-func (sr *SlicesRegistry) MustLast(list any) (any, error) {
+//	{{ [1, 2, 3, 4] | last }} // Output: 4, nil
+func (sr *SlicesRegistry) Last(list any) (any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot last nil")
 	}
@@ -1010,7 +685,7 @@ func (sr *SlicesRegistry) MustLast(list any) (any, error) {
 	}
 }
 
-// MustReverse returns a new list with the elements in reverse order.
+// Reverse returns a new list with the elements in reverse order.
 //
 // Parameters:
 //
@@ -1023,8 +698,8 @@ func (sr *SlicesRegistry) MustLast(list any) (any, error) {
 //
 // Example:
 //
-//	{{ [1, 2, 3, 4] | mustReverse }} // Output: [4, 3, 2, 1], nil
-func (sr *SlicesRegistry) MustReverse(list any) ([]any, error) {
+//	{{ [1, 2, 3, 4] | reverse }} // Output: [4, 3, 2, 1], nil
+func (sr *SlicesRegistry) Reverse(list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot reverse nil")
 	}
@@ -1046,4 +721,126 @@ func (sr *SlicesRegistry) MustReverse(list any) ([]any, error) {
 	default:
 		return nil, fmt.Errorf("cannot find reverse on type %s", tp)
 	}
+}
+
+// SortAlpha sorts a list of strings in alphabetical order.
+//
+// Parameters:
+//
+//	list any - the list of strings to sort.
+//
+// Returns:
+//
+//	[]string - the sorted list.
+//	error - error placeholder for future use.
+//
+// Example:
+//
+//	{{ ["d", "b", "a", "c"] | sortAlpha }} // Output: ["a", "b", "c", "d"]
+func (sr *SlicesRegistry) SortAlpha(list any) ([]string, error) {
+	kind := reflect.Indirect(reflect.ValueOf(list)).Kind()
+	switch kind {
+	case reflect.Slice, reflect.Array:
+		strList, err := sr.StrSlice(list)
+		if err != nil {
+			return nil, err
+		}
+		sort.Strings(strList)
+		return strList, nil
+	}
+
+	return []string{helpers.ToString(list)}, nil
+}
+
+// SplitList divides a string into a slice of substrings separated by the
+// specified separator.
+//
+// ! FUTURE: Rename this function to be more explicit
+//
+// Parameters:
+//
+//	sep string - the delimiter used to split the string.
+//	str string - the string to split.
+//
+// Returns:
+//
+//	[]string - a slice containing the substrings obtained from splitting the input string.
+//	error - error placeholder for future use.
+//
+// Example:
+//
+//	{{ "one, two, three" | splitList ", " }} // Output: ["one", "two", "three"]
+func (sr *SlicesRegistry) SplitList(sep string, str string) ([]string, error) {
+	return strings.Split(str, sep), nil
+}
+
+// StrSlice converts a value to a slice of strings, handling various types
+// including []string, []any, and other slice types.
+//
+// Parameters:
+//
+//	value any - the value to convert to a slice of strings.
+//
+// Returns:
+//
+//	[]string - the converted slice of strings.
+//	error - error placeholder for future use.
+//
+// Example:
+//
+//	{{ strSlice any["a", "b", "c"] }} // Output: ["a", "b", "c"]
+func (sr *SlicesRegistry) StrSlice(value any) ([]string, error) {
+	return helpers.StrSlice(value), nil
+}
+
+// Until generates a slice of integers from 0 up to but not including 'count'.
+// If 'count' is negative, it produces a descending slice from 0 down to 'count',
+// inclusive, with a step of -1. The function leverages UntilStep to specify
+// the range and step dynamically.
+//
+// Parameters:
+//   count int - the endpoint (exclusive) of the range to generate.
+//
+// Returns:
+//   []int - a slice of integers from 0 to 'count' with the appropriate step
+//           depending on whether 'count' is positive or negative.
+//	error - error placeholder for future use.
+//
+// Example:
+//   {{ 5 | until }} // Output: [0 1 2 3 4]
+//   {{ -3 | until }} // Output: [0 -1 -2]
+
+func (sr *SlicesRegistry) Until(count int) ([]int, error) {
+	step := 1
+	if count < 0 {
+		step = -1
+	}
+	return sr.UntilStep(0, count, step)
+}
+
+// UntilStep generates a slice of integers from 'start' to 'stop' (exclusive),
+// incrementing by 'step'. If 'step' is positive, the sequence increases; if
+// negative, it decreases. The function returns an empty slice if the sequence
+// does not make logical sense (e.g., positive step when start is greater than
+// stop or vice versa).
+//
+// Parameters:
+//
+//	start int - the starting point of the sequence.
+//	stop int - the endpoint (exclusive) of the sequence.
+//	step int - the increment between elements in the sequence.
+//
+// Returns:
+//
+//	[]int - a dynamically generated slice of integers based on the input
+//	        parameters, or an empty slice if the parameters are inconsistent
+//	        with the desired range and step.
+//	error - error placeholder for future use.
+//
+// Example:
+//
+//	{{ 0, 10, 2 | untilStep }} // Output: [0 2 4 6 8]
+//	{{ 10, 0, -2 | untilStep }} // Output: [10 8 6 4 2]
+func (sr *SlicesRegistry) UntilStep(start, stop, step int) ([]int, error) {
+	return helpers.UntilStep(start, stop, step), nil
 }
