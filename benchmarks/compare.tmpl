@@ -41,7 +41,7 @@ this is because the output of the function is fixed in Sprout due to bugs not fi
 [CODE_000041]    {{$v := toString .int }}{{typeOf $v}}-{{$v}}
 [CODE_000042]    {{$v := toString .float }}{{typeOf $v}}-{{$v}}
 [CODE_000043]    {{$v := toString .bool }}{{typeOf $v}}-{{$v}}
-[CODE_000044]    {{$v := toString .objectrray }}{{typeOf $v}}-{{$v}}
+[CODE_000044]    {{$v := toString .array }}{{typeOf $v}}-{{$v}}
 [CODE_000045]    {{$v := toString .time }}{{typeOf $v}}-{{$v}}
 [CODE_000046]    {{$v := toString .duration }}{{typeOf $v}}-{{$v}}
 [CODE_000047]    {{$v := toString .object }}{{typeOf $v}}-{{$v}}
@@ -335,7 +335,7 @@ this is because the output of the function is fixed in Sprout due to bugs not fi
 [CODE_000335]    {{ .array | mustHas "foo" }}
 [CODE_000336]    {{ .array | mustHas "a" }}
 [CODE_000337]    {{ .array | mustHas 1 }}
-[CODE_000338]    {{ .array | mustHas .Nil }}
+[CODE_000338]    {{ .array | mustHas .nil }}
 [CODE_000339]    {{ .array | mustHas "nope" }}
 [CODE_000340]    {{ .array | mustHas 1 }}
 [CODE_000341]    {{ mustWithout .array "a" }}
@@ -609,12 +609,11 @@ this is because the output of the function is fixed in Sprout due to bugs not fi
 [CODE_000609]    {{ .time | dateModify "-1h" | date "02 Jan 06 15:04 -0700" }}
 [CODE_000610]    {{ .time | dateModify "10m" | date "02 Jan 06 15:04 -0700" }}
 [CODE_000611]    {{ .time | dateModify "-10s" | date "02 Jan 06 15:04 -0700" }}
-[CODE_000612]    {{ .time | dateModify "zz" | date "02 Jan 06 15:04 -0700" }}
-[CODE_000613]    {{ .duration | duration | durationRound }}
-[CODE_000614]    {{ .time | htmlDate }}
-[CODE_000615]    {{ htmlDateInZone .time "UTC" }}
-[CODE_000616]    {{ .time | mustDateModify "1h" | date "02 Jan 06 15:04 -0700" }}
-[CODE_000617]    {{ .time | mustDateModify "+1h" | date "02 Jan 06 15:04 -0700" }}
-[CODE_000618]    {{ .time | mustDateModify "-1h" | date "02 Jan 06 15:04 -0700" }}
-[CODE_000619]    {{ .time | mustDateModify "10m" | date "02 Jan 06 15:04 -0700" }}
-[CODE_000620]    {{ .time | mustDateModify "-10s" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000612]    {{ .duration | duration | durationRound }}
+[CODE_000613]    {{ .time | htmlDate }}
+[CODE_000614]    {{ htmlDateInZone .time "UTC" }}
+[CODE_000615]    {{ .time | mustDateModify "1h" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000616]    {{ .time | mustDateModify "+1h" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000617]    {{ .time | mustDateModify "-1h" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000618]    {{ .time | mustDateModify "10m" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000619]    {{ .time | mustDateModify "-10s" | date "02 Jan 06 15:04 -0700" }}

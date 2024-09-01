@@ -37,6 +37,7 @@ import (
 
 var data = map[string]any{
 	"string":      "example string value",
+	"intString":   "123",
 	"url":         "https://example.com",
 	"arrayCommas": "a,b,c",
 	"int":         123,
