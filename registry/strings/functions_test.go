@@ -431,6 +431,9 @@ func TestCapitalize(t *testing.T) {
 		{Name: "CapitalizeWithSpace", Input: `{{ " fe bar" | capitalize }}`, ExpectedOutput: " Fe bar"},
 		{Name: "CapitalizeWithNumber", Input: `{{ "123boo_bar" | capitalize }}`, ExpectedOutput: "123Boo_bar"},
 		{Name: "CapitalizeWithUnderscore", Input: `{{ "boo_bar" | capitalize }}`, ExpectedOutput: "Boo_bar"},
+		{Name: "CapitalizeWithEmoji", Input: `{{ "👍 good" | capitalize }}`, ExpectedOutput: "👍 Good"},
+		{Name: "CapitalizeWithUnicode", Input: `{{ "été" | capitalize }}`, ExpectedOutput: "Été"},
+		{Name: "CapitalizeWithArabic", Input: `{{ "مرحبا" | capitalize }}`, ExpectedOutput: "مرحبا"},
 	}
 
 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
@@ -443,6 +446,9 @@ func TestUncapitalize(t *testing.T) {
 		{Name: "UncapitalizeWithSpace", Input: `{{ " Foo bar" | uncapitalize }}`, ExpectedOutput: " foo bar"},
 		{Name: "UncapitalizeWithNumber", Input: `{{ "123Boo_bar" | uncapitalize }}`, ExpectedOutput: "123boo_bar"},
 		{Name: "UncapitalizeWithUnderscore", Input: `{{ "Boo_bar" | uncapitalize }}`, ExpectedOutput: "boo_bar"},
+		{Name: "UncapitalizeWithEmoji", Input: `{{ "👍 Good" | uncapitalize }}`, ExpectedOutput: "👍 good"},
+		{Name: "UncapitalizeWithUnicode", Input: `{{ "Été" | uncapitalize }}`, ExpectedOutput: "été"},
+		{Name: "UncapitalizeWithArabic", Input: `{{ "مرحبا" | uncapitalize }}`, ExpectedOutput: "مرحبا"},
 	}
 
 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)

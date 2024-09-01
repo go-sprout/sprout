@@ -31,6 +31,9 @@ description: >-
     Use `has` for functions that check for the existence or presence of something.
   * Follow the style guide for Idiomatic Naming Convention (e.g., [Initialisms](https://google.github.io/styleguide/go/decisions#initialisms))
 * **Function Comments:** For all exported functions and methods, provide comments describing their behavior, input parameters, and return values.
+* **Function Signature:** Functions should always adhere to the following rules:
+  * **Pipe Syntax:** Functions need to be designed to work with the pipe `|` syntax in the template engine.
+  * **Error Return:** Functions must have a dual output `(something, error)` to ensure proper error handling. Even when a function doesn't currently handle errors, the signature should still be `(something, error)` to allow for future error handling without causing breaking changes.
 
 #### Raw examples of registration names with function signatures
 
