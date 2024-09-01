@@ -36,7 +36,7 @@ func TestFuncMap_IncludesHello(t *testing.T) {
 	_, exists := funcMap["hello"]
 	assert.True(t, exists)
 
-	helloFunc, ok := funcMap["hello"].(func() (string, error))
+	helloFunc, ok := funcMap["hello"].(func(...any) (any, error))
 	assert.True(t, ok)
 
 	result, err := helloFunc()
