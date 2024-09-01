@@ -157,7 +157,7 @@ func TestToDuration(t *testing.T) {
 		{Name: "TestInt32", Input: `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "time.Duration-1µs", Data: map[string]any{"V": int32(1000)}},
 		{Name: "TestFloat64", Input: `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "time.Duration-1.00042ms", Data: map[string]any{"V": float64(1000 * 1000.42)}},
 		{Name: "TestString", Input: `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "time.Duration-1m0s", Data: map[string]any{"V": "1m"}},
-		{Name: "TestInvalid", Input: `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "time.Duration-0s", Data: map[string]any{"V": "aaaa"}},
+		{Name: "TestInvalid", Input: `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, ExpectedErr: "invalid duration", Data: map[string]any{"V": "aaaa"}},
 		{Name: "TestCallingOnIt", Input: `{{ (toDuration "1h30m").Seconds }}`, ExpectedOutput: "5400"},
 	}
 

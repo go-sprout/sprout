@@ -92,15 +92,15 @@ func TestHasField(t *testing.T) {
 	}
 
 	var tc = []pesticide.TestCase{
-		{Name: "TestHasFieldStructPointerTrue", Input: `{{ .V |hasField "Foo" }}`, ExpectedOutput: "true", Data: map[string]any{"V": &A{Foo: "bar"}}},
-		{Name: "TestHasFieldStructPointerFalse", Input: `{{ .V |hasField "Foo" }}`, ExpectedOutput: "false", Data: map[string]any{"V": &B{Bar: "boo"}}},
-		{Name: "TestHasFieldStructTrue", Input: `{{ .V |hasField "Foo" }}`, ExpectedOutput: "true", Data: map[string]any{"V": A{Foo: "bar"}}},
-		{Name: "TestHasFieldStructFalse", Input: `{{ .V |hasField "Foo" }}`, ExpectedOutput: "false", Data: map[string]any{"V": B{Bar: "boo"}}},
-		{Name: "TestHasFieldInt", Input: `{{ .V |hasField "Foo" }}`, ExpectedOutput: "false", Data: map[string]any{"V": 123}},
-		{Name: "TestHasFieldMap", Input: `{{ .V |hasField "Foo" }}`, ExpectedOutput: "false", Data: map[string]any{"V": map[string]string{"Foo": "bar"}}},
-		{Name: "TestHasFieldSlice", Input: `{{ .V |hasField "Foo" }}`, ExpectedOutput: "false", Data: map[string]any{"V": []int{1, 2, 3}}},
-		{Name: "TestHasFieldString", Input: `{{ .V |hasField "Foo" }}`, ExpectedOutput: "false", Data: map[string]any{"V": "foobar"}},
-		{Name: "TestHasFieldNil", Input: `{{ .V |hasField "Foo" }}`, ExpectedOutput: "false", Data: map[string]any{"V": nil}},
+		{Name: "TestHasFieldStructPointerTrue", Input: `{{ .V | hasField "Foo" }}`, ExpectedOutput: "true", Data: map[string]any{"V": &A{Foo: "bar"}}},
+		{Name: "TestHasFieldStructPointerFalse", Input: `{{ .V | hasField "Foo" }}`, ExpectedOutput: "false", Data: map[string]any{"V": &B{Bar: "boo"}}},
+		{Name: "TestHasFieldStructTrue", Input: `{{ .V | hasField "Foo" }}`, ExpectedOutput: "true", Data: map[string]any{"V": A{Foo: "bar"}}},
+		{Name: "TestHasFieldStructFalse", Input: `{{ .V | hasField "Foo" }}`, ExpectedOutput: "false", Data: map[string]any{"V": B{Bar: "boo"}}},
+		{Name: "TestHasFieldMap", Input: `{{ .V | hasField "Foo" }}`, ExpectedErr: "last argument must be a struct", Data: map[string]any{"V": map[string]string{"Foo": "bar"}}},
+		{Name: "TestHasFieldInt", Input: `{{ .V | hasField "Foo" }}`, ExpectedErr: "last argument must be a struct", Data: map[string]any{"V": 123}},
+		{Name: "TestHasFieldSlice", Input: `{{ .V | hasField "Foo" }}`, ExpectedErr: "last argument must be a struct", Data: map[string]any{"V": []int{1, 2, 3}}},
+		{Name: "TestHasFieldString", Input: `{{ .V | hasField "Foo" }}`, ExpectedErr: "last argument must be a struct", Data: map[string]any{"V": "foobar"}},
+		{Name: "TestHasFieldNil", Input: `{{ .V | hasField "Foo" }}`, ExpectedErr: "last argument must be a struct", Data: map[string]any{"V": nil}},
 	}
 
 	pesticide.RunTestCases(t, reflect.NewRegistry(), tc)
@@ -135,7 +135,7 @@ func TestDeepCopy(t *testing.T) {
 		{Name: "TestDeepCopyVariable", Input: `{{$a := 42}}{{$b := deepCopy $a}}{{$b}}`, ExpectedOutput: "42"},
 		{Name: "TestDeepCopyDifferent", Input: `{{$a := 42}}{{$b := deepCopy "42"}}{{$b}}`, ExpectedOutput: "42"},
 		{Name: "TestDeepCopyDifferentType", Input: `{{$a := 42}}{{$b := deepCopy 42.0}}{{$b}}`, ExpectedOutput: "42"},
-		{Name: "TestDeepCopyNil", Input: `{{$b := deepCopy .a}}`, ExpectedOutput: "", Data: map[string]any{"a": nil}},
+		{Name: "TestDeepCopyNil", Input: `{{$b := deepCopy .a}}`, ExpectedErr: "element cannot be nil", Data: map[string]any{"a": nil}},
 		{Input: `{{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ values $d | sortAlpha | join "," }}`, ExpectedOutput: "1,2"},
 		{Input: `{{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ keys $d | sortAlpha | join "," }}`, ExpectedOutput: "a,b"},
 		{Input: `{{- $one := dict "foo" (dict "bar" "baz") "qux" true -}}{{ deepCopy $one }}`, ExpectedOutput: "map[foo:map[bar:baz] qux:true]"},
@@ -144,7 +144,11 @@ func TestDeepCopy(t *testing.T) {
 	for _, test := range tc {
 		t.Run(test.Name, func(t *testing.T) {
 			tmplResponse, err := pesticide.TestTemplate(t, reflect.NewRegistry(), test.Input, test.Data)
-			assert.NoError(t, err)
+			if test.ExpectedErr != "" {
+				assert.ErrorContains(t, err, test.ExpectedErr)
+			} else {
+				assert.NoError(t, err)
+			}
 			assert.Equal(t, test.ExpectedOutput, tmplResponse)
 
 			if test.Data != nil {
