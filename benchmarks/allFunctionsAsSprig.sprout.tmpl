@@ -10,41 +10,40 @@
 {{adler32sum ""}}
 {{adler32sum "a"}}
 {{adler32sum "hello world"}}
-{{$v := toInt .string }}{{kindOf $v}}-{{$v}}
+{{$v := toInt .intString }}{{kindOf $v}}-{{$v}}
 {{$v := toInt .float }}{{kindOf $v}}-{{$v}}
 {{$v := toInt .bool }}{{kindOf $v}}-{{$v}}
-{{$v := toInt64 .string }}{{typeOf $v}}-{{$v}}
+{{$v := toInt64 .intString }}{{typeOf $v}}-{{$v}}
 {{$v := toInt64 .float }}{{typeOf $v}}-{{$v}}
 {{$v := toInt64 .int }}{{typeOf $v}}-{{$v}}
 {{$v := toInt64 .bool }}{{typeOf $v}}-{{$v}}
-{{$v := toFloat64 .string }}{{typeOf $v}}-{{$v}}
+{{$v := toFloat64 .intString }}{{typeOf $v}}-{{$v}}
 {{$v := toFloat64 .float }}{{typeOf $v}}-{{$v}}
 {{$v := toFloat64 .int }}{{typeOf $v}}-{{$v}}
 {{$v := toFloat64 .bool }}{{typeOf $v}}-{{$v}}
-{{$v := toOctal .string }}{{typeOf $v}}-{{$v}}
-{{$v := toOctal .float }}{{typeOf $v}}-{{$v}}
+{{$v := toOctal .intString }}{{typeOf $v}}-{{$v}}
+{{$v := safeToOctal .float }}{{typeOf $v}}-{{$v}}
 {{$v := toOctal .int }}{{typeOf $v}}-{{$v}}
-{{$v := toOctal .bool }}{{typeOf $v}}-{{$v}}
+{{$v := safeToOctal .bool }}{{typeOf $v}}-{{$v}}
 {{$v := toString .string }}{{typeOf $v}}-{{$v}}
 {{$v := toString .int }}{{typeOf $v}}-{{$v}}
 {{$v := toString .float }}{{typeOf $v}}-{{$v}}
 {{$v := toString .bool }}{{typeOf $v}}-{{$v}}
-{{$v := toString .objectrray }}{{typeOf $v}}-{{$v}}
+{{$v := toString .array }}{{typeOf $v}}-{{$v}}
 {{$v := toString .time }}{{typeOf $v}}-{{$v}}
 {{$v := toString .duration }}{{typeOf $v}}-{{$v}}
 {{$v := toString .object }}{{typeOf $v}}-{{$v}}
-{{$v := toDate "2006-01-02" (.time | toString) }}{{typeOf $v}}-{{$v}}
+{{$v := .time | toString | splitList " " | initial | join " " | toDate "2006-01-02 15:04:05.999999999 -0700 MST" }}{{typeOf $v}}-{{$v}}
 {{ "" | base64Encode }}
 {{ "Hello World" | base64Encode }}
 {{ "=" | base64Encode }}
 {{ "" | base64Decode }}
-{{ "SGVsbG8gV29ybGQ" | base64Decode }}
+{{ "SGVsbG8gV29ybGQ=" | base64Decode }}
 {{ "" | base32Encode }}
 {{ "Hello World" | base32Encode }}
 {{ "" | base32Decode }}
 {{ "JBSWY3DPEBLW64TMMQ======" | base32Decode }}
-{{ "JBSWY3DPEBLW64TMMQ" | base32Decode }}
-{{ "" | fromJson }}
+{{ "" | safeFromJson }}
 {{ .json | fromJson }}
 {{ (.json | fromJson).foo }}
 {{ "" | toJson }}
@@ -292,11 +291,11 @@
 {{ slice .array 1 }}
 {{ slice .array 1 3 }}
 {{ slice .array 0 1 }}
-{{ .map | has "foo" }}
-{{ .map | has "a" }}
-{{ .map | has 1 }}
-{{ .map | has .nil }}
-{{ .map | has "nope" }}
+{{ .map | safeHas "foo" }}
+{{ .map | safeHas "a" }}
+{{ .map | safeHas 1 }}
+{{ .map | safeHas .nil }}
+{{ .map | safeHas "nope" }}
 {{ without .array "a" }}
 {{ rest .array }}
 {{ initial .array }}
@@ -601,7 +600,7 @@
 {{ .time | dateModify "-1h" | date "02 Jan 06 15:04 -0700" }}
 {{ .time | dateModify "10m" | date "02 Jan 06 15:04 -0700" }}
 {{ .time | dateModify "-10s" | date "02 Jan 06 15:04 -0700" }}
-{{ .time | dateModify "zz" | date "02 Jan 06 15:04 -0700" }}
+{{ .time | safeDateModify "zz" | date "02 Jan 06 15:04 -0700" }}
 {{ .duration | durationRound }}
 {{ .time | htmlDate }}
 {{ htmlDateInZone .time "UTC" }}

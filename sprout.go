@@ -33,6 +33,8 @@ func New(opts ...HandlerOption[*DefaultHandler]) *DefaultHandler {
 		registries: make([]Registry, 0),
 		notices:    make([]FunctionNotice, 0),
 
+		wantSafeFuncs: false,
+
 		cachedFuncsMap:   make(FunctionMap),
 		cachedFuncsAlias: make(FunctionAliasMap),
 	}

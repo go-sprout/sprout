@@ -1,6 +1,11 @@
 package sprout
 
-import "log/slog"
+import (
+	"log/slog"
+	gostrings "strings"
+
+	"github.com/go-sprout/sprout/internal/runtime"
+)
 
 // Handler is the interface that wraps the basic methods of a handler to manage
 // all registries and functions.
@@ -46,6 +51,8 @@ type DefaultHandler struct {
 	logger     *slog.Logger
 	registries []Registry
 	notices    []FunctionNotice
+
+	wantSafeFuncs bool
 
 	cachedFuncsMap   FunctionMap
 	cachedFuncsAlias FunctionAliasMap
@@ -100,6 +107,20 @@ func (dh *DefaultHandler) AddRegistries(registries ...Registry) error {
 func (dh *DefaultHandler) Build() FunctionMap {
 	AssignAliases(dh) // Ensure all aliases are processed before returning the registry
 	AssignNotices(dh) // Ensure all notices are processed before returning the registry
+
+	// If safe functions are enabled, wrap all functions with a safe wrapper
+	// that logs any errors that occur during function execution.
+	if dh.wantSafeFuncs {
+		var safeFuncs = make(FunctionMap)
+		for funcName, fn := range dh.cachedFuncsMap {
+			safeFuncs[safeFuncName(funcName)] = dh.safeWrapper(funcName, fn)
+		}
+
+		for funcName, fn := range safeFuncs {
+			dh.cachedFuncsMap[funcName] = fn
+		}
+	}
+
 	return dh.cachedFuncsMap
 }
 
@@ -164,4 +185,51 @@ func WithHandler(new Handler) HandlerOption[*DefaultHandler] {
 			*fnh = *fhCast
 		}
 	}
+}
+
+// WithSafeFuncs enables safe function calls in a DefaultHandler. When safe functions
+// are enabled, the handler will wrap all functions with a safe wrapper that logs any
+// errors that occur during function execution without interrupting the execution of
+// the template.
+//
+// To use a safe function, prepend `safe` to the original function name,
+// example: `safeOriginalFuncName` instead of `originalFuncName`.
+func WithSafeFuncs(enabled bool) HandlerOption[*DefaultHandler] {
+	return func(dh *DefaultHandler) {
+		dh.wantSafeFuncs = enabled
+	}
+}
+
+// safeWrapper create a safe wrapper function that calls the original function
+// and logs any errors that occur during the function call without interrupting
+// the execution of the template.
+func (dh *DefaultHandler) safeWrapper(functionName string, fn any) wrappedFunc {
+	return func(args ...any) (any, error) {
+		out, err := runtime.SafeCall(fn, args...)
+		if err != nil {
+			dh.Logger().With("function", functionName, "error", err).Error("function call failed")
+		}
+		return out, nil
+	}
+}
+
+// safeFuncName generates a safe function name by prepending "safe" to the original
+// function name and capitalizing the first letter of the function name.
+//
+// Example:
+//
+//	originalFuncName -> SafeOriginalFuncName
+func safeFuncName(name string) string {
+	if name == "" {
+		return ""
+	}
+
+	var b gostrings.Builder
+	b.Grow(len(name) + 4)
+
+	b.WriteString("safe")
+	b.WriteString(gostrings.ToUpper(string(name[0])))
+	b.WriteString(name[1:])
+
+	return b.String()
 }

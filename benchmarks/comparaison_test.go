@@ -37,7 +37,7 @@ import (
 
 var data = map[string]any{
 	"string":      "example string value",
-	"intString":   "123",
+	"intString":   "1",
 	"url":         "https://example.com",
 	"arrayCommas": "a,b,c",
 	"int":         123,
@@ -93,7 +93,7 @@ func BenchmarkComparison(b *testing.B) {
 func BenchmarkAllSprout(b *testing.B) {
 	runtime.GOMAXPROCS(1)
 
-	b.Run("SproutWiothNewFeatures", func(b *testing.B) {
+	b.Run("SproutWithNewFeatures", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			sproutBench("allFunctions.sprout.tmpl")
 		}
@@ -127,6 +127,7 @@ func sprigBench() {
 func sproutBench(templatePath string) {
 	fnHandler := sprout.New(
 		sprout.WithLogger(slog.New(&noopHandler{})),
+		sprout.WithSafeFuncs(true),
 	)
 
 	_ = fnHandler.AddRegistries(

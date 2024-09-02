@@ -304,3 +304,23 @@ func TestDefaultHandler_Build(t *testing.T) {
 
 	assert.Equal(t, funcsMap, builtFuncsMap, "Build should return the correct FunctionMap")
 }
+
+func TestDefaultHandler_safeWrapper(t *testing.T) {
+	loggerHandler := &noticeLoggerHandler{}
+	handler := New(WithLogger(slog.New(loggerHandler)))
+
+	fn := func() (any, error) { return nil, errors.New("fail") }
+	_, err := fn()
+	require.Error(t, err, "fn should return an error")
+
+	safeFn := handler.safeWrapper("fn", fn)
+	_, safeErr := safeFn()
+	require.NoError(t, safeErr, "safeFn should not return an error")
+	assert.Equal(t, loggerHandler.messages.String(), "[ERROR] function call failed\n")
+}
+
+func TestSafeFuncName(t *testing.T) {
+	assert.Equal(t, "safeFn", safeFuncName("fn"))
+	assert.Equal(t, "safeFn", safeFuncName("Fn"))
+	assert.Equal(t, "", safeFuncName(""))
+}
