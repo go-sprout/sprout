@@ -14,13 +14,12 @@ import (
 // Returns:
 //
 //	string - the base element of the path.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "/path/to/file.txt" | pathBase }} // Output: "file.txt"
-func (fsr *FileSystemRegistry) PathBase(str string) (string, error) {
-	return path.Base(str), nil
+func (fsr *FileSystemRegistry) PathBase(str string) string {
+	return path.Base(str)
 }
 
 // PathDir returns all but the last element of the path, effectively the path's
@@ -33,13 +32,12 @@ func (fsr *FileSystemRegistry) PathBase(str string) (string, error) {
 // Returns:
 //
 //	string - the directory part of the path.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "/path/to/file.txt" | pathDir }} // Output: "/path/to"
-func (fsr *FileSystemRegistry) PathDir(str string) (string, error) {
-	return path.Dir(str), nil
+func (fsr *FileSystemRegistry) PathDir(str string) string {
+	return path.Dir(str)
 }
 
 // PathExt returns the file extension of the path.
@@ -51,13 +49,12 @@ func (fsr *FileSystemRegistry) PathDir(str string) (string, error) {
 // Returns:
 //
 //	string - the extension of the file in the path.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "/path/to/file.txt" | pathExt }} // Output: ".txt"
-func (fsr *FileSystemRegistry) PathExt(str string) (string, error) {
-	return path.Ext(str), nil
+func (fsr *FileSystemRegistry) PathExt(str string) string {
+	return path.Ext(str)
 }
 
 // PathClean cleans up the path, simplifying any redundancies like double slashes.
@@ -69,13 +66,12 @@ func (fsr *FileSystemRegistry) PathExt(str string) (string, error) {
 // Returns:
 //
 //	string - the cleaned path.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "/path//to/file.txt" | pathClean }} // Output: "/path/to/file.txt"
-func (fsr *FileSystemRegistry) PathClean(str string) (string, error) {
-	return path.Clean(str), nil
+func (fsr *FileSystemRegistry) PathClean(str string) string {
+	return path.Clean(str)
 }
 
 // PathIsAbs checks if the path is absolute.
@@ -87,13 +83,12 @@ func (fsr *FileSystemRegistry) PathClean(str string) (string, error) {
 // Returns:
 //
 //	bool - true if the path is absolute, otherwise false.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "/path/to/file.txt" | pathIsAbs }} // Output: true
-func (fsr *FileSystemRegistry) PathIsAbs(str string) (bool, error) {
-	return path.IsAbs(str), nil
+func (fsr *FileSystemRegistry) PathIsAbs(str string) bool {
+	return path.IsAbs(str)
 }
 
 // OsBase returns the last element of the path, using the OS-specific path
@@ -106,13 +101,12 @@ func (fsr *FileSystemRegistry) PathIsAbs(str string) (bool, error) {
 // Returns:
 //
 //	string - the base element of the path.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "C:\\path\\to\\file.txt" | osBase }} // Output: "file.txt"
-func (fsr *FileSystemRegistry) OsBase(str string) (string, error) {
-	return filepath.Base(str), nil
+func (fsr *FileSystemRegistry) OsBase(str string) string {
+	return filepath.Base(str)
 }
 
 // OsDir returns all but the last element of the path, using the OS-specific
@@ -125,13 +119,12 @@ func (fsr *FileSystemRegistry) OsBase(str string) (string, error) {
 // Returns:
 //
 //	string - the directory part of the path.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "C:\\path\\to\\file.txt" | osDir }} // Output: "C:\\path\\to"
-func (fsr *FileSystemRegistry) OsDir(str string) (string, error) {
-	return filepath.Dir(str), nil
+func (fsr *FileSystemRegistry) OsDir(str string) string {
+	return filepath.Dir(str)
 }
 
 // OsExt returns the file extension of the path, using the OS-specific path
@@ -144,13 +137,12 @@ func (fsr *FileSystemRegistry) OsDir(str string) (string, error) {
 // Returns:
 //
 //	string - the extension of the file in the path.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "C:\\path\\to\\file.txt" | osExt }} // Output: ".txt"
-func (fsr *FileSystemRegistry) OsExt(str string) (string, error) {
-	return filepath.Ext(str), nil
+func (fsr *FileSystemRegistry) OsExt(str string) string {
+	return filepath.Ext(str)
 }
 
 // OsClean cleans up the path, using the OS-specific path separator and
@@ -163,13 +155,12 @@ func (fsr *FileSystemRegistry) OsExt(str string) (string, error) {
 // Returns:
 //
 //	string - the cleaned path.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "C:\\path\\\\to\\file.txt" | osClean }} // Output: "C:\\path\\to\\file.txt"
-func (fsr *FileSystemRegistry) OsClean(str string) (string, error) {
-	return filepath.Clean(str), nil
+func (fsr *FileSystemRegistry) OsClean(str string) string {
+	return filepath.Clean(str)
 }
 
 // OsIsAbs checks if the path is absolute, using the OS-specific path separator.
@@ -181,11 +172,10 @@ func (fsr *FileSystemRegistry) OsClean(str string) (string, error) {
 // Returns:
 //
 //	bool - true if the path is absolute, otherwise false.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "C:\\path\\to\\file.txt" | osIsAbs }} // Output: true
-func (fsr *FileSystemRegistry) OsIsAbs(str string) (bool, error) {
-	return filepath.IsAbs(str), nil
+func (fsr *FileSystemRegistry) OsIsAbs(str string) bool {
+	return filepath.IsAbs(str)
 }

@@ -21,18 +21,17 @@ import (
 // Returns:
 //
 //	string - the modified string with all whitespace characters removed.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello World" | nospace }} // Output: "HelloWorld"
-func (sr *StringsRegistry) Nospace(str string) (string, error) {
+func (sr *StringsRegistry) Nospace(str string) string {
 	return strings.Map(func(r rune) rune {
 		if unicode.IsSpace(r) {
 			return -1
 		}
 		return r
-	}, str), nil
+	}, str)
 }
 
 // Trim removes leading and trailing whitespace from the string.
@@ -44,13 +43,12 @@ func (sr *StringsRegistry) Nospace(str string) (string, error) {
 // Returns:
 //
 //	string - the trimmed string.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ " Hello World " | trim }} // Output: "Hello World"
-func (sr *StringsRegistry) Trim(str string) (string, error) {
-	return strings.TrimSpace(str), nil
+func (sr *StringsRegistry) Trim(str string) string {
+	return strings.TrimSpace(str)
 }
 
 // TrimAll removes all occurrences of any characters in 'cutset' from both the
@@ -64,13 +62,12 @@ func (sr *StringsRegistry) Trim(str string) (string, error) {
 // Returns:
 //
 //	string - the string with specified characters removed.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "xyzHelloxyz" | trimAll "xyz" }} // Output: "Hello"
-func (sr *StringsRegistry) TrimAll(cutset string, str string) (string, error) {
-	return strings.Trim(str, cutset), nil
+func (sr *StringsRegistry) TrimAll(cutset string, str string) string {
+	return strings.Trim(str, cutset)
 }
 
 // TrimPrefix removes the 'prefix' from the start of 'str' if present.
@@ -83,13 +80,12 @@ func (sr *StringsRegistry) TrimAll(cutset string, str string) (string, error) {
 // Returns:
 //
 //	string - the string with the prefix removed if it was present.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "HelloWorld" | trimPrefix "Hello" }} // Output: "World"
-func (sr *StringsRegistry) TrimPrefix(prefix string, str string) (string, error) {
-	return strings.TrimPrefix(str, prefix), nil
+func (sr *StringsRegistry) TrimPrefix(prefix string, str string) string {
+	return strings.TrimPrefix(str, prefix)
 }
 
 // TrimSuffix removes the 'suffix' from the end of 'str' if present.
@@ -102,13 +98,12 @@ func (sr *StringsRegistry) TrimPrefix(prefix string, str string) (string, error)
 // Returns:
 //
 //	string - the string with the suffix removed if it was present.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "HelloWorld" | trimSuffix "World" }} // Output: "Hello"
-func (sr *StringsRegistry) TrimSuffix(suffix string, str string) (string, error) {
-	return strings.TrimSuffix(str, suffix), nil
+func (sr *StringsRegistry) TrimSuffix(suffix string, str string) string {
+	return strings.TrimSuffix(str, suffix)
 }
 
 // Contains checks if 'str' contains the 'substring'.
@@ -121,13 +116,12 @@ func (sr *StringsRegistry) TrimSuffix(suffix string, str string) (string, error)
 // Returns:
 //
 //	bool - true if 'str' contains 'substring', false otherwise.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello" | contains "ell" }} // Output: true
-func (sr *StringsRegistry) Contains(substring string, str string) (bool, error) {
-	return strings.Contains(str, substring), nil
+func (sr *StringsRegistry) Contains(substring string, str string) bool {
+	return strings.Contains(str, substring)
 }
 
 // HasPrefix checks if 'str' starts with the specified 'prefix'.
@@ -140,13 +134,12 @@ func (sr *StringsRegistry) Contains(substring string, str string) (bool, error) 
 // Returns:
 //
 //	bool - true if 'str' starts with 'prefix', false otherwise.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "HelloWorld" | hasPrefix "Hello" }} // Output: true
-func (sr *StringsRegistry) HasPrefix(prefix string, str string) (bool, error) {
-	return strings.HasPrefix(str, prefix), nil
+func (sr *StringsRegistry) HasPrefix(prefix string, str string) bool {
+	return strings.HasPrefix(str, prefix)
 }
 
 // HasSuffix checks if 'str' ends with the specified 'suffix'.
@@ -159,13 +152,12 @@ func (sr *StringsRegistry) HasPrefix(prefix string, str string) (bool, error) {
 // Returns:
 //
 //	bool - true if 'str' ends with 'suffix', false otherwise.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "HelloWorld" | hasSuffix "World" }} // Output: true
-func (sr *StringsRegistry) HasSuffix(suffix string, str string) (bool, error) {
-	return strings.HasSuffix(str, suffix), nil
+func (sr *StringsRegistry) HasSuffix(suffix string, str string) bool {
+	return strings.HasSuffix(str, suffix)
 }
 
 // ToLower converts all characters in the provided string to lowercase.
@@ -177,13 +169,12 @@ func (sr *StringsRegistry) HasSuffix(suffix string, str string) (bool, error) {
 // Returns:
 //
 //	string - the lowercase version of the input string.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "HELLO WORLD" | toLower }} // Output: "hello world"
-func (sr *StringsRegistry) ToLower(str string) (string, error) {
-	return strings.ToLower(str), nil
+func (sr *StringsRegistry) ToLower(str string) string {
+	return strings.ToLower(str)
 }
 
 // ToUpper converts all characters in the provided string to uppercase.
@@ -195,13 +186,12 @@ func (sr *StringsRegistry) ToLower(str string) (string, error) {
 // Returns:
 //
 //	string - the uppercase version of the input string.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello world" | toUpper }} // Output: "HELLO WORLD"
-func (sr *StringsRegistry) ToUpper(str string) (string, error) {
-	return strings.ToUpper(str), nil
+func (sr *StringsRegistry) ToUpper(str string) string {
+	return strings.ToUpper(str)
 }
 
 // Replace replaces all occurrences of 'old' in 'src' with 'new'.
@@ -215,13 +205,12 @@ func (sr *StringsRegistry) ToUpper(str string) (string, error) {
 // Returns:
 //
 //	string - the modified string after all replacements.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "banana" | replace "a", "o" }} // Output: "bonono"
-func (sr *StringsRegistry) Replace(old, new, src string) (string, error) {
-	return strings.Replace(src, old, new, -1), nil
+func (sr *StringsRegistry) Replace(old, new, src string) string {
+	return strings.Replace(src, old, new, -1)
 }
 
 // Repeat repeats the string 'str' for 'count' times.
@@ -234,13 +223,12 @@ func (sr *StringsRegistry) Replace(old, new, src string) (string, error) {
 // Returns:
 //
 //	string - the repeated string.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "ha" | repeat 3 }} // Output: "hahaha"
-func (sr *StringsRegistry) Repeat(count int, str string) (string, error) {
-	return strings.Repeat(str, count), nil
+func (sr *StringsRegistry) Repeat(count int, str string) string {
+	return strings.Repeat(str, count)
 }
 
 // Join concatenates the elements of a slice into a single string separated by 'sep'.
@@ -255,14 +243,13 @@ func (sr *StringsRegistry) Repeat(count int, str string) (string, error) {
 // Returns:
 //
 //	string - the concatenated string.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ $list := slice "apple" "banana" "cherry" }}
 //	{{ $list | join ", " }} // Output: "apple, banana, cherry"
-func (sr *StringsRegistry) Join(sep string, v any) (string, error) {
-	return strings.Join(helpers.StrSlice(v), sep), nil
+func (sr *StringsRegistry) Join(sep string, v any) string {
+	return strings.Join(helpers.StrSlice(v), sep)
 }
 
 // Trunc truncates 's' to a maximum length 'count'. If 'count' is negative, it removes
@@ -277,24 +264,23 @@ func (sr *StringsRegistry) Join(sep string, v any) (string, error) {
 // Returns:
 //
 //	string - the truncated string.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello World" | trunc 5 }} // Output: "Hello"
 //	{{ "Hello World" | trunc -5 }} // Output: "World"
-func (sr *StringsRegistry) Trunc(count int, str string) (string, error) {
+func (sr *StringsRegistry) Trunc(count int, str string) string {
 	length := len(str)
 
 	if count < 0 && length+count > 0 {
-		return str[length+count:], nil
+		return str[length+count:]
 	}
 
 	if count >= 0 && length > count {
-		return str[:count], nil
+		return str[:count]
 	}
 
-	return str, nil
+	return str
 }
 
 // Shuffle randomly rearranges the characters in 'str'.
@@ -306,17 +292,16 @@ func (sr *StringsRegistry) Trunc(count int, str string) (string, error) {
 // Returns:
 //
 //	string - the shuffled string.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello" | shuffle }} // Output: "loleh" (output may vary due to randomness)
-func (sr *StringsRegistry) Shuffle(str string) (string, error) {
+func (sr *StringsRegistry) Shuffle(str string) string {
 	r := []rune(str)
 	mathrand.New(randSource).Shuffle(len(r), func(i, j int) {
 		r[i], r[j] = r[j], r[i]
 	})
-	return string(r), nil
+	return string(r)
 }
 
 // Ellipsis truncates 'str' to 'maxWidth' and appends an ellipsis if the string
@@ -330,13 +315,12 @@ func (sr *StringsRegistry) Shuffle(str string) (string, error) {
 // Returns:
 //
 //	string - the possibly truncated string with an ellipsis.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello World" | ellipsis 10 }} // Output: "Hello W..."
-func (sr *StringsRegistry) Ellipsis(maxWidth int, str string) (string, error) {
-	return sr.ellipsis(str, 0, maxWidth), nil
+func (sr *StringsRegistry) Ellipsis(maxWidth int, str string) string {
+	return sr.ellipsis(str, 0, maxWidth)
 }
 
 // EllipsisBoth truncates 'str' from both ends, preserving the middle part of
@@ -351,13 +335,12 @@ func (sr *StringsRegistry) Ellipsis(maxWidth int, str string) (string, error) {
 // Returns:
 //
 //	string - the truncated string with ellipses on both ends.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello World" | ellipsisBoth 1 10 }} // Output: "...lo Wor..."
-func (sr *StringsRegistry) EllipsisBoth(offset int, maxWidth int, str string) (string, error) {
-	return sr.ellipsis(str, offset, maxWidth), nil
+func (sr *StringsRegistry) EllipsisBoth(offset int, maxWidth int, str string) string {
+	return sr.ellipsis(str, offset, maxWidth)
 }
 
 // Initials extracts the initials from 'str', using optional 'delimiters' to
@@ -371,13 +354,12 @@ func (sr *StringsRegistry) EllipsisBoth(offset int, maxWidth int, str string) (s
 // Returns:
 //
 //	string - the initials of the words in 'str'.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "John Doe" | initials }} // Output: "JD"
-func (sr *StringsRegistry) Initials(str string) (string, error) {
-	return sr.initials(str, " "), nil
+func (sr *StringsRegistry) Initials(str string) string {
+	return sr.initials(str, " ")
 }
 
 // Plural returns 'one' if 'count' is 1, otherwise it returns 'many'.
@@ -391,17 +373,16 @@ func (sr *StringsRegistry) Initials(str string) (string, error) {
 // Returns:
 //
 //	string - either 'one' or 'many' based on 'count'.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ 1 | plural "apple" "apples" }} // Output: "apple"
 //	{{ 2 | plural "apple" "apples" }} // Output: "apples"
-func (sr *StringsRegistry) Plural(one, many string, count int) (string, error) {
+func (sr *StringsRegistry) Plural(one, many string, count int) string {
 	if count == 1 {
-		return one, nil
+		return one
 	}
-	return many, nil
+	return many
 }
 
 // Wrap breaks 'str' into lines with a maximum length of 'length'.
@@ -415,14 +396,13 @@ func (sr *StringsRegistry) Plural(one, many string, count int) (string, error) {
 // Returns:
 //
 //	string - the wrapped string using newline characters to separate lines.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "This is a long string that needs to be wrapped." | wrap 10 }}
 //	Output: "This is a\nlong\nstring\nthat needs\nto be\nwrapped."
-func (sr *StringsRegistry) Wrap(length int, str string) (string, error) {
-	return sr.wordWrap(length, "", false, str), nil
+func (sr *StringsRegistry) Wrap(length int, str string) string {
+	return sr.wordWrap(length, "", false, str)
 }
 
 // WrapWith breaks 'str' into lines of maximum 'length', using 'newLineCharacter'
@@ -437,14 +417,13 @@ func (sr *StringsRegistry) Wrap(length int, str string) (string, error) {
 // Returns:
 //
 //	string - the wrapped string.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "This is a long string that needs to be wrapped." | wrapWith 10 "<br>" }}
 //	Output: "This is a<br>long<br>string<br>that needs<br>to be<br>wrapped."
-func (sr *StringsRegistry) WrapWith(length int, newLineCharacter string, str string) (string, error) {
-	return sr.wordWrap(length, newLineCharacter, true, str), nil
+func (sr *StringsRegistry) WrapWith(length int, newLineCharacter string, str string) string {
+	return sr.wordWrap(length, newLineCharacter, true, str)
 }
 
 // Quote wraps each element in 'elements' with double quotes and separates them with spaces.
@@ -456,14 +435,13 @@ func (sr *StringsRegistry) WrapWith(length int, newLineCharacter string, str str
 // Returns:
 //
 //	string - a single string with each element double quoted.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	 {{ $list := slice "hello" "world" 123 }}
 //		{{ $list | quote }}
 //		Output: "hello" "world" "123"
-func (sr *StringsRegistry) Quote(elements ...any) (string, error) {
+func (sr *StringsRegistry) Quote(elements ...any) string {
 	var build strings.Builder
 
 	for i, elem := range elements {
@@ -475,7 +453,7 @@ func (sr *StringsRegistry) Quote(elements ...any) (string, error) {
 		}
 		build.WriteString(fmt.Sprintf("%q", fmt.Sprint(elem)))
 	}
-	return build.String(), nil
+	return build.String()
 }
 
 // Squote wraps each element in 'elements' with single quotes and separates them with spaces.
@@ -487,14 +465,13 @@ func (sr *StringsRegistry) Quote(elements ...any) (string, error) {
 // Returns:
 //
 //	string - a single string with each element single quoted.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	 {{ $list := slice "hello" "world" 123 }}
 //		{{ $list | squote }}
 //	Output: 'hello' 'world' '123'
-func (sr *StringsRegistry) Squote(elements ...any) (string, error) {
+func (sr *StringsRegistry) Squote(elements ...any) string {
 	var builder strings.Builder
 	for i, elem := range elements {
 		if elem == nil {
@@ -508,7 +485,7 @@ func (sr *StringsRegistry) Squote(elements ...any) (string, error) {
 		builder.WriteString(fmt.Sprint(elem))
 		builder.WriteRune('\'')
 	}
-	return builder.String(), nil
+	return builder.String()
 }
 
 // ToCamelCase converts a string to camelCase.
@@ -520,13 +497,12 @@ func (sr *StringsRegistry) Squote(elements ...any) (string, error) {
 // Returns:
 //
 //	string - the string converted to camelCase.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello world" | toCamelCase }} // Output: "helloWorld"
-func (sr *StringsRegistry) ToCamelCase(str string) (string, error) {
-	return sr.transformString(camelCaseStyle, str), nil
+func (sr *StringsRegistry) ToCamelCase(str string) string {
+	return sr.transformString(camelCaseStyle, str)
 }
 
 // ToKebabCase converts a string to kebab-case.
@@ -538,13 +514,12 @@ func (sr *StringsRegistry) ToCamelCase(str string) (string, error) {
 // Returns:
 //
 //	string - the string converted to kebab-case.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello world" | toKebabCase }} // Output: "hello-world"
-func (sr *StringsRegistry) ToKebabCase(str string) (string, error) {
-	return sr.transformString(kebabCaseStyle, str), nil
+func (sr *StringsRegistry) ToKebabCase(str string) string {
+	return sr.transformString(kebabCaseStyle, str)
 }
 
 // ToPascalCase converts a string to PascalCase.
@@ -556,13 +531,12 @@ func (sr *StringsRegistry) ToKebabCase(str string) (string, error) {
 // Returns:
 //
 //	string - the string converted to PascalCase.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello world" | toPascalCase }} // Output: "HelloWorld"
-func (sr *StringsRegistry) ToPascalCase(str string) (string, error) {
-	return sr.transformString(pascalCaseStyle, str), nil
+func (sr *StringsRegistry) ToPascalCase(str string) string {
+	return sr.transformString(pascalCaseStyle, str)
 }
 
 // ToDotCase converts a string to dot.case.
@@ -574,13 +548,12 @@ func (sr *StringsRegistry) ToPascalCase(str string) (string, error) {
 // Returns:
 //
 //	string - the string converted to dot.case.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello world" | toDotCase }} // Output: "hello.world"
-func (sr *StringsRegistry) ToDotCase(str string) (string, error) {
-	return sr.transformString(dotCaseStyle, str), nil
+func (sr *StringsRegistry) ToDotCase(str string) string {
+	return sr.transformString(dotCaseStyle, str)
 }
 
 // ToPathCase converts a string to path/case.
@@ -592,13 +565,12 @@ func (sr *StringsRegistry) ToDotCase(str string) (string, error) {
 // Returns:
 //
 //	string - the string converted to path/case.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello world" | toPathCase }} // Output: "hello/world"
-func (sr *StringsRegistry) ToPathCase(str string) (string, error) {
-	return sr.transformString(pathCaseStyle, str), nil
+func (sr *StringsRegistry) ToPathCase(str string) string {
+	return sr.transformString(pathCaseStyle, str)
 }
 
 // ToConstantCase converts a string to CONSTANT_CASE.
@@ -610,13 +582,12 @@ func (sr *StringsRegistry) ToPathCase(str string) (string, error) {
 // Returns:
 //
 //	string - the string converted to CONSTANT_CASE.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello world" | toConstantCase }} // Output: "HELLO_WORLD"
-func (sr *StringsRegistry) ToConstantCase(str string) (string, error) {
-	return sr.transformString(constantCaseStyle, str), nil
+func (sr *StringsRegistry) ToConstantCase(str string) string {
+	return sr.transformString(constantCaseStyle, str)
 }
 
 // ToSnakeCase converts a string to snake_case.
@@ -628,13 +599,12 @@ func (sr *StringsRegistry) ToConstantCase(str string) (string, error) {
 // Returns:
 //
 //	string - the string converted to snake_case.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello world" | toSnakeCase }} // Output: "hello_world"
-func (sr *StringsRegistry) ToSnakeCase(str string) (string, error) {
-	return sr.transformString(snakeCaseStyle, str), nil
+func (sr *StringsRegistry) ToSnakeCase(str string) string {
+	return sr.transformString(snakeCaseStyle, str)
 }
 
 // ToTitleCase converts a string to Title Case.
@@ -646,13 +616,12 @@ func (sr *StringsRegistry) ToSnakeCase(str string) (string, error) {
 // Returns:
 //
 //	string - the string converted to Title Case.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello world" | toTitleCase }} // Output: "Hello World"
-func (sr *StringsRegistry) ToTitleCase(str string) (string, error) {
-	return cases.Title(language.English).String(str), nil
+func (sr *StringsRegistry) ToTitleCase(str string) string {
+	return cases.Title(language.English).String(str)
 }
 
 // Untitle converts the first letter of each word in 'str' to lowercase.
@@ -664,12 +633,11 @@ func (sr *StringsRegistry) ToTitleCase(str string) (string, error) {
 // Returns:
 //
 //	string - the converted string with each word starting in lowercase.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello World" | untitle }} // Output: "hello world"
-func (sr *StringsRegistry) Untitle(str string) (string, error) {
+func (sr *StringsRegistry) Untitle(str string) string {
 	var result strings.Builder
 
 	// Process each rune in the input string
@@ -688,7 +656,7 @@ func (sr *StringsRegistry) Untitle(str string) (string, error) {
 		}
 	}
 
-	return result.String(), nil
+	return result.String()
 }
 
 // SwapCase switches the case of each letter in 'str'. Lowercase letters become
@@ -701,18 +669,17 @@ func (sr *StringsRegistry) Untitle(str string) (string, error) {
 // Returns:
 //
 //	string - the string with each character's case switched.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello World" | swapCase }} // Output: "hELLO wORLD"
-func (sr *StringsRegistry) SwapCase(str string) (string, error) {
+func (sr *StringsRegistry) SwapCase(str string) string {
 	return strings.Map(func(r rune) rune {
 		if unicode.IsLower(r) {
 			return unicode.ToUpper(r)
 		}
 		return unicode.ToLower(r)
-	}, str), nil
+	}, str)
 }
 
 // Capitalize capitalizes the first letter of 'str'.
@@ -724,13 +691,12 @@ func (sr *StringsRegistry) SwapCase(str string) (string, error) {
 // Returns:
 //
 //	string - the string with the first letter capitalized.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "hello world" | capitalize }} // Output: "Hello world"
-func (sr *StringsRegistry) Capitalize(str string) (string, error) {
-	return swapFirstLetter(str, true), nil
+func (sr *StringsRegistry) Capitalize(str string) string {
+	return swapFirstLetter(str, true)
 }
 
 // Uncapitalize converts the first letter of 'str' to lowercase.
@@ -742,13 +708,12 @@ func (sr *StringsRegistry) Capitalize(str string) (string, error) {
 // Returns:
 //
 //	string - the string with the first letter in lowercase.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello World" | uncapitalize }} // Output: "hello World"
-func (sr *StringsRegistry) Uncapitalize(str string) (string, error) {
-	return swapFirstLetter(str, false), nil
+func (sr *StringsRegistry) Uncapitalize(str string) string {
+	return swapFirstLetter(str, false)
 }
 
 // Split divides 'orig' into a map of string parts using 'sep' as the separator.
@@ -761,14 +726,13 @@ func (sr *StringsRegistry) Uncapitalize(str string) (string, error) {
 // Returns:
 //
 //	map[string]string - a map of the split parts.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "apple,banana,cherry" | split "," }} // Output: { "_0":"apple", "_1":"banana", "_2":"cherry" }
-func (sr *StringsRegistry) Split(sep, str string) (map[string]string, error) {
+func (sr *StringsRegistry) Split(sep, str string) map[string]string {
 	parts := strings.Split(str, sep)
-	return sr.populateMapWithParts(parts), nil
+	return sr.populateMapWithParts(parts)
 }
 
 // Splitn divides 'orig' into a map of string parts using 'sep' as the separator
@@ -783,14 +747,13 @@ func (sr *StringsRegistry) Split(sep, str string) (map[string]string, error) {
 // Returns:
 //
 //	map[string]string - a map of the split parts.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "apple,banana,cherry" | split "," 2 }} // Output: { "_0":"apple", "_1":"banana,cherry" }
-func (sr *StringsRegistry) Splitn(sep string, n int, str string) (map[string]string, error) {
+func (sr *StringsRegistry) Splitn(sep string, n int, str string) map[string]string {
 	parts := strings.SplitN(str, sep, n)
-	return sr.populateMapWithParts(parts), nil
+	return sr.populateMapWithParts(parts)
 }
 
 // Substring extracts a substring from 's' starting at 'start' and ending at 'end'.
@@ -806,12 +769,11 @@ func (sr *StringsRegistry) Splitn(sep string, n int, str string) (map[string]str
 // Returns:
 //
 //	string - the extracted substring.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello World" | substring 0 5 }} // Output: "Hello"
-func (sr *StringsRegistry) Substring(start, end int, str string) (string, error) {
+func (sr *StringsRegistry) Substring(start, end int, str string) string {
 	length := len(str)
 
 	if start < 0 {
@@ -827,10 +789,9 @@ func (sr *StringsRegistry) Substring(start, end int, str string) (string, error)
 		end = length
 	}
 	if start > end {
-		// TODO: Return an error.
-		return "", nil
+		return ""
 	}
-	return str[start:end], nil
+	return str[start:end]
 }
 
 // Indent adds spaces to the beginning of each line in 'str'.
@@ -843,12 +804,11 @@ func (sr *StringsRegistry) Substring(start, end int, str string) (string, error)
 // Returns:
 //
 //	string - the indented string.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello\nWorld" | indent 4 }} // Output: "    Hello\n    World"
-func (sr *StringsRegistry) Indent(spaces int, str string) (string, error) {
+func (sr *StringsRegistry) Indent(spaces int, str string) string {
 	var builder strings.Builder
 	pad := strings.Repeat(" ", spaces)
 	lines := strings.Split(str, "\n")
@@ -862,7 +822,7 @@ func (sr *StringsRegistry) Indent(spaces int, str string) (string, error) {
 		builder.WriteString(line)
 	}
 
-	return builder.String(), nil
+	return builder.String()
 }
 
 // Nindent is similar to Indent, but it adds a newline at the start.
@@ -873,17 +833,12 @@ func (sr *StringsRegistry) Indent(spaces int, str string) (string, error) {
 //
 // Returns:
 //	string - the indented string with a newline at the start.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //	{{ "Hello\nWorld" | nindent 4 }} // Output: "\n    Hello\n    World"
 
-func (sr *StringsRegistry) Nindent(spaces int, str string) (string, error) {
-	str, err := sr.Indent(spaces, str)
-	if err != nil {
-		return "", err
-	}
-	return "\n" + str, nil
+func (sr *StringsRegistry) Nindent(spaces int, str string) string {
+	return "\n" + sr.Indent(spaces, str)
 }
 
 // Seq generates a sequence of numbers as a string. It can take 0, 1, 2, or 3
@@ -897,23 +852,22 @@ func (sr *StringsRegistry) Nindent(spaces int, str string) (string, error) {
 // Returns:
 //
 //	string - a space-separated string of numbers in the sequence.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ seq 1, 2, 10 }} // Output: "1 3 5 7 9"
-func (sr *StringsRegistry) Seq(params ...int) (string, error) {
+func (sr *StringsRegistry) Seq(params ...int) string {
 	increment := 1
 	switch len(params) {
 	case 0:
-		return "", nil
+		return ""
 	case 1:
 		start := 1
 		end := params[0]
 		if end < start {
 			increment = -1
 		}
-		return sr.convertIntArrayToString(helpers.UntilStep(start, end+increment, increment), " "), nil
+		return sr.convertIntArrayToString(helpers.UntilStep(start, end+increment, increment), " ")
 	case 2:
 		start := params[0]
 		end := params[1]
@@ -921,7 +875,7 @@ func (sr *StringsRegistry) Seq(params ...int) (string, error) {
 		if end < start {
 			step = -1
 		}
-		return sr.convertIntArrayToString(helpers.UntilStep(start, end+step, step), " "), nil
+		return sr.convertIntArrayToString(helpers.UntilStep(start, end+step, step), " ")
 	case 3:
 		start := params[0]
 		end := params[2]
@@ -929,11 +883,11 @@ func (sr *StringsRegistry) Seq(params ...int) (string, error) {
 		if end < start {
 			increment = -1
 			if step > 0 {
-				return "", nil
+				return ""
 			}
 		}
-		return sr.convertIntArrayToString(helpers.UntilStep(start, end+increment, step), " "), nil
+		return sr.convertIntArrayToString(helpers.UntilStep(start, end+increment, step), " ")
 	default:
-		return "", nil
+		return ""
 	}
 }

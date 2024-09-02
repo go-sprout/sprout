@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestRandomString(t *testing.T) {
@@ -24,8 +23,7 @@ func TestRandomString(t *testing.T) {
 
 	for _, c := range tc {
 
-		result, err := rr.randomString(c.length, c.opts)
-		require.NoError(t, err)
+		result := rr.randomString(c.length, c.opts)
 		assert.Regexp(t, c.regexpString, result)
 		assert.Len(t, result, c.length)
 	}

@@ -17,15 +17,14 @@ import (
 // Returns:
 //
 //	string - the randomly generated string.
-//	error - an error if the random string generation fails.
 //
 // Usage:
 //
 //	opts := &randomOpts{withLetters: true, withNumbers: true}
 //	randomStr := rr.randomString(10, opts) // Generates a 10-character alphanumeric string.
-func (rr *RandomRegistry) randomString(count int, opts *randomOpts) (string, error) {
+func (rr *RandomRegistry) randomString(count int, opts *randomOpts) string {
 	if count <= 0 {
-		return "", nil
+		return ""
 	}
 
 	if len(opts.withChars) == 0 {
@@ -66,5 +65,5 @@ func (rr *RandomRegistry) randomString(count int, opts *randomOpts) (string, err
 		builder.WriteRune(opts.withChars[index.Int64()])
 	}
 
-	return builder.String(), nil
+	return builder.String()
 }

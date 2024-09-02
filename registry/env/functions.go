@@ -13,13 +13,12 @@ import (
 // Returns:
 //
 //	string - the value of the environment variable.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "PATH" | env }} // Output: "/usr/bin:/bin:/usr/sbin:/sbin"
-func (er *EnvironmentRegistry) Env(key string) (string, error) {
-	return os.Getenv(key), nil
+func (er *EnvironmentRegistry) Env(key string) string {
+	return os.Getenv(key)
 }
 
 // ExpandEnv replaces ${var} or $var in the string based on the values of the
@@ -32,11 +31,10 @@ func (er *EnvironmentRegistry) Env(key string) (string, error) {
 // Returns:
 //
 //	string - the expanded string.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "Path is $PATH" | expandEnv }} // Output: "Path is /usr/bin:/bin:/usr/sbin:/sbin"
-func (er *EnvironmentRegistry) ExpandEnv(str string) (string, error) {
-	return os.ExpandEnv(str), nil
+func (er *EnvironmentRegistry) ExpandEnv(str string) string {
+	return os.ExpandEnv(str)
 }

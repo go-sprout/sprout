@@ -11,11 +11,10 @@ import (
 // Returns:
 //
 //	string - a new UUID string.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ uuidv4 }} // Output: "3f0c463e-53f5-4f05-a2ec-3c083aa8f937"
-func (ur *UniqueIDRegistry) Uuidv4() (string, error) {
-	return uuid.New().String(), nil
+func (ur *UniqueIDRegistry) Uuidv4() string {
+	return uuid.New().String()
 }

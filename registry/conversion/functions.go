@@ -147,23 +147,22 @@ func (cr *ConversionRegistry) ToOctal(v any) (int64, error) {
 // Returns:
 //
 //	string - the string representation of the value.
-//	error - error if the value cannot be converted to a string.
 //
 // Example:
 //
 //	{{ 123 | toString }} // Output: "123"
-func (cr *ConversionRegistry) ToString(v any) (string, error) {
+func (cr *ConversionRegistry) ToString(v any) string {
 	switch v := v.(type) {
 	case string:
-		return v, nil
+		return v
 	case []byte:
-		return string(v), nil
+		return string(v)
 	case error:
-		return v.Error(), nil
+		return v.Error()
 	case fmt.Stringer:
-		return v.String(), nil
+		return v.String()
 	default:
-		return fmt.Sprint(v), nil
+		return fmt.Sprint(v)
 	}
 }
 

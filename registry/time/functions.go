@@ -16,7 +16,7 @@ import (
 // Returns:
 //
 //	string - the formatted date.
-//	error - a placeholder for future error handling.
+//	error - when the timezone is invalid or the date is not in a valid format.
 //
 // Example:
 //
@@ -36,7 +36,7 @@ func (tr *TimeRegistry) Date(fmt string, date any) (string, error) {
 // Returns:
 //
 //	string - the formatted date.
-//	error - a placeholder for future error handling.
+//	error - when the timezone is invalid or the date is not in a valid format.
 //
 // Example:
 //
@@ -62,8 +62,7 @@ func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) (string, e
 
 	loc, err := time.LoadLocation(zone)
 	if err != nil {
-		// TODO: Handle error
-		loc, _ = time.LoadLocation("UTC")
+		return "", err
 	}
 
 	return t.In(loc).Format(fmt), nil
@@ -78,12 +77,11 @@ func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) (string, e
 // Returns:
 //
 //	string - the human-readable duration.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ 3661 | duration }} // Output: "1h1m1s"
-func (tr *TimeRegistry) Duration(sec any) (string, error) {
+func (tr *TimeRegistry) Duration(sec any) string {
 	var n int64
 	switch value := sec.(type) {
 	case string:
@@ -99,7 +97,7 @@ func (tr *TimeRegistry) Duration(sec any) (string, error) {
 	default:
 		n = 0
 	}
-	return (time.Duration(n) * time.Second).String(), nil
+	return (time.Duration(n) * time.Second).String()
 }
 
 // DateAgo calculates how much time has passed since the given date.
@@ -111,12 +109,11 @@ func (tr *TimeRegistry) Duration(sec any) (string, error) {
 // Returns:
 //
 //	string - a human-readable string describing how long ago the date was.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "2023-05-04T15:04:05Z" | dateAgo }} // Output: "4m"
-func (tr *TimeRegistry) DateAgo(date any) (string, error) {
+func (tr *TimeRegistry) DateAgo(date any) string {
 	var t time.Time
 
 	switch date := date.(type) {
@@ -135,7 +132,7 @@ func (tr *TimeRegistry) DateAgo(date any) (string, error) {
 	}
 	// Drop resolution to seconds
 	duration := time.Since(t).Round(time.Second)
-	return duration.String(), nil
+	return duration.String()
 }
 
 // Now returns the current time.
@@ -143,13 +140,12 @@ func (tr *TimeRegistry) DateAgo(date any) (string, error) {
 // Returns:
 //
 //	time.Time - the current time.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ now }} // Output: "2023-05-07T15:04:05Z"
-func (tr *TimeRegistry) Now() (time.Time, error) {
-	return time.Now(), nil
+func (tr *TimeRegistry) Now() time.Time {
+	return time.Now()
 }
 
 // UnixEpoch returns the Unix epoch timestamp of a given date.
@@ -161,13 +157,12 @@ func (tr *TimeRegistry) Now() (time.Time, error) {
 // Returns:
 //
 //	string - the Unix timestamp as a string.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ now | unixEpoch }} // Output: "1683306245"
-func (tr *TimeRegistry) UnixEpoch(date time.Time) (string, error) {
-	return strconv.FormatInt(date.Unix(), 10), nil
+func (tr *TimeRegistry) UnixEpoch(date time.Time) string {
+	return strconv.FormatInt(date.Unix(), 10)
 }
 
 // DateModify adjusts a given date by a specified duration. If the duration
@@ -179,7 +174,7 @@ func (tr *TimeRegistry) UnixEpoch(date time.Time) (string, error) {
 //
 // Returns:
 //   time.Time - the modified date after adding the duration
-//	 error - a placeholder for future error handling.
+//	 error - an error if the duration format is incorrect
 //
 // Example:
 //   {{ "2024-05-04T15:04:05Z" | dateModify "48h" }} // Outputs the date two days later
@@ -201,12 +196,11 @@ func (tr *TimeRegistry) DateModify(fmt string, date time.Time) (time.Time, error
 // Returns:
 //
 //	string - the rounded duration.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "3600s" | durationRound }} // Output: "1h"
-func (tr *TimeRegistry) DurationRound(duration any) (string, error) {
+func (tr *TimeRegistry) DurationRound(duration any) string {
 	var d time.Duration
 
 	switch duration := duration.(type) {
@@ -229,7 +223,7 @@ func (tr *TimeRegistry) DurationRound(duration any) (string, error) {
 	}
 
 	if u == 0 {
-		return "0s", nil
+		return "0s"
 	}
 
 	const (
@@ -268,7 +262,7 @@ func (tr *TimeRegistry) DurationRound(duration any) (string, error) {
 		b.WriteString(strconv.FormatUint(u/second, 10))
 		b.WriteRune('s')
 	}
-	return b.String(), nil
+	return b.String()
 }
 
 // HtmlDate formats a date into a standard HTML date format (YYYY-MM-DD).
@@ -280,7 +274,7 @@ func (tr *TimeRegistry) DurationRound(duration any) (string, error) {
 // Returns:
 //
 //	string - the formatted date in HTML format.
-//	error - a placeholder for future error handling.
+//	error - when the timezone is invalid or the date is not in a valid format.
 //
 // Example:
 //
@@ -299,7 +293,7 @@ func (tr *TimeRegistry) HtmlDate(date any) (string, error) {
 // Returns:
 //
 //	string - the formatted date in HTML format.
-//	error - a placeholder for future error handling.
+//	error - when the timezone is invalid or the date is not in a valid format.
 //
 // Example:
 //

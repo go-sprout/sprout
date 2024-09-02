@@ -9,8 +9,8 @@ import (
 
 // Hello returns a greeting string.
 // It simply returns the string "Hello!" to be used as a test function.
-func (sr *StdRegistry) Hello() (string, error) {
-	return "Hello!", nil
+func (sr *StdRegistry) Hello() string {
+	return "Hello!"
 }
 
 // Default returns the first non-empty value from the given arguments or a
@@ -33,7 +33,6 @@ func (sr *StdRegistry) Hello() (string, error) {
 //
 //	any - the first element of `given`, or `defaultValue` if `given` is empty
 //	      or all values are empty.
-//	error - an error if the number of arguments is less than 1.
 //
 // Example:
 //
@@ -41,11 +40,11 @@ func (sr *StdRegistry) Hello() (string, error) {
 //	{{ "" | default "default" }}  // Output: "default"
 //	{{ "first" | default "default" }} // Output: "first"
 //	{{ "first" | default "default" "second" }} // Output: "second"
-func (sr *StdRegistry) Default(defaultValue any, given ...any) (any, error) {
+func (sr *StdRegistry) Default(defaultValue any, given ...any) any {
 	if len(given) == 0 || helpers.Empty(given[0]) {
-		return defaultValue, nil
+		return defaultValue
 	}
-	return given[0], nil
+	return given[0]
 }
 
 // Empty evaluates the emptiness of the provided value 'given'. It returns
@@ -60,7 +59,6 @@ func (sr *StdRegistry) Default(defaultValue any, given ...any) (any, error) {
 // Returns:
 //
 //	bool - true if 'given' is empty, false otherwise.
-//	error - placeholder for potential errors in the future.
 //
 // This method utilizes the reflect package to inspect the type and value of
 // 'given'. Depending on the type, it checks for nil pointers, zero-length
@@ -75,8 +73,8 @@ func (sr *StdRegistry) Default(defaultValue any, given ...any) (any, error) {
 //	{{ 0 | empty }} // Output: true
 //	{{ false | empty }} // Output: true
 //	{{ struct{}{} | empty }} // Output: false
-func (sr *StdRegistry) Empty(given any) (bool, error) {
-	return helpers.Empty(given), nil
+func (sr *StdRegistry) Empty(given any) bool {
+	return helpers.Empty(given)
 }
 
 // All checks if all values in the provided variadic slice are non-empty.
@@ -89,19 +87,18 @@ func (sr *StdRegistry) Empty(given any) (bool, error) {
 // Returns:
 //
 //	bool - true if all values are non-empty, false otherwise.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ 1, "hello", true | all }} // Output: true
 //	{{ 1, "", true | all }} // Output: false
-func (sr *StdRegistry) All(values ...any) (bool, error) {
+func (sr *StdRegistry) All(values ...any) bool {
 	for _, val := range values {
 		if helpers.Empty(val) {
-			return false, nil
+			return false
 		}
 	}
-	return true, nil
+	return true
 }
 
 // Any checks if any of the provided values are non-empty.
@@ -112,19 +109,18 @@ func (sr *StdRegistry) All(values ...any) (bool, error) {
 //
 // Returns:
 //	bool - true if any value is non-empty, false if all are empty.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //	{{ "", 0, false | any }} // Output: false
 //	{{ "", 0, "text" | any }} // Output: true
 
-func (sr *StdRegistry) Any(values ...any) (bool, error) {
+func (sr *StdRegistry) Any(values ...any) bool {
 	for _, val := range values {
 		if !helpers.Empty(val) {
-			return true, nil
+			return true
 		}
 	}
-	return false, nil
+	return false
 }
 
 // Coalesce returns the first non-empty value from the given list.
@@ -136,18 +132,17 @@ func (sr *StdRegistry) Any(values ...any) (bool, error) {
 //
 // Returns:
 //	any - the first non-empty value, or nil if all values are empty.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //	{{ nil, "", "first", "second" | coalesce }} // Output: "first"
 
-func (sr *StdRegistry) Coalesce(values ...any) (any, error) {
+func (sr *StdRegistry) Coalesce(values ...any) any {
 	for _, val := range values {
 		if !helpers.Empty(val) {
-			return val, nil
+			return val
 		}
 	}
-	return nil, nil
+	return nil
 }
 
 // Ternary mimics the ternary conditional operator found in many programming languages.
@@ -162,18 +157,17 @@ func (sr *StdRegistry) Coalesce(values ...any) (any, error) {
 // Returns:
 //
 //	any - the result based on the evaluated condition.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "yes", "no", true | ternary }} // Output: "yes"
 //	{{ "yes", "no", false | ternary }} // Output: "no"
-func (sr *StdRegistry) Ternary(trueValue any, falseValue any, condition bool) (any, error) {
+func (sr *StdRegistry) Ternary(trueValue any, falseValue any, condition bool) any {
 	if condition {
-		return trueValue, nil
+		return trueValue
 	}
 
-	return falseValue, nil
+	return falseValue
 }
 
 // Cat concatenates a series of values into a single string. Each value is
@@ -188,12 +182,11 @@ func (sr *StdRegistry) Ternary(trueValue any, falseValue any, condition bool) (a
 //
 //	string - a single string composed of all non-nil input values separated
 //	         by spaces.
-//	error - placeholder for potential errors in the future.
 //
 // Example:
 //
 //	{{ "Hello", nil, 123, true | cat }} // Output: "Hello 123 true"
-func (sr *StdRegistry) Cat(values ...any) (string, error) {
+func (sr *StdRegistry) Cat(values ...any) string {
 	var builder strings.Builder
 	for i, item := range values {
 		if item == nil {
@@ -206,5 +199,5 @@ func (sr *StdRegistry) Cat(values ...any) (string, error) {
 		builder.WriteString(fmt.Sprint(item))
 	}
 	// Return the concatenated string without trailing spaces
-	return builder.String(), nil
+	return builder.String()
 }

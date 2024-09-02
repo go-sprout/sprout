@@ -18,12 +18,11 @@ import (
 // Returns:
 //
 //	map[string]any - the created dictionary.
-//	error - an error if the number of values is not even.
 //
 // Example:
 //
 //	{{ dict "key1", "value1", "key2", "value2" }} // Output: {"key1": "value1", "key2": "value2"}
-func (mr *MapsRegistry) Dict(values ...any) (map[string]any, error) {
+func (mr *MapsRegistry) Dict(values ...any) map[string]any {
 	// Ensure even number of values for key-value pairs
 	if len(values)%2 != 0 {
 		values = append(values, "")
@@ -37,7 +36,7 @@ func (mr *MapsRegistry) Dict(values ...any) (map[string]any, error) {
 		dict[helpers.ToString(values[i])] = values[i+1]
 	}
 
-	return dict, nil
+	return dict
 }
 
 // Get retrieves the value associated with the specified key from the dictionary.
@@ -50,7 +49,7 @@ func (mr *MapsRegistry) Dict(values ...any) (map[string]any, error) {
 // Returns:
 //
 //	any - the value associated with the key, or an empty string if the key does not exist.
-//	error - a placeholder for future error handling.
+//	error - protect against undesired behavior due to migration to new signature.
 //
 // Example:
 //
@@ -92,7 +91,7 @@ func (mr *MapsRegistry) Get(args ...any) (any, error) {
 // Returns:
 //
 //	map[string]any - the updated dictionary.
-//	error - a placeholder for future error handling.
+//	error - protect against undesired behavior due to migration to new signature.
 //
 // Example:
 //
@@ -134,7 +133,7 @@ func (mr *MapsRegistry) Set(args ...any) (map[string]any, error) {
 // Returns:
 //
 //	map[string]any - the dictionary after removing the key.
-//	error - a placeholder for future error handling.
+//	error - protect against undesired behavior due to migration to new signature.
 //
 // Example:
 //
@@ -175,12 +174,11 @@ func (mr *MapsRegistry) Unset(args ...any) (map[string]any, error) {
 // Returns:
 //
 //	[]string - a list of all keys from the dictionaries.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ keys {"key1": "value1", "key2": "value2"} }} // Output: ["key1", "key2"]
-func (mr *MapsRegistry) Keys(dicts ...map[string]any) ([]string, error) {
+func (mr *MapsRegistry) Keys(dicts ...map[string]any) []string {
 	var keyCount int
 	for i := range dicts {
 		keyCount += len(dicts[i])
@@ -194,7 +192,7 @@ func (mr *MapsRegistry) Keys(dicts ...map[string]any) ([]string, error) {
 		}
 	}
 
-	return keys, nil
+	return keys
 }
 
 // Values retrieves all values from one or more dictionaries.
@@ -206,12 +204,11 @@ func (mr *MapsRegistry) Keys(dicts ...map[string]any) ([]string, error) {
 // Returns:
 //
 //	[]any - a list of all values from the dictionary.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ values {"key1": "value1", "key2": "value2"} }} // Output: ["value1", "value2"]
-func (mr *MapsRegistry) Values(dicts ...map[string]any) ([]any, error) {
+func (mr *MapsRegistry) Values(dicts ...map[string]any) []any {
 	var keyCount int
 	for i := range dicts {
 		keyCount += len(dicts[i])
@@ -225,7 +222,7 @@ func (mr *MapsRegistry) Values(dicts ...map[string]any) ([]any, error) {
 		}
 	}
 
-	return values, nil
+	return values
 }
 
 // Pluck extracts values associated with a specified key from a list of dictionaries.
@@ -238,14 +235,13 @@ func (mr *MapsRegistry) Values(dicts ...map[string]any) ([]any, error) {
 // Returns:
 //
 //	[]any - a list of values associated with the key from each dictionary.
-//	error - a placeholder for future error handling.
 //
 // Example:
 //
 //	{{ $d1 := dict "key" "value1"}}
 //	{{ $d2 := dict "key" "value2" }}
 //	{{ pluck "key"	$d1 $d2 }} // Output: ["value1", "value2"]
-func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) ([]any, error) {
+func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
 	result := make([]any, 0, len(dicts))
 
 	for _, dict := range dicts {
@@ -253,7 +249,7 @@ func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) ([]any, error
 			result = append(result, val)
 		}
 	}
-	return result, nil
+	return result
 }
 
 // Pick creates a new dictionary containing only the specified keys from the
@@ -267,7 +263,7 @@ func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) ([]any, error
 // Returns:
 //
 //	map[string]any - a dictionary containing only the picked keys and their values.
-//	error - a placeholder for future error handling.
+//	error - protect against undesired behavior due to migration to new signature.
 //
 // Example:
 //
@@ -324,7 +320,7 @@ func (mr *MapsRegistry) Pick(args ...any) (map[string]any, error) {
 // Returns:
 //
 //	map[string]any - a dictionary without the omitted keys.
-//	error - a placeholder for future error handling.
+//	error - protect against undesired behavior due to migration to new signature.
 //
 // Example:
 //
@@ -419,7 +415,7 @@ func (mr *MapsRegistry) Dig(args ...any) (any, error) {
 // Returns:
 //
 //	bool - true if the key exists, otherwise false.
-//	error - a placeholder for future error handling.
+//	error - protect against undesired behavior due to migration to new signature.
 //
 // Example:
 //

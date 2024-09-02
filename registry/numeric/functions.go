@@ -102,7 +102,7 @@ func (nr *NumericRegistry) Round(num any, poww int, roundOpts ...float64) (float
 // Returns:
 //
 //	any - the sum of the values, converted to the type of the first value.
-//	error - a placeholder for future error handling.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
@@ -120,7 +120,7 @@ func (nr *NumericRegistry) Add(values ...any) (any, error) {
 // Returns:
 //
 //	any - the sum of the value and 1, converted to the type of the input.
-//	error - a placeholder for future error handling.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
@@ -139,7 +139,7 @@ func (nr *NumericRegistry) Add1(x any) (any, error) {
 // Returns:
 //
 //	any - the result of the subtraction, converted to the type of the first value.
-//	error - a placeholder for future error handling.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
@@ -180,7 +180,7 @@ func (nr *NumericRegistry) MulInt(values ...any) (int64, error) {
 // Returns:
 //
 //	any - the product of the values, converted to the type of the first value.
-//	error - a placeholder for future error handling.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
@@ -246,7 +246,7 @@ func (nr *NumericRegistry) Divf(values ...any) (any, error) {
 // Returns:
 //
 //	any - the remainder, converted to the type of 'x'.
-//	error - a placeholder for future error handling.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
@@ -278,7 +278,7 @@ func (nr *NumericRegistry) Mod(x, y any) (any, error) {
 // Returns:
 //
 //	int64 - the smallest number among the inputs.
-//	error - a placeholder for future error handling.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
@@ -311,7 +311,7 @@ func (nr *NumericRegistry) Min(a any, i ...any) (int64, error) {
 // Returns:
 //
 //	float64 - the smallest number among the inputs.
-//	error - a placeholder for future error handling.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
@@ -341,7 +341,7 @@ func (nr *NumericRegistry) Minf(a any, i ...any) (float64, error) {
 // Returns:
 //
 //	int64 - the largest number among the inputs.
-//	error - a placeholder for future error handling.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
@@ -375,7 +375,7 @@ func (nr *NumericRegistry) Max(a any, i ...any) (int64, error) {
 // Returns:
 //
 //	float64 - the largest number among the inputs.
-//	error - a placeholder for future error handling.
+//	error - when a value cannot be converted.
 //
 // Example:
 //

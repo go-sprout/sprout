@@ -19,14 +19,12 @@ import (
 // Returns:
 //
 //	bool - true if 'src' is of type 'target', false otherwise.
-//	error - placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "int", 42 | typeIs }} // Output: true
-func (rr *ReflectRegistry) TypeIs(target string, src any) (bool, error) {
-	result, _ := rr.TypeOf(src)
-	return target == result, nil
+func (rr *ReflectRegistry) TypeIs(target string, src any) bool {
+	return rr.TypeOf(src) == target
 }
 
 // TypeIsLike compares the type of 'src' to a target type string 'target',
@@ -42,14 +40,13 @@ func (rr *ReflectRegistry) TypeIs(target string, src any) (bool, error) {
 // Returns:
 //
 //	bool - true if the type of 'src' matches 'target' or '*'+target, false otherwise.
-//	error - placeholder for future error handling.
 //
 // Example:
 //
 //	{{ "*int", 42 | typeIsLike }} // Output: true
-func (rr *ReflectRegistry) TypeIsLike(target string, src any) (bool, error) {
-	t, _ := rr.TypeOf(src)
-	return target == t || "*"+target == t, nil
+func (rr *ReflectRegistry) TypeIsLike(target string, src any) bool {
+	t := rr.TypeOf(src)
+	return target == t || "*"+target == t
 }
 
 // TypeOf returns the type of 'src' as a string.
@@ -61,13 +58,12 @@ func (rr *ReflectRegistry) TypeIsLike(target string, src any) (bool, error) {
 // Returns:
 //
 //	string - the string representation of 'src's type.
-//	error - placeholder for future error handling.
 //
 // Example:
 //
 //	{{ 42 | typeOf }} // Output: "int"
-func (rr *ReflectRegistry) TypeOf(src any) (string, error) {
-	return fmt.Sprintf("%T", src), nil
+func (rr *ReflectRegistry) TypeOf(src any) string {
+	return fmt.Sprintf("%T", src)
 }
 
 // KindIs compares the kind of 'src' to a target kind string 'target'.
@@ -81,7 +77,7 @@ func (rr *ReflectRegistry) TypeOf(src any) (string, error) {
 // Returns:
 //
 //	bool - true if 'src's kind is 'target', false otherwise.
-//	error - placeholder for future error handling.
+//	error - when 'src' is nil.
 //
 // Example:
 //
@@ -104,7 +100,7 @@ func (rr *ReflectRegistry) KindIs(target string, src any) (bool, error) {
 // Returns:
 //
 //	string - the string representation of 'src's kind.
-//	error - placeholder for future error handling.
+//	error - when 'src' is nil.
 //
 // Example:
 //
@@ -127,7 +123,7 @@ func (rr *ReflectRegistry) KindOf(src any) (string, error) {
 // Returns:
 //
 //	bool - true if the struct 'src' contains a field with the name 'name', false otherwise.
-//	error - placeholder for future error handling.
+//	error - when the last argument is not a struct.
 //
 // Example:
 //
@@ -151,13 +147,12 @@ func (rr *ReflectRegistry) HasField(name string, src any) (bool, error) {
 // Returns:
 //
 //	bool - true if 'x' and 'y' are deeply equal, false otherwise.
-//	error - placeholder for future error handling.
 //
 // Example:
 //
 //	{{ {"a":1}, {"a":1} | deepEqual }} // Output: true
-func (rr *ReflectRegistry) DeepEqual(x, y any) (bool, error) {
-	return reflect.DeepEqual(y, x), nil
+func (rr *ReflectRegistry) DeepEqual(x, y any) bool {
+	return reflect.DeepEqual(y, x)
 }
 
 // DeepCopy performs a deep copy of 'element' and panics if copying fails.
@@ -170,7 +165,7 @@ func (rr *ReflectRegistry) DeepEqual(x, y any) (bool, error) {
 // Returns:
 //
 //	any - a deep copy of 'element'.
-//	error - placeholder for future error handling.
+//	error - when 'element' is nil.
 //
 // Example:
 //

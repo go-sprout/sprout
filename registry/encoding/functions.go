@@ -21,13 +21,12 @@ import (
 // Returns:
 //
 //	string - the Base64 encoded string.
-//	error - an error message if the encoding fails.
 //
 // Example:
 //
 //	{{ "Hello World" | base64Encode }} // Output: "SGVsbG8gV29ybGQ="
-func (er *EncodingRegistry) Base64Encode(str string) (string, error) {
-	return base64.StdEncoding.EncodeToString([]byte(str)), nil
+func (er *EncodingRegistry) Base64Encode(str string) string {
+	return base64.StdEncoding.EncodeToString([]byte(str))
 }
 
 // Base64Decode decodes a Base64 encoded string back to its original form.
@@ -62,13 +61,12 @@ func (er *EncodingRegistry) Base64Decode(str string) (string, error) {
 // Returns:
 //
 //	string - the Base32 encoded string.
-//	error - an error message if the encoding fails.
 //
 // Example:
 //
 //	{{ "Hello World" | base32Encode }} // Output: "JBSWY3DPEBLW64TMMQQQ===="
-func (er *EncodingRegistry) Base32Encode(str string) (string, error) {
-	return base32.StdEncoding.EncodeToString([]byte(str)), nil
+func (er *EncodingRegistry) Base32Encode(str string) string {
+	return base32.StdEncoding.EncodeToString([]byte(str))
 }
 
 // Base32Decode decodes a Base32 encoded string back to its original form.

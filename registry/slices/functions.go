@@ -20,13 +20,12 @@ import (
 // Returns:
 //
 //	[]any - the created list containing the provided elements.
-//	error - error placeholder for future use.
 //
 // Example:
 //
 //	{{ 1, 2, 3 | list }} // Output: [1, 2, 3]
-func (sr *SlicesRegistry) List(values ...any) ([]any, error) {
-	return values, nil
+func (sr *SlicesRegistry) List(values ...any) []any {
+	return values
 }
 
 // Append appends an element to a slice or array, returning an error if the
@@ -40,7 +39,7 @@ func (sr *SlicesRegistry) List(values ...any) ([]any, error) {
 // Returns:
 //
 //	[]any - the new list with the element appended.
-//	error - error if the list is nil or not a slice/array.
+//	error - protect against undesired behavior due to migration to new signature.
 //
 // Example:
 //
@@ -110,7 +109,7 @@ func (sr *SlicesRegistry) Append(args ...any) ([]any, error) {
 // Returns:
 //
 //	[]any - the new list with the element prepended.
-//	error - error if the list is nil or not a slice/array.
+//	error - protect against undesired behavior due to migration to new signature.
 //
 // Example:
 //
@@ -167,12 +166,11 @@ func (sr *SlicesRegistry) Prepend(args ...any) ([]any, error) {
 // Returns:
 //
 //	any - a single concatenated list containing elements from all provided lists.
-//	error - error placeholder for future use.
 //
 // Example:
 //
 //	{{ ["c", "d"] | concat ["a", "b"] }} // Output: ["a", "b", "c", "d"]
-func (sr *SlicesRegistry) Concat(lists ...any) (any, error) {
+func (sr *SlicesRegistry) Concat(lists ...any) any {
 	// Estimate the total length to preallocate the result slice
 	var totalLen int
 	for _, list := range lists {
@@ -203,7 +201,7 @@ func (sr *SlicesRegistry) Concat(lists ...any) (any, error) {
 		}
 	}
 
-	return res, nil
+	return res
 }
 
 // Chunk divides a list into chunks of specified size, returning an error
@@ -357,7 +355,7 @@ func (sr *SlicesRegistry) Compact(list any) ([]any, error) {
 // Returns:
 //
 //	any - the sliced part of the list.
-//	error - error if the list is nil or not a slice/array.
+//	error - protect against undesired behavior due to migration to new signature.
 //
 // Example:
 //
@@ -476,7 +474,7 @@ func (sr *SlicesRegistry) Has(element any, list any) (bool, error) {
 // Returns:
 //
 //	[]any - the list excluding the specified elements.
-//	error - error if the list is nil or not a slice/array.
+//	error - protect against undesired behavior due to migration to new signature.
 //
 // Example:
 //
@@ -732,24 +730,20 @@ func (sr *SlicesRegistry) Reverse(list any) ([]any, error) {
 // Returns:
 //
 //	[]string - the sorted list.
-//	error - error placeholder for future use.
 //
 // Example:
 //
 //	{{ ["d", "b", "a", "c"] | sortAlpha }} // Output: ["a", "b", "c", "d"]
-func (sr *SlicesRegistry) SortAlpha(list any) ([]string, error) {
+func (sr *SlicesRegistry) SortAlpha(list any) []string {
 	kind := reflect.Indirect(reflect.ValueOf(list)).Kind()
 	switch kind {
 	case reflect.Slice, reflect.Array:
-		strList, err := sr.StrSlice(list)
-		if err != nil {
-			return nil, err
-		}
+		strList := sr.StrSlice(list)
 		sort.Strings(strList)
-		return strList, nil
+		return strList
 	}
 
-	return []string{helpers.ToString(list)}, nil
+	return []string{helpers.ToString(list)}
 }
 
 // SplitList divides a string into a slice of substrings separated by the
@@ -765,13 +759,12 @@ func (sr *SlicesRegistry) SortAlpha(list any) ([]string, error) {
 // Returns:
 //
 //	[]string - a slice containing the substrings obtained from splitting the input string.
-//	error - error placeholder for future use.
 //
 // Example:
 //
 //	{{ "one, two, three" | splitList ", " }} // Output: ["one", "two", "three"]
-func (sr *SlicesRegistry) SplitList(sep string, str string) ([]string, error) {
-	return strings.Split(str, sep), nil
+func (sr *SlicesRegistry) SplitList(sep string, str string) []string {
+	return strings.Split(str, sep)
 }
 
 // StrSlice converts a value to a slice of strings, handling various types
@@ -784,13 +777,12 @@ func (sr *SlicesRegistry) SplitList(sep string, str string) ([]string, error) {
 // Returns:
 //
 //	[]string - the converted slice of strings.
-//	error - error placeholder for future use.
 //
 // Example:
 //
 //	{{ strSlice any["a", "b", "c"] }} // Output: ["a", "b", "c"]
-func (sr *SlicesRegistry) StrSlice(value any) ([]string, error) {
-	return helpers.StrSlice(value), nil
+func (sr *SlicesRegistry) StrSlice(value any) []string {
+	return helpers.StrSlice(value)
 }
 
 // Until generates a slice of integers from 0 up to but not including 'count'.
@@ -804,13 +796,12 @@ func (sr *SlicesRegistry) StrSlice(value any) ([]string, error) {
 // Returns:
 //   []int - a slice of integers from 0 to 'count' with the appropriate step
 //           depending on whether 'count' is positive or negative.
-//	error - error placeholder for future use.
 //
 // Example:
 //   {{ 5 | until }} // Output: [0 1 2 3 4]
 //   {{ -3 | until }} // Output: [0 -1 -2]
 
-func (sr *SlicesRegistry) Until(count int) ([]int, error) {
+func (sr *SlicesRegistry) Until(count int) []int {
 	step := 1
 	if count < 0 {
 		step = -1
@@ -835,12 +826,11 @@ func (sr *SlicesRegistry) Until(count int) ([]int, error) {
 //	[]int - a dynamically generated slice of integers based on the input
 //	        parameters, or an empty slice if the parameters are inconsistent
 //	        with the desired range and step.
-//	error - error placeholder for future use.
 //
 // Example:
 //
 //	{{ 0, 10, 2 | untilStep }} // Output: [0 2 4 6 8]
 //	{{ 10, 0, -2 | untilStep }} // Output: [10 8 6 4 2]
-func (sr *SlicesRegistry) UntilStep(start, stop, step int) ([]int, error) {
-	return helpers.UntilStep(start, stop, step), nil
+func (sr *SlicesRegistry) UntilStep(start, stop, step int) []int {
+	return helpers.UntilStep(start, stop, step)
 }
