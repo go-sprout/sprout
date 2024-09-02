@@ -31,7 +31,7 @@ func TestDateInZone(t *testing.T) {
 		{Name: "TestTimeObjectUnixInt", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "UTC" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": int(timeTest.Unix())}},
 		{Name: "TestTimeObjectUnixInt", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "UTC" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": int32(timeTest.Unix())}},
 		{Name: "TestWithInvalidInput", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "UTC" }}`, ExpectedOutput: goTime.Now().Format("02 Jan 06 15:04 -0700"), Data: map[string]any{"V": "invalid"}},
-		{Name: "TestWithInvalidZone", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "invalid" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": timeTest}},
+		{Name: "TestWithInvalidZone", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "invalid" }}`, ExpectedErr: "unknown time zone invalid", Data: map[string]any{"V": timeTest}},
 	}
 
 	pesticide.RunTestCases(t, time.NewRegistry(), tc)

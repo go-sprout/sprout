@@ -643,7 +643,7 @@
 {{ dateInZone "02 Jan 06 15:04 -0700" .data272 "UTC" }}
 {{ dateInZone "02 Jan 06 15:04 -0700" .data273 "UTC" }}
 {{ dateInZone "02 Jan 06 15:04 -0700" .data274 "UTC" }}
-{{ dateInZone "02 Jan 06 15:04 -0700" .data275 "invalid" }}
+{{ safeDateInZone "02 Jan 06 15:04 -0700" .data275 "invalid" }}
 {{ .duration | duration }}
 {{ .time | dateAgo | substr 0 5 }}
 {{ now | date "02 Jan 06 15:04 -0700" }}

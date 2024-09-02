@@ -62,7 +62,7 @@ func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) (string, e
 
 	loc, err := time.LoadLocation(zone)
 	if err != nil {
-		return "", err
+		return t.In(time.UTC).Format(fmt), err
 	}
 
 	return t.In(loc).Format(fmt), nil
