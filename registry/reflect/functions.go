@@ -24,7 +24,7 @@ import (
 //
 //	{{ "int", 42 | typeIs }} // Output: true
 func (rr *ReflectRegistry) TypeIs(target string, src any) bool {
-	return rr.TypeOf(src) == target
+	return target == rr.TypeOf(src)
 }
 
 // TypeIsLike compares the type of 'src' to a target type string 'target',

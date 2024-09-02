@@ -22,6 +22,7 @@ func TestUrlParse(t *testing.T) {
 		{Input: `{{ urlParse "https://example.com" | urlJoin }}`, ExpectedOutput: "https://example.com"},
 		{Input: `{{ urlParse "https://example.com/path" | urlJoin }}`, ExpectedOutput: "https://example.com/path"},
 		{Input: `{{ urlParse "https://user:pass@example.com/path?query=1" | urlJoin }}`, ExpectedOutput: "https://user:pass@example.com/path?query=1"},
+		{Input: `{{ urlParse "://" }}`, ExpectedErr: "unable to parse url"},
 	}
 
 	pesticide.RunTestCases(t, backward.NewRegistry(), tc)

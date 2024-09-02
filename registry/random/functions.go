@@ -87,14 +87,17 @@ func (rr *RandomRegistry) RandNumeric(count int) string {
 // Example:
 //
 //	{{ 16 | randBytes }} // Output: "c3RhY2thYnVzZSByb2NrcyE=" (output will vary)
-func (rr *RandomRegistry) RandBytes(count int) string {
+func (rr *RandomRegistry) RandBytes(count int) (string, error) {
 	if count <= 0 {
-		return ""
+		return "", nil
 	}
 
 	buf := make([]byte, count)
-	_, _ = cryptorand.Read(buf)
-	return base64.StdEncoding.EncodeToString(buf)
+	_, err := cryptorand.Read(buf)
+	if err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(buf), nil
 }
 
 // RandInt generates a random integer between the specified minimum and maximum
