@@ -9,7 +9,7 @@ import (
 )
 
 func TestToBool(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestBool", Input: `{{$v := toBool .V }}{{kindOf $v}}-{{$v}}`, ExpectedOutput: "bool-true", Data: map[string]any{"V": true}},
 		{Name: "TestInt", Input: `{{$v := toBool .V }}{{kindOf $v}}-{{$v}}`, ExpectedOutput: "bool-true", Data: map[string]any{"V": 1}},
 		{Name: "TestInt32", Input: `{{$v := toBool .V }}{{kindOf $v}}-{{$v}}`, ExpectedOutput: "bool-true", Data: map[string]any{"V": int32(1)}},
@@ -23,7 +23,7 @@ func TestToBool(t *testing.T) {
 }
 
 func TestToInt(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestInt", Input: `{{$v := toInt .V }}{{kindOf $v}}-{{$v}}`, ExpectedOutput: "int-1", Data: map[string]any{"V": 1}},
 		{Name: "TestInt32", Input: `{{$v := toInt .V }}{{kindOf $v}}-{{$v}}`, ExpectedOutput: "int-1", Data: map[string]any{"V": int32(1)}},
 		{Name: "TestFloat64", Input: `{{$v := toInt .V }}{{kindOf $v}}-{{$v}}`, ExpectedOutput: "int-1", Data: map[string]any{"V": float64(1.42)}},
@@ -36,7 +36,7 @@ func TestToInt(t *testing.T) {
 }
 
 func TestToInt64(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestInt", Input: `{{$v := toInt64 .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "int64-1", Data: map[string]any{"V": 1}},
 		{Name: "TestInt32", Input: `{{$v := toInt64 .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "int64-1", Data: map[string]any{"V": int32(1)}},
 		{Name: "TestFloat64", Input: `{{$v := toInt64 .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "int64-1", Data: map[string]any{"V": float64(1.42)}},
@@ -49,7 +49,7 @@ func TestToInt64(t *testing.T) {
 }
 
 func TestToUint(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestInt", Input: `{{$v := toUint .V }}{{kindOf $v}}-{{$v}}`, ExpectedOutput: "uint-1", Data: map[string]any{"V": 1}},
 		{Name: "TestInt32", Input: `{{$v := toUint .V }}{{kindOf $v}}-{{$v}}`, ExpectedOutput: "uint-1", Data: map[string]any{"V": int32(1)}},
 		{Name: "TestFloat64", Input: `{{$v := toUint .V }}{{kindOf $v}}-{{$v}}`, ExpectedOutput: "uint-1", Data: map[string]any{"V": float64(1.42)}},
@@ -62,7 +62,7 @@ func TestToUint(t *testing.T) {
 }
 
 func TestToUint64(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestInt", Input: `{{$v := toUint64 .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "uint64-1", Data: map[string]any{"V": 1}},
 		{Name: "TestInt32", Input: `{{$v := toUint64 .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "uint64-1", Data: map[string]any{"V": int32(1)}},
 		{Name: "TestFloat64", Input: `{{$v := toUint64 .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "uint64-1", Data: map[string]any{"V": float64(1.42)}},
@@ -75,7 +75,7 @@ func TestToUint64(t *testing.T) {
 }
 
 func TestToFloat64(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestInt", Input: `{{$v := toFloat64 .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "float64-1", Data: map[string]any{"V": 1}},
 		{Name: "TestInt32", Input: `{{$v := toFloat64 .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "float64-1", Data: map[string]any{"V": int32(1)}},
 		{Name: "TestFloat64", Input: `{{$v := toFloat64 .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "float64-1.42", Data: map[string]any{"V": float64(1.42)}},
@@ -88,7 +88,7 @@ func TestToFloat64(t *testing.T) {
 }
 
 func TestToOctal(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestInt", Input: `{{$v := toOctal .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "int64-511", Data: map[string]any{"V": 777}},
 		{Name: "TestInt32", Input: `{{$v := toOctal .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "int64-504", Data: map[string]any{"V": int32(770)}},
 		{Name: "TestString", Input: `{{$v := toOctal .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "int64-1", Data: map[string]any{"V": "1"}},
@@ -105,8 +105,7 @@ func (s testStringer) String() string {
 }
 
 func TestToString(t *testing.T) {
-
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestInt", Input: `{{$v := toString .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "string-1", Data: map[string]any{"V": 1}},
 		{Name: "TestInt32", Input: `{{$v := toString .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "string-1", Data: map[string]any{"V": int32(1)}},
 		{Name: "TestFloat64", Input: `{{$v := toString .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "string-1.42", Data: map[string]any{"V": float64(1.42)}},
@@ -121,7 +120,7 @@ func TestToString(t *testing.T) {
 }
 
 func TestToDate(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{
 			Name:           "TestDate",
 			Input:          `{{$v := toDate "2006-01-02" .V }}{{typeOf $v}}-{{$v}}`,
@@ -152,7 +151,7 @@ func TestToDate(t *testing.T) {
 }
 
 func TestToDuration(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestInt", Input: `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "time.Duration-1ns", Data: map[string]any{"V": 1}},
 		{Name: "TestInt32", Input: `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "time.Duration-1µs", Data: map[string]any{"V": int32(1000)}},
 		{Name: "TestFloat64", Input: `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "time.Duration-1.00042ms", Data: map[string]any{"V": float64(1000 * 1000.42)}},

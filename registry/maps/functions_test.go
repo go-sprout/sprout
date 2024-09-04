@@ -8,7 +8,7 @@ import (
 )
 
 func TestDict(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{dict}}`, ExpectedOutput: "map[]"},
 		{Name: "TestWithEvenKeyPair", Input: `{{dict "a" 1 "b" 2}}`, ExpectedOutput: "map[a:1 b:2]"},
 		{Name: "TestWithOddKeyPair", Input: `{{dict "a" 1 "b" 2 "c" 3 "d"}}`, ExpectedOutput: "map[a:1 b:2 c:3 d:]"},
@@ -19,7 +19,7 @@ func TestDict(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{get "a"  . }}`, ExpectedOutput: ""},
 		{Name: "TestWithKey", Input: `{{get "a"  . }}`, ExpectedOutput: "1", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{get "b"  . }}`, ExpectedOutput: "", Data: map[string]any{"a": 1}},
@@ -29,7 +29,7 @@ func TestGet(t *testing.T) {
 }
 
 func TestSet(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestWithKey", Input: `{{$d := set "a" 2 .}}{{$d}}`, ExpectedOutput: "map[a:2]", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNewKey", Input: `{{$d := set "b" 3 .}}{{$d}}`, ExpectedOutput: "map[a:1 b:3]", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNilValue", Input: `{{$d := .V | set "a" .Nil}}{{$d}}`, ExpectedOutput: "map[a:<nil>]", Data: map[string]any{"V": map[string]any{"a": 1}, "Nil": nil}},
@@ -39,7 +39,7 @@ func TestSet(t *testing.T) {
 }
 
 func TestUnset(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestWithKey", Input: `{{$d := unset "a" . }}{{$d}}`, ExpectedOutput: "map[]", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{$d := unset "b" . }}{{$d}}`, ExpectedOutput: "map[a:1]", Data: map[string]any{"a": 1}},
 	}
@@ -48,7 +48,7 @@ func TestUnset(t *testing.T) {
 }
 
 func TestKeys(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{keys .}}`, ExpectedOutput: "[]"},
 		{Name: "TestWithKeys", Input: `{{keys . | sortAlpha}}`, ExpectedOutput: `[a b]`, Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithMultiplesMaps", Input: `{{keys .A .B | sortAlpha}}`, ExpectedOutput: `[a b c d]`, Data: map[string]any{"A": map[string]any{"a": 1, "b": 2}, "B": map[string]any{"c": 3, "d": 4}}},
@@ -58,7 +58,7 @@ func TestKeys(t *testing.T) {
 }
 
 func TestValues(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{values .}}`, ExpectedOutput: "[]"},
 		{Name: "TestWithValues", Input: `{{values . | sortAlpha}}`, ExpectedOutput: "[1 foo]", Data: map[string]any{"a": 1, "b": "foo"}},
 	}
@@ -67,7 +67,7 @@ func TestValues(t *testing.T) {
 }
 
 func TestPluck(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{pluck "a" .}}`, ExpectedOutput: "[]"},
 		{Name: "TestWithOneMap", Input: `{{. | pluck "a"}}`, ExpectedOutput: "[1]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithTwoMaps", Input: `{{pluck "a" .A .B }}`, ExpectedOutput: "[1 3]", Data: map[string]any{"A": map[string]any{"a": 1, "b": 2}, "B": map[string]any{"a": 3, "b": 4}}},
@@ -77,7 +77,7 @@ func TestPluck(t *testing.T) {
 }
 
 func TestPick(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ . | pick "a"}}`, ExpectedOutput: "map[]"},
 		{Name: "TestWithOneValue", Input: `{{ . | pick "a"}}`, ExpectedOutput: "map[a:1]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithTwoValues", Input: `{{ . | pick "a" "b"}}`, ExpectedOutput: "map[a:1 b:2]", Data: map[string]any{"a": 1, "b": 2}},
@@ -89,7 +89,7 @@ func TestPick(t *testing.T) {
 }
 
 func TestOmit(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ . | omit "a"}}`, ExpectedOutput: "map[]"},
 		{Name: "TestWithOneValue", Input: `{{ . | omit "a"}}`, ExpectedOutput: "map[b:2]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithTwoValues", Input: `{{ . | omit "a" "b"}}`, ExpectedOutput: "map[]", Data: map[string]any{"a": 1, "b": 2}},
@@ -103,7 +103,7 @@ func TestOmit(t *testing.T) {
 }
 
 func TestDig(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{dig "a" .}}`, ExpectedOutput: "<no value>"},
 		{Name: "TestWithOneValue", Input: `{{dig "a" .}}`, ExpectedOutput: "1", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithNestedKey", Input: `{{dig "a" "b" .}}`, ExpectedOutput: "2", Data: map[string]any{"a": map[string]any{"b": 2}}},
@@ -119,7 +119,7 @@ func TestDig(t *testing.T) {
 }
 
 func TestHasKey(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{. | hasKey "a"}}`, ExpectedOutput: "false"},
 		{Name: "TestWithKey", Input: `{{. | hasKey "a"}}`, ExpectedOutput: "true", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{. | hasKey "b"}}`, ExpectedOutput: "false", Data: map[string]any{"a": 1}},
@@ -131,7 +131,7 @@ func TestHasKey(t *testing.T) {
 func TestMerge(t *testing.T) {
 	var dest map[string]any
 
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{merge .}}`, ExpectedOutput: "map[]"},
 		{Name: "TestWithOneMap", Input: `{{merge .}}`, ExpectedOutput: "map[a:1 b:2]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithTwoMaps", Input: `{{merge .Dest .Src1}}`, ExpectedOutput: "map[a:1 b:2 c:3 d:4]", Data: map[string]any{"Dest": map[string]any{"a": 1, "b": 2}, "Src1": map[string]any{"c": 3, "d": 4}}},
@@ -147,7 +147,7 @@ func TestMerge(t *testing.T) {
 func TestMergeOverwrite(t *testing.T) {
 	var dest map[string]any
 
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{mergeOverwrite .}}`, ExpectedOutput: "map[]"},
 		{Name: "TestWithOneMap", Input: `{{mergeOverwrite .}}`, ExpectedOutput: "map[a:1 b:2]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithTwoMaps", Input: `{{mergeOverwrite .Dest .Src1}}`, ExpectedOutput: "map[a:1 b:2 c:3 d:4]", Data: map[string]any{"Dest": map[string]any{"a": 1, "b": 2}, "Src1": map[string]any{"c": 3, "d": 4}}},

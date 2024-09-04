@@ -5,11 +5,12 @@ linters:
     - gocritic
     - gofumpt
     - misspell
-    - nonamedreturns
     - testifylint
     - errcheck
 
 linters-settings:
+  gofumpt:
+    module-path: github.com/go-sprout/sprout
   errorlint:
     # Check whether fmt.Errorf uses the %w verb for formatting errors.
     # See the https://github.com/polyfloyd/go-errorlint for caveats.

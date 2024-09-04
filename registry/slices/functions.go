@@ -46,11 +46,11 @@ func (sr *SlicesRegistry) List(values ...any) []any {
 //
 //	{{ ["a", "b"] | append "c"  }} // Output: ["a", "b", "c"], nil
 func (sr *SlicesRegistry) Append(args ...any) ([]any, error) {
-	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	//! Due to change in signature, this function still supports the old signature
-	//! to let users transition to the new signature.
-	//* Old signature: Append(list any, v any)
-	//* New signature: Append(v any, list any)
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	// ! Due to change in signature, this function still supports the old signature
+	// ! to let users transition to the new signature.
+	// * Old signature: Append(list any, v any)
+	// * New signature: Append(v any, list any)
 	if len(args) != 2 {
 		return []any{}, deprecated.ErrArgsCount(2, len(args))
 	}
@@ -116,11 +116,11 @@ func (sr *SlicesRegistry) Append(args ...any) ([]any, error) {
 //
 //	{{ ["b", "c"] | prepend "a" }} // Output: ["a", "b", "c"], nil
 func (sr *SlicesRegistry) Prepend(args ...any) ([]any, error) {
-	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	//! Due to change in signature, this function still supports the old signature
-	//! to let users transition to the new signature.
-	//* Old signature: Prepend(list any, v any)
-	//* New signature: Prepend(v any, list any)
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	// ! Due to change in signature, this function still supports the old signature
+	// ! to let users transition to the new signature.
+	// * Old signature: Prepend(list any, v any)
+	// * New signature: Prepend(v any, list any)
 	if len(args) != 2 {
 		return []any{}, deprecated.ErrArgsCount(2, len(args))
 	}
@@ -362,11 +362,11 @@ func (sr *SlicesRegistry) Compact(list any) ([]any, error) {
 //
 //	{{ [1, 2, 3, 4, 5] | slice 1, 3 }} // Output: [2, 3], nil
 func (sr *SlicesRegistry) Slice(args ...any) (any, error) {
-	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	//! Due to change in signature, this function still supports the old signature
-	//! to let users transition to the new signature.
-	//* Old signature: Slice(list any, indices ...any)
-	//* New signature: Slice(indices ...any, list any)
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	// ! Due to change in signature, this function still supports the old signature
+	// ! to let users transition to the new signature.
+	// * Old signature: Slice(list any, indices ...any)
+	// * New signature: Slice(indices ...any, list any)
 	if len(args) < 1 {
 		return []any{}, deprecated.ErrArgsCount(2, len(args))
 	}
@@ -481,11 +481,11 @@ func (sr *SlicesRegistry) Has(element any, list any) (bool, error) {
 //
 //	{{ [1, 2, 3, 4] | without 2, 4 }} // Output: [1, 3], nil
 func (sr *SlicesRegistry) Without(args ...any) ([]any, error) {
-	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	//! Due to change in signature, this function still supports the old signature
-	//! to let users transition to the new signature.
-	//* Old signature: Without(list any, omit ...any)
-	//* New signature: Without(omit ...any, list any)
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	// ! Due to change in signature, this function still supports the old signature
+	// ! to let users transition to the new signature.
+	// * Old signature: Without(list any, omit ...any)
+	// * New signature: Without(omit ...any, list any)
 	if len(args) < 2 {
 		return []any{}, deprecated.ErrArgsCount(2, len(args))
 	}

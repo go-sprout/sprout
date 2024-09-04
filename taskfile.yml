@@ -6,6 +6,14 @@ vars:
   GREETING: Hello, World!
 
 tasks:
+  lint:
+    aliases: [linter, linters, l]
+    desc: Run linters on the project code
+    summary: | 
+      Run linters on the project code and generate a report with the results.
+    cmds:
+      - go install github.com/Antonboom/testifylint@v1.4.0
+      - golangci-lint run
   test:
     aliases: [tests, t]
     desc: Run tests with coverage

@@ -3,19 +3,22 @@ package reflect_test
 import (
 	"testing"
 
-	"github.com/go-sprout/sprout/pesticide"
-	"github.com/go-sprout/sprout/registry/reflect"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/go-sprout/sprout/pesticide"
+	"github.com/go-sprout/sprout/registry/reflect"
 )
 
-var nilPointer *int = nil
-var nilInterface interface{}
+var (
+	nilPointer   *int = nil
+	nilInterface interface{}
+)
 
 func TestTypeIs(t *testing.T) {
 	type testStruct struct{}
 
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestTypeIsInt", Input: `{{typeIs "int" 42}}`, ExpectedOutput: "true"},
 		{Name: "TestTypeIsString", Input: `{{42 | typeIs "string"}}`, ExpectedOutput: "false"},
 		{Name: "TestTypeIsVariable", Input: `{{$var := 42}}{{typeIs "string" $var}}`, ExpectedOutput: "false"},
@@ -28,7 +31,7 @@ func TestTypeIs(t *testing.T) {
 func TestTypeIsLike(t *testing.T) {
 	type testStruct struct{}
 
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestTypeIsLikeInt", Input: `{{typeIsLike "int" 42}}`, ExpectedOutput: "true"},
 		{Name: "TestTypeIsLikeString", Input: `{{42 | typeIsLike "string"}}`, ExpectedOutput: "false"},
 		{Name: "TestTypeIsLikeVariable", Input: `{{$var := 42}}{{typeIsLike "string" $var}}`, ExpectedOutput: "false"},
@@ -42,7 +45,7 @@ func TestTypeIsLike(t *testing.T) {
 func TestTypeOf(t *testing.T) {
 	type testStruct struct{}
 
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestTypeOfInt", Input: `{{typeOf 42}}`, ExpectedOutput: "int"},
 		{Name: "TestTypeOfString", Input: `{{typeOf "42"}}`, ExpectedOutput: "string"},
 		{Name: "TestTypeOfVariable", Input: `{{$var := 42}}{{typeOf $var}}`, ExpectedOutput: "int"},
@@ -55,7 +58,7 @@ func TestTypeOf(t *testing.T) {
 func TestKindIs(t *testing.T) {
 	type testStruct struct{}
 
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestKindIsInt", Input: `{{kindIs "int" 42}}`, ExpectedOutput: "true"},
 		{Name: "TestKindIsString", Input: `{{42 | kindIs "string"}}`, ExpectedOutput: "false"},
 		{Name: "TestKindIsVariable", Input: `{{$var := 42}}{{kindIs "string" $var}}`, ExpectedOutput: "false"},
@@ -69,7 +72,7 @@ func TestKindIs(t *testing.T) {
 func TestKindOf(t *testing.T) {
 	type testStruct struct{}
 
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestKindOfInt", Input: `{{kindOf 42}}`, ExpectedOutput: "int"},
 		{Name: "TestKindOfString", Input: `{{kindOf "42"}}`, ExpectedOutput: "string"},
 		{Name: "TestKindOfSlice", Input: `{{kindOf .var}}`, ExpectedOutput: "slice", Data: map[string]any{"var": []int{}}},
@@ -92,7 +95,7 @@ func TestHasField(t *testing.T) {
 		Bar string
 	}
 
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestHasFieldStructPointerTrue", Input: `{{ .V | hasField "Foo" }}`, ExpectedOutput: "true", Data: map[string]any{"V": &A{Foo: "bar"}}},
 		{Name: "TestHasFieldStructPointerFalse", Input: `{{ .V | hasField "Foo" }}`, ExpectedOutput: "false", Data: map[string]any{"V": &B{Bar: "boo"}}},
 		{Name: "TestHasFieldStructTrue", Input: `{{ .V | hasField "Foo" }}`, ExpectedOutput: "true", Data: map[string]any{"V": A{Foo: "bar"}}},
@@ -108,7 +111,7 @@ func TestHasField(t *testing.T) {
 }
 
 func TestDeepEqual(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestDeepEqualInt", Input: `{{deepEqual 42 42}}`, ExpectedOutput: "true"},
 		{Name: "TestDeepEqualString", Input: `{{deepEqual "42" "42"}}`, ExpectedOutput: "true"},
 		{Name: "TestDeepEqualSlice", Input: `{{deepEqual .a .b}}`, ExpectedOutput: "true", Data: map[string]any{"a": []int{1, 2, 3}, "b": []int{1, 2, 3}}},
@@ -127,7 +130,7 @@ func TestDeepCopy(t *testing.T) {
 		A int
 	}
 
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestDeepCopyInt", Input: `{{$a := 42}}{{$b := deepCopy $a}}{{$b}}`, ExpectedOutput: "42"},
 		{Name: "TestDeepCopyString", Input: `{{$a := "42"}}{{$b := deepCopy $a}}{{$b}}`, ExpectedOutput: "42"},
 		{Name: "TestDeepCopySlice", Input: `{{$a := .a}}{{$b := deepCopy $a}}{{$b}}`, ExpectedOutput: "[1 2 3]", Data: map[string]any{"a": []int{1, 2, 3}}},

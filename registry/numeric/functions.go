@@ -226,7 +226,7 @@ func (nr *NumericRegistry) DivInt(values ...any) (int64, error) {
 //
 //	{{ 30.0, 3.0, 2.0 | divf }} // Output: 5.0
 func (nr *NumericRegistry) Divf(values ...any) (any, error) {
-	//FIXME:  Special manipulation to force float operation
+	// FIXME:  Special manipulation to force float operation
 	// This is a workaround to ensure that the result is a float to allow
 	// BACKWARDS COMPATIBILITY with previous versions of Sprig.
 	if len(values) > 0 {

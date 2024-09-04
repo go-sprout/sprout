@@ -68,7 +68,7 @@ func (sr *StringsRegistry) initials(str string, delimiters string) string {
 	}
 
 	words := strings.FieldsFunc(str, isDelimiter)
-	var runes = make([]rune, len(words))
+	runes := make([]rune, len(words))
 	for i, word := range strings.FieldsFunc(str, isDelimiter) {
 		if i == 0 || unicode.IsLetter(rune(word[0])) {
 			runes[i] = rune(word[0])
@@ -113,7 +113,7 @@ func (sr *StringsRegistry) transformString(style caseStyle, str string) string {
 	var result strings.Builder
 	result.Grow(len(str) + 10) // Allocate a bit more for potential separators
 
-	var capitalizeNext = style.CapitalizeNext
+	capitalizeNext := style.CapitalizeNext
 	var lastRune, lastLetter, nextRune rune = 0, 0, 0
 
 	if !style.CapitalizeFirst {
@@ -147,14 +147,15 @@ func (sr *StringsRegistry) transformString(style caseStyle, str string) string {
 			result.WriteRune(style.Separator)
 		}
 
-		if capitalizeNext && style.CapitalizeNext {
+		switch {
+		case capitalizeNext && style.CapitalizeNext:
 			result.WriteRune(unicode.ToUpper(r))
 			capitalizeNext = false
-		} else if style.ForceLowercase {
+		case style.ForceLowercase:
 			result.WriteRune(unicode.ToLower(r))
-		} else if style.ForceUppercase {
+		case style.ForceUppercase:
 			result.WriteRune(unicode.ToUpper(r))
-		} else {
+		default:
 			result.WriteRune(r)
 		}
 

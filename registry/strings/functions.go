@@ -6,9 +6,10 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/go-sprout/sprout/internal/helpers"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+
+	"github.com/go-sprout/sprout/internal/helpers"
 )
 
 // Nospace removes all whitespace characters from the provided string.
@@ -210,7 +211,7 @@ func (sr *StringsRegistry) ToUpper(str string) string {
 //
 //	{{ "banana" | replace "a", "o" }} // Output: "bonono"
 func (sr *StringsRegistry) Replace(old, new, src string) string {
-	return strings.Replace(src, old, new, -1)
+	return strings.ReplaceAll(src, old, new)
 }
 
 // Repeat repeats the string 'str' for 'count' times.

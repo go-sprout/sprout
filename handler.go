@@ -111,7 +111,7 @@ func (dh *DefaultHandler) Build() FunctionMap {
 	// If safe functions are enabled, wrap all functions with a safe wrapper
 	// that logs any errors that occur during function execution.
 	if dh.wantSafeFuncs {
-		var safeFuncs = make(FunctionMap)
+		safeFuncs := make(FunctionMap)
 		for funcName, fn := range dh.cachedFuncsMap {
 			safeFuncs[safeFuncName(funcName)] = dh.safeWrapper(funcName, fn)
 		}

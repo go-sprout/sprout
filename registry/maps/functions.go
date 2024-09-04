@@ -56,11 +56,11 @@ func (mr *MapsRegistry) Dict(values ...any) map[string]any {
 //
 //	{{ {"key": "value"} | get "key" }} // Output: "value"
 func (mr *MapsRegistry) Get(args ...any) (any, error) {
-	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	//! Due to change in signature, this function still supports the old signature
-	//! to let users transition to the new signature.
-	//* Old signature: Get(map[string]any, string)
-	//* New signature: Get(string, map[string]any)
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	// ! Due to change in signature, this function still supports the old signature
+	// ! to let users transition to the new signature.
+	// * Old signature: Get(map[string]any, string)
+	// * New signature: Get(string, map[string]any)
 	if len(args) != 2 {
 		return "", deprecated.ErrArgsCount(2, len(args))
 	}
@@ -98,11 +98,11 @@ func (mr *MapsRegistry) Get(args ...any) (any, error) {
 //
 //	{{ {"key": "oldValue"} | set "key", "newValue" }} // Output: {"key": "newValue"}
 func (mr *MapsRegistry) Set(args ...any) (map[string]any, error) {
-	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	//! Due to change in signature, this function still supports the old signature
-	//! to let users transition to the new signature.
-	//* Old signature: Set(map[string]any, string, string)
-	//* New signature: Set(string, any, map[string]any)
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	// ! Due to change in signature, this function still supports the old signature
+	// ! to let users transition to the new signature.
+	// * Old signature: Set(map[string]any, string, string)
+	// * New signature: Set(string, any, map[string]any)
 	if len(args) != 3 {
 		return nil, deprecated.ErrArgsCount(3, len(args))
 	}
@@ -140,11 +140,11 @@ func (mr *MapsRegistry) Set(args ...any) (map[string]any, error) {
 //
 //	{{ {"key": "value"} | unset "key" }} // Output: {}
 func (mr *MapsRegistry) Unset(args ...any) (map[string]any, error) {
-	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	//! Due to change in signature, this function still supports the old signature
-	//! to let users transition to the new signature.
-	//* Old signature: Unset(map[string]any, string)
-	//* New signature: Unset(string, map[string]any)
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	// ! Due to change in signature, this function still supports the old signature
+	// ! to let users transition to the new signature.
+	// * Old signature: Unset(map[string]any, string)
+	// * New signature: Unset(string, map[string]any)
 	if len(args) != 2 {
 		return nil, deprecated.ErrArgsCount(2, len(args))
 	}
@@ -271,11 +271,11 @@ func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
 //	{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
 //	{{ $d | pick "key1" "key3" }} // Output: {"key1": "value1", "key3": "value3"}
 func (mr *MapsRegistry) Pick(args ...any) (map[string]any, error) {
-	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	//! Due to change in signature, this function still supports the old signature
-	//! to let users transition to the new signature.
-	//* Old signature: Pick(map[string]any, ...string)
-	//* New signature: Pick(...string, map[string]any)
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	// ! Due to change in signature, this function still supports the old signature
+	// ! to let users transition to the new signature.
+	// * Old signature: Pick(map[string]any, ...string)
+	// * New signature: Pick(...string, map[string]any)
 	if len(args) < 2 {
 		return nil, deprecated.ErrArgsCount(2, len(args))
 	}
@@ -328,11 +328,11 @@ func (mr *MapsRegistry) Pick(args ...any) (map[string]any, error) {
 //	{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
 //	{{ omit $d "key1" "key3" }} // Output: {"key2": "value2"}
 func (mr *MapsRegistry) Omit(args ...any) (map[string]any, error) {
-	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	//! Due to change in signature, this function still supports the old signature
-	//! to let users transition to the new signature.
-	//* Old signature: Omit(map[string]any, ...string)
-	//* New signature: Omit(...string, map[string]any)
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	// ! Due to change in signature, this function still supports the old signature
+	// ! to let users transition to the new signature.
+	// * Old signature: Omit(map[string]any, ...string)
+	// * New signature: Omit(...string, map[string]any)
 	if len(args) < 2 {
 		return nil, deprecated.ErrArgsCount(2, len(args))
 	}
@@ -422,11 +422,11 @@ func (mr *MapsRegistry) Dig(args ...any) (any, error) {
 //
 //	{{ {"key": "value"} | hasKey "key" }} // Output: true
 func (mr *MapsRegistry) HasKey(args ...any) (bool, error) {
-	//! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	//! Due to change in signature, this function still supports the old signature
-	//! to let users transition to the new signature.
-	//* Old signature: HasKey(dict map[string]any, key string)
-	//* New signature: HasKey(key string, map[string]any)
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	// ! Due to change in signature, this function still supports the old signature
+	// ! to let users transition to the new signature.
+	// * Old signature: HasKey(dict map[string]any, key string)
+	// * New signature: HasKey(key string, map[string]any)
 	if len(args) != 2 {
 		return false, deprecated.ErrArgsCount(2, len(args))
 	}

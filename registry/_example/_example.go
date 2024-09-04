@@ -16,7 +16,7 @@ func NewRegistry() *ExampleRegistry {
 
 // Uid returns the unique identifier of the registry.
 func (or *ExampleRegistry) Uid() string {
-	return "example" //! Must be unique and in camel case
+	return "example" // ! Must be unique and in camel case
 }
 
 // LinkHandler links the handler to the registry at runtime.

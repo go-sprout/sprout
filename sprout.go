@@ -46,7 +46,7 @@ func New(opts ...HandlerOption[*DefaultHandler]) *DefaultHandler {
 	return dh
 }
 
-// DEPRECATED: NewFunctionHandler creates a new function handler with the
+// Deprecated: NewFunctionHandler creates a new function handler with the
 // default values. It is deprecated and should not be used. Use `New` instead.
 func NewFunctionHandler(opts ...HandlerOption[*DefaultHandler]) *DefaultHandler {
 	slog.Warn("NewFunctionHandler are deprecated. Use `New` instead")

@@ -262,7 +262,7 @@ Move critical operations outside of templates to maintain security.
 Perform cryptographic operations (listed in `crypto` package) outside of templates.
 {% endhint %}
 
-All deprecated features are flagged with <mark style="color:red;">`//! DEPRECATED`</mark> in codebase. \
+All deprecated features are flagged with <mark style="color:red;">`// ! DEPRECATED`</mark> in codebase. \
 A complete list will be available here when the v1 of Sprout are released.&#x20;
 
 ## <mark style="color:purple;">Conclusion</mark>

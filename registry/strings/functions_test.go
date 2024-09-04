@@ -8,7 +8,7 @@ import (
 )
 
 func TestNoSpace(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | nospace }}`, ExpectedOutput: ""},
 		{Name: "TestSpaceOnly", Input: `{{ " " | nospace }}`, ExpectedOutput: ""},
 		{Name: "TestLeadingSpace", Input: `{{ " foo" | nospace }}`, ExpectedOutput: "foo"},
@@ -21,7 +21,7 @@ func TestNoSpace(t *testing.T) {
 }
 
 func TestTrim(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | trim }}`, ExpectedOutput: ""},
 		{Name: "TestSpaceOnly", Input: `{{ " " | trim }}`, ExpectedOutput: ""},
 		{Name: "TestLeadingSpace", Input: `{{ " foo" | trim }}`, ExpectedOutput: "foo"},
@@ -34,7 +34,7 @@ func TestTrim(t *testing.T) {
 }
 
 func TestTrimAll(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | trimAll "-" }}`, ExpectedOutput: ""},
 		{Name: "TestAllDashes", Input: `{{ "---------" | trimAll "-" }}`, ExpectedOutput: ""},
 		{Name: "TestNoDashes", Input: `{{ "foo" | trimAll "-" }}`, ExpectedOutput: "foo"},
@@ -46,7 +46,7 @@ func TestTrimAll(t *testing.T) {
 }
 
 func TestTrimPrefix(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | trimPrefix "-" }}`, ExpectedOutput: ""},
 		{Name: "TestDoubleDash", Input: `{{ "--" | trimPrefix "-" }}`, ExpectedOutput: "-"},
 		{Name: "TestNoPrefix", Input: `{{ "foo" | trimPrefix "-" }}`, ExpectedOutput: "foo"},
@@ -58,7 +58,7 @@ func TestTrimPrefix(t *testing.T) {
 }
 
 func TestTrimSuffix(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | trimSuffix "-" }}`, ExpectedOutput: ""},
 		{Name: "TestDoubleDash", Input: `{{ "--" | trimSuffix "-" }}`, ExpectedOutput: "-"},
 		{Name: "TestNoSuffix", Input: `{{ "foo" | trimSuffix "-" }}`, ExpectedOutput: "foo"},
@@ -70,7 +70,7 @@ func TestTrimSuffix(t *testing.T) {
 }
 
 func TestContains(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | contains "-" }}`, ExpectedOutput: "false"},
 		{Name: "TestContains", Input: `{{ "foo" | contains "o" }}`, ExpectedOutput: "true"},
 		{Name: "TestNotContains", Input: `{{ "foo" | contains "x" }}`, ExpectedOutput: "false"},
@@ -80,7 +80,7 @@ func TestContains(t *testing.T) {
 }
 
 func TestHasPrefix(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | hasPrefix "-" }}`, ExpectedOutput: "false"},
 		{Name: "TestHasPrefix", Input: `{{ "foo" | hasPrefix "f" }}`, ExpectedOutput: "true"},
 		{Name: "TestNotHasPrefix", Input: `{{ "foo" | hasPrefix "o" }}`, ExpectedOutput: "false"},
@@ -90,7 +90,7 @@ func TestHasPrefix(t *testing.T) {
 }
 
 func TestHasSuffix(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | hasSuffix "-" }}`, ExpectedOutput: "false"},
 		{Name: "TestHasSuffix", Input: `{{ "foo" | hasSuffix "o" }}`, ExpectedOutput: "true"},
 		{Name: "TestNotHasSuffix", Input: `{{ "foo" | hasSuffix "f" }}`, ExpectedOutput: "false"},
@@ -100,7 +100,7 @@ func TestHasSuffix(t *testing.T) {
 }
 
 func TestToLower(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | toLower }}`, ExpectedOutput: ""},
 		{Name: "TestLower", Input: `{{ "foo" | toLower }}`, ExpectedOutput: "foo"},
 		{Name: "TestUpper", Input: `{{ "FOO" | toLower }}`, ExpectedOutput: "foo"},
@@ -110,7 +110,7 @@ func TestToLower(t *testing.T) {
 }
 
 func TestToUpper(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | toUpper }}`, ExpectedOutput: ""},
 		{Name: "TestLower", Input: `{{ "foo" | toUpper }}`, ExpectedOutput: "FOO"},
 		{Name: "TestUpper", Input: `{{ "FOO" | toUpper }}`, ExpectedOutput: "FOO"},
@@ -120,7 +120,7 @@ func TestToUpper(t *testing.T) {
 }
 
 func TestReplace(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | replace "-" "x" }}`, ExpectedOutput: ""},
 		{Name: "TestReplace", Input: `{{ "foo" | replace "o" "x" }}`, ExpectedOutput: "fxx"},
 		{Name: "TestNotReplace", Input: `{{ "foo" | replace "x" "y" }}`, ExpectedOutput: "foo"},
@@ -131,7 +131,7 @@ func TestReplace(t *testing.T) {
 }
 
 func TestRepeat(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | repeat 3 }}`, ExpectedOutput: ""},
 		{Name: "TestRepeat", Input: `{{ "foo" | repeat 3 }}`, ExpectedOutput: "foofoofoo"},
 		{Name: "TestRepeatZero", Input: `{{ "foo" | repeat 0 }}`, ExpectedOutput: ""},
@@ -141,7 +141,7 @@ func TestRepeat(t *testing.T) {
 }
 
 func TestJoin(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestNil", Input: `{{ .nil | join "-" }}`, ExpectedOutput: "", Data: map[string]any{"nil": nil}},
 		{Name: "TestIntSlice", Input: `{{ .test | join "-" }}`, ExpectedOutput: "1-2-3", Data: map[string]any{"test": []int{1, 2, 3}}},
 		{Name: "TestStringSlice", Input: `{{ .test | join "-" }}`, ExpectedOutput: "a-b-c", Data: map[string]any{"test": []string{"a", "b", "c"}}},
@@ -153,7 +153,7 @@ func TestJoin(t *testing.T) {
 }
 
 func TestTrunc(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | trunc 3 }}`, ExpectedOutput: ""},
 		{Name: "TestTruncate", Input: `{{ "foooooo" | trunc 3 }}`, ExpectedOutput: "foo"},
 		{Name: "TestNegativeTruncate", Input: `{{ "foobar" | trunc -3 }}`, ExpectedOutput: "bar"},
@@ -165,7 +165,7 @@ func TestTrunc(t *testing.T) {
 }
 
 func TestShuffle(t *testing.T) {
-	var tc = []pesticide.RegexpTestCase{
+	tc := []pesticide.RegexpTestCase{
 		{Template: `{{ shuffle "" }}`, Length: 0, Regexp: `^$`},
 		{Template: `{{ shuffle "hey" }}`, Length: 3, Regexp: `^[hey]{3}$`},
 		{Template: `{{ shuffle "foo bar baz" }}`, Length: 11, Regexp: `^[\sfobazr]{11}$`},
@@ -175,7 +175,7 @@ func TestShuffle(t *testing.T) {
 }
 
 func TestEllipsis(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | ellipsis 3 }}`, ExpectedOutput: ""},
 		{Name: "TestShort", Input: `{{ "foo" | ellipsis 5 }}`, ExpectedOutput: "foo"},
 		{Name: "TestTruncate", Input: `{{ "foooooo" | ellipsis 6 }}`, ExpectedOutput: "foo..."},
@@ -186,7 +186,7 @@ func TestEllipsis(t *testing.T) {
 }
 
 func TestEllipsisBoth(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | ellipsisBoth 3 5 }}`, ExpectedOutput: ""},
 		{Name: "TestShort", Input: `{{ "foo" | ellipsisBoth 5 4 }}`, ExpectedOutput: "foo"},
 		{Name: "TestTruncate", Input: `{{ "foooboooooo" | ellipsisBoth 4 9 }}`, ExpectedOutput: "...boo..."},
@@ -197,7 +197,7 @@ func TestEllipsisBoth(t *testing.T) {
 }
 
 func TestInitials(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | initials }}`, ExpectedOutput: ""},
 		{Name: "TestSingle", Input: `{{ "f" | initials }}`, ExpectedOutput: "f"},
 		{Name: "TestTwo", Input: `{{ "foo" | initials }}`, ExpectedOutput: "f"},
@@ -210,7 +210,7 @@ func TestInitials(t *testing.T) {
 }
 
 func TestPlural(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestZero", Input: `{{ 0 | plural "single" "many" }}`, ExpectedOutput: "many"},
 		{Name: "TestSingle", Input: `{{ 1 | plural "single" "many" }}`, ExpectedOutput: "single"},
 		{Name: "TestMultiple", Input: `{{ 2 | plural "single" "many" }}`, ExpectedOutput: "many"},
@@ -221,7 +221,7 @@ func TestPlural(t *testing.T) {
 }
 
 func TestWrap(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | wrap 10 }}`, ExpectedOutput: ""},
 		{Name: "TestNegativeWrap", Input: `{{ wrap -1 "With a negative wrap." }}`, ExpectedOutput: "With\na\nnegative\nwrap."},
 		{Name: "TestWrap", Input: `{{ "This is a long string that needs to be wrapped." | wrap 10 }}`, ExpectedOutput: "This is a\nlong\nstring\nthat needs\nto be\nwrapped."},
@@ -231,7 +231,7 @@ func TestWrap(t *testing.T) {
 }
 
 func TestWrapWith(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | wrapWith 10 "\t" }}`, ExpectedOutput: ""},
 		{Name: "TestWrap", Input: `{{ "This is a long string that needs to be wrapped." | wrapWith 10 "\t" }}`, ExpectedOutput: "This is a\tlong\tstring\tthat needs\tto be\twrapped."},
 		{Name: "TestWrapWithLongWord", Input: `{{ "This is a long string that needs to be wrapped with a looooooooooooooooooooooooooooooooooooong word." | wrapWith 10 "\t" }}`, ExpectedOutput: "This is a\tlong\tstring\tthat needs\tto be\twrapped\twith a\tlooooooooo\toooooooooo\toooooooooo\toooooooong\tword."},
@@ -241,7 +241,7 @@ func TestWrapWith(t *testing.T) {
 }
 
 func TestQuote(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | quote }}`, ExpectedOutput: `""`},
 		{Name: "TestNil", Input: `{{ quote .nil }}`, ExpectedOutput: ``, Data: map[string]any{"nil": nil}},
 		{Name: "TestQuote", Input: `{{ "foo" | quote }}`, ExpectedOutput: `"foo"`},
@@ -257,7 +257,7 @@ func TestQuote(t *testing.T) {
 }
 
 func TestSquote(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | squote }}`, ExpectedOutput: "''"},
 		{Name: "TestNil", Input: `{{ squote .nil }}`, ExpectedOutput: "", Data: map[string]any{"nil": nil}},
 		{Name: "TestQuote", Input: `{{ "foo" | squote }}`, ExpectedOutput: "'foo'"},
@@ -273,7 +273,7 @@ func TestSquote(t *testing.T) {
 }
 
 func TestToCamelCase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | toCamelCase }}`, ExpectedOutput: ""},
 		{Name: "TestCamelCase", Input: `{{ "foo bar" | toCamelCase }}`, ExpectedOutput: "fooBar"},
 		{Name: "TestCamelCaseWithUpperCase", Input: `{{ "FoO  bar" | toCamelCase }}`, ExpectedOutput: "fooBar"},
@@ -292,7 +292,7 @@ func TestToCamelCase(t *testing.T) {
 }
 
 func TestToKebakCase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | toKebabCase }}`, ExpectedOutput: ""},
 		{Name: "TestKebabCase", Input: `{{ "foo bar" | toKebabCase }}`, ExpectedOutput: "foo-bar"},
 		{Name: "TestKebabCaseWithSpace", Input: `{{ "foo  bar" | toKebabCase }}`, ExpectedOutput: "foo-bar"},
@@ -311,7 +311,7 @@ func TestToKebakCase(t *testing.T) {
 }
 
 func TestToPascalCase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | toPascalCase }}`, ExpectedOutput: ""},
 		{Name: "TestPascalCase", Input: `{{ "foo bar" | toPascalCase }}`, ExpectedOutput: "FooBar"},
 		{Name: "TestPascalCaseWithSpace", Input: `{{ "foo  bar" | toPascalCase }}`, ExpectedOutput: "FooBar"},
@@ -324,7 +324,7 @@ func TestToPascalCase(t *testing.T) {
 }
 
 func TestToDotCase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | toDotCase }}`, ExpectedOutput: ""},
 		{Name: "TestDotCase", Input: `{{ "foo bar" | toDotCase }}`, ExpectedOutput: "foo.bar"},
 		{Name: "TestDotCaseWithSpace", Input: `{{ "foo  bar" | toDotCase }}`, ExpectedOutput: "foo.bar"},
@@ -337,7 +337,7 @@ func TestToDotCase(t *testing.T) {
 }
 
 func TestToPathCase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | toPathCase }}`, ExpectedOutput: ""},
 		{Name: "TestPathCase", Input: `{{ "foo bar" | toPathCase }}`, ExpectedOutput: "foo/bar"},
 		{Name: "TestPathCaseWithSpace", Input: `{{ "foo  bar" | toPathCase }}`, ExpectedOutput: "foo/bar"},
@@ -350,7 +350,7 @@ func TestToPathCase(t *testing.T) {
 }
 
 func TestToConstantCase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | toConstantCase }}`, ExpectedOutput: ""},
 		{Name: "TestConstantCase", Input: `{{ "foo bar" | toConstantCase }}`, ExpectedOutput: "FOO_BAR"},
 		{Name: "TestConstantCaseWithSpace", Input: `{{ "foo  bar" | toConstantCase }}`, ExpectedOutput: "FOO_BAR"},
@@ -363,7 +363,7 @@ func TestToConstantCase(t *testing.T) {
 }
 
 func TestToSnakeCase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | toSnakeCase }}`, ExpectedOutput: ""},
 		{Name: "TestSnakeCase", Input: `{{ "foo bar" | toSnakeCase }}`, ExpectedOutput: "foo_bar"},
 		{Name: "TestSnakeCaseWithSpace", Input: `{{ "foo  bar" | toSnakeCase }}`, ExpectedOutput: "foo_bar"},
@@ -386,7 +386,7 @@ func TestToSnakeCase(t *testing.T) {
 }
 
 func TestToTitleCase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | toTitleCase }}`, ExpectedOutput: ""},
 		{Name: "TestTitleCase", Input: `{{ "foo bar" | toTitleCase }}`, ExpectedOutput: "Foo Bar"},
 		{Name: "TestTitleCaseWithSpace", Input: `{{ "foo  bar" | toTitleCase }}`, ExpectedOutput: "Foo  Bar"},
@@ -399,7 +399,7 @@ func TestToTitleCase(t *testing.T) {
 }
 
 func TestUntitle(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | untitle }}`, ExpectedOutput: ""},
 		{Name: "TestUnTitle", Input: `{{ "Foo Bar" | untitle }}`, ExpectedOutput: "foo bar"},
 		{Name: "TestUnTitleWithSpace", Input: `{{ "Foo  Bar" | untitle }}`, ExpectedOutput: "foo  bar"},
@@ -412,7 +412,7 @@ func TestUntitle(t *testing.T) {
 }
 
 func TestSwapCase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | swapCase }}`, ExpectedOutput: ""},
 		{Name: "TestSwapCase", Input: `{{ "Foo Bar" | swapCase }}`, ExpectedOutput: "fOO bAR"},
 		{Name: "TestSwapCaseWithSpace", Input: `{{ "Foo  Bar" | swapCase }}`, ExpectedOutput: "fOO  bAR"},
@@ -425,7 +425,7 @@ func TestSwapCase(t *testing.T) {
 }
 
 func TestCapitalize(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | capitalize }}`, ExpectedOutput: ""},
 		{Name: "CapitalizeAlreadyUpper", Input: `{{ "Foo Bar" | capitalize }}`, ExpectedOutput: "Foo Bar"},
 		{Name: "CapitalizeWithSpace", Input: `{{ " fe bar" | capitalize }}`, ExpectedOutput: " Fe bar"},
@@ -440,7 +440,7 @@ func TestCapitalize(t *testing.T) {
 }
 
 func TestUncapitalize(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | uncapitalize }}`, ExpectedOutput: ""},
 		{Name: "UncapitalizeAlreadyLower", Input: `{{ "foo bar" | uncapitalize }}`, ExpectedOutput: "foo bar"},
 		{Name: "UncapitalizeWithSpace", Input: `{{ " Foo bar" | uncapitalize }}`, ExpectedOutput: " foo bar"},
@@ -455,7 +455,7 @@ func TestUncapitalize(t *testing.T) {
 }
 
 func TestSplit(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ $v := ("" | split "-") }}{{$v._0}}`, ExpectedOutput: ""},
 		{Name: "TestSplit", Input: `{{ $v := ("foo$bar$baz" | split "$") }}{{$v._0}} {{$v._1}} {{$v._2}}`, ExpectedOutput: "foo bar baz"},
 		{Name: "TestSplitWithEmpty", Input: `{{ $v := ("foo$bar$" | split "$") }}{{$v._0}} {{$v._1}} {{$v._2}}`, ExpectedOutput: "foo bar "},
@@ -465,7 +465,7 @@ func TestSplit(t *testing.T) {
 }
 
 func TestSplitn(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ $v := ("" | splitn "-" 3) }}{{$v._0}}`, ExpectedOutput: ""},
 		{Name: "TestSplit", Input: `{{ $v := ("foo$bar$baz" | splitn "$" 2) }}{{$v._0}} {{$v._1}}`, ExpectedOutput: "foo bar$baz"},
 		{Name: "TestSplitWithEmpty", Input: `{{ $v := ("foo$bar$" | splitn "$" 2) }}{{$v._0}} {{$v._1}}`, ExpectedOutput: "foo bar$"},
@@ -475,7 +475,7 @@ func TestSplitn(t *testing.T) {
 }
 
 func TestSubstring(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | substr 0 3 }}`, ExpectedOutput: ""},
 		{Name: "TestEmptyWithNegativeValue", Input: `{{ "" | substr -1 -4 }}`, ExpectedOutput: ""},
 		{Name: "TestSubstring", Input: `{{ "foobar" | substr 0 3 }}`, ExpectedOutput: "foo"},
@@ -489,7 +489,7 @@ func TestSubstring(t *testing.T) {
 }
 
 func TestIndent(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | indent 3 }}`, ExpectedOutput: "   "},
 		{Name: "TestIndent", Input: `{{ "foo\nbar" | indent 3 }}`, ExpectedOutput: "   foo\n   bar"},
 		{Name: "TestIndentWithSpace", Input: `{{ "foo\n bar" | indent 3 }}`, ExpectedOutput: "   foo\n    bar"},
@@ -500,7 +500,7 @@ func TestIndent(t *testing.T) {
 }
 
 func TestNindent(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ "" | nindent 3 }}`, ExpectedOutput: "\n   "},
 		{Name: "TestIndent", Input: `{{ "foo\nbar" | nindent 3 }}`, ExpectedOutput: "\n   foo\n   bar"},
 		{Name: "TestIndentWithSpace", Input: `{{ "foo\n bar" | nindent 3 }}`, ExpectedOutput: "\n   foo\n    bar"},
@@ -511,7 +511,7 @@ func TestNindent(t *testing.T) {
 }
 
 func TestSeq(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ seq 0 1 3 }}`, ExpectedOutput: "0 1 2 3"},
 		{Input: `{{ seq 0 3 10 }}`, ExpectedOutput: "0 3 6 9"},
 		{Input: `{{ seq 3 3 2 }}`, ExpectedOutput: ""},
