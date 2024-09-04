@@ -1,5 +1,5 @@
-on: [pull_request]
-name: Tests
+on: [push]
+name: Linters
 permissions:
   # Required: allow read access to the content for analysis.
   contents: read
@@ -8,6 +8,7 @@ permissions:
   checks: write
 jobs:
   lint:
+    name: Golang CI Lint
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
