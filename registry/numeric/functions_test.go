@@ -10,7 +10,7 @@ import (
 )
 
 func TestFloor(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ floor 1.5 }}`, ExpectedOutput: "1"},
 		{Input: `{{ floor 1 }}`, ExpectedOutput: "1"},
 		{Input: `{{ floor -1.5 }}`, ExpectedOutput: "-2"},
@@ -27,7 +27,7 @@ func TestFloor(t *testing.T) {
 }
 
 func TestCeil(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ ceil 1.5 }}`, ExpectedOutput: "2"},
 		{Input: `{{ ceil 1 }}`, ExpectedOutput: "1"},
 		{Input: `{{ ceil -1.5 }}`, ExpectedOutput: "-1"},
@@ -44,7 +44,7 @@ func TestCeil(t *testing.T) {
 }
 
 func TestRound(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ round 3.746 2 }}`, ExpectedOutput: "3.75"},
 		{Input: `{{ round 3.746 2 0.5 }}`, ExpectedOutput: "3.75"},
 		{Input: `{{ round 123.5555 3 }}`, ExpectedOutput: "123.556"},
@@ -60,7 +60,7 @@ func TestRound(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ add }}`, ExpectedOutput: "0"},
 		{Input: `{{ add 1 }}`, ExpectedOutput: "1"},
 		{Input: `{{ add 1 2 3 4 5 6 7 8 9 10 }}`, ExpectedOutput: "55"},
@@ -72,7 +72,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestAddf(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ addf }}`, ExpectedOutput: "0"},
 		{Input: `{{ addf 1 }}`, ExpectedOutput: "1"},
 		{Input: `{{ addf 1 2 3 4 5 6 7 8 9 10 }}`, ExpectedOutput: "55"},
@@ -84,7 +84,7 @@ func TestAddf(t *testing.T) {
 }
 
 func TestAdd1(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ add1 -1 }}`, ExpectedOutput: "0"},
 		{Input: `{{ add1f -1.0}}`, ExpectedOutput: "0"},
 		{Input: `{{ add1 1 }}`, ExpectedOutput: "2"},
@@ -96,7 +96,7 @@ func TestAdd1(t *testing.T) {
 }
 
 func TestAdd1f(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ add1f -1 }}`, ExpectedOutput: "0"},
 		{Input: `{{ add1f -1.0}}`, ExpectedOutput: "0"},
 		{Input: `{{ add1f 1 }}`, ExpectedOutput: "2"},
@@ -108,7 +108,7 @@ func TestAdd1f(t *testing.T) {
 }
 
 func TestSub(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ sub 1 1 }}`, ExpectedOutput: "0"},
 		{Input: `{{ sub 1 2 }}`, ExpectedOutput: "-1"},
 		{Input: `{{ sub 1.1 1.1 }}`, ExpectedOutput: "0"},
@@ -121,7 +121,7 @@ func TestSub(t *testing.T) {
 }
 
 func TestSubf(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ subf 1.1 1.1 }}`, ExpectedOutput: "0"},
 		{Input: `{{ subf 1.1 2.2 }}`, ExpectedOutput: "-1.1"},
 		{Input: `{{ round (3 | subf 4.5 1) 1 }}`, ExpectedOutput: "0.5"},
@@ -132,7 +132,7 @@ func TestSubf(t *testing.T) {
 }
 
 func TestMulInt(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ mul 1 1 }}`, ExpectedOutput: "1"},
 		{Input: `{{ mul 1 2 }}`, ExpectedOutput: "2"},
 		{Input: `{{ mul 1.1 1.1 }}`, ExpectedOutput: "1"},
@@ -145,7 +145,7 @@ func TestMulInt(t *testing.T) {
 }
 
 func TestMulFloat(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ round (mulf 1.1 1.1) 2 }}`, ExpectedOutput: "1.21"},
 		{Input: `{{ round (mulf 1.1 2.2) 2 }}`, ExpectedOutput: "2.42"},
 		{Input: `{{ round (3.3 | mulf 14.4) 2 }}`, ExpectedOutput: "47.52"},
@@ -156,7 +156,7 @@ func TestMulFloat(t *testing.T) {
 }
 
 func TestDivInt(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ div 1 1 }}`, ExpectedOutput: "1"},
 		{Input: `{{ div 1 2 }}`, ExpectedOutput: "0"},
 		{Input: `{{ div 1.1 1.1 }}`, ExpectedOutput: "1"},
@@ -169,7 +169,7 @@ func TestDivInt(t *testing.T) {
 }
 
 func TestDivFloat(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ round (divf 1.1 1.1) 2 }}`, ExpectedOutput: "1"},
 		{Input: `{{ round (divf 1.1 2.2) 2 }}`, ExpectedOutput: "0.5"},
 		{Input: `{{ 2 | divf 5 4 }}`, ExpectedOutput: "0.625"},
@@ -180,7 +180,7 @@ func TestDivFloat(t *testing.T) {
 }
 
 func TestMod(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ mod 10 4 }}`, ExpectedOutput: "2"},
 		{Input: `{{ mod 10 3 }}`, ExpectedOutput: "1"},
 		{Input: `{{ mod 10 2 }}`, ExpectedOutput: "0"},
@@ -197,7 +197,7 @@ func TestMod(t *testing.T) {
 }
 
 func TestMin(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ min 1 }}`, ExpectedOutput: "1"},
 		{Input: `{{ min 1 "1" }}`, ExpectedOutput: "1"},
 		{Input: `{{ min -1 0 1 }}`, ExpectedOutput: "-1"},
@@ -210,7 +210,7 @@ func TestMin(t *testing.T) {
 }
 
 func TestMinf(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ minf 1 }}`, ExpectedOutput: "1"},
 		{Input: `{{ minf 1 "1.1" }}`, ExpectedOutput: "1"},
 		{Input: `{{ minf -1.4 .0 2.1 }}`, ExpectedOutput: "-1.4"},
@@ -223,7 +223,7 @@ func TestMinf(t *testing.T) {
 }
 
 func TestMax(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ max 1 }}`, ExpectedOutput: "1"},
 		{Input: `{{ max 1 "1" }}`, ExpectedOutput: "1"},
 		{Input: `{{ max -1 0 1 }}`, ExpectedOutput: "1"},
@@ -236,7 +236,7 @@ func TestMax(t *testing.T) {
 }
 
 func TestMaxf(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ maxf 1 }}`, ExpectedOutput: "1"},
 		{Input: `{{ maxf 1.0 "1.1" }}`, ExpectedOutput: "1.1"},
 		{Input: `{{ maxf -1.5 0 1.4 }}`, ExpectedOutput: "1.4"},

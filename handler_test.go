@@ -2,9 +2,8 @@ package sprout
 
 import (
 	"errors"
-	"testing"
-
 	"log/slog"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -159,7 +158,6 @@ func TestDefaultHandler_AddRegistry_Error_RegisteriesNotices(t *testing.T) {
 
 	mockRegistry.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
 	mockRegistry.AssertCalled(t, "RegisterNotices", &dh.notices)
-
 }
 
 // TestDefaultHandler_AddRegistry tests the AddRegistry method of DefaultHandler.

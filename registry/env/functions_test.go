@@ -10,7 +10,7 @@ import (
 
 func TestEnv(t *testing.T) {
 	os.Setenv("__SPROUT_TEST_ENV_KEY", "sprout will grow!")
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ env "" }}`, ExpectedOutput: ""},
 		{Name: "TestNonExistent", Input: `{{ env "NON_EXISTENT_ENV_VAR" }}`, ExpectedOutput: ""},
 		{Name: "TestExisting", Input: `{{ env "__SPROUT_TEST_ENV_KEY" }}`, ExpectedOutput: "sprout will grow!"},
@@ -23,7 +23,7 @@ func TestEnv(t *testing.T) {
 
 func TestExpandEnv(t *testing.T) {
 	os.Setenv("__SPROUT_TEST_ENV_KEY", "sprout will grow!")
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{ expandEnv "" }}`, ExpectedOutput: ""},
 		{Name: "TestNonExistent", Input: `{{ expandEnv "Hey" }}`, ExpectedOutput: "Hey"},
 		{Name: "TestNonExistent", Input: `{{ expandEnv "$NON_EXISTENT_ENV_VAR" }}`, ExpectedOutput: ""},

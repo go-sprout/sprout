@@ -8,7 +8,7 @@ import (
 )
 
 func TestRegexpFind(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestRegexpFind", Input: `{{ regexFind "a(b+)" "aaabbb" }}`, ExpectedOutput: "abbb"},
 		{Name: "TestRegexpFindError", Input: `{{ regexFind "a(b+" "aaabbb" }}`, ExpectedErr: "error parsing regexp"},
 	}
@@ -17,7 +17,7 @@ func TestRegexpFind(t *testing.T) {
 }
 
 func TestRegexpFindAll(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestRegexpFindAllWithoutLimit", Input: `{{ regexFindAll "a(b+)" "aaabbb" -1 }}`, ExpectedOutput: "[abbb]"},
 		{Name: "TestRegexpFindAllWithLimit", Input: `{{ regexFindAll "a{2}" "aaaabbb" -1 }}`, ExpectedOutput: "[aa aa]"},
 		{Name: "TestRegexpFindAllWithNoMatch", Input: `{{ regexFindAll "a{2}" "none" -1 }}`, ExpectedOutput: "[]"},
@@ -28,7 +28,7 @@ func TestRegexpFindAll(t *testing.T) {
 }
 
 func TestRegexMatch(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestRegexMatchValid", Input: `{{ regexMatch "^[a-zA-Z]+$" "Hello" }}`, ExpectedOutput: "true"},
 		{Name: "TestRegexMatchInvalidAlphaNumeric", Input: `{{ regexMatch "^[a-zA-Z]+$" "Hello123" }}`, ExpectedOutput: "false"},
 		{Name: "TestRegexMatchInvalidNumeric", Input: `{{ regexMatch "^[a-zA-Z]+$" "123" }}`, ExpectedOutput: "false"},
@@ -38,7 +38,7 @@ func TestRegexMatch(t *testing.T) {
 }
 
 func TestRegexSplit(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestRegexpFindAllWithoutLimit", Input: `{{ regexSplit "a" "banana" -1 }}`, ExpectedOutput: "[b n n ]"},
 		{Name: "TestRegexpSplitZeroLimit", Input: `{{ regexSplit "a" "banana" 0 }}`, ExpectedOutput: "[]"},
 		{Name: "TestRegexpSplitOneLimit", Input: `{{ regexSplit "a" "banana" 1 }}`, ExpectedOutput: "[banana]"},
@@ -50,7 +50,7 @@ func TestRegexSplit(t *testing.T) {
 }
 
 func TestRegexReplaceAll(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestRegexReplaceAllValid", Input: `{{ regexReplaceAll "a(x*)b" "-ab-axxb-" "T" }}`, ExpectedOutput: "-T-T-"},
 		{Name: "TestRegexReplaceAllWithDollarSign", Input: `{{ regexReplaceAll "a(x*)b" "-ab-axxb-" "$1" }}`, ExpectedOutput: "--xx-"},
 		{Name: "TestRegexReplaceAllWithDollarSignAndLetter", Input: `{{ regexReplaceAll "a(x*)b" "-ab-axxb-" "$1W" }}`, ExpectedOutput: "---"},
@@ -61,7 +61,7 @@ func TestRegexReplaceAll(t *testing.T) {
 }
 
 func TestRegexReplaceAllLiteral(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestRegexReplaceAllLiteralValid", Input: `{{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "T" }}`, ExpectedOutput: "-T-T-"},
 		{Name: "TestRegexReplaceAllLiteralWithDollarSign", Input: `{{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "$1" }}`, ExpectedOutput: "-$1-$1-"},
 		{Name: "TestRegexReplaceAllLiteralWithDollarSignAndLetter", Input: `{{ regexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "$1W" }}`, ExpectedOutput: "-$1W-$1W-"},
@@ -72,7 +72,7 @@ func TestRegexReplaceAllLiteral(t *testing.T) {
 }
 
 func TestRegexQuoteMeta(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestRegexQuoteMetaALongLine", Input: `{{ regexQuoteMeta "Escaping $100? That's a lot." }}`, ExpectedOutput: "Escaping \\$100\\? That's a lot\\."},
 		{Name: "TestRegexQuoteMetaASemVer", Input: `{{ regexQuoteMeta "1.2.3" }}`, ExpectedOutput: "1\\.2\\.3"},
 		{Name: "TestRegexQuoteMetaNothing", Input: `{{ regexQuoteMeta "golang" }}`, ExpectedOutput: "golang"},
@@ -82,7 +82,7 @@ func TestRegexQuoteMeta(t *testing.T) {
 }
 
 func TestMustRegexFind(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{
 			Name:           "TestMustRegexFindValid",
 			Input:          `{{ mustRegexFind "a(b+)" "aaabbb" }}`,
@@ -101,7 +101,7 @@ func TestMustRegexFind(t *testing.T) {
 }
 
 func TestMustRegexFindAll(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{
 			Name:           "TestMustRegexFindAllValid",
 			Input:          `{{ mustRegexFindAll "a(b+)" "aaabbb" -1 }}`,
@@ -132,7 +132,7 @@ func TestMustRegexFindAll(t *testing.T) {
 }
 
 func TestMustRegexMatch(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{
 			Name:           "TestMustRegexMatchValid",
 			Input:          `{{ mustRegexMatch "^[a-zA-Z]+$" "Hello" }}`,
@@ -163,7 +163,7 @@ func TestMustRegexMatch(t *testing.T) {
 }
 
 func TestMustRegexSplit(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{
 			Name:           "TestMustRegexSplitWithoutLimit",
 			Input:          `{{ mustRegexSplit "a" "banana" -1 }}`,
@@ -206,7 +206,7 @@ func TestMustRegexSplit(t *testing.T) {
 }
 
 func TestMustRegexReplaceAll(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{
 			Name:           "TestMustRegexReplaceAllValid",
 			Input:          `{{ mustRegexReplaceAll "a(x*)b" "-ab-axxb-" "T" }}`,
@@ -243,7 +243,7 @@ func TestMustRegexReplaceAll(t *testing.T) {
 }
 
 func TestMustRegexReplaceAllLiteral(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{
 			Name:           "TestMustRegexReplaceAllLiteralValid",
 			Input:          `{{ mustRegexReplaceAllLiteral "a(x*)b" "-ab-axxb-" "T" }}`,

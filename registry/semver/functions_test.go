@@ -8,8 +8,7 @@ import (
 )
 
 func TestSemver(t *testing.T) {
-
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ semver "1.0.0" }}`, ExpectedOutput: "1.0.0"},
 		{Input: `{{ semver "1.0.0-alpha" }}`, ExpectedOutput: "1.0.0-alpha"},
 		{Input: `{{ semver "1.0.0-alpha.1" }}`, ExpectedOutput: "1.0.0-alpha.1"},
@@ -20,8 +19,7 @@ func TestSemver(t *testing.T) {
 }
 
 func TestSemverCompare(t *testing.T) {
-
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ semverCompare "1.0.0" "1.0.0" }}`, ExpectedOutput: "true"},
 		{Input: `{{ semverCompare "1.0.0" "1.0.1" }}`, ExpectedOutput: "false"},
 		{Input: `{{ semverCompare "1.0.1" "1.0.0" }}`, ExpectedOutput: "false"},
@@ -34,7 +32,7 @@ func TestSemverCompare(t *testing.T) {
 
 	pesticide.RunTestCases(t, semver.NewRegistry(), tc)
 
-	var mtc = []pesticide.TestCase{
+	mtc := []pesticide.TestCase{
 		{Input: `{{ semverCompare "abc" "1.0.0" }}`, ExpectedErr: "improper constraint"},
 		{Input: `{{ semverCompare "1.0.0" "abc" }}`, ExpectedErr: "Invalid Semantic Version"},
 	}

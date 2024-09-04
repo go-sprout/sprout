@@ -8,7 +8,7 @@ import (
 )
 
 func TestPathBase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyPath", Input: `{{ pathBase "" }}`, ExpectedOutput: "."},
 		{Name: "TestRootPath", Input: `{{ pathBase "/" }}`, ExpectedOutput: "/"},
 		{Name: "TestWithoutExtension", Input: `{{ pathBase "/path/to/file" }}`, ExpectedOutput: "file"},
@@ -21,7 +21,7 @@ func TestPathBase(t *testing.T) {
 }
 
 func TestPathDir(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyPath", Input: `{{ pathDir "" }}`, ExpectedOutput: "."},
 		{Name: "TestRootPath", Input: `{{ pathDir "/" }}`, ExpectedOutput: "/"},
 		{Name: "TestWithoutExtension", Input: `{{ pathDir "/path/to/file" }}`, ExpectedOutput: "/path/to"},
@@ -34,7 +34,7 @@ func TestPathDir(t *testing.T) {
 }
 
 func TestPathExt(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyPath", Input: `{{ pathExt "" }}`, ExpectedOutput: ""},
 		{Name: "TestRootPath", Input: `{{ pathExt "/" }}`, ExpectedOutput: ""},
 		{Name: "TestWithoutExtension", Input: `{{ pathExt "/path/to/file" }}`, ExpectedOutput: ""},
@@ -47,7 +47,7 @@ func TestPathExt(t *testing.T) {
 }
 
 func TestPathClean(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyPath", Input: `{{ pathClean "" }}`, ExpectedOutput: "."},
 		{Name: "TestRootPath", Input: `{{ pathClean "/" }}`, ExpectedOutput: "/"},
 		{Name: "TestWithoutExtension", Input: `{{ pathClean "/path/to/file" }}`, ExpectedOutput: "/path/to/file"},
@@ -63,7 +63,7 @@ func TestPathClean(t *testing.T) {
 }
 
 func TestPathIsAbs(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyPath", Input: `{{ pathIsAbs "" }}`, ExpectedOutput: "false"},
 		{Name: "TestRootPath", Input: `{{ pathIsAbs "/" }}`, ExpectedOutput: "true"},
 		{Name: "TestRelativePath", Input: `{{ pathIsAbs "path/to/file" }}`, ExpectedOutput: "false"},

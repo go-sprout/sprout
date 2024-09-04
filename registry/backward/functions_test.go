@@ -8,8 +8,7 @@ import (
 )
 
 func TestFail(t *testing.T) {
-
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{fail "This is an error"}}`, ExpectedErr: "This is an error"},
 	}
 
@@ -17,8 +16,7 @@ func TestFail(t *testing.T) {
 }
 
 func TestUrlParse(t *testing.T) {
-
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ urlParse "https://example.com" | urlJoin }}`, ExpectedOutput: "https://example.com"},
 		{Input: `{{ urlParse "https://example.com/path" | urlJoin }}`, ExpectedOutput: "https://example.com/path"},
 		{Input: `{{ urlParse "https://user:pass@example.com/path?query=1" | urlJoin }}`, ExpectedOutput: "https://user:pass@example.com/path?query=1"},
@@ -34,7 +32,7 @@ func TestGetHostByName(t *testing.T) {
 
 	ipAddressRegexp := ipv4 + `|` + ipv6
 
-	var tc = []pesticide.RegexpTestCase{
+	tc := []pesticide.RegexpTestCase{
 		{Template: `{{ getHostByName "example.com" }}`, Regexp: ipAddressRegexp, Length: -1},
 		{Template: `{{ getHostByName "github.com" }}`, Regexp: ipAddressRegexp, Length: -1},
 		{Template: `{{ getHostByName "127.0.0.1" }}`, Regexp: ipAddressRegexp, Length: -1},

@@ -8,8 +8,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-sprout/sprout"
 	"gopkg.in/yaml.v3"
+
+	"github.com/go-sprout/sprout"
 )
 
 // Base64Encode encodes a string into its Base64 representation.
@@ -47,7 +48,7 @@ func (er *EncodingRegistry) Base64Encode(str string) string {
 func (er *EncodingRegistry) Base64Decode(str string) (string, error) {
 	bytes, err := base64.StdEncoding.DecodeString(str)
 	if err != nil {
-		return "", fmt.Errorf("base64 decode error: %v", err)
+		return "", fmt.Errorf("base64 decode error: %w", err)
 	}
 	return string(bytes), nil
 }
@@ -87,7 +88,7 @@ func (er *EncodingRegistry) Base32Encode(str string) string {
 func (er *EncodingRegistry) Base32Decode(str string) (string, error) {
 	bytes, err := base32.StdEncoding.DecodeString(str)
 	if err != nil {
-		return "", fmt.Errorf("base32 decode error: %v", err)
+		return "", fmt.Errorf("base32 decode error: %w", err)
 	}
 	return string(bytes), nil
 }
@@ -111,7 +112,7 @@ func (er *EncodingRegistry) FromJson(v string) (any, error) {
 	var output any
 	err := json.Unmarshal([]byte(v), &output)
 	if err != nil {
-		return nil, fmt.Errorf("json decode error: %v", err)
+		return nil, fmt.Errorf("json decode error: %w", err)
 	}
 	return output, err
 }
@@ -134,7 +135,7 @@ func (er *EncodingRegistry) FromJson(v string) (any, error) {
 func (er *EncodingRegistry) ToJson(v any) (string, error) {
 	output, err := json.Marshal(v)
 	if err != nil {
-		return "", fmt.Errorf("json encode error: %v", err)
+		return "", fmt.Errorf("json encode error: %w", err)
 	}
 	return string(output), nil
 }
@@ -157,7 +158,7 @@ func (er *EncodingRegistry) ToJson(v any) (string, error) {
 func (er *EncodingRegistry) ToPrettyJson(v any) (string, error) {
 	output, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
-		return "", fmt.Errorf("json encode error: %v", err)
+		return "", fmt.Errorf("json encode error: %w", err)
 	}
 	return string(output), nil
 }
@@ -183,7 +184,7 @@ func (er *EncodingRegistry) ToRawJson(v any) (string, error) {
 	enc.SetEscapeHTML(false)
 	err := enc.Encode(&v)
 	if err != nil {
-		return "", fmt.Errorf("json encode error: %v", err)
+		return "", fmt.Errorf("json encode error: %w", err)
 	}
 	return strings.TrimSuffix(buf.String(), "\n"), nil
 }
@@ -206,7 +207,7 @@ func (er *EncodingRegistry) FromYAML(str string) (any, error) {
 	m := make(map[string]any)
 
 	if err := yaml.Unmarshal([]byte(str), &m); err != nil {
-		return nil, fmt.Errorf("yaml decode error: %v", err)
+		return nil, fmt.Errorf("yaml decode error: %w", err)
 	}
 
 	return m, nil
@@ -237,7 +238,7 @@ func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
 		// code unreachable because yaml.Marshal always panic on error and never
 		// returns an error, but we still need to handle the error for the sake of
 		// consistency. The error message is set by ErrRecoverPanic.
-		return "", fmt.Errorf("yaml encode error: %v", err)
+		return "", fmt.Errorf("yaml encode error: %w", err)
 	}
 
 	return strings.TrimSuffix(string(data), "\n"), nil

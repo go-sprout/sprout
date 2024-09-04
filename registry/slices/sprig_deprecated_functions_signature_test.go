@@ -8,7 +8,7 @@ import (
 )
 
 func TestDeprecatedWithout(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ without .V "a" }}`, ExpectedOutput: "[b c d e]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ without .V "a" }}`, ExpectedOutput: "[b c d e]", Data: map[string]any{"V": []string{"b", "c", "d", "e"}}},
 		{Input: `{{ without .V "a" }}`, ExpectedOutput: "[b c d e]", Data: map[string]any{"V": []string{"b", "c", "d", "e", "a"}}},
@@ -22,7 +22,7 @@ func TestDeprecatedWithout(t *testing.T) {
 }
 
 func TestDeprecatedAppend(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ append .V "a" }}`, ExpectedOutput: "[a]", Data: map[string]any{"V": []string{}}},
 		{Input: `{{ append .V "a" }}`, ExpectedOutput: "[a]", Data: map[string]any{"V": []string(nil)}},
 		{Input: `{{ append .V "a" }}`, ExpectedOutput: "[x a]", Data: map[string]any{"V": []string{"x"}}},
@@ -35,7 +35,7 @@ func TestDeprecatedAppend(t *testing.T) {
 }
 
 func TestDeprecatedPrepend(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ prepend .V "a" }}`, ExpectedOutput: "[a]", Data: map[string]any{"V": []string{}}},
 		{Input: `{{ prepend .V "a" }}`, ExpectedOutput: "[a]", Data: map[string]any{"V": []string(nil)}},
 		{Input: `{{ prepend .V "a" }}`, ExpectedOutput: "[a x]", Data: map[string]any{"V": []string{"x"}}},
@@ -48,7 +48,7 @@ func TestDeprecatedPrepend(t *testing.T) {
 }
 
 func TestDeprecatedSlice(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ slice .V }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ slice .V 1 }}`, ExpectedOutput: "[b c d e]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ slice .V 1 3 }}`, ExpectedOutput: "[b c]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},

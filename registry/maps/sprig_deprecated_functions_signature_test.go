@@ -8,7 +8,7 @@ import (
 )
 
 func TestDeprecatedGet(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{get  . "a" }}`, ExpectedOutput: ""},
 		{Name: "TestWithKey", Input: `{{get . "a" }}`, ExpectedOutput: "1", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{get . "b" }}`, ExpectedOutput: "", Data: map[string]any{"a": 1}},
@@ -20,7 +20,7 @@ func TestDeprecatedGet(t *testing.T) {
 }
 
 func TestDeprecatedSet(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestWithKey", Input: `{{$d := set . "a" 2}}{{$d}}`, ExpectedOutput: "map[a:2]", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNewKey", Input: `{{$d := set . "b" 3}}{{$d}}`, ExpectedOutput: "map[a:1 b:3]", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNilValue", Input: `{{$d := set .V "a" .Nil}}{{$d}}`, ExpectedOutput: "map[a:<nil>]", Data: map[string]any{"V": map[string]any{"a": 1}, "Nil": nil}},
@@ -33,7 +33,7 @@ func TestDeprecatedSet(t *testing.T) {
 }
 
 func TestDeprecatedUnset(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestWithKey", Input: `{{$d := unset . "a"}}{{$d}}`, ExpectedOutput: "map[]", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{$d := unset . "b"}}{{$d}}`, ExpectedOutput: "map[a:1]", Data: map[string]any{"a": 1}},
 		{Name: "TestInvaidArguments", Input: `{{$d := unset . "a" "b"}}{{$d}}`, ExpectedErr: "expected 2 arguments, got 3", Data: map[string]any{"a": 1}},
@@ -45,7 +45,7 @@ func TestDeprecatedUnset(t *testing.T) {
 }
 
 func TestDeprecatedHasKey(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{hasKey . "a"}}`, ExpectedOutput: "false"},
 		{Name: "TestWithKey", Input: `{{hasKey . "a"}}`, ExpectedOutput: "true", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{hasKey . "b"}}`, ExpectedOutput: "false", Data: map[string]any{"a": 1}},
@@ -57,7 +57,7 @@ func TestDeprecatedHasKey(t *testing.T) {
 }
 
 func TestDeprecatedPick(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{pick . "a" "b"}}`, ExpectedOutput: "map[]"},
 		{Name: "TestWithKeys", Input: `{{pick . "a" "b"}}`, ExpectedOutput: "map[a:1 b:2]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{pick . "a" "b"}}`, ExpectedOutput: "map[a:1]", Data: map[string]any{"a": 1}},
@@ -70,7 +70,7 @@ func TestDeprecatedPick(t *testing.T) {
 }
 
 func TestDeprecatedOmit(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{omit . "a" "b"}}`, ExpectedOutput: "map[]"},
 		{Name: "TestWithKeys", Input: `{{omit . "a" "b"}}`, ExpectedOutput: "map[]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{omit . "b"}}`, ExpectedOutput: "map[a:1]", Data: map[string]any{"a": 1}},

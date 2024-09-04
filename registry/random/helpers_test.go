@@ -9,7 +9,7 @@ import (
 func TestRandomString(t *testing.T) {
 	rr := NewRegistry()
 
-	var tc = []struct {
+	tc := []struct {
 		opts         *randomOpts
 		regexpString string
 		length       int

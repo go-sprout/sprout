@@ -8,7 +8,7 @@ import (
 )
 
 func TestList(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ list }}`, ExpectedOutput: "[]"},
 		{Input: `{{ .V | list "ab" true 4 5 }}`, ExpectedOutput: "[ab true 4 5 <nil>]", Data: map[string]any{"V": nil}},
 	}
@@ -17,7 +17,7 @@ func TestList(t *testing.T) {
 }
 
 func TestAppend(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ .V | append "a" }}`, ExpectedOutput: "[a]", Data: map[string]any{"V": []string{}}},
 		{Input: `{{ .V | append "a" }}`, ExpectedOutput: "[a]", Data: map[string]any{"V": []string(nil)}},
 		{Input: `{{ .V | append "a" }}`, ExpectedOutput: "[x a]", Data: map[string]any{"V": []string{"x"}}},
@@ -31,7 +31,7 @@ func TestAppend(t *testing.T) {
 }
 
 func TestPrepend(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ .V | prepend "a" }}`, ExpectedOutput: "[a]", Data: map[string]any{"V": []string{}}},
 		{Input: `{{ .V | prepend "a" }}`, ExpectedOutput: "[a]", Data: map[string]any{"V": []string(nil)}},
 		{Input: `{{ .V | prepend "a" }}`, ExpectedOutput: "[a x]", Data: map[string]any{"V": []string{"x"}}},
@@ -45,7 +45,7 @@ func TestPrepend(t *testing.T) {
 }
 
 func TestConcat(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ concat .V (list 1 2 3) }}`, ExpectedOutput: "[a 1 2 3]", Data: map[string]any{"V": []string{"a"}}},
 		{Input: `{{ list 4 5 | concat (list 1 2 3) }}`, ExpectedOutput: "[1 2 3 4 5]"},
 		{Input: `{{ concat .V (list 1 2 3) }}`, ExpectedOutput: "[1 2 3]", Data: map[string]any{"V": nil}},
@@ -58,7 +58,7 @@ func TestConcat(t *testing.T) {
 }
 
 func TestChunk(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ chunk 2 .V }}`, ExpectedOutput: "[[a b] [c d] [e]]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ chunk 2 .V }}`, ExpectedOutput: "[[a b] [c d]]", Data: map[string]any{"V": []string{"a", "b", "c", "d"}}},
 		{Input: `{{ chunk 2 .V }}`, ExpectedOutput: "[[a b]]", Data: map[string]any{"V": []string{"a", "b"}}},
@@ -71,7 +71,7 @@ func TestChunk(t *testing.T) {
 }
 
 func TestUniq(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ uniq .V }}`, ExpectedOutput: "[a b c]", Data: map[string]any{"V": []string{"a", "b", "c", "a", "b", "c"}}},
 		{Input: `{{ uniq .V }}`, ExpectedOutput: "[a b c]", Data: map[string]any{"V": []string{"a", "b", "c"}}},
 		{Input: `{{ uniq .V }}`, ExpectedOutput: "[a]", Data: map[string]any{"V": []string{"a", "a", "a"}}},
@@ -85,7 +85,7 @@ func TestUniq(t *testing.T) {
 }
 
 func TestCompact(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ compact .V }}`, ExpectedOutput: "[a b c]", Data: map[string]any{"V": []string{"a", "", "b", "", "c"}}},
 		{Input: `{{ compact .V }}`, ExpectedOutput: "[a a]", Data: map[string]any{"V": []string{"a", "", "a"}}},
 		{Input: `{{ compact .V }}`, ExpectedOutput: "[a]", Data: map[string]any{"V": []string{"a"}}},
@@ -101,7 +101,7 @@ func TestCompact(t *testing.T) {
 }
 
 func TestSlice(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ .V | slice }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ .V | slice 1 }}`, ExpectedOutput: "[b c d e]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ .V | slice 1 3 }}`, ExpectedOutput: "[b c]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
@@ -119,7 +119,7 @@ func TestSlice(t *testing.T) {
 }
 
 func TestHas(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ .V | has "a" }}`, ExpectedOutput: "true", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ .V | has "a" }}`, ExpectedOutput: "false", Data: map[string]any{"V": []string{"b", "c", "d", "e"}}},
 		{Input: `{{ .V | has 1 }}`, ExpectedOutput: "true", Data: map[string]any{"V": []any{"b", 1, nil, struct{}{}}}},
@@ -134,7 +134,7 @@ func TestHas(t *testing.T) {
 }
 
 func TestWithout(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ .V | without "a" }}`, ExpectedOutput: "[b c d e]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ .V | without "a" }}`, ExpectedOutput: "[b c d e]", Data: map[string]any{"V": []string{"b", "c", "d", "e"}}},
 		{Input: `{{ .V | without "a" }}`, ExpectedOutput: "[b c d e]", Data: map[string]any{"V": []string{"b", "c", "d", "e", "a"}}},
@@ -149,7 +149,7 @@ func TestWithout(t *testing.T) {
 }
 
 func TestRest(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ rest .V }}`, ExpectedOutput: "[b c d e]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ rest .V }}`, ExpectedOutput: "[c d e]", Data: map[string]any{"V": []string{"b", "c", "d", "e"}}},
 		{Input: `{{ rest .V }}`, ExpectedOutput: "[c d e a]", Data: map[string]any{"V": []string{"b", "c", "d", "e", "a"}}},
@@ -163,7 +163,7 @@ func TestRest(t *testing.T) {
 }
 
 func TestInitial(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ initial .V }}`, ExpectedOutput: "[a b c d]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ initial .V }}`, ExpectedOutput: "[a b c]", Data: map[string]any{"V": []string{"a", "b", "c", "d"}}},
 		{Input: `{{ initial .V }}`, ExpectedOutput: "[]", Data: map[string]any{"V": []string{"a"}}},
@@ -176,7 +176,7 @@ func TestInitial(t *testing.T) {
 }
 
 func TestFirst(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ first .V }}`, ExpectedOutput: "a", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ first .V }}`, ExpectedOutput: "<no value>", Data: map[string]any{"V": []string{}}},
 		{Input: `{{ first .V }}`, Data: map[string]any{"V": nil}, ExpectedErr: "cannot first nil"},
@@ -187,7 +187,7 @@ func TestFirst(t *testing.T) {
 }
 
 func TestLast(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ last .V }}`, ExpectedOutput: "e", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ last .V }}`, ExpectedOutput: "<no value>", Data: map[string]any{"V": []string{}}},
 		{Input: `{{ last .V }}`, Data: map[string]any{"V": nil}, ExpectedErr: "cannot last nil"},
@@ -198,7 +198,7 @@ func TestLast(t *testing.T) {
 }
 
 func TestReverse(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ reverse .V }}`, ExpectedOutput: "[e d c b a]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ reverse .V }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []string{"e", "d", "c", "b", "a"}}},
 		{Input: `{{ reverse .V }}`, ExpectedOutput: "[]", Data: map[string]any{"V": []string{}}},
@@ -210,7 +210,7 @@ func TestReverse(t *testing.T) {
 }
 
 func TestSortAlpha(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ sortAlpha .V }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []string{"e", "d", "c", "b", "a"}}},
 		{Input: `{{ sortAlpha .V }}`, ExpectedOutput: "[1 2 3 4 5 a]", Data: map[string]any{"V": []any{5, 4, 3, 2, 1, "a"}}},
 		{Input: `{{ sortAlpha .V }}`, ExpectedOutput: "[]", Data: map[string]any{"V": []string{}}},
@@ -221,7 +221,7 @@ func TestSortAlpha(t *testing.T) {
 }
 
 func TestSplitList(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ .V | splitList "," }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": "a,b,c,d,e"}},
 		{Input: `{{ .V | splitList "," }}`, ExpectedOutput: "[a b c d e ]", Data: map[string]any{"V": "a,b,c,d,e,"}},
 		{Input: `{{ .V | splitList "," }}`, ExpectedOutput: "[ a b c d e]", Data: map[string]any{"V": ",a,b,c,d,e"}},
@@ -233,7 +233,7 @@ func TestSplitList(t *testing.T) {
 }
 
 func TestStrSlice(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{ strSlice .V }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},
 		{Input: `{{ strSlice .V }}`, ExpectedOutput: "[5 4 3 2 1]", Data: map[string]any{"V": []int{5, 4, 3, 2, 1}}},
 		{Input: `{{ strSlice .V }}`, ExpectedOutput: "[5 a true 1]", Data: map[string]any{"V": []any{5, "a", true, nil, 1}}},
@@ -244,7 +244,7 @@ func TestStrSlice(t *testing.T) {
 }
 
 func TestUntil(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{range $i, $e := until 5}}({{$i}}{{$e}}){{end}}`, ExpectedOutput: "(00)(11)(22)(33)(44)"},
 		{Input: `{{range $i, $e := until -5}}({{$i}}{{$e}}){{end}}`, ExpectedOutput: "(00)(1-1)(2-2)(3-3)(4-4)"},
 	}
@@ -253,7 +253,7 @@ func TestUntil(t *testing.T) {
 }
 
 func TestUntilStep(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{range $i, $e := untilStep 0 5 1}}({{$i}}{{$e}}){{end}}`, ExpectedOutput: "(00)(11)(22)(33)(44)"},
 		{Input: `{{range $i, $e := untilStep 3 6 1}}({{$i}}{{$e}}){{end}}`, ExpectedOutput: "(03)(14)(25)"},
 		{Input: `{{range $i, $e := untilStep 0 -10 -2}}({{$i}}{{$e}}){{end}}`, ExpectedOutput: "(00)(1-2)(2-4)(3-6)(4-8)"},

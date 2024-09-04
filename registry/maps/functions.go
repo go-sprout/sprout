@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"dario.cat/mergo"
+
 	"github.com/go-sprout/sprout/deprecated"
 	"github.com/go-sprout/sprout/internal/helpers"
 )

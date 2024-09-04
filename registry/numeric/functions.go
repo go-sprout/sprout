@@ -4,8 +4,9 @@ import (
 	"math"
 	"reflect"
 
-	"github.com/go-sprout/sprout"
 	"github.com/spf13/cast"
+
+	"github.com/go-sprout/sprout"
 )
 
 // Floor returns the largest integer less than or equal to the provided number.

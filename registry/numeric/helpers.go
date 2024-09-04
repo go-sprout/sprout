@@ -3,8 +3,9 @@ package numeric
 import (
 	"reflect"
 
-	"github.com/go-sprout/sprout"
 	"github.com/spf13/cast"
+
+	"github.com/go-sprout/sprout"
 )
 
 // operateNumeric applies a numericOperation to a slice of any type, converting

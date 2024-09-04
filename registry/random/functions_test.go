@@ -4,14 +4,15 @@ import (
 	"encoding/base64"
 	"testing"
 
-	"github.com/go-sprout/sprout/pesticide"
-	"github.com/go-sprout/sprout/registry/random"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/go-sprout/sprout/pesticide"
+	"github.com/go-sprout/sprout/registry/random"
 )
 
 func TestRandAlphaNumeric(t *testing.T) {
-	var tc = []pesticide.RegexpTestCase{
+	tc := []pesticide.RegexpTestCase{
 		{Name: "TestRandAlphaNumWithNegativeValue", Template: `{{ randAlphaNum -1 }}`, Regexp: "", Length: 0},
 		{Name: "TestRandAlphaNumWithZero", Template: `{{ randAlphaNum 0 }}`, Regexp: "", Length: 0},
 		{Name: "TestRandAlphaNum", Template: `{{ randAlphaNum 100 }}`, Regexp: `^[a-zA-Z0-9]{100}$`, Length: 100},
@@ -21,7 +22,7 @@ func TestRandAlphaNumeric(t *testing.T) {
 }
 
 func TestRandAlpha(t *testing.T) {
-	var tc = []pesticide.RegexpTestCase{
+	tc := []pesticide.RegexpTestCase{
 		{Name: "TestRandAlphaWithNegativeValue", Template: `{{ randAlpha -1 }}`, Regexp: "", Length: 0},
 		{Name: "TestRandAlphaWithZero", Template: `{{ randAlpha 0 }}`, Regexp: "", Length: 0},
 		{Name: "TestRandAlpha", Template: `{{ randAlpha 100 }}`, Regexp: `^[a-zA-Z]{100}$`, Length: 100},
@@ -31,7 +32,7 @@ func TestRandAlpha(t *testing.T) {
 }
 
 func TestRandAscii(t *testing.T) {
-	var tc = []pesticide.RegexpTestCase{
+	tc := []pesticide.RegexpTestCase{
 		{Name: "TestRandAsciiWithNegativeValue", Template: `{{ randAscii -1 }}`, Regexp: "", Length: 0},
 		{Name: "TestRandAsciiWithZero", Template: `{{ randAscii 0 }}`, Regexp: "", Length: 0},
 		{Name: "TestRandAscii", Template: `{{ randAscii 100 }}`, Regexp: "^[[:ascii:]]{100}$", Length: 100},
@@ -41,7 +42,7 @@ func TestRandAscii(t *testing.T) {
 }
 
 func TestRandNumeric(t *testing.T) {
-	var tc = []pesticide.RegexpTestCase{
+	tc := []pesticide.RegexpTestCase{
 		{Name: "TestRandNumericWithNegativeValue", Template: `{{ randNumeric -1 }}`, Regexp: "", Length: 0},
 		{Name: "TestRandNumericWithZero", Template: `{{ randNumeric 0 }}`, Regexp: "", Length: 0},
 		{Name: "TestRandNumeric", Template: `{{ randNumeric 100 }}`, Regexp: `^[0-9]{100}$`, Length: 100},
@@ -51,7 +52,7 @@ func TestRandNumeric(t *testing.T) {
 }
 
 func TestRandBytes(t *testing.T) {
-	var tests = []pesticide.RegexpTestCase{
+	tests := []pesticide.RegexpTestCase{
 		{Name: "TestRandBytesWithNegativeValue", Template: `{{ randBytes -1 }}`, Regexp: "", Length: 0},
 		{Name: "TestRandBytesWithZero", Template: `{{ randBytes 0 }}`, Regexp: "", Length: 0},
 		{Name: "TestRandBytes", Template: `{{ randBytes 100 }}`, Regexp: "", Length: 100},
@@ -72,7 +73,7 @@ func TestRandBytes(t *testing.T) {
 }
 
 func TestRandInt(t *testing.T) {
-	var tc = []pesticide.RegexpTestCase{
+	tc := []pesticide.RegexpTestCase{
 		{Name: "TestRandIntWithNegativeValue", Template: `{{ randInt -1 10 }}`, Regexp: "", Length: -1},
 		{Name: "BetweenZeroAndTen", Template: `{{ randInt 0 10 }}`, Regexp: `^[0-9]{1,2}$`, Length: -1},
 		{Name: "BetweenTenAndTwenty", Template: `{{ randInt 10 20 }}`, Regexp: `^[0-9]{1,2}$`, Length: -1},

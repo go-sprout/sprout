@@ -8,7 +8,7 @@ import (
 )
 
 func TestOperateNumeric(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		values   []any
 		op       numericOperation
 		initial  any

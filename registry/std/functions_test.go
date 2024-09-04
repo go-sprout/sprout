@@ -9,14 +9,14 @@ import (
 
 // TestHello asserts the Hello method returns the expected greeting.
 func TestHello(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestHello", Input: `{{hello}}`, ExpectedOutput: "Hello!"},
 	}
 	pesticide.RunTestCases(t, std.NewRegistry(), tc)
 }
 
 func TestDefault(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestDefaultEmptyInput", Input: `{{default "default" ""}}`, ExpectedOutput: "default"},
 		{Name: "TestDefaultGivenInput", Input: `{{default "default" "given"}}`, ExpectedOutput: "given"},
 		{Name: "TestDefaultIntInput", Input: `{{default "default" 42}}`, ExpectedOutput: "42"},
@@ -33,7 +33,7 @@ func TestDefault(t *testing.T) {
 }
 
 func TestEmpty(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyEmptyInput", Input: `{{if empty ""}}1{{else}}0{{end}}`, ExpectedOutput: "1"},
 		{Name: "TestEmptyGivenInput", Input: `{{if empty "given"}}1{{else}}0{{end}}`, ExpectedOutput: "0"},
 		{Name: "TestEmptyIntInput", Input: `{{if empty 42}}1{{else}}0{{end}}`, ExpectedOutput: "0"},
@@ -54,7 +54,7 @@ func TestEmpty(t *testing.T) {
 }
 
 func TestAll(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestAllEmptyInput", Input: `{{if all ""}}1{{else}}0{{end}}`, ExpectedOutput: "0"},
 		{Name: "TestAllGivenInput", Input: `{{if all "given"}}1{{else}}0{{end}}`, ExpectedOutput: "1"},
 		{Name: "TestAllIntInput", Input: `{{if all 42 0 1}}1{{else}}0{{end}}`, ExpectedOutput: "0"},
@@ -68,7 +68,7 @@ func TestAll(t *testing.T) {
 }
 
 func TestAny(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestAnyEmptyInput", Input: `{{if any ""}}1{{else}}0{{end}}`, ExpectedOutput: "0"},
 		{Name: "TestAnyGivenInput", Input: `{{if any "given"}}1{{else}}0{{end}}`, ExpectedOutput: "1"},
 		{Name: "TestAnyIntInput", Input: `{{if any 42 0 1}}1{{else}}0{{end}}`, ExpectedOutput: "1"},
@@ -82,7 +82,7 @@ func TestAny(t *testing.T) {
 }
 
 func TestCoalesce(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestCoalesceEmptyInput", Input: `{{coalesce ""}}`, ExpectedOutput: "<no value>"},
 		{Name: "TestCoalesceGivenInput", Input: `{{coalesce "given"}}`, ExpectedOutput: "given"},
 		{Name: "TestCoalesceIntInput", Input: `{{ coalesce "" 0 nil 42 }}`, ExpectedOutput: "42"},
@@ -96,7 +96,7 @@ func TestCoalesce(t *testing.T) {
 }
 
 func TestTernary(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Input: `{{true | ternary "foo" "bar"}}`, ExpectedOutput: "foo"},
 		{Input: `{{ternary "foo" "bar" true}}`, ExpectedOutput: "foo"},
 		{Input: `{{false | ternary "foo" "bar"}}`, ExpectedOutput: "bar"},
@@ -107,7 +107,7 @@ func TestTernary(t *testing.T) {
 }
 
 func TestCat(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestCatEmptyInput", Input: `{{cat ""}}`, ExpectedOutput: ""},
 		{Name: "TestCatGivenInput", Input: `{{cat "given"}}`, ExpectedOutput: "given"},
 		{Name: "TestCatIntInput", Input: `{{cat 42}}`, ExpectedOutput: "42"},

@@ -75,7 +75,7 @@ func (ch *CryptoRegistry) Htpasswd(username string, password string) (string, er
 //
 //	{{ derivePassword 0 "bcrypt" "password" "user" "site" }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
 func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password, user, site string) (string, error) {
-	var templates = passwordTypeTemplates[passwordType]
+	templates := passwordTypeTemplates[passwordType]
 	if templates == nil {
 		return "", fmt.Errorf("cannot find password template %s", passwordType)
 	}
@@ -96,10 +96,10 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 	buffer.WriteString(site)
 	_ = binary.Write(&buffer, binary.BigEndian, counter)
 
-	var hmacv = hmac.New(sha256.New, key)
+	hmacv := hmac.New(sha256.New, key)
 	hmacv.Write(buffer.Bytes())
-	var seed = hmacv.Sum(nil)
-	var temp = templates[int(seed[0])%len(templates)]
+	seed := hmacv.Sum(nil)
+	temp := templates[int(seed[0])%len(templates)]
 
 	buffer.Truncate(0)
 	for i, element := range temp {

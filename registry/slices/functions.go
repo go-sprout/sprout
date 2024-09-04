@@ -6,9 +6,10 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/spf13/cast"
+
 	"github.com/go-sprout/sprout/deprecated"
 	"github.com/go-sprout/sprout/internal/helpers"
-	"github.com/spf13/cast"
 )
 
 // List creates a list from the provided elements.

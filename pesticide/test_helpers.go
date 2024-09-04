@@ -11,13 +11,14 @@ import (
 	"testing"
 	"text/template"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
 	"github.com/go-sprout/sprout"
 	"github.com/go-sprout/sprout/registry/maps"
 	"github.com/go-sprout/sprout/registry/reflect"
 	"github.com/go-sprout/sprout/registry/slices"
 	"github.com/go-sprout/sprout/registry/strings"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 type TestCase struct {
