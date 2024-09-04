@@ -49,7 +49,8 @@ func TestSafeCall(t *testing.T) {
 	// Test a case where the function panics.
 	fn7 := func() { panic("oh no") }
 	out, err = SafeCall(fn7)
-	require.ErrorContains(t, err, "recovered from panic: oh no")
+	require.ErrorContains(t, err, "oh no")
+	require.ErrorIs(t, err, ErrPanicRecovery)
 	assert.Nil(t, out)
 
 	// Test when fn is not a function.

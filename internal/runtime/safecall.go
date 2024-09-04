@@ -6,6 +6,8 @@ import (
 	"reflect"
 )
 
+var ErrPanicRecovery = errors.New("recovered from a panic")
+
 // SafeCall safely calls a function using reflection. It handles potential
 // panics by recovering and returning an error. The function `fn` is expected
 // to be a function, and `args` are the arguments to pass to that function.
@@ -22,7 +24,7 @@ func SafeCall(fn any, args ...any) (result any, err error) {
 	// Defer a function to handle panics
 	defer func() {
 		if r := recover(); r != nil {
-			err = fmt.Errorf("recovered from panic: %v", r)
+			err = fmt.Errorf("%w: %v", ErrPanicRecovery, r)
 		}
 	}()
 

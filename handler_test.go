@@ -322,5 +322,5 @@ func TestDefaultHandler_safeWrapper(t *testing.T) {
 func TestSafeFuncName(t *testing.T) {
 	assert.Equal(t, "safeFn", safeFuncName("fn"))
 	assert.Equal(t, "safeFn", safeFuncName("Fn"))
-	assert.Equal(t, "", safeFuncName(""))
+	assert.Empty(t, safeFuncName(""))
 }
