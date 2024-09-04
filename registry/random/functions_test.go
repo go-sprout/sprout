@@ -7,6 +7,7 @@ import (
 	"github.com/go-sprout/sprout/pesticide"
 	"github.com/go-sprout/sprout/registry/random"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestRandAlphaNumeric(t *testing.T) {
@@ -59,12 +60,12 @@ func TestRandBytes(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
 			result, err := pesticide.TestTemplate(t, random.NewRegistry(), test.Template, nil)
-			assert.NoError(t, err)
+			require.NoError(t, err)
 
 			assert.Regexp(t, test.Regexp, result)
 
 			b, err := base64.StdEncoding.DecodeString(result)
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			assert.Len(t, b, test.Length)
 		})
 	}

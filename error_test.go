@@ -18,8 +18,8 @@ func TestErrRecoverPanic(t *testing.T) {
 		panic("test panic")
 	})
 
-	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errMessage)
+	require.Error(t, err)
+	assert.ErrorContains(t, err, errMessage)
 }
 
 func TestErrRecoverPanic_NoPanic(t *testing.T) {
@@ -38,9 +38,9 @@ func TestErrConvertFailed(t *testing.T) {
 
 	err := NewErrConvertFailed(typ, value, baseErr)
 
-	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "failed to convert: 1 to string")
-	assert.Contains(t, err.Error(), "test error")
-	assert.ErrorIs(t, err, ErrConvertFailed)
-	assert.ErrorIs(t, err, baseErr)
+	require.Error(t, err)
+	require.ErrorContains(t, err, "failed to convert: 1 to string")
+	require.ErrorContains(t, err, "test error")
+	require.ErrorIs(t, err, ErrConvertFailed)
+	require.ErrorIs(t, err, baseErr)
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-sprout/sprout"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type RegexpTestCase struct {
@@ -24,7 +25,7 @@ func RunRegexpTestCases(t *testing.T, registry sprout.Registry, tcs []RegexpTest
 			t.Helper()
 
 			result, err := runTemplate(t, handler, test.Template, nil)
-			assert.NoError(t, err)
+			require.NoError(t, err)
 
 			assert.Regexp(t, test.Regexp, result)
 			if test.Length != -1 {

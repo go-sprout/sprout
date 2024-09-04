@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const sprigFunctionCount = 203
@@ -40,7 +41,7 @@ func TestFuncMap_IncludesHello(t *testing.T) {
 	assert.True(t, ok)
 
 	result, err := helloFunc()
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "Hello!", result)
 }
 

@@ -6,6 +6,7 @@ import (
 	"github.com/go-sprout/sprout/pesticide"
 	"github.com/go-sprout/sprout/registry/reflect"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var nilPointer *int = nil
@@ -145,9 +146,9 @@ func TestDeepCopy(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			tmplResponse, err := pesticide.TestTemplate(t, reflect.NewRegistry(), test.Input, test.Data)
 			if test.ExpectedErr != "" {
-				assert.ErrorContains(t, err, test.ExpectedErr)
+				require.ErrorContains(t, err, test.ExpectedErr)
 			} else {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 			}
 			assert.Equal(t, test.ExpectedOutput, tmplResponse)
 

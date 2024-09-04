@@ -37,9 +37,9 @@ func RunTestCases(t *testing.T, registry sprout.Registry, tc []TestCase) {
 
 			tmplResponse, err := runTemplate(t, testHandler(registry), test.Input, test.Data)
 			if test.ExpectedErr != "" {
-				assert.ErrorContains(t, err, test.ExpectedErr)
+				require.ErrorContains(t, err, test.ExpectedErr)
 			} else {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 			}
 			assert.Equal(t, test.ExpectedOutput, tmplResponse)
 		})

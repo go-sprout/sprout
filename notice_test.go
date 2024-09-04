@@ -109,17 +109,17 @@ func TestCreateWrappedFunction(t *testing.T) {
 
 	// Call the wrapped function.
 	out, err := wrappedFunc()
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "cheese", out)
 	assert.Contains(t, loggerHandler.messages.String(), "[INFO] amazing")
 
 	out, err = wrappedFunc2()
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "cheese", out)
 	assert.Contains(t, loggerHandler.messages.String(), "[WARN] Template function `originalFunc` is deprecated: oh no")
 
 	out, err = wrappedFunc3()
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "cheese", out)
 	assert.Contains(t, loggerHandler.messages.String(), "[DEBUG] Nice this function returns cheese")
 }
@@ -144,5 +144,5 @@ func TestNoticeInTemplate(t *testing.T) {
 	err = tmpl.Execute(&buf, nil)
 	require.NoError(t, err)
 	assert.Equal(t, "cheese", buf.String())
-	assert.Equal(t, loggerHandler.messages.String(), "[INFO] amazing\n")
+	assert.Equal(t, "[INFO] amazing\n", loggerHandler.messages.String())
 }
