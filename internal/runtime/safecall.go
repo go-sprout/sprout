@@ -6,7 +6,11 @@ import (
 	"reflect"
 )
 
-var ErrPanicRecovery = errors.New("recovered from a panic")
+var (
+	ErrPanicRecovery      = errors.New("recovered from a panic")
+	ErrInvalidFunction    = errors.New("fn is not a function")
+	ErrIncorrectArguments = errors.New("incorrect number of arguments")
+)
 
 // SafeCall safely calls a function using reflection. It handles potential
 // panics by recovering and returning an error. The function `fn` is expected
@@ -18,7 +22,12 @@ func SafeCall(fn any, args ...any) (result any, err error) {
 	fnValue := reflect.ValueOf(fn)
 	fnType := fnValue.Type()
 	if fnValue.Kind() != reflect.Func {
-		return nil, errors.New("fn is not a function")
+		return nil, ErrInvalidFunction
+	}
+
+	// Check if the number of arguments passed matches the function's input arity
+	if len(args) != fnType.NumIn() && !fnType.IsVariadic() {
+		return nil, fmt.Errorf("%w: expected %d, got %d", ErrIncorrectArguments, fnType.NumIn(), len(args))
 	}
 
 	// Defer a function to handle panics

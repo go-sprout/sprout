@@ -4,6 +4,9 @@ import (
 	"log/slog"
 	gostrings "strings"
 
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
+
 	"github.com/go-sprout/sprout/internal/runtime"
 )
 
@@ -228,8 +231,7 @@ func safeFuncName(name string) string {
 	b.Grow(len(name) + 4)
 
 	b.WriteString("safe")
-	b.WriteString(gostrings.ToUpper(string(name[0])))
-	b.WriteString(name[1:])
+	b.WriteString(cases.Title(language.Und, cases.NoLower).String(name))
 
 	return b.String()
 }
