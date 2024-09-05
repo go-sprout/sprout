@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -43,8 +44,8 @@ func TestSafeCall(t *testing.T) {
 	a, b, c := "a", "b", "c"
 	fn6 := func(a, b, c string) (string, string, string) { return a, b, c }
 	out, err = SafeCall(fn6, a, b, c)
-	require.NoError(t, err)
-	assert.Equal(t, out, a, "the return should be the first argument")
+	require.ErrorIs(t, err, ErrMoreThanTwoReturns)
+	assert.Equal(t, out, a)
 
 	// Test a case where the function panics.
 	fn7 := func() { panic("oh no") }
@@ -56,7 +57,7 @@ func TestSafeCall(t *testing.T) {
 	// Test when fn is not a function.
 	fn8 := "cheese"
 	out, err = SafeCall(fn8)
-	require.ErrorContains(t, err, "fn is not a function")
+	require.ErrorIs(t, err, ErrInvalidFunction)
 	assert.Nil(t, out)
 
 	// Test a function taking nil arguments
@@ -70,4 +71,28 @@ func TestSafeCall(t *testing.T) {
 	out, err = SafeCall(fn10, nil, nil, nil)
 	require.NoError(t, err)
 	assert.Equal(t, "crap", out)
+
+	// Test to send a function with more than 2 returns
+	fn13 := func() (string, string, error) { return "a", "b", errors.New("c") }
+	out, err = SafeCall(fn13)
+	require.ErrorContains(t, err, "c")
+	assert.Equal(t, "a", out)
+
+	// Test to send more arguments than the function expects
+	fn11 := func(a, b any) string { return "crap" }
+	out, err = SafeCall(fn11, "a", "b", "c")
+	require.ErrorIs(t, err, ErrIncorrectArguments)
+	assert.Nil(t, out)
+
+	// Test to send a function with more than 2 returns and the second return is not an error
+	fn14 := func() (string, string, string) { return "a", "b", "c" }
+	out, err = SafeCall(fn14)
+	require.ErrorIs(t, err, ErrMoreThanTwoReturns)
+	assert.Equal(t, "a", out)
+
+	// Test to send a function with 2 returns and the second return is not an error
+	fn15 := func() (string, string) { return "a", "b" }
+	out, err = SafeCall(fn15)
+	require.ErrorIs(t, err, ErrInvalidLastReturnType)
+	assert.Equal(t, "a", out)
 }

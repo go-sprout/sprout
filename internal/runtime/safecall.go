@@ -7,9 +7,11 @@ import (
 )
 
 var (
-	ErrPanicRecovery      = errors.New("recovered from a panic")
-	ErrInvalidFunction    = errors.New("fn is not a function")
-	ErrIncorrectArguments = errors.New("incorrect number of arguments")
+	ErrPanicRecovery         = errors.New("cannot safecall function: recovered from a panic")
+	ErrInvalidFunction       = errors.New("cannot safecall function: first argument is not a function")
+	ErrIncorrectArguments    = errors.New("cannot safecall function: number of arguments does not match function's input arity")
+	ErrMoreThanTwoReturns    = errors.New("cannot safecall function: function returns more than two values")
+	ErrInvalidLastReturnType = errors.New("cannot safecall function: invalid last return type (expected error)")
 )
 
 // SafeCall safely calls a function using reflection. It handles potential
@@ -58,23 +60,18 @@ func SafeCall(fn any, args ...any) (result any, err error) {
 	// Call the function using reflection
 	out := fnValue.Call(in)
 
-	// Process the output
-	if len(out) == 0 {
+	switch len(out) {
+	case 0:
 		return nil, nil
+	case 1:
+		return out[0].Interface(), nil
+	case 2:
+		if out[1].Type().Implements(reflect.TypeOf((*error)(nil)).Elem()) {
+			err, _ = out[1].Interface().(error)
+			return out[0].Interface(), err
+		}
+		return out[0].Interface(), ErrInvalidLastReturnType
+	default:
+		return out[0].Interface(), ErrMoreThanTwoReturns
 	}
-
-	// If there's only one return value
-	result = out[0].Interface()
-	if len(out) == 1 {
-		return result, nil
-	}
-
-	// If there are two return values (assuming the second is an error)
-	if len(out) == 2 && out[1].Type().Implements(reflect.TypeOf((*error)(nil)).Elem()) {
-		err, _ = out[1].Interface().(error)
-		return result, err
-	}
-
-	// Handle other cases as needed
-	return result, nil
 }
