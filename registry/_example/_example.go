@@ -2,7 +2,6 @@ package example
 
 import (
 	"github.com/go-sprout/sprout"
-	"github.com/go-sprout/sprout/registry"
 )
 
 type ExampleRegistry struct {
@@ -20,7 +19,7 @@ func (or *ExampleRegistry) Uid() string {
 }
 
 // LinkHandler links the handler to the registry at runtime.
-func (or *ExampleRegistry) LinkHandler(fh registry.Handler) {
+func (or *ExampleRegistry) LinkHandler(fh sprout.Handler) error {
 	or.handler = fh
 	return nil
 }
