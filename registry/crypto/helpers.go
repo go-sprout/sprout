@@ -3,7 +3,7 @@ package crypto
 import (
 	"bytes"
 	"crypto"
-	"crypto/dsa"
+	"crypto/dsa" //nolint:staticcheck
 	"crypto/ecdsa"
 	cryptorand "crypto/rand"
 	"crypto/rsa"
@@ -131,7 +131,7 @@ func (ch *CryptoRegistry) parsePrivateKeyPEM(pemBlock string) (crypto.PrivateKey
 	if block.Type == "PRIVATE KEY" {
 		priv, err := x509.ParsePKCS8PrivateKey(block.Bytes)
 		if err != nil {
-			return nil, fmt.Errorf("decoding PEM as PKCS#8: %s", err)
+			return nil, fmt.Errorf("decoding PEM as PKCS#8: %w", err)
 		}
 		return priv, nil
 	} else if !strings.HasSuffix(block.Type, " PRIVATE KEY") {
@@ -142,20 +142,20 @@ func (ch *CryptoRegistry) parsePrivateKeyPEM(pemBlock string) (crypto.PrivateKey
 	case "RSA":
 		priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 		if err != nil {
-			return nil, fmt.Errorf("parsing RSA private key from PEM: %s", err)
+			return nil, fmt.Errorf("parsing RSA private key from PEM: %w", err)
 		}
 		return priv, nil
 	case "EC":
 		priv, err := x509.ParseECPrivateKey(block.Bytes)
 		if err != nil {
-			return nil, fmt.Errorf("parsing EC private key from PEM: %s", err)
+			return nil, fmt.Errorf("parsing EC private key from PEM: %w", err)
 		}
 		return priv, nil
 	case "DSA":
 		var k DSAKeyFormat
 		_, err := asn1.Unmarshal(block.Bytes, &k)
 		if err != nil {
-			return nil, fmt.Errorf("parsing DSA private key from PEM: %s", err)
+			return nil, fmt.Errorf("parsing DSA private key from PEM: %w", err)
 		}
 		priv := &dsa.PrivateKey{
 			PublicKey: dsa.PublicKey{
@@ -241,14 +241,14 @@ func (ch *CryptoRegistry) generateSignedCertificateWithKeyInternal(
 	signerCert, err := x509.ParseCertificate(decodedSignerCert.Bytes)
 	if err != nil {
 		return cert, fmt.Errorf(
-			"error parsing certificate: decodedSignerCert.Bytes: %s",
+			"error parsing certificate: decodedSignerCert.Bytes: %w",
 			err,
 		)
 	}
 	signerKey, err := ch.parsePrivateKeyPEM(ca.Key)
 	if err != nil {
 		return cert, fmt.Errorf(
-			"error parsing private key: %s",
+			"error parsing private key: %w",
 			err,
 		)
 	}
@@ -276,7 +276,7 @@ func (ch *CryptoRegistry) getCertAndKey(
 ) (string, string, error) {
 	signeePubKey, err := ch.getPublicKey(signeeKey)
 	if err != nil {
-		return "", "", fmt.Errorf("error retrieving public key from signee key: %s", err)
+		return "", "", fmt.Errorf("error retrieving public key from signee key: %w", err)
 	}
 	derBytes, err := x509.CreateCertificate(
 		cryptorand.Reader,
@@ -286,7 +286,7 @@ func (ch *CryptoRegistry) getCertAndKey(
 		signingKey,
 	)
 	if err != nil {
-		return "", "", fmt.Errorf("error creating certificate: %s", err)
+		return "", "", fmt.Errorf("error creating certificate: %w", err)
 	}
 
 	certBuffer := bytes.Buffer{}
@@ -294,7 +294,7 @@ func (ch *CryptoRegistry) getCertAndKey(
 		&certBuffer,
 		&pem.Block{Type: "CERTIFICATE", Bytes: derBytes},
 	); err != nil {
-		return "", "", fmt.Errorf("error pem-encoding certificate: %s", err)
+		return "", "", fmt.Errorf("error pem-encoding certificate: %w", err)
 	}
 
 	keyBuffer := bytes.Buffer{}
@@ -302,7 +302,7 @@ func (ch *CryptoRegistry) getCertAndKey(
 		&keyBuffer,
 		ch.pemBlockForKey(signeeKey),
 	); err != nil {
-		return "", "", fmt.Errorf("error pem-encoding key: %s", err)
+		return "", "", fmt.Errorf("error pem-encoding key: %w", err)
 	}
 
 	return certBuffer.String(), keyBuffer.String(), nil

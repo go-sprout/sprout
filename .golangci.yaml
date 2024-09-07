@@ -1,0 +1,47 @@
+---
+# Thanks to @ccoVeille for the configuration template from 
+# https://github.com/ccoVeille/golangci-lint-config-examples
+linters:
+  enable:
+    - errorlint
+    - gci
+    - gocritic
+    - gofumpt
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - misspell
+    - testifylint
+    - errcheck
+    - thelper
+    - mirror
+    - usestdlibvars
+
+linters-settings:
+  gofumpt:
+    module-path: github.com/go-sprout/sprout
+  misspell:
+    ignore-words:
+      - "nto" # Used in the codebase in format "\nto" (as a newline)
+  gci:
+    sections:
+      - standard
+      - default
+      - prefix(github.com/go-sprout)
+  testifylint:
+    enable:
+      - float-compare
+      - go-require
+      - bool-compare
+      - compares
+      - empty
+      - error-is-as
+      - error-nil
+      - expected-actual
+      - len
+      - require-error
+      - suite-dont-use-pkg
+      - suite-extra-assert-call
+run:
+  timeout: 5m

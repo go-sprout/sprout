@@ -11,25 +11,22 @@ import (
 	"testing"
 	"text/template"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
 	"github.com/go-sprout/sprout"
 	"github.com/go-sprout/sprout/registry/maps"
 	"github.com/go-sprout/sprout/registry/reflect"
 	"github.com/go-sprout/sprout/registry/slices"
 	"github.com/go-sprout/sprout/registry/strings"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 type TestCase struct {
-	Name     string
-	Input    string
-	Expected string
-	Data     map[string]any
-}
-
-type MustTestCase struct {
-	TestCase
-	ExpectedErr string
+	Name           string
+	Input          string
+	Data           map[string]any
+	ExpectedOutput string
+	ExpectedErr    string
 }
 
 func RunTestCases(t *testing.T, registry sprout.Registry, tc []TestCase) {
@@ -40,26 +37,12 @@ func RunTestCases(t *testing.T, registry sprout.Registry, tc []TestCase) {
 			t.Helper()
 
 			tmplResponse, err := runTemplate(t, testHandler(registry), test.Input, test.Data)
-			assert.NoError(t, err)
-			assert.Equal(t, test.Expected, tmplResponse)
-		})
-	}
-}
-
-func RunMustTestCases(t *testing.T, registry sprout.Registry, tc []MustTestCase) {
-	t.Helper()
-
-	for _, test := range tc {
-		t.Run(test.Name, func(t *testing.T) {
-			t.Helper()
-
-			tmplResponse, err := runTemplate(t, testHandler(registry), test.Input, test.Data)
 			if test.ExpectedErr != "" {
-				assert.ErrorContains(t, err, test.ExpectedErr)
+				require.ErrorContains(t, err, test.ExpectedErr)
 			} else {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 			}
-			assert.Equal(t, test.Expected, tmplResponse)
+			assert.Equal(t, test.ExpectedOutput, tmplResponse)
 		})
 	}
 }

@@ -6,9 +6,10 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/go-sprout/sprout/internal/helpers"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+
+	"github.com/go-sprout/sprout/internal/helpers"
 )
 
 // Nospace removes all whitespace characters from the provided string.
@@ -210,7 +211,7 @@ func (sr *StringsRegistry) ToUpper(str string) string {
 //
 //	{{ "banana" | replace "a", "o" }} // Output: "bonono"
 func (sr *StringsRegistry) Replace(old, new, src string) string {
-	return strings.Replace(src, old, new, -1)
+	return strings.ReplaceAll(src, old, new)
 }
 
 // Repeat repeats the string 'str' for 'count' times.
@@ -730,8 +731,8 @@ func (sr *StringsRegistry) Uncapitalize(str string) string {
 // Example:
 //
 //	{{ "apple,banana,cherry" | split "," }} // Output: { "_0":"apple", "_1":"banana", "_2":"cherry" }
-func (sr *StringsRegistry) Split(sep, orig string) map[string]string {
-	parts := strings.Split(orig, sep)
+func (sr *StringsRegistry) Split(sep, str string) map[string]string {
+	parts := strings.Split(str, sep)
 	return sr.populateMapWithParts(parts)
 }
 
@@ -751,8 +752,8 @@ func (sr *StringsRegistry) Split(sep, orig string) map[string]string {
 // Example:
 //
 //	{{ "apple,banana,cherry" | split "," 2 }} // Output: { "_0":"apple", "_1":"banana,cherry" }
-func (sr *StringsRegistry) Splitn(sep string, n int, orig string) map[string]string {
-	parts := strings.SplitN(orig, sep, n)
+func (sr *StringsRegistry) Splitn(sep string, n int, str string) map[string]string {
+	parts := strings.SplitN(str, sep, n)
 	return sr.populateMapWithParts(parts)
 }
 
@@ -828,14 +829,14 @@ func (sr *StringsRegistry) Indent(spaces int, str string) string {
 // Nindent is similar to Indent, but it adds a newline at the start.
 //
 // Parameters:
-//   spaces int - the number of spaces to add after the newline.
-//   str string - the string to indent.
+//	spaces int - the number of spaces to add after the newline.
+//	str string - the string to indent.
 //
 // Returns:
-//   string - the indented string with a newline at the start.
+//	string - the indented string with a newline at the start.
 //
 // Example:
-//   {{ "Hello\nWorld" | nindent 4 }} // Output: "\n    Hello\n    World"
+//	{{ "Hello\nWorld" | nindent 4 }} // Output: "\n    Hello\n    World"
 
 func (sr *StringsRegistry) Nindent(spaces int, str string) string {
 	return "\n" + sr.Indent(spaces, str)

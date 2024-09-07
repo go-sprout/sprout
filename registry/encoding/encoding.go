@@ -33,11 +33,25 @@ func (er *EncodingRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error
 	sprout.AddFunction(funcsMap, "toRawJson", er.ToRawJson)
 	sprout.AddFunction(funcsMap, "fromYaml", er.FromYAML)
 	sprout.AddFunction(funcsMap, "toYaml", er.ToYAML)
-	sprout.AddFunction(funcsMap, "mustFromJson", er.MustFromJson)
-	sprout.AddFunction(funcsMap, "mustToJson", er.MustToJson)
-	sprout.AddFunction(funcsMap, "mustToPrettyJson", er.MustToPrettyJson)
-	sprout.AddFunction(funcsMap, "mustToRawJson", er.MustToRawJson)
-	sprout.AddFunction(funcsMap, "mustFromYaml", er.MustFromYAML)
-	sprout.AddFunction(funcsMap, "mustToYaml", er.MustToYAML)
+	return nil
+}
+
+func (er *EncodingRegistry) RegisterAliases(aliasesMap sprout.FunctionAliasMap) error {
+	sprout.AddAlias(aliasesMap, "fromJson", "mustFromJson")
+	sprout.AddAlias(aliasesMap, "toJson", "mustToJson")
+	sprout.AddAlias(aliasesMap, "toPrettyJson", "mustToPrettyJson")
+	sprout.AddAlias(aliasesMap, "toRawJson", "mustToRawJson")
+	sprout.AddAlias(aliasesMap, "fromYaml", "mustFromYaml")
+	sprout.AddAlias(aliasesMap, "toYaml", "mustToYaml")
+	return nil
+}
+
+func (er *EncodingRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustFromJson", "please use `fromJson` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustToJson", "please use `toJson` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustToPrettyJson", "please use `toPrettyJson` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustToRawJson", "please use `toRawJson` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustFromYaml", "please use `fromYaml` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustToYaml", "please use `toYaml` instead"))
 	return nil
 }

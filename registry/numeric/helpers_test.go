@@ -4,10 +4,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestOperateNumeric(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		values   []any
 		op       numericOperation
 		initial  any
@@ -21,7 +22,8 @@ func TestOperateNumeric(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := operateNumeric(test.values, test.op, test.initial)
+		result, err := operateNumeric(test.values, test.op, test.initial)
+		require.NoError(t, err)
 		assert.Equal(t, test.expected, result, "operateNumeric(%v, %v, %v) returned %v, expected %v", test.values, test.op, test.initial, result, test.expected)
 	}
 }

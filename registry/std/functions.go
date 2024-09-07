@@ -105,14 +105,14 @@ func (sr *StdRegistry) All(values ...any) bool {
 // It returns true if at least one value is non-empty.
 //
 // Parameters:
-//   values ...any - a variadic parameter list of values to be checked.
+//	values ...any - a variadic parameter list of values to be checked.
 //
 // Returns:
-//   bool - true if any value is non-empty, false if all are empty.
+//	bool - true if any value is non-empty, false if all are empty.
 //
 // Example:
-//   {{ "", 0, false | any }} // Output: false
-//   {{ "", 0, "text" | any }} // Output: true
+//	{{ "", 0, false | any }} // Output: false
+//	{{ "", 0, "text" | any }} // Output: true
 
 func (sr *StdRegistry) Any(values ...any) bool {
 	for _, val := range values {
@@ -127,14 +127,14 @@ func (sr *StdRegistry) Any(values ...any) bool {
 // If all values are empty, it returns nil.
 //
 // Parameters:
-//   values ...any - a variadic parameter list of values from which the first
+//	values ...any - a variadic parameter list of values from which the first
 //                   non-empty value should be selected.
 //
 // Returns:
-//   any - the first non-empty value, or nil if all values are empty.
+//	any - the first non-empty value, or nil if all values are empty.
 //
 // Example:
-//   {{ nil, "", "first", "second" | coalesce }} // Output: "first"
+//	{{ nil, "", "first", "second" | coalesce }} // Output: "first"
 
 func (sr *StdRegistry) Coalesce(values ...any) any {
 	for _, val := range values {

@@ -2,9 +2,8 @@ package sprout
 
 import (
 	"errors"
-	"testing"
-
 	"log/slog"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -88,7 +87,7 @@ func TestDefaultHandler_AddRegistries_Error(t *testing.T) {
 	}
 
 	err := dh.AddRegistries(mockRegistry)
-	assert.Error(t, err, "AddRegistry should return an error")
+	require.Error(t, err, "AddRegistry should return an error")
 	assert.Equal(t, errMock, err, "Error should match the mock error")
 
 	mockRegistry.AssertCalled(t, "LinkHandler", dh)
@@ -108,7 +107,7 @@ func TestDefaultHandler_AddRegistry_Error_RegisterFuiesctions(t *testing.T) {
 	}
 
 	err := dh.AddRegistries(mockRegistry)
-	assert.Error(t, err, "AddRegistry should return an error")
+	require.Error(t, err, "AddRegistry should return an error")
 	assert.Equal(t, errMock, err, "Error should match the mock error")
 
 	mockRegistry.AssertCalled(t, "LinkHandler", dh)
@@ -129,7 +128,7 @@ func TestDefaultHandler_AddRegistry_Error_RegisteriesAliases(t *testing.T) {
 	}
 
 	err := dh.AddRegistries(mockRegistry)
-	assert.Error(t, err, "AddRegistry should return an error")
+	require.Error(t, err, "AddRegistry should return an error")
 	assert.Equal(t, errMock, err, "Error should match the mock error")
 
 	mockRegistry.AssertCalled(t, "LinkHandler", dh)
@@ -154,12 +153,11 @@ func TestDefaultHandler_AddRegistry_Error_RegisteriesNotices(t *testing.T) {
 	}
 
 	err := dh.AddRegistry(mockRegistry)
-	assert.Error(t, err, "AddRegistry should return an error")
+	require.Error(t, err, "AddRegistry should return an error")
 	assert.Equal(t, errMock, err, "Error should match the mock error")
 
 	mockRegistry.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
 	mockRegistry.AssertCalled(t, "RegisterNotices", &dh.notices)
-
 }
 
 // TestDefaultHandler_AddRegistry tests the AddRegistry method of DefaultHandler.
@@ -174,7 +172,7 @@ func TestDefaultHandler_AddRegistry(t *testing.T) {
 	}
 
 	err := dh.AddRegistry(mockRegistry)
-	assert.NoError(t, err, "AddRegistry should not return an error")
+	require.NoError(t, err, "AddRegistry should not return an error")
 
 	require.Len(t, dh.registries, 1, "Registry should be added to the DefaultHandler")
 	assert.Contains(t, dh.registries, mockRegistry, "Registry should match the mock registry")
@@ -200,7 +198,7 @@ func TestDefaultHandler_AddRegistries(t *testing.T) {
 	}
 
 	err := dh.AddRegistries(mockRegistry1, mockRegistry2)
-	assert.NoError(t, err, "AddRegistries should not return an error")
+	require.NoError(t, err, "AddRegistries should not return an error")
 
 	require.Len(t, dh.registries, 2, "Both registries should be added to the DefaultHandler")
 	assert.Contains(t, dh.registries, mockRegistry1, "First registry should match mockRegistry1")
@@ -226,7 +224,7 @@ func TestDefaultHandler_AddRegistryWithAlias(t *testing.T) {
 	}
 
 	err := dh.AddRegistry(mockRegistry)
-	assert.NoError(t, err, "AddRegistry should not return an error")
+	require.NoError(t, err, "AddRegistry should not return an error")
 
 	require.Len(t, dh.registries, 1, "Registry should be added to the DefaultHandler")
 	assert.Contains(t, dh.registries, mockRegistry, "Registry should match the mock registry")
@@ -252,7 +250,7 @@ func TestDefaultHandler_AddRegistryWithNotices(t *testing.T) {
 	}
 
 	err := dh.AddRegistry(mockRegistry)
-	assert.NoError(t, err, "AddRegistry should not return an error")
+	require.NoError(t, err, "AddRegistry should not return an error")
 
 	require.Len(t, dh.notices, 1, "Registry should be added to the DefaultHandler")
 
@@ -303,4 +301,24 @@ func TestDefaultHandler_Build(t *testing.T) {
 	builtFuncsMap := dh.Build()
 
 	assert.Equal(t, funcsMap, builtFuncsMap, "Build should return the correct FunctionMap")
+}
+
+func TestDefaultHandler_safeWrapper(t *testing.T) {
+	loggerHandler := &noticeLoggerHandler{}
+	handler := New(WithLogger(slog.New(loggerHandler)))
+
+	fn := func() (any, error) { return nil, errors.New("fail") }
+	_, err := fn()
+	require.Error(t, err, "fn should return an error")
+
+	safeFn := handler.safeWrapper("fn", fn)
+	_, safeErr := safeFn()
+	require.NoError(t, safeErr, "safeFn should not return an error")
+	assert.Equal(t, "[ERROR] function call failed\n", loggerHandler.messages.String())
+}
+
+func TestSafeFuncName(t *testing.T) {
+	assert.Equal(t, "safeFn", safeFuncName("fn"))
+	assert.Equal(t, "safeFn", safeFuncName("Fn"))
+	assert.Empty(t, safeFuncName(""))
 }

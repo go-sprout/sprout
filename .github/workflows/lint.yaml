@@ -1,0 +1,25 @@
+on: [pull_request]
+name: Linters
+permissions:
+  # Required: allow read access to the content for analysis.
+  contents: read
+  pull-requests: read
+  # Allow write access to checks to allow the action to annotate code in the PR.
+  checks: write
+jobs:
+  lint:
+    name: Golang CI Lint
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Install Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: stable
+    - name: Install testifylint
+      run: go install github.com/Antonboom/testifylint@v1.4.0
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v6
+      with:
+        version: v1.60

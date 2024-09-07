@@ -1,10 +1,10 @@
 package sprout
 
 import (
-	"errors"
 	"fmt"
-	"reflect"
 	"strings"
+
+	"github.com/go-sprout/sprout/internal/runtime"
 )
 
 // wrappedFunc is a type alias for a function that accepts a variadic number of
@@ -109,7 +109,7 @@ func AssignNotices(h Handler) {
 // and returns an `any` result and an `error`.
 func createWrappedFunction(h Handler, notice FunctionNotice, functionName string, fn any) wrappedFunc {
 	return func(args ...any) (any, error) {
-		out, err := safeCall(fn, args...)
+		out, err := runtime.SafeCall(fn, args...)
 		switch notice.Kind {
 		case NoticeKindDebug:
 			h.Logger().With("function", functionName, "notice", "debug").Debug(strings.ReplaceAll(notice.Message, "$out", fmt.Sprint(out)))
@@ -148,53 +148,4 @@ func WithNotices(notices ...*FunctionNotice) HandlerOption[*DefaultHandler] {
 			p.notices = append(p.notices, *notice)
 		}
 	}
-}
-
-// safeCall safely calls a function using reflection. It handles potential
-// panics by recovering and returning an error. The function `fn` is expected
-// to be a function, and `args` are the arguments to pass to that function.
-// It returns the result of the function call (if any) and an error if one
-// occurred during the call or if a panic was recovered.
-func safeCall(fn any, args ...any) (result any, err error) {
-	// Ensure fn is a function
-	v := reflect.ValueOf(fn)
-	if v.Kind() != reflect.Func {
-		return nil, errors.New("fn is not a function")
-	}
-
-	// Defer a function to handle panics
-	defer func() {
-		if r := recover(); r != nil {
-			err = fmt.Errorf("recovered from panic: %v", r)
-		}
-	}()
-
-	// Convert args to reflect.Value slice
-	in := make([]reflect.Value, len(args))
-	for i, arg := range args {
-		in[i] = reflect.ValueOf(arg)
-	}
-
-	// Call the function using reflection
-	out := v.Call(in)
-
-	// Process the output
-	if len(out) == 0 {
-		return nil, nil
-	}
-
-	// If there's only one return value
-	result = out[0].Interface()
-	if len(out) == 1 {
-		return result, nil
-	}
-
-	// If there are two return values (assuming the second is an error)
-	if len(out) == 2 && out[1].Type().Implements(reflect.TypeOf((*error)(nil)).Elem()) {
-		err, _ = out[1].Interface().(error)
-		return result, err
-	}
-
-	// Handle other cases as needed
-	return result, nil
 }

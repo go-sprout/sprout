@@ -31,11 +31,25 @@ func (rr *RegexpRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "regexReplaceAll", rr.RegexReplaceAll)
 	sprout.AddFunction(funcsMap, "regexReplaceAllLiteral", rr.RegexReplaceAllLiteral)
 	sprout.AddFunction(funcsMap, "regexQuoteMeta", rr.RegexQuoteMeta)
-	sprout.AddFunction(funcsMap, "mustRegexFind", rr.MustRegexFind)
-	sprout.AddFunction(funcsMap, "mustRegexFindAll", rr.MustRegexFindAll)
-	sprout.AddFunction(funcsMap, "mustRegexMatch", rr.MustRegexMatch)
-	sprout.AddFunction(funcsMap, "mustRegexSplit", rr.MustRegexSplit)
-	sprout.AddFunction(funcsMap, "mustRegexReplaceAll", rr.MustRegexReplaceAll)
-	sprout.AddFunction(funcsMap, "mustRegexReplaceAllLiteral", rr.MustRegexReplaceAllLiteral)
+	return nil
+}
+
+func (rr *RegexpRegistry) RegisterAliases(aliasesMap sprout.FunctionAliasMap) error {
+	sprout.AddAlias(aliasesMap, "regexFind", "mustRegexFind")
+	sprout.AddAlias(aliasesMap, "regexFindAll", "mustRegexFindAll")
+	sprout.AddAlias(aliasesMap, "regexMatch", "mustRegexMatch")
+	sprout.AddAlias(aliasesMap, "regexSplit", "mustRegexSplit")
+	sprout.AddAlias(aliasesMap, "regexReplaceAll", "mustRegexReplaceAll")
+	sprout.AddAlias(aliasesMap, "regexReplaceAllLiteral", "mustRegexReplaceAllLiteral")
+	return nil
+}
+
+func (rr *RegexpRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustRegexFind", "please use `regexFind` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustRegexFindAll", "please use `regexFindAll` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustRegexMatch", "please use `regexMatch` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustRegexSplit", "please use `regexSplit` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustRegexReplaceAll", "please use `regexReplaceAll` instead"))
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustRegexReplaceAllLiteral", "please use `regexReplaceAllLiteral` instead"))
 	return nil
 }

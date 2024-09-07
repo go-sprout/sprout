@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
-	"crypto/dsa"
+	"crypto/dsa" //nolint:staticcheck
 	"crypto/ecdsa"
 	"crypto/ed25519"
 	"crypto/elliptic"
@@ -33,13 +33,13 @@ import (
 // Example:
 //
 //	{{ "Hello World" | bcrypt }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
-func (ch *CryptoRegistry) Bcrypt(input string) string {
+func (ch *CryptoRegistry) Bcrypt(input string) (string, error) {
 	hash, err := bcrypt_lib.GenerateFromPassword([]byte(input), bcrypt_lib.DefaultCost)
 	if err != nil {
-		return fmt.Sprintf("failed to encrypt string with bcrypt: %s", err)
+		return "", fmt.Errorf("failed to encrypt string with bcrypt: %w", err)
 	}
 
-	return string(hash)
+	return string(hash), nil
 }
 
 // Htpasswd generates an Htpasswd hash from the given username and password strings.
@@ -51,11 +51,15 @@ func (ch *CryptoRegistry) Bcrypt(input string) string {
 // Example:
 //
 //	{{ htpasswd "username" "password" }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
-func (ch *CryptoRegistry) Htpasswd(username string, password string) string {
+func (ch *CryptoRegistry) Htpasswd(username string, password string) (string, error) {
 	if strings.Contains(username, ":") {
-		return fmt.Sprintf("invalid username: %s", username)
+		return "", fmt.Errorf("invalid username: %s", username)
 	}
-	return fmt.Sprintf("%s:%s", username, ch.Bcrypt(password))
+	bcryptHash, err := ch.Bcrypt(password)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%s:%s", username, bcryptHash), nil
 }
 
 // DerivePassword derives a password based on the given counter, password type, password, user, and site.
@@ -70,10 +74,10 @@ func (ch *CryptoRegistry) Htpasswd(username string, password string) string {
 // Example:
 //
 //	{{ derivePassword 0 "bcrypt" "password" "user" "site" }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
-func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password, user, site string) string {
-	var templates = passwordTypeTemplates[passwordType]
+func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password, user, site string) (string, error) {
+	templates := passwordTypeTemplates[passwordType]
 	if templates == nil {
-		return fmt.Sprintf("cannot find password template %s", passwordType)
+		return "", fmt.Errorf("cannot find password template %s", passwordType)
 	}
 
 	var buffer bytes.Buffer
@@ -84,7 +88,7 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 	salt := buffer.Bytes()
 	key, err := scrypt.Key([]byte(password), salt, 32768, 8, 2, 64)
 	if err != nil {
-		return fmt.Sprintf("failed to derive password: %s", err)
+		return "", fmt.Errorf("failed to derive password: %w", err)
 	}
 
 	buffer.Truncate(len(masterPasswordSeed))
@@ -92,19 +96,19 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 	buffer.WriteString(site)
 	_ = binary.Write(&buffer, binary.BigEndian, counter)
 
-	var hmacv = hmac.New(sha256.New, key)
+	hmacv := hmac.New(sha256.New, key)
 	hmacv.Write(buffer.Bytes())
-	var seed = hmacv.Sum(nil)
-	var temp = templates[int(seed[0])%len(templates)]
+	seed := hmacv.Sum(nil)
+	temp := templates[int(seed[0])%len(templates)]
 
-	buffer.Truncate(0)
+	buffer.Reset()
 	for i, element := range temp {
 		passChars := templateCharacters[element]
 		passChar := passChars[int(seed[i+1])%len(passChars)]
 		buffer.WriteByte(passChar)
 	}
 
-	return buffer.String()
+	return buffer.String(), nil
 }
 
 // GeneratePrivateKey generates a private key of the specified type.
@@ -115,7 +119,7 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 // Example:
 //
 //	{{ generatePrivateKey "rsa" }} // Output: "-----BEGIN RSA PRIVATE KEY-----"
-func (ch *CryptoRegistry) GeneratePrivateKey(typ string) string {
+func (ch *CryptoRegistry) GeneratePrivateKey(typ string) (string, error) {
 	var priv any
 	var err error
 	switch typ {
@@ -126,7 +130,7 @@ func (ch *CryptoRegistry) GeneratePrivateKey(typ string) string {
 		key := new(dsa.PrivateKey)
 		// again, good enough for government work
 		if err = dsa.GenerateParameters(&key.Parameters, cryptorand.Reader, dsa.L2048N256); err != nil {
-			return fmt.Sprintf("failed to generate dsa params: %s", err)
+			return "", fmt.Errorf("failed to generate dsa params: %w", err)
 		}
 		err = dsa.GenerateKey(key, cryptorand.Reader)
 		priv = key
@@ -136,13 +140,13 @@ func (ch *CryptoRegistry) GeneratePrivateKey(typ string) string {
 	case "ed25519":
 		_, priv, err = ed25519.GenerateKey(cryptorand.Reader)
 	default:
-		return "Unknown type " + typ
+		return "", fmt.Errorf("Unknown type %s", typ)
 	}
 	if err != nil {
-		return fmt.Sprintf("failed to generate private key: %s", err)
+		return "", fmt.Errorf("failed to generate private key: %w", err)
 	}
 
-	return string(pem.EncodeToMemory(ch.pemBlockForKey(priv)))
+	return string(pem.EncodeToMemory(ch.pemBlockForKey(priv))), nil
 }
 
 // BuildCustomCertificate builds a custom certificate from a base64 encoded certificate and private key.
@@ -174,17 +178,14 @@ func (ch *CryptoRegistry) BuildCustomCertificate(b64cert string, b64key string) 
 	_, err = x509.ParseCertificate(decodedCert.Bytes)
 	if err != nil {
 		return crt, fmt.Errorf(
-			"error parsing certificate: decodedCert.Bytes: %s",
+			"error parsing certificate: decodedCert.Bytes: %w",
 			err,
 		)
 	}
 
 	_, err = ch.parsePrivateKeyPEM(string(key))
 	if err != nil {
-		return crt, fmt.Errorf(
-			"error parsing private key: %s",
-			err,
-		)
+		return crt, fmt.Errorf("error parsing private key: %w", err)
 	}
 
 	crt.Cert = string(cert)
@@ -212,7 +213,7 @@ func (ch *CryptoRegistry) GenerateCertificateAuthority(
 ) (Certificate, error) {
 	priv, err := rsa.GenerateKey(cryptorand.Reader, 2048)
 	if err != nil {
-		return Certificate{}, fmt.Errorf("error generating rsa key: %s", err)
+		return Certificate{}, fmt.Errorf("error generating rsa key: %w", err)
 	}
 
 	return ch.generateCertificateAuthorityWithKeyInternal(cn, daysValid, priv)
@@ -239,7 +240,7 @@ func (ch *CryptoRegistry) GenerateCertificateAuthorityWithPEMKey(
 ) (Certificate, error) {
 	priv, err := ch.parsePrivateKeyPEM(privPEM)
 	if err != nil {
-		return Certificate{}, fmt.Errorf("parsing private key: %s", err)
+		return Certificate{}, fmt.Errorf("parsing private key: %w", err)
 	}
 	return ch.generateCertificateAuthorityWithKeyInternal(cn, daysValid, priv)
 }
@@ -267,7 +268,7 @@ func (ch *CryptoRegistry) GenerateSelfSignedCertificate(
 ) (Certificate, error) {
 	priv, err := rsa.GenerateKey(cryptorand.Reader, 2048)
 	if err != nil {
-		return Certificate{}, fmt.Errorf("error generating rsa key: %s", err)
+		return Certificate{}, fmt.Errorf("error generating rsa key: %w", err)
 	}
 	return ch.generateSelfSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, priv)
 }
@@ -297,7 +298,7 @@ func (ch *CryptoRegistry) GenerateSelfSignedCertificateWithPEMKey(
 ) (Certificate, error) {
 	priv, err := ch.parsePrivateKeyPEM(privPEM)
 	if err != nil {
-		return Certificate{}, fmt.Errorf("parsing private key: %s", err)
+		return Certificate{}, fmt.Errorf("parsing private key: %w", err)
 	}
 	return ch.generateSelfSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, priv)
 }
@@ -327,7 +328,7 @@ func (ch *CryptoRegistry) GenerateSignedCertificate(
 ) (Certificate, error) {
 	priv, err := rsa.GenerateKey(cryptorand.Reader, 2048)
 	if err != nil {
-		return Certificate{}, fmt.Errorf("error generating rsa key: %s", err)
+		return Certificate{}, fmt.Errorf("error generating rsa key: %w", err)
 	}
 	return ch.generateSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, ca, priv)
 }
@@ -359,7 +360,7 @@ func (ch *CryptoRegistry) GenerateSignedCertificateWithPEMKey(
 ) (Certificate, error) {
 	priv, err := ch.parsePrivateKeyPEM(privPEM)
 	if err != nil {
-		return Certificate{}, fmt.Errorf("parsing private key: %s", err)
+		return Certificate{}, fmt.Errorf("parsing private key: %w", err)
 	}
 	return ch.generateSignedCertificateWithKeyInternal(cn, ips, alternateDNS, daysValid, ca, priv)
 }

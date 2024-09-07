@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // TestWithAlias checks that aliases are correctly added to a function.
@@ -78,8 +79,8 @@ func TestRegisterAliases(t *testing.T) {
 	AssignAliases(handler)
 
 	// Check that the aliases are mapped to the same function as the original function in funcsRegistry.
-	assert.True(t, reflect.ValueOf(handler.cachedFuncsMap[originalFunc]).Pointer() == reflect.ValueOf(handler.cachedFuncsMap[alias1]).Pointer())
-	assert.True(t, reflect.ValueOf(handler.cachedFuncsMap[originalFunc]).Pointer() == reflect.ValueOf(handler.cachedFuncsMap[alias2]).Pointer())
+	assert.Equal(t, reflect.ValueOf(handler.cachedFuncsMap[originalFunc]).Pointer(), reflect.ValueOf(handler.cachedFuncsMap[alias1]).Pointer())
+	assert.Equal(t, reflect.ValueOf(handler.cachedFuncsMap[originalFunc]).Pointer(), reflect.ValueOf(handler.cachedFuncsMap[alias2]).Pointer())
 }
 
 func TestAliasesInTemplate(t *testing.T) {
@@ -97,10 +98,10 @@ func TestAliasesInTemplate(t *testing.T) {
 
 	// Create a template with the aliases.
 	tmpl, err := template.New("test").Funcs(handler.Build()).Parse(`{{originalFunc}} {{alias1}} {{alias2}}`)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	var buf bytes.Buffer
 	err = tmpl.ExecuteTemplate(&buf, "test", nil)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "cheese cheese cheese", buf.String())
 }

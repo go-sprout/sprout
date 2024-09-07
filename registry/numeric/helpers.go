@@ -4,6 +4,8 @@ import (
 	"reflect"
 
 	"github.com/spf13/cast"
+
+	"github.com/go-sprout/sprout"
 )
 
 // operateNumeric applies a numericOperation to a slice of any type, converting
@@ -25,24 +27,31 @@ import (
 //	add := func(a, b float64) float64 { return a + b }
 //	result := operateNumeric([]any{1.5, 2.5}, add, 0)
 //	fmt.Println(result) // Output: 4.0 (type float64 if first element is float64)
-func operateNumeric(values []any, op numericOperation, initial any) any {
+func operateNumeric(values []any, op numericOperation, initial any) (any, error) {
 	if len(values) == 0 {
-		return initial
+		return initial, nil
 	}
 
-	result := cast.ToFloat64(values[0])
+	result, err := cast.ToFloat64E(values[0])
+	if err != nil {
+		return 0.0, sprout.NewErrConvertFailed("float64", values[0], err)
+	}
 	for _, value := range values[1:] {
-		result = op(result, cast.ToFloat64(value))
+		floatValue, err := cast.ToFloat64E(value)
+		if err != nil {
+			return 0.0, sprout.NewErrConvertFailed("float64", value, err)
+		}
+		result = op(result, floatValue)
 	}
 
 	// Direct type assertion for common types to avoid reflection overhead
 	initialType := reflect.TypeOf(values[0])
 	switch initialType.Kind() {
 	case reflect.Int:
-		return int(result)
+		return int(result), nil
 	case reflect.Float64:
-		return result
+		return result, nil
 	default:
-		return reflect.ValueOf(result).Convert(initialType).Interface()
+		return reflect.ValueOf(result).Convert(initialType).Interface(), nil
 	}
 }

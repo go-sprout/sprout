@@ -34,6 +34,15 @@ func (tr *TimeRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "durationRound", tr.DurationRound)
 	sprout.AddFunction(funcsMap, "htmlDate", tr.HtmlDate)
 	sprout.AddFunction(funcsMap, "htmlDateInZone", tr.HtmlDateInZone)
-	sprout.AddFunction(funcsMap, "mustDateModify", tr.MustDateModify)
+	return nil
+}
+
+func (tr *TimeRegistry) RegisterAliases(aliasesMap sprout.FunctionAliasMap) error {
+	sprout.AddAlias(aliasesMap, "dateModify", "mustDateModify")
+	return nil
+}
+
+func (tr *TimeRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
+	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustDateModify", "please use `dateModify` instead"))
 	return nil
 }

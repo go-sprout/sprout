@@ -5,16 +5,19 @@ import (
 	"encoding/base32"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"gopkg.in/yaml.v3"
+
+	"github.com/go-sprout/sprout"
 )
 
 // Base64Encode encodes a string into its Base64 representation.
 //
 // Parameters:
 //
-//	s string - the string to encode.
+//	str string - the string to encode.
 //
 // Returns:
 //
@@ -23,8 +26,8 @@ import (
 // Example:
 //
 //	{{ "Hello World" | base64Encode }} // Output: "SGVsbG8gV29ybGQ="
-func (er *EncodingRegistry) Base64Encode(s string) string {
-	return base64.StdEncoding.EncodeToString([]byte(s))
+func (er *EncodingRegistry) Base64Encode(str string) string {
+	return base64.StdEncoding.EncodeToString([]byte(str))
 }
 
 // Base64Decode decodes a Base64 encoded string back to its original form.
@@ -32,28 +35,29 @@ func (er *EncodingRegistry) Base64Encode(s string) string {
 //
 // Parameters:
 //
-//	s string - the Base64 encoded string to decode.
+//	str string - the Base64 encoded string to decode.
 //
 // Returns:
 //
 //	string - the decoded string, or an error message if the decoding fails.
+//	error - an error message if the decoding fails.
 //
 // Example:
 //
 //	{{ "SGVsbG8gV29ybGQ=" | base64Decode }} // Output: "Hello World"
-func (er *EncodingRegistry) Base64Decode(s string) string {
-	bytes, err := base64.StdEncoding.DecodeString(s)
+func (er *EncodingRegistry) Base64Decode(str string) (string, error) {
+	bytes, err := base64.StdEncoding.DecodeString(str)
 	if err != nil {
-		return ""
+		return "", fmt.Errorf("base64 decode error: %w", err)
 	}
-	return string(bytes)
+	return string(bytes), nil
 }
 
 // Base32Encode encodes a string into its Base32 representation.
 //
 // Parameters:
 //
-//	s string - the string to encode.
+//	str string - the string to encode.
 //
 // Returns:
 //
@@ -62,8 +66,8 @@ func (er *EncodingRegistry) Base64Decode(s string) string {
 // Example:
 //
 //	{{ "Hello World" | base32Encode }} // Output: "JBSWY3DPEBLW64TMMQQQ===="
-func (er *EncodingRegistry) Base32Encode(s string) string {
-	return base32.StdEncoding.EncodeToString([]byte(s))
+func (er *EncodingRegistry) Base32Encode(str string) string {
+	return base32.StdEncoding.EncodeToString([]byte(str))
 }
 
 // Base32Decode decodes a Base32 encoded string back to its original form.
@@ -71,141 +75,25 @@ func (er *EncodingRegistry) Base32Encode(s string) string {
 //
 // Parameters:
 //
-//	s string - the Base32 encoded string to decode.
+//	str string - the Base32 encoded string to decode.
 //
 // Returns:
 //
 //	string - the decoded string, or an error message if the decoding fails.
+//	error - an error message if the decoding fails.
 //
 // Example:
 //
 //	{{ "JBSWY3DPEBLW64TMMQQQ====" | base32Decode }} // Output: "Hello World"
-func (er *EncodingRegistry) Base32Decode(s string) string {
-	bytes, err := base32.StdEncoding.DecodeString(s)
+func (er *EncodingRegistry) Base32Decode(str string) (string, error) {
+	bytes, err := base32.StdEncoding.DecodeString(str)
 	if err != nil {
-		return ""
+		return "", fmt.Errorf("base32 decode error: %w", err)
 	}
-	return string(bytes)
+	return string(bytes), nil
 }
 
-// FromJson converts a JSON string into a corresponding Go data structure.
-//
-// Parameters:
-//
-//	v string - the JSON string to decode.
-//
-// Returns:
-//
-//	any - the decoded Go data structure, or nil if the decoding fails.
-//
-// Example:
-//
-// {{ '{"name":"John", "age":30}' | fromJson }} // Output: map[name:John age:30]
-func (er *EncodingRegistry) FromJson(v string) any {
-	output, _ := er.MustFromJson(v)
-	return output
-}
-
-// ToJson converts a Go data structure into a JSON string.
-//
-// Parameters:
-//
-//	v any - the Go data structure to encode.
-//
-// Returns:
-//
-//	string - the encoded JSON string.
-//
-// Example:
-//
-//	{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
-//	{{ toJson $d }} // Output: {"key1":"value1","key2":"value2","key3":"value3"}
-func (er *EncodingRegistry) ToJson(v any) string {
-	output, _ := er.MustToJson(v)
-	return output
-}
-
-// ToPrettyJson converts a Go data structure into a pretty-printed JSON string.
-//
-// Parameters:
-//
-//	v any - the Go data structure to encode.
-//
-// Returns:
-//
-//	string - the pretty-printed JSON string.
-//
-// Example:
-//
-// {{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
-// {{ toPrettyJson $d }} // Output: "{\n  \"key1\": \"value1\",\n  \"key2\": \"value2\",\n  \"key3\": \"value3\"\n}"
-func (er *EncodingRegistry) ToPrettyJson(v any) string {
-	output, _ := er.MustToPrettyJson(v)
-	return output
-}
-
-// ToRawJson converts a Go data structure into a JSON string without escaping HTML.
-//
-// Parameters:
-//
-//	v any - the Go data structure to encode.
-//
-// Returns:
-//
-//	string - the raw JSON string.
-//
-// Example:
-//
-//	{{ $d := dict "content" "<p>Hello World</p>" }}
-//	{{ toRawJson $d }} // Output: {"content":"<p>Hello World</p>"}
-func (er *EncodingRegistry) ToRawJson(v any) string {
-	output, _ := er.MustToRawJson(v)
-	return output
-}
-
-// FromYAML deserializes a YAML string into a Go map.
-//
-// Parameters:
-//
-//	str string - the YAML string to deserialize.
-//
-// Returns:
-//
-//	any - a map representing the YAML data. Returns nil if deserialization fails.
-//
-// Example:
-//
-//	{{ "name: John Doe\nage: 30" | fromYaml }} // Output: map[name:John Doe age:30]
-func (er *EncodingRegistry) FromYAML(str string) any {
-	m := make(map[string]any)
-
-	if err := yaml.Unmarshal([]byte(str), &m); err != nil {
-		return nil
-	}
-
-	return m
-}
-
-// ToYAML serializes a Go data structure to a YAML string.
-//
-// Parameters:
-//
-//	v any - the data structure to serialize.
-//
-// Returns:
-//
-//	string - the YAML string representation of the data structure.
-//
-// Example:
-//
-//	{{ $d := dict "name" "John Doe" "age" 30 }}
-//	{{ toYaml $d }} // Output: name: John Doe\nage: 30
-func (er *EncodingRegistry) ToYAML(v any) string {
-	result, _ := er.MustToYAML(v)
-	return result
-}
-
-// MustFromJson decodes a JSON string into a Go data structure, returning an
+// FromJson decodes a JSON string into a Go data structure, returning an
 // error if decoding fails.
 //
 // Parameters:
@@ -219,14 +107,17 @@ func (er *EncodingRegistry) ToYAML(v any) string {
 //
 // Example:
 //
-//	{{ `{"name":"John", "age":30}` | mustFromJson }} // Output: map[name:John age:30], nil
-func (er *EncodingRegistry) MustFromJson(v string) (any, error) {
+//	{{ `{"name":"John", "age":30}` | fromJson }} // Output: map[name:John age:30], nil
+func (er *EncodingRegistry) FromJson(v string) (any, error) {
 	var output any
 	err := json.Unmarshal([]byte(v), &output)
+	if err != nil {
+		return nil, fmt.Errorf("json decode error: %w", err)
+	}
 	return output, err
 }
 
-// MustToJson encodes a Go data structure into a JSON string, returning an error
+// ToJson encodes a Go data structure into a JSON string, returning an error
 // if encoding fails.
 //
 // Parameters:
@@ -240,16 +131,16 @@ func (er *EncodingRegistry) MustFromJson(v string) (any, error) {
 //
 // Example:
 //
-//	{{ {"name": "John", "age": 30} | mustToJson }} // Output: "{"age":30,"name":"John"}", nil
-func (er *EncodingRegistry) MustToJson(v any) (string, error) {
+//	{{ {"name": "John", "age": 30} | toJson }} // Output: "{"age":30,"name":"John"}", nil
+func (er *EncodingRegistry) ToJson(v any) (string, error) {
 	output, err := json.Marshal(v)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("json encode error: %w", err)
 	}
 	return string(output), nil
 }
 
-// MustToPrettyJson encodes a Go data structure into a pretty-printed JSON
+// ToPrettyJson encodes a Go data structure into a pretty-printed JSON
 // string, returning an error if encoding fails.
 //
 // Parameters:
@@ -263,16 +154,16 @@ func (er *EncodingRegistry) MustToJson(v any) (string, error) {
 //
 // Example:
 //
-//	{{ {"name": "John", "age": 30} | mustToPrettyJson }} // Output: "{\n  \"age\": 30,\n  \"name\": \"John\"\n}", nil
-func (er *EncodingRegistry) MustToPrettyJson(v any) (string, error) {
+//	{{ {"name": "John", "age": 30} | toPrettyJson }} // Output: "{\n  \"age\": 30,\n  \"name\": \"John\"\n}", nil
+func (er *EncodingRegistry) ToPrettyJson(v any) (string, error) {
 	output, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("json encode error: %w", err)
 	}
 	return string(output), nil
 }
 
-// MustToRawJson encodes a Go data structure into a JSON string without escaping
+// ToRawJson encodes a Go data structure into a JSON string without escaping
 // HTML, returning an error if encoding fails.
 //
 // Parameters:
@@ -286,40 +177,44 @@ func (er *EncodingRegistry) MustToPrettyJson(v any) (string, error) {
 //
 // Example:
 //
-//	{{ {"content": "<div>Hello World!</div>"} | mustToRawJson }} // Output: "{\"content\":\"<div>Hello World!</div>\"}", nil
-func (er *EncodingRegistry) MustToRawJson(v any) (string, error) {
+//	{{ {"content": "<div>Hello World!</div>"} | toRawJson }} // Output: "{\"content\":\"<div>Hello World!</div>\"}", nil
+func (er *EncodingRegistry) ToRawJson(v any) (string, error) {
 	buf := new(bytes.Buffer)
 	enc := json.NewEncoder(buf)
 	enc.SetEscapeHTML(false)
 	err := enc.Encode(&v)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("json encode error: %w", err)
 	}
 	return strings.TrimSuffix(buf.String(), "\n"), nil
 }
 
-// MustFromYaml deserializes a YAML string into a Go data structure, returning
-// the result along with any error that occurs.
+// FromYAML deserializes a YAML string into a Go map.
 //
 // Parameters:
 //
-//	v string - the YAML string to deserialize.
+//	str string - the YAML string to deserialize.
 //
 // Returns:
 //
-//	any - the Go data structure representing the deserialized YAML content.
-//	error - an error if the YAML content cannot be deserialized.
+//	any - a map representing the YAML data. Returns nil if deserialization fails.
+//	error - an error message if the YAML content cannot be deserialized.
 //
 // Example:
 //
-//	{{ "name: John Doe\nage: 30" | mustFromYaml }} // Output: map[name:John Doe age:30], nil
-func (er *EncodingRegistry) MustFromYAML(v string) (any, error) {
-	var output any
-	err := yaml.Unmarshal([]byte(v), &output)
-	return output, err
+//	{{ "name: John Doe\nage: 30" | fromYaml }} // Output: map[name:John Doe age:30]
+func (er *EncodingRegistry) FromYAML(str string) (any, error) {
+	m := make(map[string]any)
+
+	if err := yaml.Unmarshal([]byte(str), &m); err != nil {
+		return nil, fmt.Errorf("yaml decode error: %w", err)
+	}
+
+	return m, nil
 }
 
-// MustToYAML serializes a Go data structure to a YAML string and returns any error that occurs during the serialization.
+// ToYAML serializes a Go data structure to a YAML string and returns any error
+// that occurs during the serialization.
 //
 // Parameters:
 //
@@ -333,11 +228,17 @@ func (er *EncodingRegistry) MustFromYAML(v string) (any, error) {
 // Example:
 //
 //	{{ $d := dict "name" "John Doe" "age" 30 }}
-//	{{ $d | mustToYaml }} // Output: name: John Doe\nage: 30
-func (er *EncodingRegistry) MustToYAML(v any) (string, error) {
+//	{{ $d | toYaml }} // Output: name: John Doe\nage: 30
+func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
+	// recover panic from yaml package
+	defer sprout.ErrRecoverPanic(&err, "yaml encode error")
+
 	data, err := yaml.Marshal(v)
 	if err != nil {
-		return "", err
+		// code unreachable because yaml.Marshal always panic on error and never
+		// returns an error, but we still need to handle the error for the sake of
+		// consistency. The error message is set by ErrRecoverPanic.
+		return "", fmt.Errorf("yaml encode error: %w", err)
 	}
 
 	return strings.TrimSuffix(string(data), "\n"), nil

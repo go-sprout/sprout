@@ -1,11 +1,6 @@
 package random
 
 import (
-	cryptorand "crypto/rand"
-	"math/big"
-	mathrand "math/rand"
-	"time"
-
 	"github.com/go-sprout/sprout"
 )
 
@@ -36,20 +31,6 @@ type randomOpts struct {
 	withNumbers bool
 	withAscii   bool
 	withChars   []rune
-}
-
-// randSource is a global variable that provides a source of randomness seeded with
-// a cryptographically secure random number. This source is used throughout various
-// random generation functions to ensure that randomness is both fast and non-repetitive.
-var randSource mathrand.Source
-
-// init is an initialization function that seeds the global random source used
-// in random string generation. It retrieves a secure timestamp-based seed from
-// crypto/rand and uses it to initialize math/rand's source, ensuring that random
-// values are not predictable across program restarts.
-func init() {
-	index, _ := cryptorand.Int(cryptorand.Reader, big.NewInt(time.Now().UnixNano()))
-	randSource = mathrand.NewSource(index.Int64())
 }
 
 type RandomRegistry struct {

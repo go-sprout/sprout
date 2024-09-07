@@ -69,7 +69,6 @@ func TestEmpty(t *testing.T) {
 	assert.False(t, Empty(true))
 	assert.False(t, Empty(uint(1)))
 	assert.False(t, Empty(uint8(1)))
-
 }
 
 func TestUntilStep(t *testing.T) {

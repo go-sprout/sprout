@@ -58,3 +58,22 @@ func TestWithNilHandler(t *testing.T) {
 
 	assert.Equal(t, beforeApply, fnHandler)
 }
+
+func TestWithSafeFuncs(t *testing.T) {
+	handler := New(WithSafeFuncs(true))
+	assert.True(t, handler.wantSafeFuncs)
+
+	handler.cachedFuncsMap["test"] = func() {}
+	funcCount := len(handler.Functions())
+	handler.Build()
+
+	assert.Len(t, handler.cachedFuncsMap, funcCount*2)
+
+	var keys []string
+	for k := range handler.Functions() {
+		keys = append(keys, k)
+	}
+
+	assert.Contains(t, keys, "test")
+	assert.Contains(t, keys, "safeTest")
+}

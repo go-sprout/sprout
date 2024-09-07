@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const sprigFunctionCount = 203
@@ -36,10 +37,12 @@ func TestFuncMap_IncludesHello(t *testing.T) {
 	_, exists := funcMap["hello"]
 	assert.True(t, exists)
 
-	helloFunc, ok := funcMap["hello"].(func() string)
+	helloFunc, ok := funcMap["hello"].(func(...any) (any, error))
 	assert.True(t, ok)
 
-	assert.Equal(t, "Hello!", helloFunc())
+	result, err := helloFunc()
+	require.NoError(t, err)
+	assert.Equal(t, "Hello!", result)
 }
 
 func TestSprigHandler(t *testing.T) {
@@ -51,9 +54,9 @@ func TestSprigHandler(t *testing.T) {
 	handler.Build()
 
 	assert.GreaterOrEqual(t, len(handler.Functions()), sprigFunctionCount)
-	assert.Len(t, handler.Aliases(), 7)
+	assert.Len(t, handler.Aliases(), 37) // Hardcoded for backward compatibility
 
-	assert.Len(t, handler.registries, 18)
+	assert.Len(t, handler.registries, 18) // Hardcoded for backward compatibility
 
 	registriesUids := []string{}
 	for _, registry := range handler.registries {

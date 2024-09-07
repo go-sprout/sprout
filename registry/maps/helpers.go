@@ -1,6 +1,9 @@
 package maps
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // digIntoDict navigates through a nested dictionary using a sequence of keys and returns the value found.
 //
@@ -52,13 +55,28 @@ func (mr *MapsRegistry) digIntoDict(dict map[string]any, keys []string) (any, er
 //	keys, err := mr.parseKeys([]any{"key1", 2})
 //	fmt.Println(err) // Output: all keys must be strings, got int at position 1
 func (mr *MapsRegistry) parseKeys(keySet []any) ([]string, error) {
-	keys := make([]string, len(keySet))
+	// Calculate the total number of keys needed
+	totalKeys := 0
 	for i, element := range keySet {
 		key, ok := element.(string)
 		if !ok {
 			return nil, fmt.Errorf("all keys must be strings, got %T at position %d", element, i)
 		}
-		keys[i] = key
+		totalKeys += 1 + strings.Count(key, ".")
 	}
+
+	// Preallocate the slice with the exact number of required elements
+	keys := make([]string, 0, totalKeys)
+
+	// Now, fill the slice
+	for _, element := range keySet {
+		key := element.(string)
+		if strings.Contains(key, ".") {
+			keys = append(keys, strings.Split(key, ".")...)
+		} else {
+			keys = append(keys, key)
+		}
+	}
+
 	return keys, nil
 }

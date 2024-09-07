@@ -16,11 +16,12 @@ import (
 // Returns:
 //
 //	string - the formatted date.
+//	error - when the timezone is invalid or the date is not in a valid format.
 //
 // Example:
 //
 //	{{ "2023-05-04T15:04:05Z" | date "Jan 2, 2006" }} // Output: "May 4, 2023"
-func (tr *TimeRegistry) Date(fmt string, date any) string {
+func (tr *TimeRegistry) Date(fmt string, date any) (string, error) {
 	return tr.DateInZone(fmt, date, "Local")
 }
 
@@ -35,11 +36,14 @@ func (tr *TimeRegistry) Date(fmt string, date any) string {
 // Returns:
 //
 //	string - the formatted date.
+//	error - when the timezone is invalid or the date is not in a valid format.
 //
 // Example:
 //
 //	{{ dateInZone "Jan 2, 2006", "2023-05-04T15:04:05Z", "UTC" }} // Output: "May 4, 2023"
-func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) string {
+//
+// TODO: Change signature
+func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) (string, error) {
 	var t time.Time
 	switch date := date.(type) {
 	default:
@@ -58,10 +62,10 @@ func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) string {
 
 	loc, err := time.LoadLocation(zone)
 	if err != nil {
-		loc, _ = time.LoadLocation("UTC")
+		return t.In(time.UTC).Format(fmt), err
 	}
 
-	return t.In(loc).Format(fmt)
+	return t.In(loc).Format(fmt), nil
 }
 
 // Duration converts seconds into a human-readable duration string.
@@ -162,7 +166,7 @@ func (tr *TimeRegistry) UnixEpoch(date time.Time) string {
 }
 
 // DateModify adjusts a given date by a specified duration. If the duration
-// format is incorrect, it returns the original date without any modification.
+// format is incorrect, it returns an error.
 //
 // Parameters:
 //   fmt string - the duration string to add to the date, such as "2h" for two hours.
@@ -170,16 +174,17 @@ func (tr *TimeRegistry) UnixEpoch(date time.Time) string {
 //
 // Returns:
 //   time.Time - the modified date after adding the duration
+//	 error - an error if the duration format is incorrect
 //
 // Example:
 //   {{ "2024-05-04T15:04:05Z" | dateModify "48h" }} // Outputs the date two days later
 
-func (tr *TimeRegistry) DateModify(fmt string, date time.Time) time.Time {
+func (tr *TimeRegistry) DateModify(fmt string, date time.Time) (time.Time, error) {
 	d, err := time.ParseDuration(fmt)
 	if err != nil {
-		return date
+		return time.Time{}, err
 	}
-	return date.Add(d)
+	return date.Add(d), nil
 }
 
 // DurationRound rounds a duration to the nearest significant unit, such as years or seconds.
@@ -269,11 +274,12 @@ func (tr *TimeRegistry) DurationRound(duration any) string {
 // Returns:
 //
 //	string - the formatted date in HTML format.
+//	error - when the timezone is invalid or the date is not in a valid format.
 //
 // Example:
 //
 //	{{ "2023-05-04T15:04:05Z" | htmlDate }} // Output: "2023-05-04"
-func (tr *TimeRegistry) HtmlDate(date any) string {
+func (tr *TimeRegistry) HtmlDate(date any) (string, error) {
 	return tr.DateInZone("2006-01-02", date, "Local")
 }
 
@@ -287,34 +293,13 @@ func (tr *TimeRegistry) HtmlDate(date any) string {
 // Returns:
 //
 //	string - the formatted date in HTML format.
+//	error - when the timezone is invalid or the date is not in a valid format.
 //
 // Example:
 //
 //	{{ "2023-05-04T15:04:05Z", "UTC" | htmlDateInZone }} // Output: "2023-05-04"
-func (tr *TimeRegistry) HtmlDateInZone(date any, zone string) string {
+//
+// TODO: Change signature
+func (tr *TimeRegistry) HtmlDateInZone(date any, zone string) (string, error) {
 	return tr.DateInZone("2006-01-02", date, zone)
-}
-
-// MustDateModify calculates a new date by adding a specified duration to a given date.
-// It returns an error if the duration format is incorrect.
-//
-// Parameters:
-//
-//	fmt string - the duration string to be added to the date (e.g., "2h", "1m30s").
-//	date time.Time - the initial date to which the duration is added.
-//
-// Returns:
-//
-//	time.Time - the modified date after adding the duration.
-//	error - error if the duration format is invalid.
-//
-// Example:
-//
-//	{{ "2024-05-04T15:04:05Z" | mustDateModify "48h" }} // Output: "2024-05-06T15:04:05Z", nil
-func (tr *TimeRegistry) MustDateModify(fmt string, date time.Time) (time.Time, error) {
-	d, err := time.ParseDuration(fmt)
-	if err != nil {
-		return time.Time{}, err
-	}
-	return date.Add(d), nil
 }

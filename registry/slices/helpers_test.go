@@ -26,7 +26,6 @@ func TestIsComparable(t *testing.T) {
 	assert.False(t, r.isComparable(time.Second*5))
 	assert.False(t, r.isComparable(make(chan any)))
 	assert.False(t, r.isComparable(nil))
-
 }
 
 func TestSlicesRegistry_inList(t *testing.T) {

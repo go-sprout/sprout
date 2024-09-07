@@ -5,6 +5,8 @@ import (
 	"reflect"
 
 	"github.com/spf13/cast"
+
+	"github.com/go-sprout/sprout"
 )
 
 // Floor returns the largest integer less than or equal to the provided number.
@@ -16,12 +18,18 @@ import (
 // Returns:
 //
 //	float64 - the floored value.
+//	error - an error if the input cannot be converted to float64.
 //
 // Example:
 //
 //	{{ 3.7 | floor }} // Output: 3
-func (nr *NumericRegistry) Floor(num any) float64 {
-	return math.Floor(cast.ToFloat64(num))
+func (nr *NumericRegistry) Floor(num any) (float64, error) {
+	float, err := cast.ToFloat64E(num)
+	if err != nil {
+		return 0.0, sprout.NewErrConvertFailed("float64", num, err)
+	}
+
+	return math.Floor(float), nil
 }
 
 // Ceil returns the smallest integer greater than or equal to the provided number.
@@ -33,12 +41,18 @@ func (nr *NumericRegistry) Floor(num any) float64 {
 // Returns:
 //
 //	float64 - the ceiled value.
+//	error - an error if the input cannot be converted to float64.
 //
 // Example:
 //
 //	{{ 3.1 | ceil }} // Output: 4
-func (nr *NumericRegistry) Ceil(num any) float64 {
-	return math.Ceil(cast.ToFloat64(num))
+func (nr *NumericRegistry) Ceil(num any) (float64, error) {
+	float, err := cast.ToFloat64E(num)
+	if err != nil {
+		return 0.0, sprout.NewErrConvertFailed("float64", num, err)
+	}
+
+	return math.Ceil(float), nil
 }
 
 // Round rounds a number to a specified precision and rounding threshold.
@@ -53,22 +67,31 @@ func (nr *NumericRegistry) Ceil(num any) float64 {
 //
 //	float64 - the rounded number.
 //
+// error - an error if the input cannot be converted to float64.
+//
 // Example:
 //
 //	{{ 3.746, 2, 0.5 | round }} // Output: 3.75
-func (nr *NumericRegistry) Round(num any, poww int, roundOpts ...float64) float64 {
+//
+// ! NEED TO CHANGE PARAMS ORDER
+func (nr *NumericRegistry) Round(num any, poww int, roundOpts ...float64) (float64, error) {
 	roundOn := 0.5
 	if len(roundOpts) > 0 {
 		roundOn = roundOpts[0]
 	}
 
 	pow := math.Pow(10, float64(poww))
-	digit := cast.ToFloat64(num) * pow
+	float, err := cast.ToFloat64E(num)
+	if err != nil {
+		return 0.0, sprout.NewErrConvertFailed("float64", num, err)
+	}
+
+	digit := float * pow
 	_, div := math.Modf(digit)
 	if div >= roundOn {
-		return math.Ceil(digit) / pow
+		return math.Ceil(digit) / pow, nil
 	}
-	return math.Floor(digit) / pow
+	return math.Floor(digit) / pow, nil
 }
 
 // Add performs addition on a slice of values.
@@ -80,11 +103,12 @@ func (nr *NumericRegistry) Round(num any, poww int, roundOpts ...float64) float6
 // Returns:
 //
 //	any - the sum of the values, converted to the type of the first value.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
 //	{{ 5, 3.5, 2 | add }} // Output: 10.5
-func (nr *NumericRegistry) Add(values ...any) any {
+func (nr *NumericRegistry) Add(values ...any) (any, error) {
 	return operateNumeric(values, func(a, b float64) float64 { return a + b }, 0.0)
 }
 
@@ -97,11 +121,12 @@ func (nr *NumericRegistry) Add(values ...any) any {
 // Returns:
 //
 //	any - the sum of the value and 1, converted to the type of the input.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
 //	{{ 5 | add1 }} // Output: 6
-func (nr *NumericRegistry) Add1(x any) any {
+func (nr *NumericRegistry) Add1(x any) (any, error) {
 	one := reflect.ValueOf(1).Convert(reflect.TypeOf(x)).Interface()
 	return nr.Add(x, one)
 }
@@ -115,11 +140,12 @@ func (nr *NumericRegistry) Add1(x any) any {
 // Returns:
 //
 //	any - the result of the subtraction, converted to the type of the first value.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
 //	{{ 10, 3, 2 | sub }} // Output: 5
-func (nr *NumericRegistry) Sub(values ...any) any {
+func (nr *NumericRegistry) Sub(values ...any) (any, error) {
 	return operateNumeric(values, func(a, b float64) float64 { return a - b }, 0.0)
 }
 
@@ -132,14 +158,18 @@ func (nr *NumericRegistry) Sub(values ...any) any {
 // Returns:
 //
 //	int64 - the product of the values.
+//	error - an error if the result cannot be converted to int64.
 //
 // Example:
 //
 //	{{ 5, 3, 2 | mulInt }} // Output: 30
-func (nr *NumericRegistry) MulInt(values ...any) int64 {
-	return cast.ToInt64(
-		operateNumeric(values, func(a, b float64) float64 { return a * b }, 1),
-	)
+func (nr *NumericRegistry) MulInt(values ...any) (int64, error) {
+	result, err := operateNumeric(values, func(a, b float64) float64 { return a * b }, 1)
+	if err != nil {
+		return 0, err
+	}
+
+	return cast.ToInt64(result), nil
 }
 
 // Mulf multiplies a sequence of values and returns the result as float64.
@@ -151,11 +181,12 @@ func (nr *NumericRegistry) MulInt(values ...any) int64 {
 // Returns:
 //
 //	any - the product of the values, converted to the type of the first value.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
 //	{{ 5.5, 2.0, 2.0 | mulf }} // Output: 22.0
-func (nr *NumericRegistry) Mulf(values ...any) any {
+func (nr *NumericRegistry) Mulf(values ...any) (any, error) {
 	return operateNumeric(values, func(a, b float64) float64 { return a * b }, 1.0)
 }
 
@@ -172,8 +203,13 @@ func (nr *NumericRegistry) Mulf(values ...any) any {
 // Example:
 //
 //	{{ 30, 3, 2 | divInt }} // Output: 5
-func (nr *NumericRegistry) DivInt(values ...any) int64 {
-	return cast.ToInt64(nr.Divf(values...))
+func (nr *NumericRegistry) DivInt(values ...any) (int64, error) {
+	result, err := nr.Divf(values...)
+	if err != nil {
+		return 0, err
+	}
+
+	return cast.ToInt64(result), nil
 }
 
 // Divf divides a sequence of values, starting with the first value, and returns the result.
@@ -189,8 +225,8 @@ func (nr *NumericRegistry) DivInt(values ...any) int64 {
 // Example:
 //
 //	{{ 30.0, 3.0, 2.0 | divf }} // Output: 5.0
-func (nr *NumericRegistry) Divf(values ...any) any {
-	//FIXME:  Special manipulation to force float operation
+func (nr *NumericRegistry) Divf(values ...any) (any, error) {
+	// FIXME:  Special manipulation to force float operation
 	// This is a workaround to ensure that the result is a float to allow
 	// BACKWARDS COMPATIBILITY with previous versions of Sprig.
 	if len(values) > 0 {
@@ -211,15 +247,26 @@ func (nr *NumericRegistry) Divf(values ...any) any {
 // Returns:
 //
 //	any - the remainder, converted to the type of 'x'.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
 //	{{ 10, 4 | mod }} // Output: 2
-func (nr *NumericRegistry) Mod(x, y any) any {
-	result := math.Mod(cast.ToFloat64(x), cast.ToFloat64(y))
+func (nr *NumericRegistry) Mod(x, y any) (any, error) {
+	floatX, err := cast.ToFloat64E(x)
+	if err != nil {
+		return 0, sprout.NewErrConvertFailed("float64", x, err)
+	}
+
+	floatY, err := cast.ToFloat64E(y)
+	if err != nil {
+		return 0, sprout.NewErrConvertFailed("float64", y, err)
+	}
+
+	result := math.Mod(floatX, floatY)
 
 	// Convert the result to the same type as the input
-	return reflect.ValueOf(result).Convert(reflect.TypeOf(x)).Interface()
+	return reflect.ValueOf(result).Convert(reflect.TypeOf(x)).Interface(), nil
 }
 
 // Min returns the minimum value among the provided arguments.
@@ -232,19 +279,27 @@ func (nr *NumericRegistry) Mod(x, y any) any {
 // Returns:
 //
 //	int64 - the smallest number among the inputs.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
 //	{{ 5, 3, 8, 2 | min }} // Output: 2
-func (nr *NumericRegistry) Min(a any, i ...any) int64 {
-	aa := cast.ToInt64(a)
+func (nr *NumericRegistry) Min(a any, i ...any) (int64, error) {
+	intA, err := cast.ToInt64E(a)
+	if err != nil {
+		return 0, sprout.NewErrConvertFailed("int64", a, err)
+	}
+
 	for _, b := range i {
-		bb := cast.ToInt64(b)
-		if bb < aa {
-			aa = bb
+		intB, err := cast.ToInt64E(b)
+		if err != nil {
+			return 0, sprout.NewErrConvertFailed("int64", b, err)
+		}
+		if intB < intA {
+			intA = intB
 		}
 	}
-	return aa
+	return intA, nil
 }
 
 // Minf returns the minimum value among the provided floating-point arguments.
@@ -257,17 +312,24 @@ func (nr *NumericRegistry) Min(a any, i ...any) int64 {
 // Returns:
 //
 //	float64 - the smallest number among the inputs.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
 //	{{ 5.2, 3.8, 8.1, 2.6 | minf }} // Output: 2.6
-func (nr *NumericRegistry) Minf(a any, i ...any) float64 {
-	aa := cast.ToFloat64(a)
-	for _, b := range i {
-		bb := cast.ToFloat64(b)
-		aa = math.Min(aa, bb)
+func (nr *NumericRegistry) Minf(a any, i ...any) (float64, error) {
+	floatA, err := cast.ToFloat64E(a)
+	if err != nil {
+		return 0, sprout.NewErrConvertFailed("float64", a, err)
 	}
-	return aa
+	for _, b := range i {
+		floatB, err := cast.ToFloat64E(b)
+		if err != nil {
+			return 0, sprout.NewErrConvertFailed("float64", b, err)
+		}
+		floatA = math.Min(floatA, floatB)
+	}
+	return floatA, nil
 }
 
 // Max returns the maximum value among the provided arguments.
@@ -280,19 +342,28 @@ func (nr *NumericRegistry) Minf(a any, i ...any) float64 {
 // Returns:
 //
 //	int64 - the largest number among the inputs.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
 //	{{ 5, 3, 8, 2 | max }} // Output: 8
-func (nr *NumericRegistry) Max(a any, i ...any) int64 {
-	aa := cast.ToInt64(a)
+func (nr *NumericRegistry) Max(a any, i ...any) (int64, error) {
+	intA, err := cast.ToInt64E(a)
+	if err != nil {
+		return 0, sprout.NewErrConvertFailed("int64", a, err)
+	}
+
 	for _, b := range i {
-		bb := cast.ToInt64(b)
-		if bb > aa {
-			aa = bb
+		intB, err := cast.ToInt64E(b)
+		if err != nil {
+			return 0, sprout.NewErrConvertFailed("int64", b, err)
+		}
+
+		if intB > intA {
+			intA = intB
 		}
 	}
-	return aa
+	return intA, nil
 }
 
 // Maxf returns the maximum value among the provided floating-point arguments.
@@ -305,15 +376,22 @@ func (nr *NumericRegistry) Max(a any, i ...any) int64 {
 // Returns:
 //
 //	float64 - the largest number among the inputs.
+//	error - when a value cannot be converted.
 //
 // Example:
 //
 //	{{ 5.2, 3.8, 8.1, 2.6 | maxf }} // Output: 8.1
-func (nr *NumericRegistry) Maxf(a any, i ...any) float64 {
-	aa := cast.ToFloat64(a)
-	for _, b := range i {
-		bb := cast.ToFloat64(b)
-		aa = math.Max(aa, bb)
+func (nr *NumericRegistry) Maxf(a any, i ...any) (float64, error) {
+	floatA, err := cast.ToFloat64E(a)
+	if err != nil {
+		return 0, sprout.NewErrConvertFailed("float64", a, err)
 	}
-	return aa
+	for _, b := range i {
+		floatB, err := cast.ToFloat64E(b)
+		if err != nil {
+			return 0, sprout.NewErrConvertFailed("float64", b, err)
+		}
+		floatA = math.Max(floatA, floatB)
+	}
+	return floatA, nil
 }
