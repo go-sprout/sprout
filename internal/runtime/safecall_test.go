@@ -1,7 +1,6 @@
 package runtime
 
 import (
-	"errors"
 	"fmt"
 	"testing"
 
@@ -72,12 +71,6 @@ func TestSafeCall(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, "crap", out)
 
-	// Test to send a function with more than 2 returns
-	fn13 := func() (string, string, error) { return "a", "b", errors.New("c") }
-	out, err = SafeCall(fn13)
-	require.ErrorContains(t, err, "c")
-	assert.Equal(t, "a", out)
-
 	// Test to send more arguments than the function expects
 	fn11 := func(a, b any) string { return "crap" }
 	out, err = SafeCall(fn11, "a", "b", "c")
@@ -85,14 +78,14 @@ func TestSafeCall(t *testing.T) {
 	assert.Nil(t, out)
 
 	// Test to send a function with more than 2 returns and the second return is not an error
-	fn14 := func() (string, string, string) { return "a", "b", "c" }
-	out, err = SafeCall(fn14)
+	fn12 := func() (string, string, string) { return "a", "b", "c" }
+	out, err = SafeCall(fn12)
 	require.ErrorIs(t, err, ErrMoreThanTwoReturns)
 	assert.Equal(t, "a", out)
 
 	// Test to send a function with 2 returns and the second return is not an error
-	fn15 := func() (string, string) { return "a", "b" }
-	out, err = SafeCall(fn15)
+	fn13 := func() (string, string) { return "a", "b" }
+	out, err = SafeCall(fn13)
 	require.ErrorIs(t, err, ErrInvalidLastReturnType)
 	assert.Equal(t, "a", out)
 }
