@@ -100,6 +100,16 @@ func TestCompact(t *testing.T) {
 	pesticide.RunTestCases(t, slices.NewRegistry(), tc)
 }
 
+func TestFlatten(t *testing.T) {
+	var tc = []pesticide.TestCase{
+		{Input: `{{ flatten .V }}`, Expected: "[a b c d e]", Data: map[string]any{"V": []any{"a", "b", []any{"c", "d"}, "e"}}},
+		{Input: `{{ flatten .V }}`, Expected: "[a b c d e]", Data: map[string]any{"V": []any{"a", "b", []string{"c", "d"}, "e"}}},
+		{Input: `{{ flatten .V }}`, Expected: "[a b 1 2 e]", Data: map[string]any{"V": []any{"a", "b", []int{1, 2}, "e"}}},
+	}
+
+	pesticide.RunTestCases(t, slices.NewRegistry(), tc)
+}
+
 func TestSlice(t *testing.T) {
 	tc := []pesticide.TestCase{
 		{Input: `{{ .V | slice }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []string{"a", "b", "c", "d", "e"}}},

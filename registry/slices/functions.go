@@ -344,6 +344,38 @@ func (sr *SlicesRegistry) Compact(list any) ([]any, error) {
 	}
 }
 
+// Flatten flattens a nested list into a single list of elements.
+//
+// Parameters:
+//
+//	list any - the list to flatten.
+//
+// Returns:
+//
+//	[]any - the flattened list.
+//	error - error if the list is nil or not a slice/array.
+//
+// Example:
+//
+//	{{ flatten [[1, 2], [3, 4], 5] }} // Output: [1, 2, 3, 4, 5]
+func (sr *SlicesRegistry) Flatten(list any) ([]any, error) {
+	if list == nil {
+		return nil, fmt.Errorf("cannot flatten nil")
+	}
+
+	valueOfList := reflect.ValueOf(list)
+	tp := valueOfList.Kind()
+
+	switch tp {
+	case reflect.Slice, reflect.Array:
+		result := make([]any, 0, valueOfList.Len())
+		sr.flattenSlice(valueOfList, &result)
+		return result, nil
+	default:
+		return nil, fmt.Errorf("cannot flatten on type %s", tp)
+	}
+}
+
 // Slice extracts a slice from a list between two indices.
 //
 // Parameters:
