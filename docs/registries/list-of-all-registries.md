@@ -6,7 +6,7 @@ icon: list-radio
 
 Every function is categorized into a registry and may include a [**'must'** version](list-of-all-registries.md#must-version). This 'must' version utilizes the native error handling of Go templates to manage errors that occur within your method.
 
-### List of registries
+### List of embed registries
 
 * [**backward**](backward.md): Functions to maintain backward compatibility with sprig.
 * [**checksum**](checksum.md): Tools to generate and verify checksums for data integrity.
@@ -27,12 +27,10 @@ Every function is categorized into a registry and may include a [**'must'** vers
 * [**time**](time.md): Tools to handle dates, times, and time-related calculations.
 * [**uniqueid**](uniqueid.md): Functions to generate unique identifiers, such as UUIDs.
 
-### Must version
+### Community registry
 
-{% hint style="warning" %}
-<mark style="color:yellow;">The</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">`Must`</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">strategy is currently under discussion and may be subject to change in the future. An RFC is currently open for feedback and discussion. You can view and participate in the RFC</mark> [here](https://github.com/orgs/go-sprout/discussions/32)<mark style="color:yellow;">.</mark>
+{% hint style="info" %}
+You can open an issue to ask to be listed here. We are a community :seedling:
+
+And maybe your registry will be embed on sprout directly, who know :eyes:
 {% endhint %}
-
-The **Must** version of each function is essentially a safer variant that ensures error handling is integrated into the function's execution. When you use a function prefixed by `Must` (e.g., `MustEncode`, `MustConvert`), the template engine automatically checks for and handles any errors that might occur during the function's execution.&#x20;
-
-This is particularly useful in scenarios where failing silently is not an option, and you need immediate feedback if something goes wrong. Utilizing the **Must** versions helps to maintain the robustness and reliability of your template code.
