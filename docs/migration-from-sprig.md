@@ -1,17 +1,17 @@
 ---
+icon: route
 description: >-
   Coming from Sprig and looking to use Sprout? You're in the right place for a
   complete guide on making the transition. This guideline will help you navigate
   the differences.
-icon: route
 ---
 
 # Migration from Sprig
 
 {% hint style="info" %}
-This page evolves with each version based on modifications and community feedback. Having trouble following this guide?&#x20;
+This page evolves with each version based on modifications and community feedback. Having trouble following this guide?
 
-[Open an issue](https://github.com/go-sprout/sprout/issues/new/choose) to get help, and contribute to improving this guide for future users. :seedling: :purple\_heart:&#x20;
+[Open an issue](https://github.com/go-sprout/sprout/issues/new/choose) to get help, and contribute to improving this guide for future users. :seedling: :purple\_heart:
 {% endhint %}
 
 ## <mark style="color:purple;">Introduction</mark>
@@ -45,10 +45,12 @@ Nothing to do, using the new handler is enough.
 ### 3. **Error Handling**
 
 * **Sprig:** Limited and inconsistent error handling, with some functions causing panics (see [#panicking-functions](migration-from-sprig.md#panicking-functions "mention")), and not fully adhering to Go template standards.
-* **Sprout:** Offers configurable error handling strategies, including returning default values, or return error to stop template generation, providing a more consistent and flexible approach.
+* **Sprout:** Offers configurable error handling strategies, including returning default values, or return error to stop template generation (default), providing a more consistent and flexible approach.
 
-{% hint style="info" %}
-An RFC is currently open for feedback and discussion. You can view and participate in the RFC [here](https://github.com/orgs/go-sprout/discussions/32).
+{% hint style="success" %}
+**Migration Tip**
+
+You can learn mote about the safe strategy here: [safe-functions.md](features/safe-functions.md "mention")
 {% endhint %}
 
 ### 4. **Function Aliases**
@@ -90,13 +92,13 @@ Set up your Sprout environment by creating a handler and registering the necessa
 
 Thoroughly test your migrated templates to ensure that all functions behave as expected. Pay particular attention to error handling and any deprecated functions that may require adjustments.
 
-## <mark style="color:purple;">How to Transition for your end-users</mark>&#x20;
+## <mark style="color:purple;">How to Transition for your end-users</mark>
 
 You use sprig or sprout for end-users and want to migrate ?\
 A complete guide will be write here soon.
 
 {% hint style="info" %}
-You need more information now, contact maintainers or open [a discussion on the repository](https://github.com/orgs/go-sprout/discussions/categories/q-a).&#x20;
+You need more information now, contact maintainers or open [a discussion on the repository](https://github.com/orgs/go-sprout/discussions/categories/q-a).
 {% endhint %}
 
 ## <mark style="color:purple;">Migrating Common Functions</mark>
@@ -254,16 +256,16 @@ Sprout has deprecated certain features for better security and performance. For 
 {% hint style="info" %}
 **Migration Tip**
 
-Review your template functions and avoid using deprecated features. \
+Review your template functions and avoid using deprecated features.\
 Move critical operations outside of templates to maintain security.
 {% endhint %}
 
 {% hint style="warning" %}
-Perform cryptographic operations (listed in `crypto` package) outside of templates.
+Perform cryptographic operations (listed in `crypto` package) outside of templates. the [`crypto`regisry ](registries/crypto.md)will be drop in few versions.
 {% endhint %}
 
-All deprecated features are flagged with <mark style="color:red;">`// ! DEPRECATED`</mark> in codebase. \
-A complete list will be available here when the v1 of Sprout are released.&#x20;
+All deprecated features are flagged with <mark style="color:red;">`// ! DEPRECATED`</mark> in codebase.\
+A complete list will be available here when the v1 of Sprout are released.
 
 ## <mark style="color:purple;">Conclusion</mark>
 
