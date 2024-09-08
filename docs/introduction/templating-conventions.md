@@ -33,7 +33,7 @@ description: >-
 * **Function Comments:** For all exported functions and methods, provide comments describing their behavior, input parameters, and return values.
 * **Function Signature:** Functions should always adhere to the following rules:
   * **Pipe Syntax:** Functions need to be designed to work with the pipe `|` syntax in the template engine.
-  * **Error Return:** Functions must have a dual output `(something, error)` to ensure proper error handling. Even when a function doesn't currently handle errors, the signature should still be `(something, error)` to allow for future error handling without causing breaking changes.
+  * **Error Return:** Functions must have a dual output `(something, error)` to ensure proper error handling.
 
 #### Raw examples of registration names with function signatures
 
@@ -61,7 +61,7 @@ Directory Layout
 
 ## Git commit messages
 
-For git commit (and pull requests title), we use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).&#x20;
+For git commit (and pull requests title), we use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 **Examples:**
 

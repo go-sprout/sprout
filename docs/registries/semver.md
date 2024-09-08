@@ -24,7 +24,7 @@ This registry utilizing the original [Semver package](https://github.com/Masterm
 The function creates a new semantic version object from a given version string, allowing for the structured handling and comparison of software versioning according to semantic versioning principles.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Semver(version string) (*semver.Version, error)
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -41,7 +41,7 @@ The function creates a new semantic version object from a given version string, 
 The function checks whether a given version string satisfies a specified semantic version constraint, ensuring that the version meets the defined requirements according to the Semantic Versioning rules.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">SemverCompare(constraint, version string) (bool, error)
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}

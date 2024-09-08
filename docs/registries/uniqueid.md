@@ -20,7 +20,7 @@ import "github.com/go-sprout/sprout/registry/uniqueid"
 Uuidv4 generates a new random UUID (Universally Unique Identifier) version 4.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Uuidv4() string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}

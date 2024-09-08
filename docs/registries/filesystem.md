@@ -20,7 +20,7 @@ import "github.com/go-sprout/sprout/registry/filesystem"
 The function returns the last element of a given path, effectively extracting the file or directory name from the full path.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">PathBase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -35,7 +35,7 @@ The function returns the last element of a given path, effectively extracting th
 The function returns all but the last element of a given path, effectively extracting the directory portion of the path.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">PathDir(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -51,7 +51,7 @@ The function returns all but the last element of a given path, effectively extra
 The function returns the file extension of the given path, identifying the type of file by its suffix.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">PathExt(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -67,7 +67,7 @@ The function returns the file extension of the given path, identifying the type 
 The function cleans up a given path by simplifying any redundancies, such as removing unnecessary double slashes or resolving "." and ".." elements, resulting in a standardized and more straightforward path.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">PathClean(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -82,7 +82,7 @@ The function cleans up a given path by simplifying any redundancies, such as rem
 The function checks whether the given path is an absolute path, returning `true` if it is and `false` if it is not.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">PathIsAbs(str string) bool
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -98,7 +98,7 @@ The function checks whether the given path is an absolute path, returning `true`
 The function returns the last element of a given path, using the operating system's specific path separator to determine the path structure.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">OsBase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -113,7 +113,7 @@ The function returns the last element of a given path, using the operating syste
 The function returns all but the last element of a given path, using the operating system's specific path separator to navigate the directory structure.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">OsDir(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -128,7 +128,7 @@ The function returns all but the last element of a given path, using the operati
 The function returns the file extension of a given path, using the operating system's specific path separator to accurately determine the extension.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">OsExt(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -143,7 +143,7 @@ The function returns the file extension of a given path, using the operating sys
 The function cleans up a given path, using the operating system's specific path separator to simplify redundancies and standardize the path structure.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">OsClean(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -158,7 +158,7 @@ The function cleans up a given path, using the operating system's specific path 
 The function checks whether the given path is absolute, using the operating system's specific path separator to determine if the path is absolute or relative.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">OsIsAbs(str string) bool
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}

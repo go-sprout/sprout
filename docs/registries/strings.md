@@ -20,7 +20,7 @@ import "github.com/go-sprout/sprout/registry/strings"
 The function removes all whitespace characters from the provided string, eliminating any spaces, tabs, or line breaks.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Nospace(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -35,7 +35,7 @@ The function removes all whitespace characters from the provided string, elimina
 The function removes any leading and trailing whitespace from the provided string.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Trim(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -50,7 +50,7 @@ The function removes any leading and trailing whitespace from the provided strin
 The function removes all instances of any characters in the 'cutset' from both the beginning and the end of the provided string.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">TrimAll(cutset string, str string)
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -65,7 +65,7 @@ The function removes all instances of any characters in the 'cutset' from both t
 The function removes the specified 'prefix' from the start of the provided string if it is present.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">TrimPrefix(prefix string, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -80,7 +80,7 @@ The function removes the specified 'prefix' from the start of the provided strin
 The function removes the specified 'suffix' from the end of the provided string if it is present.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">TrimSuffix(suffix string, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -96,7 +96,7 @@ The function removes the specified 'suffix' from the end of the provided string 
 The function checks whether the provided string contains the specified substring.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Contains(substring string, str string) bool
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -111,7 +111,7 @@ The function checks whether the provided string contains the specified substring
 The function checks whether the provided string starts with the specified prefix.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">HasPrefix(prefix string, str string) bool
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -126,7 +126,7 @@ The function checks whether the provided string starts with the specified prefix
 The function checks whether the provided string ends with the specified suffix.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">HasSuffix(suffix string, str string) bool
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -141,7 +141,7 @@ The function checks whether the provided string ends with the specified suffix.
 The function converts all characters in the provided string to lowercase.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToLower(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -156,7 +156,7 @@ The function converts all characters in the provided string to lowercase.
 The function converts all characters in the provided string to uppercase.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUpper(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -171,7 +171,7 @@ The function converts all characters in the provided string to uppercase.
 The function replaces all occurrences of a specified substring ('old') in the source string with a new substring ('new').
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Replace(old string, new string, src string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -186,7 +186,7 @@ The function replaces all occurrences of a specified substring ('old') in the so
 The function repeats the provided string a specified number of times.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Repeat(count int, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -201,7 +201,7 @@ The function repeats the provided string a specified number of times.
 The function concatenates elements of a slice into a single string, with each element separated by a specified delimiter. It can convert various slice types to a slice of strings if needed before joining.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Join(sep string, v any) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -217,7 +217,7 @@ The function concatenates elements of a slice into a single string, with each el
 The function truncates the provided string to a maximum specified length. If the length is negative, it removes the specified number of characters from the beginning of the string.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Trunc(count int, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -233,7 +233,7 @@ The function truncates the provided string to a maximum specified length. If the
 The function randomly rearranges the characters in the provided string, producing a shuffled version of the original string.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Shuffle(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -248,7 +248,7 @@ The function randomly rearranges the characters in the provided string, producin
 The function truncates a string to a specified maximum width and appends an ellipsis ("...") if the string exceeds that width.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Ellipsis(maxWidth int, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -263,7 +263,7 @@ The function truncates a string to a specified maximum width and appends an elli
 The function truncates a string from both ends, preserving the middle portion and adding ellipses ("...") to both ends if the string exceeds the specified length.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">EllipsisBoth(offset int, maxWidth int, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -278,7 +278,7 @@ The function truncates a string from both ends, preserving the middle portion an
 The function extracts initials from a string, optionally using specified delimiters to identify word boundaries.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Initials(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -293,7 +293,7 @@ The function extracts initials from a string, optionally using specified delimit
 The function returns a specified string ('one') if the count is 1; otherwise, it returns an alternative string ('many').
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Plural(one, many string, count int) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -309,7 +309,7 @@ The function returns a specified string ('one') if the count is 1; otherwise, it
 The function breaks a string into lines, ensuring that each line does not exceed a specified maximum length. It avoids splitting words across lines unless absolutely necessary.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Wrap(length int, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -325,7 +325,7 @@ The function breaks a string into lines, ensuring that each line does not exceed
 The function breaks a string into lines with a specified maximum length, using a custom newline character to separate the lines. It only wraps words when they exceed the maximum line length.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">WrapWith(length int, newLineCharacter string, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -341,7 +341,7 @@ The function breaks a string into lines with a specified maximum length, using a
 The function wraps each element in a provided list with double quotes and separates them with spaces.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Quote(elements ...any) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -358,7 +358,7 @@ The function wraps each element in a provided list with double quotes and separa
 The function wraps each element in the provided list with single quotes and separates them with spaces.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Squote(elements ...any) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -375,7 +375,7 @@ The function wraps each element in the provided list with single quotes and sepa
 Converts a string to `camelCase` format.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToCamelCase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -390,7 +390,7 @@ Converts a string to `camelCase` format.
 Converts a string to `kebab-case` format.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToKebabCase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -405,7 +405,7 @@ Converts a string to `kebab-case` format.
 Converts a string to `PascalCase` format.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToPascalCase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -420,7 +420,7 @@ Converts a string to `PascalCase` format.
 Converts a string to `dot.case` format.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToDotCase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -435,7 +435,7 @@ Converts a string to `dot.case` format.
 Converts a string to `path/case` format.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToPathCase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -450,7 +450,7 @@ Converts a string to `path/case` format.
 Converts a string to `CONSTANT_CASE` format.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToConstantCase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -465,7 +465,7 @@ Converts a string to `CONSTANT_CASE` format.
 Converts a string to `snake_case` format.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToSnakeCase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -480,7 +480,7 @@ Converts a string to `snake_case` format.
 Converts a string to `Title Case` format.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToTitleCase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -495,7 +495,7 @@ Converts a string to `Title Case` format.
 Converts the first letter of each word in a string to lowercase.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Untitle(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -510,7 +510,7 @@ Converts the first letter of each word in a string to lowercase.
 Switches the case of each letter in a string, converting lowercase to uppercase and vice versa.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">SwapCase(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -525,7 +525,7 @@ Switches the case of each letter in a string, converting lowercase to uppercase 
 Uppercases the first letter of a string while leaving the rest of the string unchanged.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">capitalize(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -542,7 +542,7 @@ Uppercases the first letter of a string while leaving the rest of the string unc
 Lowercases the first letter of a string while leaving the rest of the string unchanged.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">uncapitalize(str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -559,7 +559,7 @@ Lowercases the first letter of a string while leaving the rest of the string unc
 Divides a string into a map of parts based on a specified separator, returning a collection of the split components.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Split(sep, orig string) map[string]string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -575,7 +575,7 @@ Divides a string into a map of parts based on a specified separator, returning a
 Splits a string into a specified number of parts using a separator, returning a map with up to `n` elements.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Splitn(sep string, n int, orig string) map[string]string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -606,7 +606,7 @@ Extracts a portion of a string based on given start and end positions, with supp
 Adds spaces to the beginning of each line in a string, effectively indenting the text.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Indent(spaces int, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -621,7 +621,7 @@ Adds spaces to the beginning of each line in a string, effectively indenting the
 Similar to `Indent`, but also adds a newline before the indented lines.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Nindent(spaces int, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -636,7 +636,7 @@ Similar to `Indent`, but also adds a newline before the indented lines.
 Generates a sequence of numbers as a string, allowing for customizable start, end, and step values, similar to the Unix `seq` command.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Seq(params ...int) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}

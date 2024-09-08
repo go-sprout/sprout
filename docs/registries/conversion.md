@@ -19,8 +19,8 @@ import "github.com/go-sprout/sprout/registry/conversion"
 
 toBool converts a value from any types reasonably be converted to a boolean. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToBool(v any) bool
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToBool(v any) (bool, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -29,7 +29,7 @@ toBool converts a value from any types reasonably be converted to a boolean. _Us
 {{ "t" | toBool }} // Output: true
 {{ 1 | toBool }} // Output: true
 {{ 0.0 | toBool }} // Output: false
-{{ "invalid" | toBool }} // Output: false
+{{ "invalid" | toBool }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -38,8 +38,8 @@ toBool converts a value from any types reasonably be converted to a boolean. _Us
 
 toInt converts a value into a int. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToInt(v any) int
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToInt(v any) (int, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -47,7 +47,7 @@ toInt converts a value into a int. _Using the_ [_cast_ ](https://github.com/spf1
 {{ "1" | toInt }} // Output: 1
 {{ 1.1 | toInt }} // Output: 1
 {{ true | toInt }} // Output: 1
-{{ "invalid" | toInt }} // Output: 0
+{{ "invalid" | toInt }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -56,8 +56,8 @@ toInt converts a value into a int. _Using the_ [_cast_ ](https://github.com/spf1
 
 toInt64 converts a value into a int64. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToInt64(v any) int64
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToInt64(v any) (int64, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -65,7 +65,7 @@ toInt64 converts a value into a int64. _Using the_ [_cast_ ](https://github.com/
 {{ "1" | toInt }} // Output: 1
 {{ 1.1 | toInt }} // Output: 1
 {{ true | toInt }} // Output: 1
-{{ "invalid" | toInt }} // Output: 0
+{{ "invalid" | toInt }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -74,8 +74,8 @@ toInt64 converts a value into a int64. _Using the_ [_cast_ ](https://github.com/
 
 toUint converts a value into a uint. Utilizes the [cast](https://github.com/spf13/cast) package for conversion.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUint(v any) uint
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUint(v any) (uint, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -83,7 +83,7 @@ toUint converts a value into a uint. Utilizes the [cast](https://github.com/spf1
 {{ "1" | toUint }} // Output: 1
 {{ 1.1 | toUint }} // Output: 1
 {{ true | toUint }} // Output: 1
-{{ "invalid" | toUint }} // Output: 0
+{{ "invalid" | toUint }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -92,15 +92,15 @@ toUint converts a value into a uint. Utilizes the [cast](https://github.com/spf1
 
 toUint64 converts a value into a uint64. Utilizes the [cast](https://github.com/spf13/cast) package for conversion.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUint64(v any) uint64
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUint64(v any) (uint64, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
 <pre class="language-go"><code class="lang-go">{{ "1" | toUint64 }} // Output: 1
 <strong>{{ 1.1 | toUint64 }} // Output: 1
 </strong>{{ true | toUint64 }} // Output: 1
-{{ "invalid" | toUint64 }} // Output: 0
+{{ "invalid" | toUint64 }} // Error
 </code></pre>
 {% endtab %}
 {% endtabs %}
@@ -109,8 +109,8 @@ toUint64 converts a value into a uint64. Utilizes the [cast](https://github.com/
 
 toFloat64 converts a value into a float64. Utilizes the [cast](https://github.com/spf13/cast) package for conversion.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToFloat64(v any) float64
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToFloat64(v any) (float64, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -118,7 +118,7 @@ toFloat64 converts a value into a float64. Utilizes the [cast](https://github.co
 {{ "1" | toFloat64 }} // Output: 1
 {{ 1.42 | toFloat64 }} // Output: 1.42
 {{ true | toFloat64 }} // Output: 1
-{{ "invalid" | toFloat64 }} // Output: 0
+{{ "invalid" | toFloat64 }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -127,8 +127,8 @@ toFloat64 converts a value into a float64. Utilizes the [cast](https://github.co
 
 toOctal parses a value as an octal (base 8) integer.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToOctal(v any) int64
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToOctal(v any) (int64, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -136,7 +136,7 @@ toOctal parses a value as an octal (base 8) integer.
 {{ 777 | toOctal }} // Output: "511"
 {{ "770" | toOctal }} // Output: "504"
 {{ true | toOctal }} // Output: "1"
-{{ "invalid" | toOctal }} // Output: "0"
+{{ "invalid" | toOctal }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -146,7 +146,7 @@ toOctal parses a value as an octal (base 8) integer.
 toString converts a value to a string, handling various types effectively.
 
 <table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToString(v any) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -166,33 +166,21 @@ toString converts a value to a string, handling various types effectively.
 * `fmt.Stringer` and output `o.String()`
 {% endhint %}
 
-### <mark style="color:purple;">toDate / toMustDate</mark>
+### <mark style="color:purple;">toDate</mark>
 
 toDate converts a string to a `time.Time` object based on a format specification.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToDate(layout, value string) time.Time
-ToMustDate(layout string, value string) (time.Time, error)
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="162">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToDate(layout string, value string) (time.Time, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
 {{ toDate "2006-01-02", "2024-05-10 11:12:42" }}
-// Output: 2024-05-10 00:00:00 +0000 UTC
-```
-
-_This example will takes the_ `"2024-05-10 11:12:42"` _string and convert it with the layout_ `"2006-01-02"`.
-{% endtab %}
-
-{% tab title="Must version" %}
-```go
-{{ toMustDate "2006-01-02", "2024-05-10 11:12:42" }}
 // Output: 2024-05-10 00:00:00 +0000 UTC, nil
 ```
 
 _This example will takes the_ `"2024-05-10 11:12:42"` _string and convert it with the layout_ `"2006-01-02"`.
-
-:heavy\_check\_mark: Native Go Template error handling. _In case of error, the template rendering stop._
 {% endtab %}
 {% endtabs %}
 
@@ -206,8 +194,8 @@ toDuration converts a value to a `time.Duration`. Taking a possibly signed seque
 
 Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 
-<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToDuration(v any) time.Duration
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToDuration(v any) (time.Duration, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -215,7 +203,7 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 {{ 1 | toDuration }} // Output: 1ns
 {{ (1000.0 * 1000.0) | toDuration }} // Output: 1ms
 {{ "1m" | toDuration }} // Output: 1m
-{{ "invalid" | toDuration }} // Output: 0s
+{{ "invalid" | toDuration }} // Error
 {{ (toDuration "1h30m").Seconds }} // Output: 5400
 ```
 {% endtab %}

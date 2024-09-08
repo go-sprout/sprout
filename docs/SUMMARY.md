@@ -14,14 +14,15 @@
 * [Loader System (Registry)](features/loader-system-registry.md)
 * [Function Aliases](features/function-aliases.md)
 * [Function Notices](features/function-notices.md)
+* [Safe Functions](features/safe-functions.md)
 
 ## Registries
 
 * [List of all registries](registries/list-of-all-registries.md)
 * [REGISTRYNAME](registries/registryname.md)
 * [Backward](registries/backward.md)
-* [Conversion](registries/conversion.md)
 * [Checksum](registries/checksum.md)
+* [Conversion](registries/conversion.md)
 * [Crypto](registries/crypto.md)
 * [Encoding](registries/encoding.md)
 * [Env](registries/env.md)

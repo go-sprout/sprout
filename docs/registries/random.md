@@ -20,7 +20,7 @@ import "github.com/go-sprout/sprout/registry/random"
 The function generates a random alphanumeric string with the specified length, combining both letters and numbers to create a unique sequence.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">RandAlphaNumeric(count int) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -35,7 +35,7 @@ The function generates a random alphanumeric string with the specified length, c
 The function generates a random string consisting of only alphabetic characters (letters) with the specified length.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">RandAlpha(count int) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -50,7 +50,7 @@ The function generates a random string consisting of only alphabetic characters 
 The function generates a random ASCII string of the specified length, using characters within the ASCII range 32 to 126.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">RandAscii(count int) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -65,7 +65,7 @@ The function generates a random ASCII string of the specified length, using char
 The function generates a random numeric string consisting only of digits, with the specified length.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">RandNumeric(count int) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -80,7 +80,7 @@ The function generates a random numeric string consisting only of digits, with t
 The function generates a random byte array of the specified length and returns it as a Base64 encoded string.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">RandBytes(count int) (string, error)
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -95,7 +95,7 @@ The function generates a random byte array of the specified length and returns i
 The function generates a random integer between the specified minimum and maximum values (inclusive). It takes two parameters: `min` for the minimum value and `max` for the maximum value. The function then returns a random integer within this range.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">RandInt(min, max int) int
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}

@@ -19,8 +19,8 @@ import "github.com/go-sprout/sprout/registry/time"
 
 The function formats a given date or the current time into a specified format string.
 
-<table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go"> Date(fmt string, date any) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go"> Date(fmt string, date any) (string, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -34,13 +34,14 @@ The function formats a given date or the current time into a specified format st
 
 The function formats a given date or the current time into a specified format string for a specified timezone.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DateInZone(fmt string, date any, zone string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="124">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DateInZone(fmt string, date any, zone string) (string, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
 {{ dateInZone "Jan 2, 2006", "2023-05-04T15:04:05Z", "UTC" }} // Output: "May 4, 2023"
+{{ dateInZone "Jan 2, 2006", "2023-05-04T15:04:05Z", "invalid" }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -50,7 +51,7 @@ The function formats a given date or the current time into a specified format st
 The function converts a given number of seconds into a human-readable duration string.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Duration(sec any) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -65,7 +66,7 @@ The function converts a given number of seconds into a human-readable duration s
 The function calculates the time elapsed since a given date.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DateAgo(date any) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -87,7 +88,7 @@ The function calculates the time elapsed since a given date.
 The function returns the current time.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Now() time.Time
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -102,7 +103,7 @@ The function returns the current time.
 The function returns the Unix epoch timestamp for a given date.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">UnixEpoch(date time.Time) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -112,26 +113,19 @@ The function returns the Unix epoch timestamp for a given date.
 {% endtab %}
 {% endtabs %}
 
-### <mark style="color:purple;">dateModify / mustDateModify</mark>
+### <mark style="color:purple;">dateModify</mark>
 
 The function adjusts a given date by a specified duration, returning the modified date. If the duration format is incorrect, it returns the original date without any changes, in case of must version, an error are returned.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DateModify(fmt string, date time.Time) time.Time
-MustDateModify(fmt string, date time.Time) (time.Time, error)
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DateModify(fmt string, date time.Time) (time.Time, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "2024-05-04T15:04:05Z" | dateModify "48h" }} // Outputs the date two days later
-```
-{% endtab %}
-
-{% tab title="Must version" %}
-```go
-{{ "2024-05-04T15:04:05Z" | mustDateModify "48h" }}
+{{ "2024-05-04T15:04:05Z" | dateModify "48h" }}
 // Output: "2024-05-06T15:04:05Z", nil
-{{ "2024-05-04T15:04:05Z" | mustDateModify "0z+" }}
+{{ "2024-05-04T15:04:05Z" | dateModify "0z+" }}
 // Output: "0000-00-00T00:00:00Z", error
 ```
 {% endtab %}
@@ -142,7 +136,7 @@ MustDateModify(fmt string, date time.Time) (time.Time, error)
 The function rounds a duration to the nearest significant time unit, such as years or seconds.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DurationRound(duration any) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -162,8 +156,8 @@ The function rounds a duration to the nearest significant time unit, such as yea
 
 The function formats a date into the standard HTML date format (YYYY-MM-DD).
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">HtmlDate(date any) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">HtmlDate(date any) (string, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -181,8 +175,8 @@ _This basically call_ `dateInZone("2006-01-02", date, "Local")`
 
 The function formats a date into the standard HTML date format (YYYY-MM-DD) based on a specified timezone.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">HtmlDateInZone(date any, zone string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">HtmlDateInZone(date any, zone string) (string, error)
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}

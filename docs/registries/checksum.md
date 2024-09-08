@@ -20,7 +20,7 @@ import "github.com/go-sprout/sprout/registry/checksum"
 SHA1sum calculates the SHA-1 hash of the input string and returns it as a hexadecimal encoded string.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">SHA1Sum(input string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -35,7 +35,7 @@ SHA1sum calculates the SHA-1 hash of the input string and returns it as a hexade
 SHA256sum calculates the SHA-256 hash of the input string and returns it as a hexadecimal encoded string.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">SHA256Sum(input string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -51,7 +51,7 @@ SHA256sum calculates the SHA-256 hash of the input string and returns it as a he
 SHA512sum calculates the SHA-512 hash of the input string and returns it as a hexadecimal encoded string.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">SHA512Sum(input string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}
@@ -67,7 +67,7 @@ SHA512sum calculates the SHA-512 hash of the input string and returns it as a he
 Adler32Sum calculates the Adler-32 checksum of the input string and returns it as a hexadecimal encoded string.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Adler32Sum(input string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Tempalte Example" %}
@@ -83,7 +83,7 @@ Adler32Sum calculates the Adler-32 checksum of the input string and returns it a
 MD5sum calculates the MD5 hash of the input string and returns it as a hexadecimal encoded string.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">MD5Sum(input string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}

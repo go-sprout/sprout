@@ -11,9 +11,13 @@ description: The roadmap to grow the sprout
 All objectives are get from feedback, suggestions and personal knowledge. You can discuss about the v1.0 directly [in the issue on GitHub](https://github.com/go-sprout/sprout/issues/1).
 {% endhint %}
 
-### :hourglass:**Minimize Dependencies - **<mark style="color:orange;">**IN PROGRESS**</mark>
+### :white\_check\_mark: **Minimize Dependencies - **<mark style="color:green;">**DONE**</mark>
 
 Reduce the number of external dependencies to mitigate frequent update cycles, making Sprout more stable and lightweight.
+
+{% hint style="success" %}
+Dependencies have been minimized and optimized across all registries.
+{% endhint %}
 
 ### :white\_check\_mark: **Enhanced Documentation - **<mark style="color:green;">**DONE**</mark>
 
@@ -79,6 +83,16 @@ This feature are implemented on v0.3.0, documentation can be found here :&#x20;
 [function-aliases.md](features/function-aliases.md "mention")
 {% endhint %}
 
+### :white\_check\_mark: **Function Notices - **<mark style="color:green;">**DONE**</mark>
+
+When you are a middle-app (between sprout and the user how write the template), you need to be careful when you upgrade a template library due to potential breaking changes or deprecated functions. \
+The solution are to embed a notice system in the template library to warn the end-user of a deprecation and let x versions between the deprecation notice and the replacement / removal of the function.
+
+{% hint style="success" %}
+This feature are implemented on v0.6.0, documentation can be found here : \
+[Broken link](broken-reference "mention")
+{% endhint %}
+
 ## Compatibility between spring and sprout
 
 A compatibility table between sprig v3.2.3 and sprout v1.0
@@ -107,5 +121,5 @@ This page will be updated each time function are re-implemented correctly in Spr
 
 A list of functions wanted for v1 based on issues, pull requests from sprig, feedback on sprout. All functions listed here will be implemented for the v1.
 
-<table><thead><tr><th width="94" data-type="checkbox">DONE</th><th>Functions</th><th>Description</th></tr></thead><tbody><tr><td>true</td><td><code>toYaml</code></td><td>Convert a struct to a YAML String</td></tr><tr><td>true</td><td><code>fromYaml</code></td><td>Convert YAML String to a struct</td></tr><tr><td>false</td><td><code>flatten</code></td><td>Flatten nested list be one level</td></tr><tr><td>true</td><td><code>toBool</code></td><td>Convert any to a boolean</td></tr><tr><td>true</td><td><code>toDuration</code></td><td>Convert any to a <code>time.Duration</code></td></tr><tr><td>true</td><td><code>default</code>,<code>empty</code>,<code>coalesce</code></td><td>Dont trigger default go value as false</td></tr><tr><td>false</td><td><code>toLocalDate</code></td><td>Convert to a <code>time.Time</code> with a timezone support</td></tr><tr><td>false</td><td><code>dig</code></td><td>Dig into a map without crashes in format <code>book.author.name</code></td></tr><tr><td>false</td><td><code>cidrhost</code>,<code>cidrnetmask</code>,<code>cidrsubnet</code>,<code>cidrsubnets</code></td><td>A collection of functions for network ip manipulation</td></tr><tr><td>false</td><td><code>include</code>,<code>required</code></td><td>Manipulation of template logic, implemented by helm team</td></tr><tr><td>false</td><td><code>randSeed</code></td><td>Allow to set the seed of the on a rand pipeline</td></tr><tr><td>false</td><td><code>regexpFindSubmatch</code>, <code>regexpAllSubmatches</code>,<code>regexpFindNamedSubmatch</code>, <code>regexpAllNamedSubmatches</code></td><td>Collection of function to found and retrieve submatches and named submatches</td></tr><tr><td>false</td><td><code>sha512sum</code></td><td>Support of SHA512</td></tr><tr><td>false</td><td><code>hasField</code></td><td>Detect if a field are present in an object using reflect. <a href="https://github.com/Masterminds/sprig/issues/401">Source</a></td></tr></tbody></table>
+<table><thead><tr><th width="94" data-type="checkbox">DONE</th><th>Functions</th><th>Description</th></tr></thead><tbody><tr><td>true</td><td><code>toYaml</code></td><td>Convert a struct to a YAML String</td></tr><tr><td>true</td><td><code>fromYaml</code></td><td>Convert YAML String to a struct</td></tr><tr><td>false</td><td><code>flatten</code></td><td>Flatten nested list be one level</td></tr><tr><td>true</td><td><code>toBool</code></td><td>Convert any to a boolean</td></tr><tr><td>true</td><td><code>toDuration</code></td><td>Convert any to a <code>time.Duration</code></td></tr><tr><td>true</td><td><code>default</code>,<code>empty</code>,<code>coalesce</code></td><td>Dont trigger default go value as false</td></tr><tr><td>false</td><td><code>toLocalDate</code></td><td>Convert to a <code>time.Time</code> with a timezone support</td></tr><tr><td>true</td><td><code>dig</code></td><td>Dig into a map without crashes in format <code>book.author.name</code></td></tr><tr><td>false</td><td><code>cidrhost</code>,<code>cidrnetmask</code>,<code>cidrsubnet</code>,<code>cidrsubnets</code></td><td>A collection of functions for network ip manipulation</td></tr><tr><td>false</td><td><code>include</code>,<code>required</code></td><td>Manipulation of template logic, implemented by helm team</td></tr><tr><td>false</td><td><code>randSeed</code></td><td>Allow to set the seed of the on a rand pipeline</td></tr><tr><td>false</td><td><code>regexpFindSubmatch</code>, <code>regexpAllSubmatches</code>,<code>regexpFindNamedSubmatch</code>, <code>regexpAllNamedSubmatches</code></td><td>Collection of function to found and retrieve submatches and named submatches</td></tr><tr><td>true</td><td><code>sha512sum</code></td><td>Support of SHA512</td></tr><tr><td>true</td><td><code>hasField</code></td><td>Detect if a field are present in an object using reflect. <a href="https://github.com/Masterminds/sprig/issues/401">Source</a></td></tr></tbody></table>
 

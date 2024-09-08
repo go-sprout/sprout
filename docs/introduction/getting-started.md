@@ -5,9 +5,9 @@ description: A quick start guide to understand and use Sprout in your project
 # Getting Started
 
 {% hint style="info" %}
-This page evolves with each version based on modifications and community feedback. Having trouble following this guide?&#x20;
+This page evolves with each version based on modifications and community feedback. Having trouble following this guide?
 
-[Open an issue](https://github.com/go-sprout/sprout/issues/new/choose) to get help, and contribute to improving this guide for future users. :seedling: :purple\_heart:&#x20;
+[Open an issue](https://github.com/go-sprout/sprout/issues/new/choose) to get help, and contribute to improving this guide for future users. :seedling: :purple\_heart:
 {% endhint %}
 
 ## Introduction
@@ -49,11 +49,26 @@ Sprout supports various customization options using handler options:
 *   **Aliases Management:**\
     You can specify your custom aliases directly on your handler:
 
-    ```go
-    handler := sprout.New(sprout.WithAlias("originalFunc", "alias"))
-    ```
+    <pre class="language-go"><code class="lang-go"><strong>handler := sprout.New(sprout.WithAlias("originalFunc", "alias"))
+    </strong></code></pre>
 
     See more below or in dedicated page [function-aliases.md](../features/function-aliases.md "mention").
+*   **Notices:**\
+    You can specify a notice (info, deprecated, warn) on specific function, this message has writed on the logger at runtime when rendering the template:
+
+    ```go
+    handler := sprout.New(sprout.WithNotices(sprout.NewInfoNotice("foo", "You use foo")))
+    ```
+
+    See more below or in dedicated page [function-notices.md](../features/function-notices.md "mention").
+*   **Safe functions:**\
+    Sprout usually returns an error if something goes wrong. To continue rendering and only log the error, enable the Safe Function feature:
+
+    ```go
+    handler := sprout.New(sprout.WithSafeFuncs(true))
+    ```
+
+    See more below or in dedicated page [safe-functions.md](../features/safe-functions.md "mention").
 
 ### Working with Registries
 
@@ -61,7 +76,7 @@ Registries in Sprout are groups of functions that can be added to a handler. The
 
 #### Using a built-in registry
 
-You can retrieve all built-ins registries and functions under [Broken link](broken-reference "mention").
+You can retrieve all built-ins registries and functions under [list-of-all-registries.md](../registries/list-of-all-registries.md "mention").
 
 #### Create your own registry
 
