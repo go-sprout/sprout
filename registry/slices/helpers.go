@@ -31,7 +31,8 @@ func (sr *SlicesRegistry) isComparable(v any) bool {
 
 // flattenSlice recursively flattens a slice of slices into a single slice.
 // It is used by the Flatten function.
-func (sr *SlicesRegistry) flattenSlice(val reflect.Value, result *[]any) {
+func (sr *SlicesRegistry) flattenSlice(val reflect.Value, remainingDeep int) []any {
+	result := make([]any, 0, val.Len())
 	for i := 0; i < val.Len(); i++ {
 		item := val.Index(i)
 
@@ -39,10 +40,12 @@ func (sr *SlicesRegistry) flattenSlice(val reflect.Value, result *[]any) {
 			item = item.Elem()
 		}
 
-		if item.Kind() == reflect.Slice || item.Kind() == reflect.Array {
-			sr.flattenSlice(item, result)
+		if (item.Kind() == reflect.Slice || item.Kind() == reflect.Array) && (remainingDeep > 0 || remainingDeep <= -1) {
+			result = append(result, sr.flattenSlice(item, remainingDeep-1)...)
 		} else {
-			*result = append(*result, item.Interface())
+			result = append(result, item.Interface())
 		}
 	}
+
+	return result
 }

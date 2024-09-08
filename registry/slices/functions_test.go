@@ -101,10 +101,26 @@ func TestCompact(t *testing.T) {
 }
 
 func TestFlatten(t *testing.T) {
-	var tc = []pesticide.TestCase{
-		{Input: `{{ flatten .V }}`, Expected: "[a b c d e]", Data: map[string]any{"V": []any{"a", "b", []any{"c", "d"}, "e"}}},
-		{Input: `{{ flatten .V }}`, Expected: "[a b c d e]", Data: map[string]any{"V": []any{"a", "b", []string{"c", "d"}, "e"}}},
-		{Input: `{{ flatten .V }}`, Expected: "[a b 1 2 e]", Data: map[string]any{"V": []any{"a", "b", []int{1, 2}, "e"}}},
+	tc := []pesticide.TestCase{
+		{Input: `{{ flatten .V }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []any{"a", "b", []any{"c", "d"}, "e"}}},
+		{Input: `{{ flatten .V }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []any{"a", "b", []string{"c", "d"}, "e"}}},
+		{Input: `{{ flatten .V }}`, ExpectedOutput: "[a b 1 2 e]", Data: map[string]any{"V": []any{"a", "b", []int{1, 2}, "e"}}},
+		{Input: `{{ flatten .V }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []any{"a", "b", []any{"c", []any{"d"}}, "e"}}},
+		{Input: `{{ flatten .V }}`, ExpectedErr: "cannot flatten on type map", Data: map[string]any{"V": map[string]any{"a": 1}}},
+		{Input: `{{ flatten .V }}`, ExpectedErr: "cannot flatten nil", Data: map[string]any{"V": nil}},
+	}
+
+	pesticide.RunTestCases(t, slices.NewRegistry(), tc)
+}
+
+func TestFlattenDepth(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{Input: `{{ flattenDepth 1 .V }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []any{"a", "b", []any{"c", "d"}, "e"}}},
+		{Input: `{{ flattenDepth 1 .V }}`, ExpectedOutput: "[a b c d e]", Data: map[string]any{"V": []any{"a", "b", []string{"c", "d"}, "e"}}},
+		{Input: `{{ flattenDepth 1 .V }}`, ExpectedOutput: "[a b 1 2 e]", Data: map[string]any{"V": []any{"a", "b", []int{1, 2}, "e"}}},
+		{Input: `{{ flattenDepth 1 .V }}`, ExpectedOutput: "[a b c [d] e]", Data: map[string]any{"V": []any{"a", "b", []any{"c", []any{"d"}}, "e"}}},
+		{Input: `{{ flattenDepth 1 .V }}`, ExpectedErr: "cannot flatten on type map", Data: map[string]any{"V": map[string]any{"a": 1}}},
+		{Input: `{{ flattenDepth 1 .V }}`, ExpectedErr: "cannot flatten nil", Data: map[string]any{"V": nil}},
 	}
 
 	pesticide.RunTestCases(t, slices.NewRegistry(), tc)

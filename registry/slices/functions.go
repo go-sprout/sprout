@@ -359,6 +359,26 @@ func (sr *SlicesRegistry) Compact(list any) ([]any, error) {
 //
 //	{{ flatten [[1, 2], [3, 4], 5] }} // Output: [1, 2, 3, 4, 5]
 func (sr *SlicesRegistry) Flatten(list any) ([]any, error) {
+	return sr.FlattenDepth(-1, list)
+}
+
+// FlattenDepth flattens a nested list into a single list of elements up to a
+// specified depth.
+//
+// Parameters:
+//
+//	deep int - the maximum depth to flatten to; -1 for infinite depth.
+//	list any - the list to flatten.
+//
+// Returns:
+//
+//	[]any - the flattened list.
+//	error - error if the list is nil or not a slice/array.
+//
+// Example:
+//
+//	{{ [[1, 2, [3], 4], 5] | flattenDepth 1 }} // Output: [1, 2, [3], 4, 5]
+func (sr *SlicesRegistry) FlattenDepth(deep int, list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot flatten nil")
 	}
@@ -368,9 +388,7 @@ func (sr *SlicesRegistry) Flatten(list any) ([]any, error) {
 
 	switch tp {
 	case reflect.Slice, reflect.Array:
-		result := make([]any, 0, valueOfList.Len())
-		sr.flattenSlice(valueOfList, &result)
-		return result, nil
+		return sr.flattenSlice(valueOfList, deep), nil
 	default:
 		return nil, fmt.Errorf("cannot flatten on type %s", tp)
 	}
