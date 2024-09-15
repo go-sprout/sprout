@@ -11,15 +11,13 @@ type FunctionAliasMap = map[string][]string
 // inside the Build function in case of using a custom handler.
 func AssignAliases(h Handler) {
 	for originalName, aliases := range h.RawAliases() {
-		_, exists := h.RawFunctions()[originalName]
+		fn, exists := h.RawFunctions()[originalName]
 		if !exists {
 			continue
 		}
 
 		for _, alias := range aliases {
-			if fn, ok := h.RawFunctions()[originalName]; ok {
-				h.RawFunctions()[alias] = fn
-			}
+			h.RawFunctions()[alias] = fn
 		}
 	}
 }
