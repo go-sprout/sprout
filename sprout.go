@@ -46,7 +46,9 @@ func New(opts ...HandlerOption[*DefaultHandler]) *DefaultHandler {
 	}
 
 	for _, opt := range opts {
-		opt(dh)
+		if err := opt(dh); err != nil {
+			dh.logger.With("error", err).Error("Failed to apply handler option")
+		}
 	}
 
 	return dh

@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNew_DefaultValues(t *testing.T) {
@@ -30,7 +31,7 @@ func TestWithLogger(t *testing.T) {
 	option := WithLogger(logger)
 
 	handler := New()
-	option(handler) // Apply the option
+	require.NoError(t, option(handler)) // Apply the option
 
 	assert.Equal(t, logger, handler.Logger())
 }
@@ -42,7 +43,7 @@ func TestWithParser(t *testing.T) {
 	option := WithHandler(fnHandler)
 
 	handler := New()
-	option(handler) // Apply the option
+	require.NoError(t, option(handler)) // Apply the option
 
 	assert.Equal(t, fnHandler, handler)
 }
@@ -54,7 +55,7 @@ func TestWithNilHandler(t *testing.T) {
 	option := WithHandler(nil)
 
 	beforeApply := fnHandler
-	option(beforeApply)
+	require.NoError(t, option(beforeApply)) // Apply the option
 
 	assert.Equal(t, beforeApply, fnHandler)
 }

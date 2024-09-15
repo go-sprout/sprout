@@ -41,7 +41,7 @@ func TestWithNotice(t *testing.T) {
 	notice := NewInfoNotice(originalFunc, "amazing")
 
 	// Apply the WithNotices option with one notice.
-	WithNotices(notice)(handler)
+	require.NoError(t, WithNotices(notice)(handler))
 
 	// Check that the aliases were added.
 	assert.Contains(t, handler.Notices(), *notice)
@@ -49,7 +49,7 @@ func TestWithNotice(t *testing.T) {
 
 	// Apply the WithNotices option with multiple notices.
 	notice2 := NewDeprecatedNotice(originalFunc, "oh no")
-	WithNotices(notice, notice2)(handler)
+	require.NoError(t, WithNotices(notice, notice2)(handler))
 
 	// Check that the aliases were added.
 	assert.Contains(t, handler.Notices(), *notice)
@@ -58,7 +58,7 @@ func TestWithNotice(t *testing.T) {
 
 	// Apply the WithNotices option with an empty message
 	notice3 := NewDebugNotice(originalFunc, "")
-	WithNotices(notice3)(handler)
+	require.NoError(t, WithNotices(notice3)(handler))
 
 	assert.Contains(t, handler.Notices(), *notice)
 	assert.Contains(t, handler.Notices(), *notice2)
@@ -67,7 +67,7 @@ func TestWithNotice(t *testing.T) {
 
 	// Try to apply a notice with an empty function name.
 	notice4 := &FunctionNotice{}
-	WithNotices(notice4)(handler)
+	require.NoError(t, WithNotices(notice4)(handler))
 
 	// Check that the aliases were not added.
 	assert.NotContains(t, handler.Notices(), *notice4)
