@@ -15,6 +15,7 @@ func TestNew_DefaultValues(t *testing.T) {
 	assert.NotNil(t, handler.Logger)
 }
 
+func TestNew_CustomValues(t *testing.T) {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 	handler := New(
 		WithLogger(logger),

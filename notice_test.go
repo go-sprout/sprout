@@ -103,9 +103,9 @@ func TestCreateWrappedFunction(t *testing.T) {
 	mockFunc := func() string { return "cheese" }
 
 	// Create a wrapped function.
-	wrappedFunc := createWrappedFunction(handler, *NewInfoNotice(originalFunc, "amazing"), originalFunc, mockFunc)
-	wrappedFunc2 := createWrappedFunction(handler, *NewDeprecatedNotice(originalFunc, "oh no"), originalFunc, mockFunc)
-	wrappedFunc3 := createWrappedFunction(handler, *NewNotice(NoticeKindDebug, []string{originalFunc}, "Nice this function returns $out"), originalFunc, mockFunc)
+	wrappedFunc := noticeWrapper(handler, *NewInfoNotice(originalFunc, "amazing"), originalFunc, mockFunc)
+	wrappedFunc2 := noticeWrapper(handler, *NewDeprecatedNotice(originalFunc, "oh no"), originalFunc, mockFunc)
+	wrappedFunc3 := noticeWrapper(handler, *NewNotice(NoticeKindDebug, []string{originalFunc}, "Nice this function returns $out"), originalFunc, mockFunc)
 
 	// Call the wrapped function.
 	out, err := wrappedFunc()

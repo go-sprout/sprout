@@ -7,7 +7,13 @@ import (
 
 // HandlerOption[Handler] defines a type for functional options that configure
 // a typed Handler.
-type HandlerOption[T Handler] func(T)
+type HandlerOption[T Handler] func(T) error
+
+// wrappedFunction is a type alias for a function that accepts a variadic number of
+// arguments of any type and returns a single result of any type along with an
+// error. This is typically used for functions that need to be wrapped with
+// additional logic, such as logging or notice handling.
+type wrappedFunction = func(args ...any) (any, error)
 
 // New creates and returns a new instance of DefaultHandler with optional
 // configurations.

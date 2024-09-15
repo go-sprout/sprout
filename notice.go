@@ -7,12 +7,6 @@ import (
 	"github.com/go-sprout/sprout/internal/runtime"
 )
 
-// wrappedFunc is a type alias for a function that accepts a variadic number of
-// arguments of any type and returns a single result of any type along with an
-// error. This is typically used for functions that need to be wrapped with
-// additional logic, such as logging or notice handling.
-type wrappedFunc = func(args ...any) (any, error)
-
 // NoticeKind represents the type of notice that can be applied to a function.
 // It is an enumeration with different possible values that dictate how the
 // notice should behave.
@@ -95,19 +89,19 @@ func AssignNotices(h Handler) {
 	for _, notice := range h.Notices() {
 		for _, functionName := range notice.FunctionNames {
 			if fn, ok := funcs[functionName]; ok {
-				wrappedFn := createWrappedFunction(h, notice, functionName, fn)
+				wrappedFn := noticeWrapper(h, notice, functionName, fn)
 				funcs[functionName] = wrappedFn
 			}
 		}
 	}
 }
 
-// createWrappedFunction creates a wrapped function that logs a notice after
+// noticeWrapper creates a wrapped function that logs a notice after
 // calling the original function. The notice is logged using the handler's
 // logger instance. The wrapped function is returned as a wrappedFunc, which
 // is a type alias for a function that takes a variadic list of arguments
 // and returns an `any` result and an `error`.
-func createWrappedFunction(h Handler, notice FunctionNotice, functionName string, fn any) wrappedFunc {
+func noticeWrapper(h Handler, notice FunctionNotice, functionName string, fn any) wrappedFunction {
 	return func(args ...any) (any, error) {
 		out, err := runtime.SafeCall(fn, args...)
 		switch notice.Kind {
