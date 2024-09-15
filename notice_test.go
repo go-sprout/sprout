@@ -91,8 +91,8 @@ func TestAssignNotices(t *testing.T) {
 	assert.Contains(t, handler.Notices(), *notice)
 	assert.Len(t, handler.notices, 1, "there should be exactly 1 notice")
 
-	require.Contains(t, handler.Functions(), originalFunc)
-	assert.NotEqual(t, reflect.ValueOf(mockFunc).Pointer(), reflect.ValueOf(handler.Functions()[originalFunc]).Pointer(), "the function should have been wrapped")
+	require.Contains(t, handler.RawFunctions(), originalFunc)
+	assert.NotEqual(t, reflect.ValueOf(mockFunc).Pointer(), reflect.ValueOf(handler.RawFunctions()[originalFunc]).Pointer(), "the function should have been wrapped")
 }
 
 func TestCreateWrappedFunction(t *testing.T) {

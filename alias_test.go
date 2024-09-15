@@ -12,7 +12,7 @@ import (
 
 // TestWithAlias checks that aliases are correctly added to a function.
 func TestWithAlias(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc := "originalFunc"
 	alias1 := "alias1"
 	alias2 := "alias2"
@@ -28,7 +28,7 @@ func TestWithAlias(t *testing.T) {
 }
 
 func TestWithAlias_Empty(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc := "originalFunc"
 
 	// Apply the WithAlias option with no aliases.
@@ -39,7 +39,7 @@ func TestWithAlias_Empty(t *testing.T) {
 }
 
 func TestWithAliases(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc1 := "originalFunc1"
 	alias1 := "alias1"
 	alias2 := "alias2"
@@ -65,7 +65,7 @@ func TestWithAliases(t *testing.T) {
 
 // TestRegisterAliases checks that aliases are correctly registered in the function map.
 func TestRegisterAliases(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc := "originalFunc"
 	alias1 := "alias1"
 	alias2 := "alias2"
@@ -84,7 +84,7 @@ func TestRegisterAliases(t *testing.T) {
 }
 
 func TestAliasesInTemplate(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFuncName := "originalFunc"
 	alias1 := "alias1"
 	alias2 := "alias2"

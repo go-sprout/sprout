@@ -8,16 +8,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewFunctionHandler_DefaultValues(t *testing.T) {
-	handler := NewFunctionHandler()
+func TestNew_DefaultValues(t *testing.T) {
+	handler := New()
 
 	assert.NotNil(t, handler)
 	assert.NotNil(t, handler.Logger)
 }
 
-func TestNewFunctionHandler_CustomValues(t *testing.T) {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
-	handler := NewFunctionHandler(
+	handler := New(
 		WithLogger(logger),
 	)
 
@@ -29,7 +28,7 @@ func TestWithLogger(t *testing.T) {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 	option := WithLogger(logger)
 
-	handler := NewFunctionHandler()
+	handler := New()
 	option(handler) // Apply the option
 
 	assert.Equal(t, logger, handler.Logger())

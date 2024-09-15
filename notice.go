@@ -91,7 +91,7 @@ func NewDebugNotice(functionName, message string) *FunctionNotice {
 // It should be called after all functions and notices have been added and
 // inside the Build function in case of using a custom handler.
 func AssignNotices(h Handler) {
-	funcs := h.Functions()
+	funcs := h.RawFunctions()
 	for _, notice := range h.Notices() {
 		for _, functionName := range notice.FunctionNames {
 			if fn, ok := funcs[functionName]; ok {
