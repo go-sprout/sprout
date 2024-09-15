@@ -250,7 +250,7 @@ func (dh *DefaultHandler) buildSafeFuncs() {
 		safeFuncs[safeFuncName(funcName)] = dh.safeWrapper(funcName, fn)
 	}
 
-	for funcName, fn := range safeFuncs {
-		dh.cachedFuncsMap[funcName] = fn
+	for safeFuncName, fn := range safeFuncs {
+		dh.cachedFuncsMap[safeFuncName] = fn
 	}
 }
