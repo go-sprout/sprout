@@ -43,6 +43,17 @@ tpl := template.Must(
   )
 ```
 
+You can also use the option to add registries when initializing the handler:
+
+```go
+handler := sprout.New(
+  // Add one registry
+  sprout.WithRegistry(ownregistry.NewRegistry()),
+  // Add more than one at the same time
+  sprout.WithRegistries(reg1.NewRegistry(), reg2.NewRegistry()),
+)
+```
+
 This code sets up your project to utilize the functions from your custom registry, making it easy to integrate and extend functionality.
 
 ## How to create a registry

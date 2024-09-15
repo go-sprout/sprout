@@ -38,19 +38,27 @@ handler := sprout.New()
 
 Sprout supports various customization options using handler options:
 
-*   **Logger Configuration:**
-
+*   **Logger Configuration:**\
     You can customize the logging behavior by providing a custom logger:
 
     ```go
     logger := slog.New(slog.NewTextHandler(os.Stdout))
     handler := sprout.New(sprout.WithLogger(logger))
     ```
+*   **Load Registry:**\
+    You can load a registry directly on your handler using the `WithRegistry` option:
+
+    ```go
+    handler := sprout.New(sprout.WithRegistry(ownregistry.NewRegistry()))
+    ```
+
+    See more below or in dedicated page [loader-system-registry.md](../features/loader-system-registry.md "mention").
 *   **Aliases Management:**\
     You can specify your custom aliases directly on your handler:
 
-    <pre class="language-go"><code class="lang-go"><strong>handler := sprout.New(sprout.WithAlias("originalFunc", "alias"))
-    </strong></code></pre>
+    ```go
+    handler := sprout.New(sprout.WithAlias("originalFunc", "alias"))
+    ```
 
     See more below or in dedicated page [function-aliases.md](../features/function-aliases.md "mention").
 *   **Notices:**\
@@ -103,6 +111,14 @@ You can also add multiple registries at once:
 handler.AddRegistries(conversion.NewRegistry(), std.NewRegistry())
 ```
 
+Or add registries directly when initializing the handler:
+
+```go
+handler := sprout.New(
+    sprout.WithRegistries(conversion.NewRegistry(), std.NewRegistry()),
+)
+```
+
 ### Function Aliases
 
 Sprout supports function aliases, allowing you to call the same function by different names.
@@ -130,7 +146,7 @@ funcs := handler.Build()
 tpl := template.New("example").Funcs(funcs).Parse(`{{ hello }}`)
 ```
 
-This prepares all registered functions and aliases for use in templates.
+This prepares all registered functions and aliases for use in templates. This also caches the function map for better performance.
 
 ### Working with Templates
 
