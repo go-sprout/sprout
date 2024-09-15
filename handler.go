@@ -109,7 +109,9 @@ func (dh *DefaultHandler) AddRegistries(registries ...Registry) error {
 // multiple times, so it is safe to call this method multiple times to retrieve
 // the same builded function map.
 //
-// NOTE: This will replace the `FuncsMap()`, `TxtFuncMap()` and `HtmlFuncMap()` from sprig
+// NOTE: This replaces the [github.com/Masterminds/sprig.FuncMap],
+// [github.com/Masterminds/sprig.TxtFuncMap] and [github.com/Masterminds/sprig.HtmlFuncMap]
+// from sprig
 func (dh *DefaultHandler) Build() FunctionMap {
 	if dh.built {
 		return dh.cachedFuncsMap
