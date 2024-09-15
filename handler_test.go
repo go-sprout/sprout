@@ -301,6 +301,9 @@ func TestDefaultHandler_Build(t *testing.T) {
 	builtFuncsMap := dh.Build()
 
 	assert.Equal(t, funcsMap, builtFuncsMap, "Build should return the correct FunctionMap")
+
+	builtFuncsMapSecond := dh.Build()
+	assert.Equal(t, builtFuncsMap, builtFuncsMapSecond, "Build should return the same FunctionMap on subsequent calls")
 }
 
 func TestDefaultHandler_safeWrapper(t *testing.T) {

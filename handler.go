@@ -55,6 +55,7 @@ type DefaultHandler struct {
 	notices    []FunctionNotice
 
 	wantSafeFuncs bool
+	built         bool
 
 	cachedFuncsMap   FunctionMap
 	cachedFuncsAlias FunctionAliasMap
@@ -103,26 +104,22 @@ func (dh *DefaultHandler) AddRegistries(registries ...Registry) error {
 
 // Build retrieves the complete suite of functiosn and alias that has been configured
 // within this Handler. This handler is ready to be used with template engines
-// that accept FuncMap, such as html/template or text/template.
+// that accept FuncMap, such as html/template or text/template. It will also
+// cache the function map for future use to avoid rebuilding the function map
+// multiple times, so it is safe to call this method multiple times to retrieve
+// the same builded function map.
 //
 // NOTE: This will replace the `FuncsMap()`, `TxtFuncMap()` and `HtmlFuncMap()` from sprig
 func (dh *DefaultHandler) Build() FunctionMap {
-	AssignAliases(dh) // Ensure all aliases are processed before returning the registry
-	AssignNotices(dh) // Ensure all notices are processed before returning the registry
-
-	// If safe functions are enabled, wrap all functions with a safe wrapper
-	// that logs any errors that occur during function execution.
-	if dh.wantSafeFuncs {
-		safeFuncs := make(FunctionMap)
-		for funcName, fn := range dh.cachedFuncsMap {
-			safeFuncs[safeFuncName(funcName)] = dh.safeWrapper(funcName, fn)
-		}
-
-		for funcName, fn := range safeFuncs {
-			dh.cachedFuncsMap[funcName] = fn
-		}
+	if dh.built {
+		return dh.cachedFuncsMap
 	}
 
+	AssignAliases(dh) // Ensure all aliases are processed before returning the registry
+	AssignNotices(dh) // Ensure all notices are processed before returning the registry
+	dh.buildSafeFuncs()
+
+	dh.built = true
 	return dh.cachedFuncsMap
 }
 
@@ -187,6 +184,8 @@ func WithHandler(new Handler) HandlerOption[*DefaultHandler] {
 		if fhCast, ok := new.(*DefaultHandler); ok {
 			*fnh = *fhCast
 		}
+
+		return nil
 	}
 }
 
@@ -235,4 +234,23 @@ func safeFuncName(name string) string {
 	b.WriteString(cases.Title(language.Und, cases.NoLower).String(name))
 
 	return b.String()
+}
+
+// buildSafeFuncs wraps all functions with a safe wrapper that logs any errors
+// that occur during function execution. If safe functions are enabled in the
+// DefaultHandler, this method will prepend "safe" to the function name and
+// create a safe wrapper for each function.
+func (dh *DefaultHandler) buildSafeFuncs() {
+	if !dh.wantSafeFuncs {
+		return
+	}
+
+	safeFuncs := make(FunctionMap)
+	for funcName, fn := range dh.cachedFuncsMap {
+		safeFuncs[safeFuncName(funcName)] = dh.safeWrapper(funcName, fn)
+	}
+
+	for funcName, fn := range safeFuncs {
+		dh.cachedFuncsMap[funcName] = fn
+	}
 }
