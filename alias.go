@@ -44,9 +44,9 @@ func AssignAliases(h Handler) {
 //
 //	handler := New(WithAlias("originalFunc", "alias1", "alias2"))
 func WithAlias(originalFunction string, aliases ...string) HandlerOption[*DefaultHandler] {
-	return func(p *DefaultHandler) {
+	return func(p *DefaultHandler) error {
 		if len(aliases) == 0 {
-			return
+			return nil
 		}
 
 		if _, ok := p.cachedFuncsAlias[originalFunction]; !ok {
@@ -54,6 +54,7 @@ func WithAlias(originalFunction string, aliases ...string) HandlerOption[*Defaul
 		}
 
 		p.cachedFuncsAlias[originalFunction] = append(p.cachedFuncsAlias[originalFunction], aliases...)
+		return nil
 	}
 }
 
@@ -74,7 +75,7 @@ func WithAlias(originalFunction string, aliases ...string) HandlerOption[*Defaul
 //	    "originalFunc2": {"alias2_1", "alias2_2"},
 //	}))
 func WithAliases(aliases FunctionAliasMap) HandlerOption[*DefaultHandler] {
-	return func(p *DefaultHandler) {
+	return func(p *DefaultHandler) error {
 		for originalFunction, aliasList := range aliases {
 			if _, ok := p.cachedFuncsAlias[originalFunction]; !ok {
 				p.cachedFuncsAlias[originalFunction] = make([]string, 0)
@@ -82,5 +83,6 @@ func WithAliases(aliases FunctionAliasMap) HandlerOption[*DefaultHandler] {
 
 			p.cachedFuncsAlias[originalFunction] = append(p.cachedFuncsAlias[originalFunction], aliasList...)
 		}
+		return nil
 	}
 }

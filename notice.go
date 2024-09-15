@@ -124,7 +124,7 @@ func noticeWrapper(h Handler, notice FunctionNotice, functionName string, fn any
 // You can use the ApplyOnAliases method on the FunctionNotice to control
 // whether the notice should be applied to aliases.
 func WithNotices(notices ...*FunctionNotice) HandlerOption[*DefaultHandler] {
-	return func(p *DefaultHandler) {
+	return func(p *DefaultHandler) error {
 		// Preallocate the slice if we expect to append multiple notices
 		if cap(p.notices) < len(p.notices)+len(notices) {
 			newNotices := make([]FunctionNotice, len(p.notices), len(p.notices)+len(notices))
@@ -141,5 +141,7 @@ func WithNotices(notices ...*FunctionNotice) HandlerOption[*DefaultHandler] {
 			// Append the notice directly without dereferencing
 			p.notices = append(p.notices, *notice)
 		}
+
+		return nil
 	}
 }

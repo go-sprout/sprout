@@ -170,17 +170,18 @@ func (dh *DefaultHandler) Notices() []FunctionNotice {
 
 // WithLogger sets the logger used by a DefaultHandler.
 func WithLogger(l *slog.Logger) HandlerOption[*DefaultHandler] {
-	return func(p *DefaultHandler) {
+	return func(p *DefaultHandler) error {
 		p.logger = l
+		return nil
 	}
 }
 
 // WithHandler updates a DefaultHandler with settings from another DefaultHandler.
 // This is useful for copying configurations between handlers.
 func WithHandler(new Handler) HandlerOption[*DefaultHandler] {
-	return func(fnh *DefaultHandler) {
+	return func(fnh *DefaultHandler) error {
 		if new == nil {
-			return
+			return nil
 		}
 
 		if fhCast, ok := new.(*DefaultHandler); ok {
@@ -197,15 +198,16 @@ func WithHandler(new Handler) HandlerOption[*DefaultHandler] {
 // To use a safe function, prepend `safe` to the original function name,
 // example: `safeOriginalFuncName` instead of `originalFuncName`.
 func WithSafeFuncs(enabled bool) HandlerOption[*DefaultHandler] {
-	return func(dh *DefaultHandler) {
+	return func(dh *DefaultHandler) error {
 		dh.wantSafeFuncs = enabled
+		return nil
 	}
 }
 
 // safeWrapper create a safe wrapper function that calls the original function
 // and logs any errors that occur during the function call without interrupting
 // the execution of the template.
-func (dh *DefaultHandler) safeWrapper(functionName string, fn any) wrappedFunc {
+func (dh *DefaultHandler) safeWrapper(functionName string, fn any) wrappedFunction {
 	return func(args ...any) (any, error) {
 		out, err := runtime.SafeCall(fn, args...)
 		if err != nil {
