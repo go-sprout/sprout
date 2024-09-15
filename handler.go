@@ -119,7 +119,9 @@ func (dh *DefaultHandler) Build() FunctionMap {
 
 	AssignAliases(dh) // Ensure all aliases are processed before returning the registry
 	AssignNotices(dh) // Ensure all notices are processed before returning the registry
-	dh.buildSafeFuncs()
+	if dh.wantSafeFuncs {
+		AssignSafeFuncs(dh) // Ensure all functions are wrapped with safe functions
+	}
 
 	dh.built = true
 	return dh.cachedFuncsMap
@@ -205,14 +207,33 @@ func WithSafeFuncs(enabled bool) HandlerOption[*DefaultHandler] {
 	}
 }
 
+// AssignSafeFuncs wraps all functions with a safe wrapper that logs any errors
+// that occur during function execution. If safe functions are enabled in the
+// DefaultHandler, this method will prepend "safe" to the function name and
+// create a safe wrapper for each function.
+//
+// E.G. all functions will have both the original function name and a safe function name:
+//
+//	originalFuncName -> SafeOriginalFuncName
+func AssignSafeFuncs(handler Handler) {
+	safeFuncs := make(FunctionMap)
+	for funcName, fn := range handler.RawFunctions() {
+		safeFuncs[safeFuncName(funcName)] = safeWrapper(handler, funcName, fn)
+	}
+
+	for funcName, fn := range safeFuncs {
+		handler.RawFunctions()[funcName] = fn
+	}
+}
+
 // safeWrapper create a safe wrapper function that calls the original function
 // and logs any errors that occur during the function call without interrupting
 // the execution of the template.
-func (dh *DefaultHandler) safeWrapper(functionName string, fn any) wrappedFunction {
+func safeWrapper(handler Handler, functionName string, fn any) wrappedFunction {
 	return func(args ...any) (any, error) {
 		out, err := runtime.SafeCall(fn, args...)
 		if err != nil {
-			dh.Logger().With("function", functionName, "error", err).Error("function call failed")
+			handler.Logger().With("function", functionName, "error", err).Error("function call failed")
 		}
 		return out, nil
 	}
@@ -236,23 +257,4 @@ func safeFuncName(name string) string {
 	b.WriteString(cases.Title(language.Und, cases.NoLower).String(name))
 
 	return b.String()
-}
-
-// buildSafeFuncs wraps all functions with a safe wrapper that logs any errors
-// that occur during function execution. If safe functions are enabled in the
-// DefaultHandler, this method will prepend "safe" to the function name and
-// create a safe wrapper for each function.
-func (dh *DefaultHandler) buildSafeFuncs() {
-	if !dh.wantSafeFuncs {
-		return
-	}
-
-	safeFuncs := make(FunctionMap)
-	for funcName, fn := range dh.cachedFuncsMap {
-		safeFuncs[safeFuncName(funcName)] = dh.safeWrapper(funcName, fn)
-	}
-
-	for safeFuncName, fn := range safeFuncs {
-		dh.cachedFuncsMap[safeFuncName] = fn
-	}
 }
