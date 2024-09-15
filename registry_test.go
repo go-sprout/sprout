@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestAddFunction(t *testing.T) {
@@ -52,4 +53,41 @@ func TestAddAlias(t *testing.T) {
 	// Test adding an alias to a function that doesn't exist in the map yet
 	AddAlias(aliasMap, "nonExistentFunc", "aliasX")
 	assert.Contains(t, aliasMap, "nonExistentFunc", "Aliases should be added under 'nonExistentFunc' even if the function doesn't exist")
+}
+
+func TestWithRegistry(t *testing.T) {
+	// Define a registry with a function and an alias
+	mockRegistry := new(MockRegistry)
+	mockRegistry.linkHandlerMustCrash = true
+	mockRegistry.On("Uid").Return("mockRegistry")
+	mockRegistry.On("LinkHandler", mock.Anything).Return(errMock)
+
+	// Create a handler with the registry
+	handler := New(WithRegistry(mockRegistry))
+	handler.Build()
+
+	// Check that the function and alias are present in the handler
+	assert.Contains(t, handler.registries, mockRegistry, "Registry should be added to the handler")
+}
+
+func TestWithRegistries(t *testing.T) {
+	// Define two registries with functions and aliases
+	mockRegistry1 := new(MockRegistry)
+	mockRegistry1.On("Uid").Return("mockRegistry1")
+	mockRegistry1.On("LinkHandler", mock.Anything).Return(nil)
+	mockRegistry1.On("RegisterFunctions", mock.Anything).Return(nil)
+
+	mockRegistry2 := new(MockRegistry)
+	mockRegistry2.linkHandlerMustCrash = true
+	mockRegistry2.On("Uid").Return("mockRegistry2")
+	mockRegistry2.On("LinkHandler", mock.Anything).Return(nil)
+	mockRegistry1.On("RegisterFunctions", mock.Anything).Return(nil)
+
+	// Create a handler with the registries
+	handler := New(WithRegistries(mockRegistry1, mockRegistry2))
+	handler.Build()
+
+	// Check that the functions and aliases are present in the handler
+	assert.Contains(t, handler.registries, mockRegistry1, "Registry 1 should be added to the handler")
+	assert.Contains(t, handler.registries, mockRegistry2, "Registry 2 should be added to the handler")
 }

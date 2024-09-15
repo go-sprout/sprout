@@ -68,3 +68,29 @@ func AddAlias(aliasMap FunctionAliasMap, originalFunction string, aliases ...str
 func AddNotice(notices *[]FunctionNotice, notice *FunctionNotice) {
 	*notices = append(*notices, *notice)
 }
+
+// WithRegistry returns a HandlerOption that adds the provided registry to the handler.
+// This option allows you to integrate additional functions into the template processing
+// environment by adding a new registry to the handler.
+//
+// Example:
+//
+//	handler := New(WithRegistry(myRegistry))
+func WithRegistry(reg Registry) HandlerOption[*DefaultHandler] {
+	return func(dh *DefaultHandler) error {
+		return dh.AddRegistry(reg)
+	}
+}
+
+// WithRegistries returns a HandlerOption that adds the provided registries to the handler.
+// This option simplifies the process of adding multiple sets of functionalities into the
+// template engine at once.
+//
+// Example:
+//
+//	handler := New(WithRegistries(myRegistry1, myRegistry2, myRegistry3))
+func WithRegistries(registries ...Registry) HandlerOption[*DefaultHandler] {
+	return func(dh *DefaultHandler) error {
+		return dh.AddRegistries(registries...)
+	}
+}
