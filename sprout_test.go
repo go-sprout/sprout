@@ -64,13 +64,13 @@ func TestWithSafeFuncs(t *testing.T) {
 	assert.True(t, handler.wantSafeFuncs)
 
 	handler.cachedFuncsMap["test"] = func() {}
-	funcCount := len(handler.Functions())
+	funcCount := len(handler.RawFunctions())
 	handler.Build()
 
 	assert.Len(t, handler.cachedFuncsMap, funcCount*2)
 
 	var keys []string
-	for k := range handler.Functions() {
+	for k := range handler.RawFunctions() {
 		keys = append(keys, k)
 	}
 

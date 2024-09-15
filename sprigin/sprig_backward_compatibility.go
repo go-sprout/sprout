@@ -144,11 +144,11 @@ func (sh *SprigHandler) Logger() *slog.Logger {
 	return slog.New(slog.Default().Handler())
 }
 
-func (sh *SprigHandler) Functions() sprout.FunctionMap {
+func (sh *SprigHandler) RawFunctions() sprout.FunctionMap {
 	return sh.funcsMap
 }
 
-func (sh *SprigHandler) Aliases() sprout.FunctionAliasMap {
+func (sh *SprigHandler) RawAliases() sprout.FunctionAliasMap {
 	return sh.funcsAlias
 }
 

@@ -12,8 +12,8 @@ type FunctionAliasMap = map[string][]string
 func AssignAliases(h Handler) {
 	for originalFunction, aliases := range h.Aliases() {
 		for _, alias := range aliases {
-			if fn, ok := h.Functions()[originalFunction]; ok {
-				h.Functions()[alias] = fn
+			if fn, ok := h.RawFunctions()[originalName]; ok {
+				h.RawFunctions()[alias] = fn
 			}
 		}
 	}

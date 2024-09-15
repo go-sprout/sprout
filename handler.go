@@ -25,16 +25,15 @@ type Handler interface {
 	// processing environment.
 	AddRegistry(registry Registry) error
 
-	// AddRegistries registers multiple registries into the Handler. This method
-	// simplifies the process of adding multiple sets of functionalities into the
-	// template engine at once.
-	AddRegistries(registries ...Registry) error
+	// RawFunctions returns the map of registered functions without any alias,
+	// notices or other additional information. This function is useful for
+	// special cases where you need to access raw data from registries.
+	//
+	// ⚠ To access the function map for the template engine use `Build()` instead.
+	RawFunctions() FunctionMap
 
-	// Functions returns the map of registered functions managed by the Handler.
-	Functions() FunctionMap
-
-	// Aliases returns the map of function aliases managed by the Handler.
-	Aliases() FunctionAliasMap
+	// RawAliases returns the map of function aliases managed by the Handler.
+	RawAliases() FunctionAliasMap
 
 	// Notices returns the list of function notices managed by the Handler.
 	Notices() []FunctionNotice
@@ -137,7 +136,7 @@ func (dh *DefaultHandler) Logger() *slog.Logger {
 	return dh.logger
 }
 
-// Functions returns the map of registered functions managed by the DefaultHandler.
+// RawFunctions returns the map of registered functions managed by the DefaultHandler.
 //
 // ⚠ This function is for special cases where you need to access the function
 // map for the template engine use `Build()` instead.
@@ -145,17 +144,17 @@ func (dh *DefaultHandler) Logger() *slog.Logger {
 // This function map contains all the functions that have been added to the handler,
 // typically for use in templating engines. Each entry in the map associates a function
 // name with its corresponding implementation.
-func (dh *DefaultHandler) Functions() FunctionMap {
+func (dh *DefaultHandler) RawFunctions() FunctionMap {
 	return dh.cachedFuncsMap
 }
 
-// Aliases returns the map of function aliases managed by the DefaultHandler.
+// RawAliases returns the map of function aliases managed by the DefaultHandler.
 //
 // The alias map allows certain functions to be referenced by multiple names. This
 // can be useful in templating environments where different names might be preferred
 // for the same underlying function. The alias map associates each original function
 // name with a list of aliases that can be used interchangeably.
-func (dh *DefaultHandler) Aliases() FunctionAliasMap {
+func (dh *DefaultHandler) RawAliases() FunctionAliasMap {
 	return dh.cachedFuncsAlias
 }
 

@@ -269,12 +269,12 @@ func TestDefaultHandler_Registries(t *testing.T) {
 	assert.Len(t, dh.registries, 2, "Registries should return the correct number of registries")
 }
 
-// TestDefaultHandler_Functions tests the Functions method of DefaultHandler.
-func TestDefaultHandler_Functions(t *testing.T) {
+// TestDefaultHandler_RawFunctions tests the Functions method of DefaultHandler.
+func TestDefaultHandler_RawFunctions(t *testing.T) {
 	funcsMap := make(FunctionMap)
 	dh := &DefaultHandler{cachedFuncsMap: funcsMap}
 
-	assert.Equal(t, funcsMap, dh.Functions(), "Functions should return the correct FunctionMap")
+	assert.Equal(t, funcsMap, dh.RawFunctions(), "Functions should return the correct FunctionMap")
 }
 
 // TestDefaultHandler_Aliases tests the Aliases method of DefaultHandler.
@@ -282,7 +282,7 @@ func TestDefaultHandler_Aliases(t *testing.T) {
 	aliasesMap := make(FunctionAliasMap)
 	dh := &DefaultHandler{cachedFuncsAlias: aliasesMap}
 
-	assert.Equal(t, aliasesMap, dh.Aliases(), "Aliases should return the correct FunctionAliasMap")
+	assert.Equal(t, aliasesMap, dh.RawAliases(), "Aliases should return the correct FunctionAliasMap")
 }
 
 // TestDefaultHandler_Build tests the Build method of DefaultHandler.
