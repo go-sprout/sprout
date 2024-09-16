@@ -12,13 +12,13 @@ import (
 
 // TestWithAlias checks that aliases are correctly added to a function.
 func TestWithAlias(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc := "originalFunc"
 	alias1 := "alias1"
 	alias2 := "alias2"
 
 	// Apply the WithAlias option with two aliases.
-	WithAlias(originalFunc, alias1, alias2)(handler)
+	require.NoError(t, WithAlias(originalFunc, alias1, alias2)(handler))
 
 	// Check that the aliases were added.
 	assert.Contains(t, handler.cachedFuncsAlias, originalFunc)
@@ -28,18 +28,18 @@ func TestWithAlias(t *testing.T) {
 }
 
 func TestWithAlias_Empty(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc := "originalFunc"
 
 	// Apply the WithAlias option with no aliases.
-	WithAlias(originalFunc)(handler)
+	require.NoError(t, WithAlias(originalFunc)(handler))
 
 	// Check that no aliases were added.
 	assert.NotContains(t, handler.cachedFuncsAlias, originalFunc)
 }
 
 func TestWithAliases(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc1 := "originalFunc1"
 	alias1 := "alias1"
 	alias2 := "alias2"
@@ -47,10 +47,10 @@ func TestWithAliases(t *testing.T) {
 	alias3 := "alias3"
 
 	// Apply the WithAliases option with two sets of aliases.
-	WithAliases(FunctionAliasMap{
+	require.NoError(t, WithAliases(FunctionAliasMap{
 		originalFunc1: {alias1, alias2},
 		originalFunc2: {alias3},
-	})(handler)
+	})(handler))
 
 	// Check that the aliases were added.
 	assert.Contains(t, handler.cachedFuncsAlias, originalFunc1)
@@ -65,7 +65,7 @@ func TestWithAliases(t *testing.T) {
 
 // TestRegisterAliases checks that aliases are correctly registered in the function map.
 func TestRegisterAliases(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFunc := "originalFunc"
 	alias1 := "alias1"
 	alias2 := "alias2"
@@ -75,7 +75,7 @@ func TestRegisterAliases(t *testing.T) {
 	handler.cachedFuncsMap[originalFunc] = mockFunc
 
 	// Apply the WithAlias option and then register the aliases.
-	WithAlias(originalFunc, alias1, alias2)(handler)
+	require.NoError(t, WithAlias(originalFunc, alias1, alias2)(handler))
 	AssignAliases(handler)
 
 	// Check that the aliases are mapped to the same function as the original function in funcsRegistry.
@@ -84,7 +84,7 @@ func TestRegisterAliases(t *testing.T) {
 }
 
 func TestAliasesInTemplate(t *testing.T) {
-	handler := NewFunctionHandler()
+	handler := New()
 	originalFuncName := "originalFunc"
 	alias1 := "alias1"
 	alias2 := "alias2"
@@ -94,7 +94,7 @@ func TestAliasesInTemplate(t *testing.T) {
 	handler.cachedFuncsMap[originalFuncName] = mockFunc
 
 	// Apply the WithAlias option and then register the aliases.
-	WithAlias(originalFuncName, alias1, alias2)(handler)
+	require.NoError(t, WithAlias(originalFuncName, alias1, alias2)(handler))
 
 	// Create a template with the aliases.
 	tmpl, err := template.New("test").Funcs(handler.Build()).Parse(`{{originalFunc}} {{alias1}} {{alias2}}`)

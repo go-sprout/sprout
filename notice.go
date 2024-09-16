@@ -7,12 +7,6 @@ import (
 	"github.com/go-sprout/sprout/internal/runtime"
 )
 
-// wrappedFunc is a type alias for a function that accepts a variadic number of
-// arguments of any type and returns a single result of any type along with an
-// error. This is typically used for functions that need to be wrapped with
-// additional logic, such as logging or notice handling.
-type wrappedFunc = func(args ...any) (any, error)
-
 // NoticeKind represents the type of notice that can be applied to a function.
 // It is an enumeration with different possible values that dictate how the
 // notice should behave.
@@ -91,23 +85,23 @@ func NewDebugNotice(functionName, message string) *FunctionNotice {
 // It should be called after all functions and notices have been added and
 // inside the Build function in case of using a custom handler.
 func AssignNotices(h Handler) {
-	funcs := h.Functions()
+	funcs := h.RawFunctions()
 	for _, notice := range h.Notices() {
 		for _, functionName := range notice.FunctionNames {
 			if fn, ok := funcs[functionName]; ok {
-				wrappedFn := createWrappedFunction(h, notice, functionName, fn)
+				wrappedFn := noticeWrapper(h, notice, functionName, fn)
 				funcs[functionName] = wrappedFn
 			}
 		}
 	}
 }
 
-// createWrappedFunction creates a wrapped function that logs a notice after
+// noticeWrapper creates a wrapped function that logs a notice after
 // calling the original function. The notice is logged using the handler's
 // logger instance. The wrapped function is returned as a wrappedFunc, which
 // is a type alias for a function that takes a variadic list of arguments
 // and returns an `any` result and an `error`.
-func createWrappedFunction(h Handler, notice FunctionNotice, functionName string, fn any) wrappedFunc {
+func noticeWrapper(h Handler, notice FunctionNotice, functionName string, fn any) wrappedFunction {
 	return func(args ...any) (any, error) {
 		out, err := runtime.SafeCall(fn, args...)
 		switch notice.Kind {
@@ -130,7 +124,7 @@ func createWrappedFunction(h Handler, notice FunctionNotice, functionName string
 // You can use the ApplyOnAliases method on the FunctionNotice to control
 // whether the notice should be applied to aliases.
 func WithNotices(notices ...*FunctionNotice) HandlerOption[*DefaultHandler] {
-	return func(p *DefaultHandler) {
+	return func(p *DefaultHandler) error {
 		// Preallocate the slice if we expect to append multiple notices
 		if cap(p.notices) < len(p.notices)+len(notices) {
 			newNotices := make([]FunctionNotice, len(p.notices), len(p.notices)+len(notices))
@@ -147,5 +141,7 @@ func WithNotices(notices ...*FunctionNotice) HandlerOption[*DefaultHandler] {
 			// Append the notice directly without dereferencing
 			p.notices = append(p.notices, *notice)
 		}
+
+		return nil
 	}
 }

@@ -41,7 +41,7 @@ func TestWithNotice(t *testing.T) {
 	notice := NewInfoNotice(originalFunc, "amazing")
 
 	// Apply the WithNotices option with one notice.
-	WithNotices(notice)(handler)
+	require.NoError(t, WithNotices(notice)(handler))
 
 	// Check that the aliases were added.
 	assert.Contains(t, handler.Notices(), *notice)
@@ -49,7 +49,7 @@ func TestWithNotice(t *testing.T) {
 
 	// Apply the WithNotices option with multiple notices.
 	notice2 := NewDeprecatedNotice(originalFunc, "oh no")
-	WithNotices(notice, notice2)(handler)
+	require.NoError(t, WithNotices(notice, notice2)(handler))
 
 	// Check that the aliases were added.
 	assert.Contains(t, handler.Notices(), *notice)
@@ -58,7 +58,7 @@ func TestWithNotice(t *testing.T) {
 
 	// Apply the WithNotices option with an empty message
 	notice3 := NewDebugNotice(originalFunc, "")
-	WithNotices(notice3)(handler)
+	require.NoError(t, WithNotices(notice3)(handler))
 
 	assert.Contains(t, handler.Notices(), *notice)
 	assert.Contains(t, handler.Notices(), *notice2)
@@ -67,7 +67,7 @@ func TestWithNotice(t *testing.T) {
 
 	// Try to apply a notice with an empty function name.
 	notice4 := &FunctionNotice{}
-	WithNotices(notice4)(handler)
+	require.NoError(t, WithNotices(notice4)(handler))
 
 	// Check that the aliases were not added.
 	assert.NotContains(t, handler.Notices(), *notice4)
@@ -91,8 +91,8 @@ func TestAssignNotices(t *testing.T) {
 	assert.Contains(t, handler.Notices(), *notice)
 	assert.Len(t, handler.notices, 1, "there should be exactly 1 notice")
 
-	require.Contains(t, handler.Functions(), originalFunc)
-	assert.NotEqual(t, reflect.ValueOf(mockFunc).Pointer(), reflect.ValueOf(handler.Functions()[originalFunc]).Pointer(), "the function should have been wrapped")
+	require.Contains(t, handler.RawFunctions(), originalFunc)
+	assert.NotEqual(t, reflect.ValueOf(mockFunc).Pointer(), reflect.ValueOf(handler.RawFunctions()[originalFunc]).Pointer(), "the function should have been wrapped")
 }
 
 func TestCreateWrappedFunction(t *testing.T) {
@@ -103,9 +103,9 @@ func TestCreateWrappedFunction(t *testing.T) {
 	mockFunc := func() string { return "cheese" }
 
 	// Create a wrapped function.
-	wrappedFunc := createWrappedFunction(handler, *NewInfoNotice(originalFunc, "amazing"), originalFunc, mockFunc)
-	wrappedFunc2 := createWrappedFunction(handler, *NewDeprecatedNotice(originalFunc, "oh no"), originalFunc, mockFunc)
-	wrappedFunc3 := createWrappedFunction(handler, *NewNotice(NoticeKindDebug, []string{originalFunc}, "Nice this function returns $out"), originalFunc, mockFunc)
+	wrappedFunc := noticeWrapper(handler, *NewInfoNotice(originalFunc, "amazing"), originalFunc, mockFunc)
+	wrappedFunc2 := noticeWrapper(handler, *NewDeprecatedNotice(originalFunc, "oh no"), originalFunc, mockFunc)
+	wrappedFunc3 := noticeWrapper(handler, *NewNotice(NoticeKindDebug, []string{originalFunc}, "Nice this function returns $out"), originalFunc, mockFunc)
 
 	// Call the wrapped function.
 	out, err := wrappedFunc()

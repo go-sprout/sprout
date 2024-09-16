@@ -25,16 +25,15 @@ type Handler interface {
 	// processing environment.
 	AddRegistry(registry Registry) error
 
-	// AddRegistries registers multiple registries into the Handler. This method
-	// simplifies the process of adding multiple sets of functionalities into the
-	// template engine at once.
-	AddRegistries(registries ...Registry) error
+	// RawFunctions returns the map of registered functions without any alias,
+	// notices or other additional information. This function is useful for
+	// special cases where you need to access raw data from registries.
+	//
+	// ⚠ To access the function map for the template engine use `Build()` instead.
+	RawFunctions() FunctionMap
 
-	// Functions returns the map of registered functions managed by the Handler.
-	Functions() FunctionMap
-
-	// Aliases returns the map of function aliases managed by the Handler.
-	Aliases() FunctionAliasMap
+	// RawAliases returns the map of function aliases managed by the Handler.
+	RawAliases() FunctionAliasMap
 
 	// Notices returns the list of function notices managed by the Handler.
 	Notices() []FunctionNotice
@@ -56,6 +55,7 @@ type DefaultHandler struct {
 	notices    []FunctionNotice
 
 	wantSafeFuncs bool
+	built         bool
 
 	cachedFuncsMap   FunctionMap
 	cachedFuncsAlias FunctionAliasMap
@@ -104,26 +104,26 @@ func (dh *DefaultHandler) AddRegistries(registries ...Registry) error {
 
 // Build retrieves the complete suite of functiosn and alias that has been configured
 // within this Handler. This handler is ready to be used with template engines
-// that accept FuncMap, such as html/template or text/template.
+// that accept FuncMap, such as html/template or text/template. It will also
+// cache the function map for future use to avoid rebuilding the function map
+// multiple times, so it is safe to call this method multiple times to retrieve
+// the same builded function map.
 //
-// NOTE: This will replace the `FuncsMap()`, `TxtFuncMap()` and `HtmlFuncMap()` from sprig
+// NOTE: This replaces the [github.com/Masterminds/sprig.FuncMap],
+// [github.com/Masterminds/sprig.TxtFuncMap] and [github.com/Masterminds/sprig.HtmlFuncMap]
+// from sprig
 func (dh *DefaultHandler) Build() FunctionMap {
-	AssignAliases(dh) // Ensure all aliases are processed before returning the registry
-	AssignNotices(dh) // Ensure all notices are processed before returning the registry
-
-	// If safe functions are enabled, wrap all functions with a safe wrapper
-	// that logs any errors that occur during function execution.
-	if dh.wantSafeFuncs {
-		safeFuncs := make(FunctionMap)
-		for funcName, fn := range dh.cachedFuncsMap {
-			safeFuncs[safeFuncName(funcName)] = dh.safeWrapper(funcName, fn)
-		}
-
-		for funcName, fn := range safeFuncs {
-			dh.cachedFuncsMap[funcName] = fn
-		}
+	if dh.built {
+		return dh.cachedFuncsMap
 	}
 
+	AssignAliases(dh) // Ensure all aliases are processed before returning the registry
+	AssignNotices(dh) // Ensure all notices are processed before returning the registry
+	if dh.wantSafeFuncs {
+		AssignSafeFuncs(dh) // Ensure all functions are wrapped with safe functions
+	}
+
+	dh.built = true
 	return dh.cachedFuncsMap
 }
 
@@ -137,7 +137,7 @@ func (dh *DefaultHandler) Logger() *slog.Logger {
 	return dh.logger
 }
 
-// Functions returns the map of registered functions managed by the DefaultHandler.
+// RawFunctions returns the map of registered functions managed by the DefaultHandler.
 //
 // ⚠ This function is for special cases where you need to access the function
 // map for the template engine use `Build()` instead.
@@ -145,17 +145,17 @@ func (dh *DefaultHandler) Logger() *slog.Logger {
 // This function map contains all the functions that have been added to the handler,
 // typically for use in templating engines. Each entry in the map associates a function
 // name with its corresponding implementation.
-func (dh *DefaultHandler) Functions() FunctionMap {
+func (dh *DefaultHandler) RawFunctions() FunctionMap {
 	return dh.cachedFuncsMap
 }
 
-// Aliases returns the map of function aliases managed by the DefaultHandler.
+// RawAliases returns the map of function aliases managed by the DefaultHandler.
 //
 // The alias map allows certain functions to be referenced by multiple names. This
 // can be useful in templating environments where different names might be preferred
 // for the same underlying function. The alias map associates each original function
 // name with a list of aliases that can be used interchangeably.
-func (dh *DefaultHandler) Aliases() FunctionAliasMap {
+func (dh *DefaultHandler) RawAliases() FunctionAliasMap {
 	return dh.cachedFuncsAlias
 }
 
@@ -171,22 +171,25 @@ func (dh *DefaultHandler) Notices() []FunctionNotice {
 
 // WithLogger sets the logger used by a DefaultHandler.
 func WithLogger(l *slog.Logger) HandlerOption[*DefaultHandler] {
-	return func(p *DefaultHandler) {
+	return func(p *DefaultHandler) error {
 		p.logger = l
+		return nil
 	}
 }
 
 // WithHandler updates a DefaultHandler with settings from another DefaultHandler.
 // This is useful for copying configurations between handlers.
 func WithHandler(new Handler) HandlerOption[*DefaultHandler] {
-	return func(fnh *DefaultHandler) {
+	return func(fnh *DefaultHandler) error {
 		if new == nil {
-			return
+			return nil
 		}
 
 		if fhCast, ok := new.(*DefaultHandler); ok {
 			*fnh = *fhCast
 		}
+
+		return nil
 	}
 }
 
@@ -198,19 +201,39 @@ func WithHandler(new Handler) HandlerOption[*DefaultHandler] {
 // To use a safe function, prepend `safe` to the original function name,
 // example: `safeOriginalFuncName` instead of `originalFuncName`.
 func WithSafeFuncs(enabled bool) HandlerOption[*DefaultHandler] {
-	return func(dh *DefaultHandler) {
+	return func(dh *DefaultHandler) error {
 		dh.wantSafeFuncs = enabled
+		return nil
+	}
+}
+
+// AssignSafeFuncs wraps all functions with a safe wrapper that logs any errors
+// that occur during function execution. If safe functions are enabled in the
+// DefaultHandler, this method will prepend "safe" to the function name and
+// create a safe wrapper for each function.
+//
+// E.G. all functions will have both the original function name and a safe function name:
+//
+//	originalFuncName -> SafeOriginalFuncName
+func AssignSafeFuncs(handler Handler) {
+	safeFuncs := make(FunctionMap)
+	for funcName, fn := range handler.RawFunctions() {
+		safeFuncs[safeFuncName(funcName)] = safeWrapper(handler, funcName, fn)
+	}
+
+	for funcName, fn := range safeFuncs {
+		handler.RawFunctions()[funcName] = fn
 	}
 }
 
 // safeWrapper create a safe wrapper function that calls the original function
 // and logs any errors that occur during the function call without interrupting
 // the execution of the template.
-func (dh *DefaultHandler) safeWrapper(functionName string, fn any) wrappedFunc {
+func safeWrapper(handler Handler, functionName string, fn any) wrappedFunction {
 	return func(args ...any) (any, error) {
 		out, err := runtime.SafeCall(fn, args...)
 		if err != nil {
-			dh.Logger().With("function", functionName, "error", err).Error("function call failed")
+			handler.Logger().With("function", functionName, "error", err).Error("function call failed")
 		}
 		return out, nil
 	}
