@@ -1,5 +1,29 @@
 # Changelog
 
+## Release v0.6.0: Sprout Evolution 🌱 (2024-09-16)
+
+> 💡 Cultivating Precision, One Function at a Time!
+
+### 🚀 New Features
+- **Function Call Notices**: Added notifications to inform or warn end-users when functions are called. See [PR 58](https://github.com/go-sprout/sprout/pull/58).
+- **Safe Functions Compliance**: Aligned safe functions with Go template standards and Sprout conventions. See [PR 65](https://github.com/go-sprout/sprout/pull/65).
+- **SHA512 Checksum in Registry**: Introduced `sha512sum` to the checksum registry, complete with informative notices. See [PR 59](https://github.com/go-sprout/sprout/pull/59).
+- **`hasField` for Structs**: A new `hasField` method to check fields in structs is now available. See [PR 61](https://github.com/go-sprout/sprout/pull/61).
+- **String Capitalization Functions**: Added new functions to capitalize strings, fully supporting Unicode and Latin runes. See [PR 62](https://github.com/go-sprout/sprout/pull/62) and [PR 63](https://github.com/go-sprout/sprout/pull/63).
+
+### 🛠 Fixes & Improvements
+- **Dropped v0.1 Error Handling**: Removed legacy error handling until a safe/must decision is finalized in the RFC. See [PR 52](https://github.com/go-sprout/sprout/pull/52).
+- **Documentation Updates**: Added function signatures to the conventions, making it easier to understand their usage. See [PR 64](https://github.com/go-sprout/sprout/pull/64).
+
+### 🐛 Bug Fixes
+- **Unicode Capitalization Fix**: Resolved issues with string capitalization involving Unicode and Latin runes. See [PR 63](https://github.com/go-sprout/sprout/pull/63).
+- **Release Candidate Fixes**: Addressed problems with v0.6.0-rc.1 to ensure stability and performance. See [PR 68](https://github.com/go-sprout/sprout/pull/68).
+
+*Read more about notices on [official documentation](https://sprout.atom.codes/features/function-notices).*
+
+*Read more about safe functions on [official documentation](https://sprout.atom.codes/features/safe-functions).*
+
+
 ## Release v0.5.1: Sprout Growth 🌿 (2024-09-15)
 
 > 💡 Cultivating Code, Growing Solutions!
