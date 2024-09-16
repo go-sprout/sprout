@@ -314,7 +314,7 @@ func TestDefaultHandler_safeWrapper(t *testing.T) {
 	_, err := fn()
 	require.Error(t, err, "fn should return an error")
 
-	safeFn := handler.safeWrapper("fn", fn)
+	safeFn := safeWrapper(handler, "fn", fn)
 	_, safeErr := safeFn()
 	require.NoError(t, safeErr, "safeFn should not return an error")
 	assert.Equal(t, "[ERROR] function call failed\n", loggerHandler.messages.String())
