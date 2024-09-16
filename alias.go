@@ -10,11 +10,14 @@ type FunctionAliasMap = map[string][]string
 // It should be called after all functions and aliases have been added and
 // inside the Build function in case of using a custom handler.
 func AssignAliases(h Handler) {
-	for originalFunction, aliases := range h.Aliases() {
+	for originalName, aliases := range h.RawAliases() {
+		fn, exists := h.RawFunctions()[originalName]
+		if !exists {
+			continue
+		}
+
 		for _, alias := range aliases {
-			if fn, ok := h.Functions()[originalFunction]; ok {
-				h.Functions()[alias] = fn
-			}
+			h.RawFunctions()[alias] = fn
 		}
 	}
 }
@@ -39,9 +42,9 @@ func AssignAliases(h Handler) {
 //
 //	handler := New(WithAlias("originalFunc", "alias1", "alias2"))
 func WithAlias(originalFunction string, aliases ...string) HandlerOption[*DefaultHandler] {
-	return func(p *DefaultHandler) {
+	return func(p *DefaultHandler) error {
 		if len(aliases) == 0 {
-			return
+			return nil
 		}
 
 		if _, ok := p.cachedFuncsAlias[originalFunction]; !ok {
@@ -49,6 +52,7 @@ func WithAlias(originalFunction string, aliases ...string) HandlerOption[*Defaul
 		}
 
 		p.cachedFuncsAlias[originalFunction] = append(p.cachedFuncsAlias[originalFunction], aliases...)
+		return nil
 	}
 }
 
@@ -69,7 +73,7 @@ func WithAlias(originalFunction string, aliases ...string) HandlerOption[*Defaul
 //	    "originalFunc2": {"alias2_1", "alias2_2"},
 //	}))
 func WithAliases(aliases FunctionAliasMap) HandlerOption[*DefaultHandler] {
-	return func(p *DefaultHandler) {
+	return func(p *DefaultHandler) error {
 		for originalFunction, aliasList := range aliases {
 			if _, ok := p.cachedFuncsAlias[originalFunction]; !ok {
 				p.cachedFuncsAlias[originalFunction] = make([]string, 0)
@@ -77,5 +81,6 @@ func WithAliases(aliases FunctionAliasMap) HandlerOption[*DefaultHandler] {
 
 			p.cachedFuncsAlias[originalFunction] = append(p.cachedFuncsAlias[originalFunction], aliasList...)
 		}
+		return nil
 	}
 }

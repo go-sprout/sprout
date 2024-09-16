@@ -11,8 +11,8 @@ The `Handler` interface in Sprout defines the basic methods required to manage r
 * `Logger() *slog.Logger`: Returns the logger instance used for logging.
 * `AddRegistry(registry Registry) error`: Adds a single registry to the handler.
 * `AddRegistries(registries ...Registry) error`: Adds multiple registries to the handler.
-* `Functions() FunctionMap`: Returns the map of registered functions.
-* `Aliases() FunctionAliasMap`: Returns the map of function aliases.
+* `RawFunctions() FunctionMap`: Returns the map of registered functions.
+* `RawAliases() FunctionAliasMap`: Returns the map of function aliases.
 * `Build() FunctionMap`: Builds and returns the complete function map, ready to be used in templates.
 
 ### Step 2: Create Your Custom Handler Struct

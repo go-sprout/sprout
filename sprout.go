@@ -7,7 +7,13 @@ import (
 
 // HandlerOption[Handler] defines a type for functional options that configure
 // a typed Handler.
-type HandlerOption[T Handler] func(T)
+type HandlerOption[T Handler] func(T) error
+
+// wrappedFunction is a type alias for a function that accepts a variadic number of
+// arguments of any type and returns a single result of any type along with an
+// error. This is typically used for functions that need to be wrapped with
+// additional logic, such as logging or notice handling.
+type wrappedFunction = func(args ...any) (any, error)
 
 // New creates and returns a new instance of DefaultHandler with optional
 // configurations.
@@ -22,7 +28,7 @@ type HandlerOption[T Handler] func(T)
 //	logger := slog.New(slog.NewTextHandler(os.Stdout))
 //	handler := New(
 //	    WithLogger(logger),
-//	    WithRegistry(myRegistry),
+//	    WithRegistries(myRegistry),
 //	)
 //
 // In the above example, the DefaultHandler is created with a custom logger and
@@ -40,15 +46,10 @@ func New(opts ...HandlerOption[*DefaultHandler]) *DefaultHandler {
 	}
 
 	for _, opt := range opts {
-		opt(dh)
+		if err := opt(dh); err != nil {
+			dh.logger.With("error", err).Error("Failed to apply handler option")
+		}
 	}
 
 	return dh
-}
-
-// Deprecated: NewFunctionHandler creates a new function handler with the
-// default values. It is deprecated and should not be used. Use `New` instead.
-func NewFunctionHandler(opts ...HandlerOption[*DefaultHandler]) *DefaultHandler {
-	slog.Warn("NewFunctionHandler are deprecated. Use `New` instead")
-	return New(opts...)
 }

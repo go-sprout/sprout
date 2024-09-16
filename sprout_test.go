@@ -6,18 +6,19 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func TestNewFunctionHandler_DefaultValues(t *testing.T) {
-	handler := NewFunctionHandler()
+func TestNew_DefaultValues(t *testing.T) {
+	handler := New()
 
 	assert.NotNil(t, handler)
 	assert.NotNil(t, handler.Logger)
 }
 
-func TestNewFunctionHandler_CustomValues(t *testing.T) {
+func TestNew_CustomValues(t *testing.T) {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
-	handler := NewFunctionHandler(
+	handler := New(
 		WithLogger(logger),
 	)
 
@@ -29,8 +30,8 @@ func TestWithLogger(t *testing.T) {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 	option := WithLogger(logger)
 
-	handler := NewFunctionHandler()
-	option(handler) // Apply the option
+	handler := New()
+	require.NoError(t, option(handler)) // Apply the option
 
 	assert.Equal(t, logger, handler.Logger())
 }
@@ -42,7 +43,7 @@ func TestWithParser(t *testing.T) {
 	option := WithHandler(fnHandler)
 
 	handler := New()
-	option(handler) // Apply the option
+	require.NoError(t, option(handler)) // Apply the option
 
 	assert.Equal(t, fnHandler, handler)
 }
@@ -54,7 +55,7 @@ func TestWithNilHandler(t *testing.T) {
 	option := WithHandler(nil)
 
 	beforeApply := fnHandler
-	option(beforeApply)
+	require.NoError(t, option(beforeApply)) // Apply the option
 
 	assert.Equal(t, beforeApply, fnHandler)
 }
@@ -64,13 +65,13 @@ func TestWithSafeFuncs(t *testing.T) {
 	assert.True(t, handler.wantSafeFuncs)
 
 	handler.cachedFuncsMap["test"] = func() {}
-	funcCount := len(handler.Functions())
+	funcCount := len(handler.RawFunctions())
 	handler.Build()
 
 	assert.Len(t, handler.cachedFuncsMap, funcCount*2)
 
 	var keys []string
-	for k := range handler.Functions() {
+	for k := range handler.RawFunctions() {
 		keys = append(keys, k)
 	}
 
