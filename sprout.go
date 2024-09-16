@@ -28,7 +28,7 @@ type wrappedFunction = func(args ...any) (any, error)
 //	logger := slog.New(slog.NewTextHandler(os.Stdout))
 //	handler := New(
 //	    WithLogger(logger),
-//	    WithRegistry(myRegistry),
+//	    WithRegistries(myRegistry),
 //	)
 //
 // In the above example, the DefaultHandler is created with a custom logger and

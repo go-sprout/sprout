@@ -46,10 +46,10 @@ Sprout supports various customization options using handler options:
     handler := sprout.New(sprout.WithLogger(logger))
     ```
 *   **Load Registry:**\
-    You can load a registry directly on your handler using the `WithRegistry` option:
+    You can load a registry directly on your handler using the `WithRegistries` option:
 
     ```go
-    handler := sprout.New(sprout.WithRegistry(ownregistry.NewRegistry()))
+    handler := sprout.New(sprout.WithRegistries(ownregistry.NewRegistry()))
     ```
 
     See more below or in dedicated page [loader-system-registry.md](../features/loader-system-registry.md "mention").

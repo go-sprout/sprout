@@ -55,21 +55,6 @@ func TestAddAlias(t *testing.T) {
 	assert.Contains(t, aliasMap, "nonExistentFunc", "Aliases should be added under 'nonExistentFunc' even if the function doesn't exist")
 }
 
-func TestWithRegistry(t *testing.T) {
-	// Define a registry with a function and an alias
-	mockRegistry := new(MockRegistry)
-	mockRegistry.linkHandlerMustCrash = true
-	mockRegistry.On("Uid").Return("mockRegistry")
-	mockRegistry.On("LinkHandler", mock.Anything).Return(errMock)
-
-	// Create a handler with the registry
-	handler := New(WithRegistry(mockRegistry))
-	handler.Build()
-
-	// Check that the function and alias are present in the handler
-	assert.Contains(t, handler.registries, mockRegistry, "Registry should be added to the handler")
-}
-
 func TestWithRegistries(t *testing.T) {
 	// Define two registries with functions and aliases
 	mockRegistry1 := new(MockRegistry)
