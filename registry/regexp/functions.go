@@ -245,7 +245,7 @@ func (rr *RegexpRegistry) RegexFindNamed(regex string, str string) (map[string]s
 	}
 	matches := r.FindStringSubmatch(str)
 	if len(matches) == 0 {
-		return nil, nil
+		return map[string]string{}, nil
 	}
 
 	result := make(map[string]string, len(r.SubexpNames())-1)
@@ -282,7 +282,7 @@ func (rr *RegexpRegistry) RegexFindAllNamed(regex string, n int, str string) ([]
 	}
 	matches := r.FindAllStringSubmatch(str, n)
 	if len(matches) == 0 {
-		return nil, nil
+		return []map[string]string{}, nil
 	}
 
 	subexpNames := r.SubexpNames()
