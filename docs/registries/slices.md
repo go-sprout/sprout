@@ -127,6 +127,40 @@ The function removes `nil` and zero-value elements from a list, leaving only non
 {% endtab %}
 {% endtabs %}
 
+### <mark style="color:purple;">flatten</mark>
+
+The function flattens a list into a single-dimensional array, removing nested lists andcombining all elements into a single list.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Flatten(list any) ([]any, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ flatten [[1, 2], [3, 4], 5] }} // Output: [1, 2, 3, 4, 5]
+{{ flatten [[1, [2]], [3, 4], 5] }} // Output: [1, 2, 3, 4, 5]
+{{ nil | flatten }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">flattenDepth</mark>
+
+The function flattens a list into a single-dimensional array up to a specified depth, removing nested lists and combining all elements into a single list up to the specified depth.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">FlattenDepth(deep int, list any) ([]any, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ [[1, [2]], [3, [4]], 5] | flattenDepth -1 }} // Output: [1, 2, 3, 4, 5]
+{{ [[1, [2]], [3, [4]], 5] | flattenDepth 1 }} // Output: [1, [2], 3, [4], 5]
+{{ nil | flattenDepth }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
 ### <mark style="color:purple;">slice</mark>
 
 The function extracts a portion of a list, creating a new slice based on the specified start and end indices.

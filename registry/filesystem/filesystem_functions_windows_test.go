@@ -8,7 +8,7 @@ import (
 )
 
 func TestOsBase(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyPath", Input: `{{ osBase "" }}`, ExpectedOutput: "."},
 		{Name: "TestRootPath", Input: `{{ osBase "D:\\" }}`, ExpectedOutput: "\\"},
 		{Name: "TestWithoutExtension", Input: `{{ osBase "D:\\path\\to\\file" }}`, ExpectedOutput: "file"},
@@ -21,7 +21,7 @@ func TestOsBase(t *testing.T) {
 }
 
 func TestOsDir(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyPath", Input: `{{ osDir "" }}`, ExpectedOutput: "."},
 		{Name: "TestRootPath", Input: `{{ osDir "D:\\" }}`, ExpectedOutput: "D:\\"},
 		{Name: "TestWithoutExtension", Input: `{{ osDir "D:\\path\\to\\file" }}`, ExpectedOutput: "D:\\path\\to"},
@@ -34,7 +34,7 @@ func TestOsDir(t *testing.T) {
 }
 
 func TestOsExt(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyPath", Input: `{{ osExt "" }}`, ExpectedOutput: ""},
 		{Name: "TestRootPath", Input: `{{ osExt "\\" }}`, ExpectedOutput: ""},
 		{Name: "TestWithoutExtension", Input: `{{ osExt "D:\\path\\to\\file" }}`, ExpectedOutput: ""},
@@ -47,7 +47,7 @@ func TestOsExt(t *testing.T) {
 }
 
 func TestOsClean(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyPath", Input: `{{ osClean "" }}`, ExpectedOutput: "."},
 		{Name: "TestRootPath", Input: `{{ osClean "D:\\" }}`, ExpectedOutput: "D:\\"},
 		{Name: "TestWithoutExtension", Input: `{{ osClean "D:\\path\\\\to\\file" }}`, ExpectedOutput: "D:\\path\\to\\file"},
@@ -57,7 +57,7 @@ func TestOsClean(t *testing.T) {
 }
 
 func TestOsIsAbs(t *testing.T) {
-	var tc = []pesticide.TestCase{
+	tc := []pesticide.TestCase{
 		{Name: "TestEmptyPath", Input: `{{ osIsAbs "" }}`, ExpectedOutput: "false"},
 		{Name: "TestRootPath", Input: `{{ osIsAbs "D:\\" }}`, ExpectedOutput: "true"},
 		{Name: "TestRelativePath", Input: `{{ osIsAbs "path\\to\\file" }}`, ExpectedOutput: "false"},

@@ -278,3 +278,106 @@ func TestMustRegexReplaceAllLiteral(t *testing.T) {
 
 	pesticide.RunTestCases(t, regexp.NewRegistry(), tc)
 }
+
+func TestRegexFindNamed(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{
+			Name:           "TestRegexFindNamedValid",
+			Input:          `{{ .V | regexFindNamed "(?P<username>[A-Za-z]+)@(?P<domain>example\\.com)" }}`,
+			Data:           map[string]any{"V": "Contact us at noreply@example.com"},
+			ExpectedOutput: "map[domain:example.com username:noreply]",
+		},
+		{
+			Name:           "TestRegexpFindNamedWithUnnamedGroup",
+			Input:          `{{ .V | regexFindNamed "(?P<username>[A-Za-z]+)@(example\\.com)" }}`,
+			Data:           map[string]any{"V": "Contact us at noreply@example.com"},
+			ExpectedOutput: "map[username:noreply]",
+		},
+		{
+			Name:           "TestRegexFindNamedNoMatch",
+			Input:          `{{ .V | regexFindNamed "(?P<username>[A-Za-z]+)@(?P<domain>example\\.org)" }}`,
+			Data:           map[string]any{"V": "Contact us at noreply@example.com"},
+			ExpectedOutput: "map[]",
+		},
+		{
+			Name:        "TestRegexFindNamedInvalidPattern",
+			Input:       `{{ .V | regexFindNamed "(?P<username>[A-Za-z]+)@(?P<domain>example\\.com" }}`,
+			Data:        map[string]any{"V": "Contact us at noreply@example.com"},
+			ExpectedErr: "error parsing regexp",
+		},
+	}
+	pesticide.RunTestCases(t, regexp.NewRegistry(), tc)
+}
+
+func TestRegexFindAllNamed(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{
+			Name:           "TestRegexFindAllNamedValid",
+			Input:          `{{ regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" -1 "var1=value1&var2=value2&var3=value3" }}`,
+			ExpectedOutput: "[map[param:var1 value:value1] map[param:var2 value:value2] map[param:var3 value:value3]]",
+		},
+		{
+			Name:           "TestRegexFindAllNamedWithLimit",
+			Input:          `{{ regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" 2 "var1=value1&var2=value2&var3=value3" }}`,
+			ExpectedOutput: "[map[param:var1 value:value1] map[param:var2 value:value2]]",
+		},
+		{
+			Name:           "TestRegexFindAllNamedNoMatch",
+			Input:          `{{ regexFindAllNamed "(?P<param>\\d+)=(?P<value>\\d+)" -1 "var1=value1&var2=value2&var3=value3" }}`,
+			ExpectedOutput: "[]",
+		},
+		{
+			Name:        "TestRegexFindAllNamedInvalidPattern",
+			Input:       `{{ regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+" -1 "var1=value1&var2=value2&var3=value3" }}`,
+			ExpectedErr: "error parsing regexp",
+		},
+	}
+	pesticide.RunTestCases(t, regexp.NewRegistry(), tc)
+}
+
+func TestRegexFindGroups(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{
+			Name:           "TestRegexFindGroupsValid",
+			Input:          `{{ regexFindGroups "([A-Za-z]+)@(example\\.com)" "Contact us at support@example.com" }}`,
+			ExpectedOutput: "[support@example.com support example.com]",
+		},
+		{
+			Name:           "TestRegexFindGroupsNoMatch",
+			Input:          `{{ regexFindGroups "([A-Za-z]+)@(example\\.org)" "Contact us at support@example.com" }}`,
+			ExpectedOutput: "[]",
+		},
+		{
+			Name:        "TestRegexFindGroupsInvalidPattern",
+			Input:       `{{ regexFindGroups "([A-Za-z]+)@(example\\.com" "Contact us at support@example.com" }}`,
+			ExpectedErr: "error parsing regexp",
+		},
+	}
+	pesticide.RunTestCases(t, regexp.NewRegistry(), tc)
+}
+
+func TestRegexFindAllGroups(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{
+			Name:           "TestRegexFindAllGroupsValid",
+			Input:          `{{ regexFindAllGroups "(\\w+)=(\\w+)" -1 "var1=value1&var2=value2&var3=value3" }}`,
+			ExpectedOutput: "[[var1=value1 var1 value1] [var2=value2 var2 value2] [var3=value3 var3 value3]]",
+		},
+		{
+			Name:           "TestRegexFindAllGroupsWithLimit",
+			Input:          `{{ regexFindAllGroups "(\\w+)=(\\w+)" 2 "var1=value1&var2=value2&var3=value3" }}`,
+			ExpectedOutput: "[[var1=value1 var1 value1] [var2=value2 var2 value2]]",
+		},
+		{
+			Name:           "TestRegexFindAllGroupsNoMatch",
+			Input:          `{{ regexFindAllGroups "(\\d+)=(\\d+)" -1 "var1=value1&var2=value2&var3=value3" }}`,
+			ExpectedOutput: "[]",
+		},
+		{
+			Name:        "TestRegexFindAllGroupsInvalidPattern",
+			Input:       `{{ regexFindAllGroups "(\\w+)=(\\w+" -1 "var1=value1&var2=value2&var3=value3" }}`,
+			ExpectedErr: "error parsing regexp",
+		},
+	}
+	pesticide.RunTestCases(t, regexp.NewRegistry(), tc)
+}

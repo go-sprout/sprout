@@ -32,6 +32,7 @@ func (cr *ConversionRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) err
 	sprout.AddFunction(funcsMap, "toOctal", cr.ToOctal)
 	sprout.AddFunction(funcsMap, "toString", cr.ToString)
 	sprout.AddFunction(funcsMap, "toDate", cr.ToDate)
+	sprout.AddFunction(funcsMap, "toLocalDate", cr.ToLocalDate)
 	sprout.AddFunction(funcsMap, "toDuration", cr.ToDuration)
 	return nil
 }

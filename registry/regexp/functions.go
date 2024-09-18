@@ -163,3 +163,139 @@ func (rr *RegexpRegistry) RegexReplaceAllLiteral(regex string, s string, replace
 	}
 	return r.ReplaceAllLiteralString(s, replacedBy), nil
 }
+
+// RegexFindGroups finds the first match of a regex pattern in a string and
+// returns the matched groups, with error handling.
+//
+// Parameters:
+//
+//	regex string - the regular expression to search with.
+//	str string - the string to search within.
+//
+// Returns:
+//
+//	[]string - the matched groups from the first regex match found.
+//	error - error if the regex fails to compile.
+//
+// Example:
+//
+//	{{ "aaabbb" | regexFindGroups "(a+)(b+)" }} // Output: ["aaabbb", "aaa", "bbb"], nil
+func (rr *RegexpRegistry) RegexFindGroups(regex string, str string) ([]string, error) {
+	r, err := regexp.Compile(regex)
+	if err != nil {
+		return []string{}, err
+	}
+	matches := r.FindStringSubmatch(str)
+	if len(matches) == 0 {
+		return []string{}, nil
+	}
+	return matches, nil
+}
+
+// RegexFindAllGroups finds all matches of a regex pattern in a string up
+// to a specified limit and returns the matched groups, with error handling.
+//
+// Parameters:
+//
+//	regex string - the regular expression to search with.
+//	str string - the string to search within.
+//	n int - the maximum number of matches to return; use -1 for no limit.
+//
+// Returns:
+//
+//	[][]string - a slice containing the matched groups for each match found.
+//	error - error if the regex fails to compile.
+//
+// Example:
+//
+//	{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)" -1 }} // Output: [["aaabbb", "aaa", "bbb"], ["aab", "aa", "b"], ["aaabbb", "aaa", "bbb"]], nil
+func (rr *RegexpRegistry) RegexFindAllGroups(regex string, n int, str string) ([][]string, error) {
+	r, err := regexp.Compile(regex)
+	if err != nil {
+		return [][]string{}, err
+	}
+	matches := r.FindAllStringSubmatch(str, n)
+	if len(matches) == 0 {
+		return [][]string{}, nil
+	}
+	return matches, nil
+}
+
+// RegexFindNamed finds the first match of a regex pattern with named
+// capturing groups in a string and returns a map of group names to matched
+// strings, with error handling.
+//
+// Parameters:
+//
+//	regex string - the regular expression to search with, containing named capturing groups.
+//	str string - the string to search within.
+//
+// Returns:
+//
+//	map[string]string - a map of group names to their corresponding matched strings.
+//	error - error if the regex fails to compile.
+//
+// Example:
+//
+//	{{ "aaabbb" | regexFindNamed "(?P<first>a+)(?P<second>b+)" }} // Output: map["first":"aaa", "second":"bbb"], nil
+func (rr *RegexpRegistry) RegexFindNamed(regex string, str string) (map[string]string, error) {
+	r, err := regexp.Compile(regex)
+	if err != nil {
+		return map[string]string{}, err
+	}
+	matches := r.FindStringSubmatch(str)
+	if len(matches) == 0 {
+		return map[string]string{}, nil
+	}
+
+	result := make(map[string]string, len(r.SubexpNames())-1)
+	for i, name := range r.SubexpNames() {
+		if i != 0 && name != "" {
+			result[name] = matches[i]
+		}
+	}
+	return result, nil
+}
+
+// RegexFindAllNamed finds all matches of a regex pattern with named capturing
+// groups in a string up to a specified limit and returns a slice of maps of
+// group names to matched strings, with error handling.
+//
+// Parameters:
+//
+//	regex string - the regular expression to search with, containing named capturing groups.
+//	str string - the string to search within.
+//	n int - the maximum number of matches to return; use -1 for no limit.
+//
+// Returns:
+//
+//	[]map[string]string - a slice containing a map of group names to their corresponding matched strings for each match found.
+//	error - error if the regex fails to compile.
+//
+// Example:
+//
+//	{{ "aaabbb aab aaabbb" | regexFindAllNamed "(?P<first>a+)(?P<second>b+)" -1 }} // Output: [map["first":"aaa", "second":"bbb"], map["first":"aa", "second":"b"], map["first":"aaa", "second":"bbb"]], nil
+func (rr *RegexpRegistry) RegexFindAllNamed(regex string, n int, str string) ([]map[string]string, error) {
+	r, err := regexp.Compile(regex)
+	if err != nil {
+		return []map[string]string{}, err
+	}
+	matches := r.FindAllStringSubmatch(str, n)
+	if len(matches) == 0 {
+		return []map[string]string{}, nil
+	}
+
+	subexpNames := r.SubexpNames()
+	results := make([]map[string]string, 0, len(matches))
+
+	for _, match := range matches {
+		m := make(map[string]string, len(subexpNames))
+		for i, name := range subexpNames {
+			if i != 0 && name != "" {
+				m[name] = match[i]
+			}
+		}
+		results = append(results, m)
+	}
+	return results, nil
+}

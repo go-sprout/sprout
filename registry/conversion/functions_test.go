@@ -150,6 +150,43 @@ func TestToDate(t *testing.T) {
 	pesticide.RunTestCases(t, conversion.NewRegistry(), tc)
 }
 
+func TestToLocalDate(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{
+			Name:           "TestLocalDate",
+			Input:          `{{$v := toLocalDate "2006-01-02" "Europe/Paris" .V }}{{typeOf $v}}-{{$v}}`,
+			Data:           map[string]any{"V": "2024-05-09"},
+			ExpectedOutput: "time.Time-2024-05-09 00:00:00 +0200 CEST",
+		},
+		{
+			Name:           "TestLocalDate",
+			Input:          `{{$v := toLocalDate "2006-01-02 15:04:05 MST" "MST" .V }}{{typeOf $v}}-{{$v}}`,
+			Data:           map[string]any{"V": "2024-05-09 00:00:00 MST"},
+			ExpectedOutput: "time.Time-2024-05-09 00:00:00 -0700 MST",
+		},
+		{
+			Name:        "TestInvalidValue",
+			Input:       `{{$v := toLocalDate "2006-01-02" "UTC" .V }}{{typeOf $v}}-{{$v}}`,
+			Data:        map[string]any{"V": ""},
+			ExpectedErr: "cannot parse \"\" as \"2006\"",
+		},
+		{
+			Name:        "TestInvalidLayout",
+			Input:       `{{$v := toLocalDate "invalid" "UTC" .V }}{{typeOf $v}}-{{$v}}`,
+			Data:        map[string]any{"V": "2024-05-09"},
+			ExpectedErr: "cannot parse \"2024-05-09\" as \"invalid\"",
+		},
+		{
+			Name:        "TestInvalidTimezone",
+			Input:       `{{$v := toLocalDate "2006-01-02" "invalid" .V }}{{typeOf $v}}-{{$v}}`,
+			Data:        map[string]any{"V": "2024-05-09"},
+			ExpectedErr: "unknown time zone invalid",
+		},
+	}
+
+	pesticide.RunTestCases(t, conversion.NewRegistry(), tc)
+}
+
 func TestToDuration(t *testing.T) {
 	tc := []pesticide.TestCase{
 		{Name: "TestInt", Input: `{{$v := toDuration .V }}{{typeOf $v}}-{{$v}}`, ExpectedOutput: "time.Duration-1ns", Data: map[string]any{"V": 1}},
