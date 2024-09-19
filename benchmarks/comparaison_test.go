@@ -152,7 +152,6 @@ func sproutBench(templatePath string) {
 	)
 
 	tmpl, err := template.New("allFunctions").Funcs(fnHandler.Build()).ParseGlob(templatePath)
-
 	if err != nil {
 		panic(err)
 	}

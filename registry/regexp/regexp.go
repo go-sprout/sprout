@@ -31,6 +31,10 @@ func (rr *RegexpRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "regexReplaceAll", rr.RegexReplaceAll)
 	sprout.AddFunction(funcsMap, "regexReplaceAllLiteral", rr.RegexReplaceAllLiteral)
 	sprout.AddFunction(funcsMap, "regexQuoteMeta", rr.RegexQuoteMeta)
+	sprout.AddFunction(funcsMap, "regexFindGroups", rr.RegexFindGroups)
+	sprout.AddFunction(funcsMap, "regexFindAllGroups", rr.RegexFindAllGroups)
+	sprout.AddFunction(funcsMap, "regexFindNamed", rr.RegexFindNamed)
+	sprout.AddFunction(funcsMap, "regexFindAllNamed", rr.RegexFindAllNamed)
 	return nil
 }
 

@@ -2,6 +2,7 @@ package slices
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 	"time"
 
@@ -53,4 +54,44 @@ func TestSlicesRegistry_inList(t *testing.T) {
 	assert.True(t, r.inList(anyTest, testStruct{"b"}))
 	assert.True(t, r.inList(anyTest, testStruct{"c"}))
 	assert.False(t, r.inList(anyTest, testStruct{"d"}))
+}
+
+func TestSlicesRegistry_flattenSlice(t *testing.T) {
+	r := NewRegistry()
+
+	tc := []struct {
+		input    []any
+		depth    int
+		expected []any
+	}{
+		{
+			input:    []any{1, 2, 3, []any{4, 5, 6}, []any{7, 8, 9}},
+			depth:    1,
+			expected: []any{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		},
+		{
+			input:    []any{1, 2, 3, []any{4, 5, 6}, []any{7, 8, 9}, []any{[]any{10, 11, 12}, 13, 14}},
+			depth:    2,
+			expected: []any{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14},
+		},
+		{
+			input:    []any{1, 2, 3, []any{4, 5, 6}, []any{7, 8, 9}, []any{[]any{10, 11, 12}, 13, 14}},
+			depth:    1,
+			expected: []any{1, 2, 3, 4, 5, 6, 7, 8, 9, []any{10, 11, 12}, 13, 14},
+		},
+		{
+			input:    []any{1, 2, 3, []any{4, 5, 6}, []any{7, 8, 9}, []any{[]any{10, 11, 12}, 13, 14}},
+			depth:    0,
+			expected: []any{1, 2, 3, []any{4, 5, 6}, []any{7, 8, 9}, []any{[]any{10, 11, 12}, 13, 14}},
+		},
+		{
+			input:    []any{1, 2, 3, []any{4, 5, 6}, []any{7, 8, 9}, []any{[]any{10, 11, 12}, 13, 14}},
+			depth:    -1,
+			expected: []any{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14},
+		},
+	}
+
+	for _, tt := range tc {
+		assert.Equal(t, tt.expected, r.flattenSlice(reflect.ValueOf(tt.input), tt.depth))
+	}
 }

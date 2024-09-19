@@ -188,6 +188,30 @@ _This example will takes the_ `"2024-05-10 11:12:42"` _string and convert it wit
 See more about Golang Layout on the [official documentation](https://go.dev/src/time/format.go).
 {% endhint %}
 
+### <mark style="color:purple;">toLocalDate</mark>
+
+toLocalDate converts a string to a time.Time object based on a format specification and the local timezone.
+
+<table data-header-hidden><thead><tr><th width="162">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToLocalDate(fmt, timezone, str string) (time.Time, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ "2024-09-17 11:12:42" | toLocalDate "2006-01-02" "Europe/Paris" }}
+// Output: 2024-09-17 00:00:00 +0200 CEST, nil
+{{ "2024-09-17 11:12:42" | toLocalDate "2006-01-02" "MST" }}
+// Output: 2024-09-17 00:00:00 -0700 MST, nil
+{{ "2024-09-17 11:12:42" | toLocalDate "2006-01-02" "invalid" }}
+// Error
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+See more about Golang Layout on the [official documentation](https://go.dev/src/time/format.go).
+{% endhint %}
+
 ### <mark style="color:purple;">toDuration</mark>
 
 toDuration converts a value to a `time.Duration`. Taking a possibly signed sequence of decimal numbers, each optional fraction and a unit suffix, such `300ms`, `-1.5h` or `2h45m`.

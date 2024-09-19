@@ -125,3 +125,72 @@ The function returns a version of the provided string that can be used as a lite
 {% endtab %}
 {% endtabs %}
 
+### <mark style="color:purple;">regexFindGroups</mark>
+
+The function finds the first match of a regex pattern in a string and returns the matched groups, with error handling.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">RegexFindGroups(regex string, str string) ([]string, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ "aaabbb" | regexFindGroups "(a+)(b+)" }} // Output: ["aaabbb", "aaa", "bbb"], nil
+{{ "aaabbb" | regexFindGroups "\invalid$^///" }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">regexFindAllGroups</mark>
+
+The function finds all matches of a regex pattern in a string up to a specified limit and returns the matched groups, with error handling.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">RegexFindAllGroups(regex string, n int, str string) ([]string, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)", -1 }} // Output: [["aaabbb", "aaa", "bbb"], ["aab", "aa", "b"], ["aaabbb", "aaa", "bbb"]], nil
+{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)", 1 }} // Output: [["aaabbb", "aaa", "bbb"]], nil
+{{ "aaabbb" | regexFindAllGroups "\invalid$^///" }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">regexFindNamed</mark>
+
+The function finds the first match of a regex pattern with named capturing groups in a string and returns a map of group names to matched strings, with error handling.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">RegexFindNamed(regex string, str string) (map[string]string, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ "aaabbb" | regexFindNamed "(?P<first>a+)(?P<second>b+)" }} // Output: map["first":"aaa", "second":"bbb"], nil
+{{ "aaabbb" | regexFindNamed "(?P<first>a+)(b+)" }} // Output: map["first":"aaa"], nil
+{{ "bbb" | regexFindNamed "(?P<first>a+)" }} // Output: map[], nil
+{{ "aaabbb" | regexFindNamed "\invalid$^///" }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">regexFindAllNamed</mark>
+
+The function finds all matches of a regex pattern with named capturing groups in a string up to a specified limit and returns a slice of maps of group names to matched strings, with error handling.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">RegexFindAllNamed(regex string, n int, str string) ([]map[string]string, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ "var1=value1&var2=value2" | regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" -1 }} // Output: [map[param:var1 value:value1] map[param:var2 value:value2]], nil
+{{ "var1=value1&var2=value2" | regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" 1 }} // Output: [map[param:var1 value:value1]], nil
+{{ "var1+value1" | regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" -1 }} // Output: map[], nil
+{{ "var1=value1" | regexFindAllNamed "\invalid$^///" -1 }} // Error
+```
+{% endtab %}
+{% endtabs %}
+

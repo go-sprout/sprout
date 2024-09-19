@@ -31,6 +31,8 @@ func (sr *SlicesRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "chunk", sr.Chunk)
 	sprout.AddFunction(funcsMap, "uniq", sr.Uniq)
 	sprout.AddFunction(funcsMap, "compact", sr.Compact)
+	sprout.AddFunction(funcsMap, "flatten", sr.Flatten)
+	sprout.AddFunction(funcsMap, "flattenDepth", sr.FlattenDepth)
 	sprout.AddFunction(funcsMap, "slice", sr.Slice)
 	sprout.AddFunction(funcsMap, "has", sr.Has)
 	sprout.AddFunction(funcsMap, "without", sr.Without)

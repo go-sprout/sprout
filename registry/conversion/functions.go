@@ -180,9 +180,34 @@ func (cr *ConversionRegistry) ToString(v any) string {
 //
 // Example:
 //
-//	{{ "2006-01-02", "2023-05-04" | toDate }} // Output: 2023-05-04 00:00:00 +0000 UTC
+//	{{ "2023-05-04" | toDate "2006-01-02" }} // Output: 2023-05-04 00:00:00 +0000 UTC
 func (cr *ConversionRegistry) ToDate(fmt, str string) (time.Time, error) {
 	return time.ParseInLocation(fmt, str, time.Local)
+}
+
+// ToLocalDate converts a string to a time.Time object based on a format specification
+// and the local timezone.
+//
+// Parameters:
+//
+//	fmt string - the date format string.
+//	str string - the date string to parse.
+//
+// Returns:
+//
+//	time.Time - the parsed date.
+//	error - error if the date string does not conform to the format.
+//
+// Example:
+//
+//	{{ "2023-05-04" | toLocalDate "2006-01-02" "Europe/Paris" }} // Output: 2023-05-04 00:00:00 +0200 UTC
+func (cr *ConversionRegistry) ToLocalDate(fmt, timezone, str string) (time.Time, error) {
+	location, err := time.LoadLocation(timezone)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	return time.ParseInLocation(fmt, str, location)
 }
 
 // ToDuration converts a value to a time.Duration.
