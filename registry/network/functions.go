@@ -97,14 +97,14 @@ func (nr *NetworkRegistry) ParseCIDR(str string) (*net.IPNet, error) {
 //
 // Returns:
 //
-//	int - the IP version, 4 for IPv4 or 16 for IPv6.
+//	uint8 - the IP version, 4 for IPv4 or 16 for IPv6.
 //	error - an error if the IP address is invalid or cannot be parsed.
 //
 // Example:
 //
 //	{{ ipVersion "192.168.0.1" }} // Output: 4
 //	{{ ipVersion "2001:db8::" }} // Output: 6
-func (nr *NetworkRegistry) IPVersion(ipStr string) (int, error) {
+func (nr *NetworkRegistry) IPVersion(ipStr string) (uint8, error) {
 	ip, err := nr.ParseIP(ipStr)
 	if err != nil {
 		return 0, err
@@ -369,7 +369,7 @@ func (nr *NetworkRegistry) CIDRContains(cidrStr string, ip string) (bool, error)
 func (nr *NetworkRegistry) CIDRSize(cidrStr string) (*big.Int, error) {
 	cidr, err := nr.ParseCIDR(cidrStr)
 	if err != nil {
-		return nil, fmt.Errorf("invalid CIDR block: %w", err)
+		return nil, err
 	}
 
 	ones, bits := cidr.Mask.Size()

@@ -16,7 +16,7 @@ import "github.com/go-sprout/sprout/registry/network"
 
 ### <mark style="color:purple;">parseIP</mark>
 
-ParseIP parses a string representation of an IP address and returns its net.IP form. It attempts to parse the string as either an IPv4 or IPv6 address.
+ParseIP parses a string representation of an IP address and returns its [`net.IP`](https://pkg.go.dev/net#IP) form. It attempts to parse the string as either an IPv4 or IPv6 address.
 
 <table data-header-hidden>
   <thead><tr><th width="174">Name</th><th>Value</th></tr></thead>
@@ -35,7 +35,7 @@ ParseIP parses a string representation of an IP address and returns its net.IP f
 
 ### <mark style="color:purple;">parseMAC</mark>
 
-ParseMAC parses a string representation of a MAC address and returns its net.HardwareAddr form. It attempts to parse the string as a MAC address.
+ParseMAC parses a string representation of a MAC address and returns its [`net.HardwareAddr`](https://pkg.go.dev/net#HardwareAddr) form. It attempts to parse the string as a MAC address.
 
 <table data-header-hidden>
   <thead><tr><th width="174">Name</th><th>Value</th></tr></thead>
@@ -52,7 +52,7 @@ ParseMAC parses a string representation of a MAC address and returns its net.Har
 
 ### <mark style="color:purple;">parseCIDR</mark>
 
-ParseCIDR parses a string representation of an IP address and prefix length (CIDR notation) and returns its *net.IPNet form. It attempts to parse the provided string as a CIDR (Classless Inter-Domain Routing) block.
+ParseCIDR parses a string representation of an IP address and prefix length (CIDR notation) and returns its [`*net.IPNet`](https://pkg.go.dev/net#IPNet) form. It attempts to parse the provided string as a CIDR (Classless Inter-Domain Routing) block.
 
 <table data-header-hidden>
   <thead><tr><th width="174">Name</th><th>Value</th></tr></thead>
