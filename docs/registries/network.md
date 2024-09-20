@@ -1,9 +1,7 @@
 ---
 description: >-
   The Network registry includes a range of utilities for working with network
-  resources, such as IP addresses, CIDR blocks, and network interfaces. These
-  functions make it easier to interact with network data and perform common
-  networking tasks in your templates.
+  resources, such as IP addresses, CIDR blocks, and network interfaces.
 ---
 
 # Network
