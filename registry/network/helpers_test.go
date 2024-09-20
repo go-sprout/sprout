@@ -14,15 +14,15 @@ func TestDetermineIPVersion(t *testing.T) {
 
 	// Test case: IPv4 address
 	ipv4 := net.ParseIP("192.168.0.1")
-	assert.Equal(t, 4, nr.determineIPVersion(ipv4))
+	assert.Equal(t, uint8(4), nr.determineIPVersion(ipv4))
 
 	// Test case: IPv6 address
 	ipv6 := net.ParseIP("2001:db8::1")
-	assert.Equal(t, 6, nr.determineIPVersion(ipv6))
+	assert.Equal(t, uint8(6), nr.determineIPVersion(ipv6))
 
 	// Test case: IPv4-mapped IPv6 address
 	ipv4MappedIPv6 := net.ParseIP("::ffff:192.168.0.1")
-	assert.Equal(t, 4, nr.determineIPVersion(ipv4MappedIPv6))
+	assert.Equal(t, uint8(4), nr.determineIPVersion(ipv4MappedIPv6))
 }
 
 // TestCalculateLastIP tests the calculateLastIP function.
