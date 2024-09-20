@@ -42,10 +42,6 @@ func (nr *NetworkRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error 
 	sprout.AddFunction(funcsMap, "cidrFirst", nr.CIDRFirst)
 	sprout.AddFunction(funcsMap, "cidrLast", nr.CIDRLast)
 	sprout.AddFunction(funcsMap, "cidrOverlap", nr.CIDROverlap)
-	sprout.AddFunction(funcsMap, "hostname", nr.Hostname)
-	sprout.AddFunction(funcsMap, "interfaces", nr.Interfaces)
-	sprout.AddFunction(funcsMap, "interfaceAddrs", nr.InterfaceAddrs)
-	sprout.AddFunction(funcsMap, "interfaceByName", nr.InterfaceByName)
 	return nil
 }
 

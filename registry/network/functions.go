@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math/big"
 	"net"
-	"os"
 )
 
 // ParseIP parses a string representation of an IP address and returns its net.IP form.
@@ -519,90 +518,4 @@ func (nr *NetworkRegistry) CIDROverlap(cidrStrA, cidrStrB string) (bool, error) 
 			cidrA.Contains(cidrB.IP.To16()) ||
 			cidrA.Contains(nr.calculateLastIP(cidrB)),
 		nil
-}
-
-// Hostname retrieves the hostname of the system.
-//
-// Returns:
-//
-//	string - the hostname of the system.
-//	error - an error if the hostname cannot be retrieved.
-//
-// Example:
-//
-//	{{ hostname }} // Output: my-hostname
-func (nr *NetworkRegistry) Hostname() (string, error) {
-	hostname, err := os.Hostname()
-	if err != nil {
-		return "", fmt.Errorf("cannot get hostname: %w", err)
-	}
-
-	return hostname, nil
-}
-
-// Interfaces retrieves a list of available network interface names on the system.
-//
-// Returns:
-//
-//	[]string - a list of network interface names.
-//	error - an error if the interfaces cannot be retrieved.
-//
-// Example:
-//
-//	{{ interfaces }} // Output: [eth0 lo]
-func (nr *NetworkRegistry) Interfaces() ([]string, error) {
-	interfaces, err := net.Interfaces()
-	if err != nil {
-		return nil, fmt.Errorf("unable to retrieve network interfaces: %w", err)
-	}
-
-	names := make([]string, 0, len(interfaces))
-	for _, iface := range interfaces {
-		names = append(names, iface.Name)
-	}
-
-	return names, nil
-}
-
-// InterfaceAddrs returns the list of IP addresses associated with a specific network interface.
-//
-// Parameters:
-//
-//	iface string - the name of the network interface.
-//
-// Returns:
-//
-//	[]string - a list of IP addresses associated with the network interface.
-//	error - an error if the addresses cannot be retrieved or the interface is not found.
-func (nr *NetworkRegistry) InterfaceAddrs(iface string) ([]string, error) {
-	networkInterface, err := nr.InterfaceByName(iface)
-	if err != nil {
-		return nil, err
-	}
-
-	addrs, err := networkInterface.Addrs()
-	if err != nil {
-		return nil, fmt.Errorf("unable to retrieve addresses for interface %s: %w", iface, err)
-	}
-
-	addrStrs := make([]string, 0, len(addrs))
-	for _, addr := range addrs {
-		addrStrs = append(addrStrs, addr.String())
-	}
-
-	return addrStrs, nil
-}
-
-// InterfaceByName retrieves the network interface by its name.
-//
-// Parameters:
-//
-//	iface string - the name of the network interface.
-//
-// Returns:
-//
-//	*net.Interface - the network interface with the given name.
-//	error - an error if the interface cannot be found or the MAC address cannot be retrieved.
-func (nr *NetworkRegistry) InterfaceByName(iface string) (*net.Interface, error) {
-	return net.InterfaceByName(iface)
 }

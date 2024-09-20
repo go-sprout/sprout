@@ -227,35 +227,3 @@ func TestCIDROverlap(t *testing.T) {
 
 	pesticide.RunTestCases(t, network.NewRegistry(), tc)
 }
-
-func TestHostname(t *testing.T) {
-	tc := []pesticide.RegexpTestCase{
-		{Name: "ValidHostname", Template: `{{ hostname }}`, Regexp: ".+", Length: -1},
-	}
-
-	pesticide.RunRegexpTestCases(t, network.NewRegistry(), tc)
-}
-
-func TestInterfaces(t *testing.T) {
-	tc := []pesticide.TestCase{
-		{Name: "Interfaces", Input: `{{ ge (interfaces | len) 1 }}`, ExpectedOutput: "true"},
-	}
-
-	pesticide.RunTestCases(t, network.NewRegistry(), tc)
-}
-
-func TestInterfaceAddrs(t *testing.T) {
-	tc := []pesticide.RegexpTestCase{
-		{Name: "InterfaceAddrs", Template: `{{ interfaceAddrs "lo" }}`, Regexp: "127\\.0\\.0\\.1", Length: -1},
-	}
-
-	pesticide.RunRegexpTestCases(t, network.NewRegistry(), tc)
-}
-
-func TestInterfaceByName(t *testing.T) {
-	tc := []pesticide.TestCase{
-		{Name: "InterfaceByName", Input: `{{ (interfaceByName "lo").Name }}`, ExpectedOutput: "lo"},
-	}
-
-	pesticide.RunTestCases(t, network.NewRegistry(), tc)
-}
