@@ -29,6 +29,7 @@
 * [Filesystem](registries/filesystem.md)
 * [Maps](registries/maps.md)
 * [Numeric](registries/numeric.md)
+* [Network](registries/network.md)
 * [Random](registries/random.md)
 * [Reflect](registries/reflect.md)
 * [Regexp](registries/regexp.md)
