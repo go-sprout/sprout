@@ -16,7 +16,7 @@ import (
 //
 // Returns:
 //
-//	byte - 4 for IPv4, 6 for IPv6.
+//	uint8 - 4 for IPv4, 6 for IPv6.
 func (nr *NetworkRegistry) determineIPVersion(ip net.IP) uint8 {
 	// Check if it's an IPv4 address
 	if len(ip) == net.IPv4len || (len(ip) == net.IPv6len && ip.To4() != nil) {
