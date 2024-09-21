@@ -7,7 +7,7 @@ import (
 	"net"
 )
 
-// ParseIP parses a string representation of an IP address and returns its net.IP form.
+// ParseIP parses a string representation of an IP address and returns its [net.IP] form.
 //
 // It attempts to parse the string as either an IPv4 or IPv6 address.
 // If the provided string is not a valid IP address, an error is returned.
@@ -34,7 +34,7 @@ func (nr *NetworkRegistry) ParseIP(str string) (net.IP, error) {
 	return ip, nil
 }
 
-// ParseMAC parses a string representation of a MAC address and returns its net.HardwareAddr form.
+// ParseMAC parses a string representation of a MAC address and returns its [net.HardwareAddr] form.
 //
 // It attempts to parse the provided string as a MAC address. If the string is not a valid MAC address,
 // an error is returned.
@@ -61,7 +61,7 @@ func (nr *NetworkRegistry) ParseMAC(str string) (net.HardwareAddr, error) {
 }
 
 // ParseCIDR parses a string representation of an IP address and prefix length (CIDR notation)
-// and returns its *net.IPNet form.
+// and returns its [*net.IPNet] form.
 //
 // It attempts to parse the provided string as a CIDR (Classless Inter-Domain Routing) block.
 // If the string is not valid CIDR notation, an error is returned.
