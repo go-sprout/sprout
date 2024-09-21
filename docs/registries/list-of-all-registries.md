@@ -16,6 +16,7 @@ Every function is categorized into a registry and may include a [**'must'** vers
 * [**env**](env.md): Access and manipulate environment variables within templates.
 * [**filesystem**](filesystem.md): Functions for interacting with the file system.
 * [**maps**](maps.md): Tools to manipulate and interact with map data structures.
+* [**network**](network.md): Functions to interact with network resources.
 * [**numeric**](numeric.md): Utilities for numerical operations and calculations.
 * [**random**](random.md): Functions to generate random numbers, strings, and other data.
 * [**reflect**](reflect.md): Tools to inspect and manipulate data types using reflection.
