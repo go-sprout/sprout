@@ -95,10 +95,31 @@ Thoroughly test your migrated templates to ensure that all functions behave as e
 ## <mark style="color:purple;">How to Transition for your end-users</mark>
 
 You use sprig or sprout for end-users and want to migrate ?\
-A complete guide will be write here soon.
+Transitioning from Sprig to Sprout can be smooth with proper guidance. Here's a detailed plan to ensure confidence during the migration:
 
 {% hint style="info" %}
 You need more information now, contact maintainers or open [a discussion on the repository](https://github.com/orgs/go-sprout/discussions/categories/q-a).
+{% endhint %}
+
+***
+
+1. **Communicate the Purpose of the Migration**\
+   Explain the reasons for switching to Sprout, emphasizing improvements such as better performance, modular function registries, enhanced error handling, and new features like function notices and safe functions. Providing context will minimize resistance and help users understand the long-term benefits.
+2. **Attach Your Logger to Sprout**\
+   Starting from Sprout v1.0.0, deprecated functions are flagged through the logger. This ensures end-users are informed of upcoming deprecations without breaking the existing code.
+3. **Update Frequently**\
+   We follow a no-breaking-change policy for five minor versions. For example, a function deprecated in v1.2 will be removed in v1.7. End-of-life notices for functions will be automatically logged, so you don’t need to intervene.
+4. **Provide Feedback**\
+   If you or your end-users encounter any feedback during the migration—whether it’s about missing functions, bugs, or positive experiences—reach out to the maintainers or contribute to the project on GitHub. Your input helps improve the library for everyone.
+
+***
+
+{% hint style="info" %}
+As a library developer, you can extend Sprout by creating your [own function registry](advanced/how-to-create-a-registry.md). This allows you to add custom functions to meet specific use cases. Additionally, you can use [**notices** ](features/function-notices.md)to inform your end-users about important updates or issues during template execution, such as deprecations or debugging hints. These notices can enhance the user experience by providing real-time feedback, ensuring a smoother transition to the new system, and allowing users to handle function changes more efficiently.
+{% endhint %}
+
+{% hint style="success" %}
+Our maintainers and collaborators can assist you if you have question, don't hesitate to [open a discussion on Github](https://github.com/orgs/go-sprout/discussions/categories/q-a) !
 {% endhint %}
 
 ## <mark style="color:purple;">Migrating Common Functions</mark>
