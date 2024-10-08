@@ -1,5 +1,54 @@
 # Changelog
 
+## Release v1.0.0: Sprout Genesis 🌱 (2024-10-xx)
+
+> 🌱 A New Era of Functionality, Flexibility, and Performance!
+
+We’re thrilled to announce the **v1.0.0-rc1** release of **Sprout**, marking a significant step forward in our mission to create the most powerful and flexible templating library for Go developers. This release introduces major features, critical fixes, and exciting new tools to help you build more efficient and secure templates.
+
+_This section's comparisons are based on Sprig v3.2.3. If you're totally new, welcome! Go ahead with [Getting started](https://docs.atom.codes/sprout/introduction/getting-started)_
+
+### 🚀 **New Core Features**
+- **Migration to Function Handler**: All functions have been migrated under a unified function handler to streamline function management. [Documentation](https://docs.atom.codes/sprout/features/loader-system-registry).
+- **Registry System (Loader)**: Introduced a new registry system for modular function management, supporting easier extension and organization of functions. [Documentation](https://docs.atom.codes/sprout/features/loader-system-registry).
+- **Safe Functions**: New safe versions of functions that follow Go's template standards, providing flexible error handling options. [Documentation](https://docs.atom.codes/sprout/features/safe-functions).
+- **Function Notices**: Added real-time notices when specific functions are called to warn or inform users of critical behavior. [Documentation](https://docs.atom.codes/sprout/features/function-notices).
+- **Function Aliases**: Added function aliases to ensure smooth transition and backward compatibility. [Documentation](https://docs.atom.codes/sprout/features/function-aliases).
+
+### 🔄 **Backward Compatibility**
+- **Reimport Functions from Sprig**: Maintained backward compatibility by reimporting core functions from Sprig. [Documentation](https://docs.atom.codes/sprout/migration-from-sprig).
+- **Backward Compatibility Documentation**: Updated docs to ensure seamless migration and backward compatibility. [Documentation](https://docs.atom.codes/sprout/migration-from-sprig).
+
+### 🛠 **Enhancements and Fixes**
+- **Optimized Memory Footprint**: Performance improvements were made to reduce memory usage across the board. [Benchmarks](https://github.com/go-sprout/sprout/tree/main/benchmarks).
+- **Fixed CamelCase Logic**: Updated CamelCase and PascalCase transformation logic to handle edge cases better. [Documentation](https://docs.atom.codes/sprout/migration-from-sprig#tocamelcase-topascalcase)
+- **Never more panics**: Rework functions how cause panics on template engines to ensure a better stability. [Documentation](https://docs.atom.codes/sprout/migration-from-sprig#panicking-functions).
+
+### 🌐 **New Utilities**
+- **Batch of New Functions**: Introduced a wide range of functions for slices, regex manipulations, and conversions, expanding Sprout's toolkit significantly. See [PR 70](https://github.com/go-sprout/sprout/pull/70).
+- **Network Registry**: New functions for handling IP, CIDR, and MAC address manipulations in templates. See [PR 71](https://github.com/go-sprout/sprout/pull/71).
+- **SHA512 Checksums**: Added `sha512sum` to the checksum registry with useful notices for end-users. See [PR 59](https://github.com/go-sprout/sprout/pull/59).
+- **New Struct Method `hasField`**: Added a method for checking struct fields dynamically. See [PR 61](https://github.com/go-sprout/sprout/pull/61).
+- **String Capitalization Functions**: New string capitalization functions with full Unicode and Latin rune support. See [PR 62](https://github.com/go-sprout/sprout/pull/62).
+- **`toDuration` Conversion Function**: A new utility to simplify time conversions across templates. See [PR 27](https://github.com/go-sprout/sprout/pull/27).
+
+### 📚 **Documentation**
+- **Fancy and complete documentation**: Create a fancy and complete documentatio, ensuring they’re up to date and aligned with Sprout’s growth. [Documentation](https://sprout.atom.codes)
+
+---
+
+### 🏆 **A Special Thanks to Our Contributors**
+
+A heartfelt thank you to everyone who contributed to this v1.0.0 journey, particularly [@42atomys](https://github.com/42atomys), whose tireless work and commitment have made this release possible. Special thanks to [@mbezhanov](https://github.com/mbezhanov), [@andig](https://github.com/andig), [@ccoVeille](https://github.com/ccoVeille) for their valuable contributions and to [@caarlos0](https://github.com/caarlos0) for the support in making decisions and for being the second maintainer of the Sprout organization.
+
+---
+
+### 🔮 **Looking Ahead**
+
+This release candidate is a crucial step towards the official v1.0.0 release. We encourage you to test the new features, provide feedback, and help us fine-tune the final version. We’re incredibly excited for what’s to come and can’t wait to see how Sprout will evolve with your help!
+
+Let’s continue growing Sprout together and make this library the best tool for Go developers everywhere!
+
 ## Release v0.6.0: Sprout Evolution 🌱 (2024-09-16)
 
 > 💡 Cultivating Precision, One Function at a Time!
