@@ -38,9 +38,4 @@ In this example, `group1` and `group2` are added to the `handler`, allowing all 
 
 ## How to create a registry group
 
-To create a `RegistryGroup`, initialize it with the desired registries using the `NewRegistryGroup` function:
-
-```go
-group := NewRegistryGroup(registry1.NewRegistry(), registry2.NewRegistry())
-```
-This code snippet demonstrates how to group `registry1` and `registry2` into a single `RegistryGroup`.
+To show how to create your own registry group, go to [how-to-create-a-registry-group.md](../advanced/how-to-create-a-registry-group.md "mention")

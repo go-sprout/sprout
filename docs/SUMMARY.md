@@ -51,6 +51,7 @@
 
 * [How to create a handler](advanced/how-to-create-a-handler.md)
 * [How to create a registry](advanced/how-to-create-a-registry.md)
+* [How to create a registry group](advanced/how-to-create-a-registry-group.md)
 
 ## Links
 
