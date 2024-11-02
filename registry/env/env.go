@@ -13,7 +13,7 @@ func NewRegistry() *EnvironmentRegistry {
 
 // Uid returns the unique identifier of the registry.
 func (or *EnvironmentRegistry) Uid() string {
-	return "env"
+	return "go-sprout/sprout.env"
 }
 
 // LinkHandler links the handler to the registry at runtime.

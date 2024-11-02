@@ -13,7 +13,7 @@ func NewRegistry() *EncodingRegistry {
 
 // Uid returns the unique identifier of the registry.
 func (or *EncodingRegistry) Uid() string {
-	return "encoding"
+	return "go-sprout/sprout.encoding"
 }
 
 // LinkHandler links the handler to the registry at runtime.

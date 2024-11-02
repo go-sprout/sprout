@@ -44,7 +44,7 @@ func NewRegistry() *RandomRegistry {
 
 // Uid returns the unique identifier of the registry.
 func (rr *RandomRegistry) Uid() string {
-	return "random"
+	return "go-sprout/sprout.random"
 }
 
 // LinkHandler links the handler to the registry at runtime.

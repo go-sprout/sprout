@@ -13,7 +13,7 @@ func NewRegistry() *ConversionRegistry {
 
 // Uid returns the unique identifier of the registry.
 func (or *ConversionRegistry) Uid() string {
-	return "conversion"
+	return "go-sprout/sprout.conversion"
 }
 
 // LinkHandler links the handler to the registry at runtime.

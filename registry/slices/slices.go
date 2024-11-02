@@ -13,7 +13,7 @@ func NewRegistry() *SlicesRegistry {
 
 // Uid returns the unique identifier of the registry.
 func (sr *SlicesRegistry) Uid() string {
-	return "slices"
+	return "go-sprout/sprout.slices"
 }
 
 // LinkHandler links the handler to the registry at runtime.

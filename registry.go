@@ -15,8 +15,7 @@ type FunctionMap = template.FuncMap
 // It also allows for easy extension of the template functions by adding a new one.
 type Registry interface {
 	// Uid returns the unique name of the registry. This name is used to identify
-	// the registry and in future prevent duplicate registry registration.
-	// TODO: Consider implement a solution for duplicate registry registration.
+	// the registry author and name and prevent duplicate registry registration.
 	Uid() string
 	// LinkHandler links the given Handler to the registry.
 	// * This method help you to have access to the main handler and its

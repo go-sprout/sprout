@@ -13,7 +13,7 @@ func NewRegistry() *FileSystemRegistry {
 
 // Uid returns the unique identifier of the registry.
 func (fsr *FileSystemRegistry) Uid() string {
-	return "filesystem"
+	return "go-sprout/sprout.filesystem"
 }
 
 // LinkHandler links the handler to the registry at runtime.

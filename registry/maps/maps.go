@@ -13,7 +13,7 @@ func NewRegistry() *MapsRegistry {
 
 // Uid returns the unique identifier of the registry.
 func (mr *MapsRegistry) Uid() string {
-	return "maps"
+	return "go-sprout/sprout.maps"
 }
 
 // LinkHandler links the handler to the registry at runtime.

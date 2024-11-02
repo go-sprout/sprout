@@ -36,7 +36,7 @@ func NewRegistry() *BackwardCompatibilityRegistry {
 
 // Uid returns the unique identifier of the registry.
 func (bcr *BackwardCompatibilityRegistry) Uid() string {
-	return "backwardCompatibilityWithSprig" // ! Must be unique and in camel case
+	return "go-sprout/sprout.backwardcompatibilitywithsprig"
 }
 
 // LinkHandler links the handler to the registry at runtime.

@@ -44,7 +44,7 @@ func NewRegistry() *OwnRegistry {
 
 // Uid provides a unique identifier for your registry.
 func (or *OwnRegistry) Uid() string {
-  return "organization.ownRegistry" // Ensure this identifier is unique and uses camelCase, prefixed by your handler separated with a dot. 
+  return "organization/repo.ownregistry" // Ensure this identifier is unique and uses lowercase, prefixed by your handler/repo separated with a dot. 
 }
 
 // LinkHandler connects the Handler to your registry, enabling runtime functionalities.
