@@ -41,7 +41,7 @@
 * [Time](registries/time.md)
 * [Uniqueid](registries/uniqueid.md)
 
-## Grouped Registries
+## Groups
 
 * [List of all registry groups](groups/list-of-all-registry-groups.md)
 * [All](groups/all.md)
