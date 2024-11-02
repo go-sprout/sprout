@@ -43,9 +43,9 @@
 
 ## Grouped Registries
 
-* [List of all registry groups](grouped-registries/list-of-all-registry-groups.md)
-* [All](grouped-registries/all.md)
-* [Hermetic](grouped-registries/hermetic.md)
+* [List of all registry groups](groups/list-of-all-registry-groups.md)
+* [All](groups/all.md)
+* [Hermetic](groups/hermetic.md)
 
 ## Advanced
 

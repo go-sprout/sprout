@@ -11,7 +11,7 @@ description: >-
 You can easily import group from the <mark style="color:yellow;">`all`</mark> group by including the following import statement in your code
 
 ```go
-import "github.com/go-sprout/sprout/group/all"
+import "github.com/go-sprout/sprout/group/hermetic"
 ```
 {% endhint %}
 
