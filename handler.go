@@ -65,11 +65,11 @@ type DefaultHandler struct {
 // RegisterHandler registers a single FunctionRegistry implementation (e.g., a handler)
 // into the FunctionHandler's internal function registry. This method allows for integrating
 // additional functions into the template processing environment.
-// This function prevents duplicate registry registration by checking the Uid
+// This function prevents duplicate registry registration by checking the UID
 // of the registry.
 func (dh *DefaultHandler) AddRegistry(reg Registry) error {
 	if slices.ContainsFunc(dh.registries, func(r Registry) bool {
-		return r.Uid() == reg.Uid()
+		return r.UID() == reg.UID()
 	}) {
 		return nil
 	}

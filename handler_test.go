@@ -96,7 +96,7 @@ func TestDefaultHandler_AddRegistries_Error(t *testing.T) {
 
 func TestDefaultHandler_AddRegistry_MultipleTimes(t *testing.T) {
 	mockRegistry := new(MockRegistry)
-	mockRegistry.On("Uid").Return("mockRegistry")
+	mockRegistry.On("UID").Return("mockRegistry")
 	mockRegistry.On("LinkHandler", mock.Anything).Return()
 	mockRegistry.On("RegisterFunctions", mock.Anything).Return()
 

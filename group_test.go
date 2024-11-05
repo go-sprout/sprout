@@ -17,12 +17,12 @@ func TestNewRegistryGroup(t *testing.T) {
 
 func TestDefaultHandler_AddGroups(t *testing.T) {
 	mockRegistry1 := new(MockRegistry)
-	mockRegistry1.On("Uid").Return("mockRegistry1")
+	mockRegistry1.On("UID").Return("mockRegistry1")
 	mockRegistry1.On("LinkHandler", mock.Anything).Return()
 	mockRegistry1.On("RegisterFunctions", mock.Anything).Return()
 
 	mockRegistry2 := new(MockRegistry)
-	mockRegistry2.On("Uid").Return("mockRegistry2")
+	mockRegistry2.On("UID").Return("mockRegistry2")
 	mockRegistry2.On("LinkHandler", mock.Anything).Return()
 	mockRegistry2.On("RegisterFunctions", mock.Anything).Return()
 
@@ -52,7 +52,7 @@ func TestDefaultHandler_AddGroups(t *testing.T) {
 func TestDefaultHandler_AddGroups_Error(t *testing.T) {
 	mockRegistry := new(MockRegistry)
 	mockRegistry.linkHandlerMustCrash = true
-	mockRegistry.On("Uid").Return("mockRegistry")
+	mockRegistry.On("UID").Return("mockRegistry")
 	mockRegistry.On("LinkHandler", mock.Anything).Return(errMock)
 
 	group1 := NewRegistryGroup(mockRegistry)
@@ -70,7 +70,7 @@ func TestDefaultHandler_AddGroups_Error(t *testing.T) {
 
 func TestDefaultHandler_AddGroups_MultiplesTimes(t *testing.T) {
 	mockRegistry := new(MockRegistry)
-	mockRegistry.On("Uid").Return("mockRegistry1")
+	mockRegistry.On("UID").Return("mockRegistry1")
 	mockRegistry.On("LinkHandler", mock.Anything).Return()
 	mockRegistry.On("RegisterFunctions", mock.Anything).Return()
 
@@ -100,12 +100,12 @@ func TestDefaultHandler_AddGroups_MultiplesTimes(t *testing.T) {
 
 func TestWithGroups(t *testing.T) {
 	mockRegistry1 := new(MockRegistry)
-	mockRegistry1.On("Uid").Return("mockRegistry1")
+	mockRegistry1.On("UID").Return("mockRegistry1")
 	mockRegistry1.On("LinkHandler", mock.Anything).Return()
 	mockRegistry1.On("RegisterFunctions", mock.Anything).Return()
 
 	mockRegistry2 := new(MockRegistry)
-	mockRegistry2.On("Uid").Return("mockRegistry2")
+	mockRegistry2.On("UID").Return("mockRegistry2")
 	mockRegistry2.On("LinkHandler", mock.Anything).Return()
 	mockRegistry2.On("RegisterFunctions", mock.Anything).Return()
 
@@ -135,7 +135,7 @@ func TestWithGroups(t *testing.T) {
 func TestWithGroups_Error(t *testing.T) {
 	mockRegistry := new(MockRegistry)
 	mockRegistry.linkHandlerMustCrash = true
-	mockRegistry.On("Uid").Return("mockRegistry")
+	mockRegistry.On("UID").Return("mockRegistry")
 	mockRegistry.On("LinkHandler", mock.Anything).Return(errMock)
 
 	group1 := NewRegistryGroup(mockRegistry)
