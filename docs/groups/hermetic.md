@@ -2,13 +2,13 @@
 description: >-
   The Hermetic registry group includes all the registries available in Sprout,
   excluding registries that depend on external services or are influenced by the
-  environment where the application is running.
+  environment where the application is running
 ---
 
-# All
+# Hermetic
 
 {% hint style="info" %}
-You can easily import group from the <mark style="color:yellow;">`all`</mark> group by including the following import statement in your code
+You can easily import group from the <mark style="color:yellow;">`hermetic`</mark> group by including the following import statement in your code
 
 ```go
 import "github.com/go-sprout/sprout/group/hermetic"
