@@ -16,7 +16,7 @@ migrated yet to the [Migration from Sprig](https://docs.atom.codes/sprout/migrat
 
 ## Templating Differences
 ### Bugs fixed
-In Sprig, somes functions have bugs that have been fixed in Sprout:
+In Sprig, some functions have bugs that have been fixed in Sprout:
 
 1. `{{ "foooboooooo" | abbrevboth 4 9 }}`
   - Sprig: `fooobo...`
@@ -40,5 +40,5 @@ In Sprig, somes functions have bugs that have been fixed in Sprout:
   - Sprig: `foobar` | `foobar`
   - Sprout: `foo` | `bar`
 8. `{{ .duration | durationRound }}`
-  - Sprig: `0s` (only when not casted to `time.Duration` before, `{{ .duration | duration | durationRound }}` works as expected with `5s`)
+  - Sprig: `0s` (only when not cast to `time.Duration` before, `{{ .duration | duration | durationRound }}` works as expected with `5s`)
   - Sprout: `5s`

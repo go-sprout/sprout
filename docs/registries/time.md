@@ -115,7 +115,7 @@ The function returns the Unix epoch timestamp for a given date.
 
 ### <mark style="color:purple;">dateModify</mark>
 
-The function adjusts a given date by a specified duration, returning the modified date. If the duration format is incorrect, it returns the original date without any changes, in case of must version, an error are returned.
+The function adjusts a given date by a specified duration, returning the modified date. If the duration format is incorrect, it returns the original date without any changes, in case of must version, an error is returned.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DateModify(fmt string, date time.Time) (time.Time, error)
 </code></pre></td></tr></tbody></table>

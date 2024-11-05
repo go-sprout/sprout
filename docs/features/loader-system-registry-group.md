@@ -16,7 +16,7 @@ Using a `RegistryGroup` can help you manage multiple registries. But can lead to
 
 ## How to use a registry group
 
-If you have creted a `RegistryGroup` or want to use a built-in group, you can add it to your handler using the `AddGroups` method:
+If you have created a `RegistryGroup` or want to use a built-in group, you can add it to your handler using the `AddGroups` method:
 
 ```go
 err := handler.AddGroups(group1, group2)

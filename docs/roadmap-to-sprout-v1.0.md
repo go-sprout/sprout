@@ -8,7 +8,7 @@ description: The roadmap to grow the sprout
 ## Key Objectives
 
 {% hint style="info" %}
-All objectives are get from feedback, suggestions and personal knowledge. You can discuss about the v1.0 directly [in the issue on GitHub](https://github.com/go-sprout/sprout/issues/1).
+All objectives comes from feedback, suggestions and personal knowledge. You can discuss the v1.0 directly [in the issue on GitHub](https://github.com/go-sprout/sprout/issues/1).
 {% endhint %}
 
 ### :white\_check\_mark: Minimize Dependencies - <mark style="color:green;">**DONE**</mark>
@@ -24,7 +24,7 @@ Dependencies have been minimized and optimized across all registries.
 Provide comprehensive, easy-to-understand documentation that covers all functionalities, use cases, and examples to improve the developer experience.
 
 {% hint style="success" %}
-This feature are implemented on v0.5.0, documentations can be found here:
+These features are implemented on v0.5.0, documentations can be found here:
 
 <mark style="color:green;">You are on the official documentation site</mark> :tada:
 {% endhint %}
@@ -48,7 +48,7 @@ Aim to minimize memory allocations as much as possible to alleviate the burden o
 Follow default go template error handling mechanisms for all functions to ensure that errors are managed gracefully and efficiently.
 
 {% hint style="success" %}
-This feature are implemented on v0.6.0, documentation can be found here:
+These features are implemented on v0.6.0, documentation can be found here:
 
 [safe-functions.md](features/safe-functions.md "mention")
 {% endhint %}
@@ -62,7 +62,7 @@ Add a broader array of functions without imposing limitations, enabling users to
 Allow users to customize which functions to load into their runtime environment, preventing unnecessary resource consumption and enhancing performance.
 
 {% hint style="success" %}
-This feature are implemented on v0.5.0, documentations can be found here:
+These features are implemented on v0.5.0, documentations can be found here:
 
 [loader-system-registry.md](features/loader-system-registry.md "mention")
 
@@ -71,10 +71,10 @@ This feature are implemented on v0.5.0, documentations can be found here:
 
 ### :white\_check\_mark: Function Aliasing - <mark style="color:green;">**DONE**</mark>
 
-Enable the creation of aliases for functions outside of the library, providing flexibility and convenience in how functions are accessed and utilized.
+Enable the creation of aliases for functions outside the library, providing flexibility and convenience in how functions are accessed and utilized.
 
 {% hint style="success" %}
-This feature are implemented on v0.3.0, documentation can be found here :
+These features are implemented on v0.3.0, documentation can be found here :
 
 [function-aliases.md](features/function-aliases.md "mention")
 {% endhint %}
@@ -85,7 +85,7 @@ When you are a middle-app (between sprout and the user how write the template), 
 The solution are to embed a notice system in the template library to warn the end-user of a deprecation and let x versions between the deprecation notice and the replacement / removal of the function.
 
 {% hint style="success" %}
-This feature are implemented on v0.6.0, documentation can be found here :\
+These features are implemented on v0.6.0, documentation can be found here :\
 [broken-reference](broken-reference/ "mention")
 {% endhint %}
 
@@ -103,4 +103,4 @@ This page will be updated each time function are re-implemented correctly in Spr
 
 A list of functions wanted for v1 based on issues, pull requests from sprig, feedback on sprout. All functions listed here will be implemented for the v1.
 
-<table><thead><tr><th width="94" data-type="checkbox">DONE</th><th>Functions</th><th>Description</th></tr></thead><tbody><tr><td>true</td><td><code>toYaml</code></td><td>Convert a struct to a YAML String</td></tr><tr><td>true</td><td><code>fromYaml</code></td><td>Convert YAML String to a struct</td></tr><tr><td>true</td><td><code>toBool</code></td><td>Convert any to a boolean</td></tr><tr><td>true</td><td><code>toDuration</code></td><td>Convert any to a <code>time.Duration</code></td></tr><tr><td>true</td><td><code>default</code>,<code>empty</code>,<code>coalesce</code></td><td>Dont trigger default go value as false</td></tr><tr><td>true</td><td><code>dig</code></td><td>Dig into a map without crashes in format <code>book.author.name</code></td></tr><tr><td>true</td><td><code>sha512sum</code></td><td>Support of SHA512</td></tr><tr><td>true</td><td><code>md5sum</code></td><td>Support of md5 hash</td></tr><tr><td>true</td><td><code>hasField</code></td><td>Detect if a field are present in an object using reflect. <a href="https://github.com/Masterminds/sprig/issues/401">Source</a></td></tr><tr><td>true</td><td><code>toDuration</code></td><td>convert a value to a <code>time.Duration</code></td></tr><tr><td>true</td><td><code>toCamelCase</code>, <code>toPascalCase</code>, <code>toKebakCase</code>, <code>toDotCase</code>, <code>topathCase</code>, <code>toConstantCase</code>,<code>toSnakeCase</code>,<code>toTitleCase</code></td><td>A batch of functions to change casing of a string to aby casing you want.</td></tr><tr><td>true</td><td><code>capitalize</code>, <code>uncapitalize</code></td><td>Capitalize / Uncapitalize a string (Upper/lower only the first character)</td></tr><tr><td>true</td><td><code>flatten</code></td><td>Flatten nested list be one level</td></tr><tr><td>true</td><td><code>regexpFindSubmatch</code>, <code>regexpAllSubmatches</code>,<code>regexpFindNamedSubmatch</code>, <code>regexpAllNamedSubmatches</code></td><td>Collection of function to found and retrieve submatches and named submatches</td></tr><tr><td>true</td><td><code>cidr</code>, <code>ip</code>, <code>mac</code></td><td>A collection of functions for network ip manipulation</td></tr><tr><td>true</td><td><code>toLocalDate</code></td><td>Convert to a <code>time.Time</code> with a timezone support</td></tr></tbody></table>
+<table><thead><tr><th width="94" data-type="checkbox">DONE</th><th>Functions</th><th>Description</th></tr></thead><tbody><tr><td>true</td><td><code>toYaml</code></td><td>Convert a struct to a YAML String</td></tr><tr><td>true</td><td><code>fromYaml</code></td><td>Convert YAML String to a struct</td></tr><tr><td>true</td><td><code>toBool</code></td><td>Convert any to a boolean</td></tr><tr><td>true</td><td><code>toDuration</code></td><td>Convert any to a <code>time.Duration</code></td></tr><tr><td>true</td><td><code>default</code>,<code>empty</code>,<code>coalesce</code></td><td>Don't trigger default go value as false</td></tr><tr><td>true</td><td><code>dig</code></td><td>Dig into a map without crashes in format <code>book.author.name</code></td></tr><tr><td>true</td><td><code>sha512sum</code></td><td>Support of SHA512</td></tr><tr><td>true</td><td><code>md5sum</code></td><td>Support of md5 hash</td></tr><tr><td>true</td><td><code>hasField</code></td><td>Detect if a field are present in an object using reflect. <a href="https://github.com/Masterminds/sprig/issues/401">Source</a></td></tr><tr><td>true</td><td><code>toDuration</code></td><td>convert a value to a <code>time.Duration</code></td></tr><tr><td>true</td><td><code>toCamelCase</code>, <code>toPascalCase</code>, <code>toKebakCase</code>, <code>toDotCase</code>, <code>topathCase</code>, <code>toConstantCase</code>,<code>toSnakeCase</code>,<code>toTitleCase</code></td><td>A batch of functions to change casing of a string to aby casing you want.</td></tr><tr><td>true</td><td><code>capitalize</code>, <code>uncapitalize</code></td><td>Capitalize / Uncapitalize a string (Upper/lower only the first character)</td></tr><tr><td>true</td><td><code>flatten</code></td><td>Flatten nested list be one level</td></tr><tr><td>true</td><td><code>regexpFindSubmatch</code>, <code>regexpAllSubmatches</code>,<code>regexpFindNamedSubmatch</code>, <code>regexpAllNamedSubmatches</code></td><td>Collection of function to found and retrieve submatches and named submatches</td></tr><tr><td>true</td><td><code>cidr</code>, <code>ip</code>, <code>mac</code></td><td>A collection of functions for network ip manipulation</td></tr><tr><td>true</td><td><code>toLocalDate</code></td><td>Convert to a <code>time.Time</code> with a timezone support</td></tr></tbody></table>

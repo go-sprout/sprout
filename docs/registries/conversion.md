@@ -17,7 +17,7 @@ import "github.com/go-sprout/sprout/registry/conversion"
 
 ### <mark style="color:purple;">toBool</mark>
 
-toBool converts a value from any types reasonably be converted to a boolean. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
+toBool converts a value from any types reasonably be converted to a boolean value. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
 
 <table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToBool(v any) (bool, error)
 </code></pre></td></tr></tbody></table>
@@ -36,7 +36,7 @@ toBool converts a value from any types reasonably be converted to a boolean. _Us
 
 ### <mark style="color:purple;">toInt</mark>
 
-toInt converts a value into a int. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
+toInt converts a value into an `int`. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
 
 <table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToInt(v any) (int, error)
 </code></pre></td></tr></tbody></table>
@@ -54,7 +54,7 @@ toInt converts a value into a int. _Using the_ [_cast_ ](https://github.com/spf1
 
 ### <mark style="color:purple;">toInt64</mark>
 
-toInt64 converts a value into a int64. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
+toInt64 converts a value into an `int64`. _Using the_ [_cast_ ](https://github.com/spf13/cast)_package._
 
 <table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToInt64(v any) (int64, error)
 </code></pre></td></tr></tbody></table>
@@ -72,7 +72,7 @@ toInt64 converts a value into a int64. _Using the_ [_cast_ ](https://github.com/
 
 ### <mark style="color:purple;">toUint</mark>
 
-toUint converts a value into a uint. Utilizes the [cast](https://github.com/spf13/cast) package for conversion.
+toUint converts a value into a `uint`. Utilizes the [cast](https://github.com/spf13/cast) package for conversion.
 
 <table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUint(v any) (uint, error)
 </code></pre></td></tr></tbody></table>
@@ -90,7 +90,7 @@ toUint converts a value into a uint. Utilizes the [cast](https://github.com/spf1
 
 ### <mark style="color:purple;">toUint64</mark>
 
-toUint64 converts a value into a uint64. Utilizes the [cast](https://github.com/spf13/cast) package for conversion.
+toUint64 converts a value into a `uint64`. Utilizes the [cast](https://github.com/spf13/cast) package for conversion.
 
 <table data-header-hidden><thead><tr><th width="193">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUint64(v any) (uint64, error)
 </code></pre></td></tr></tbody></table>

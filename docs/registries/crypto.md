@@ -28,7 +28,7 @@ Directly using cryptographic functions in templates poses significant security r
 The function generates a bcrypt hash from the given input string, providing a secure way to store passwords or other sensitive data.
 
 {% hint style="warning" %}
-Be careful, this method use the default cost of the library and can cause security vulnerabilities.
+Be careful, this method uses the default cost of the library and can cause security vulnerabilities.
 {% endhint %}
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Bcrypt(input string) (string, error)
@@ -47,7 +47,7 @@ Be careful, this method use the default cost of the library and can cause securi
 The function generates an Htpasswd hash from the given username and password strings, typically used for basic authentication in web servers.
 
 {% hint style="warning" %}
-Be careful, this method use the default cost of the library and can cause security vulnerabilities.
+Be careful, this method uses the default cost of the library and can cause security vulnerabilities.
 {% endhint %}
 
 <table data-header-hidden><thead><tr><th width="125">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Htpasswd(username string, password string) (string, error)

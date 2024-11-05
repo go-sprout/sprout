@@ -18,7 +18,7 @@ Our aim is to foster a dynamic and collaborative development environment, welcom
 {% hint style="info" %}
 For a detailed explanation of the changes between Sprig and Sprout, see [SPRIG\_TO\_SPROUT\_CHANGES\_NOTES.md](../SPRIG\_TO\_SPROUT\_CHANGES\_NOTES.md). This document will help contributors and maintainers understand the modifications made between the fork date and version 1.0.0 of the Sprout library. This file will be moved here soon with better formatting.
 
-**Also a complete guide to migrate from sprig combability mode to a full sprout experience!**&#x20;
+**Also, a complete guide to migrate from sprig compatibility mode to a full sprout experience!**&#x20;
 {% endhint %}
 
 ### Big thanks
@@ -27,6 +27,6 @@ We owe a tremendous **amount of gratitude to the original authors and contributo
 
 To every individual who has contributed to Sprig, whether through code, documentation, or community support, we extend our heartfelt thanks. Your contributions have been invaluable, and Sprout’s evolution is a testament to the solid foundation you've built. We're honored to build on this legacy and are excited about the future **we can create together**.
 
-A **big shoutout to the original author(s) and every single contributor** for paving the way. We are committed to maintaining the spirit of open collaboration and innovation that you've instilled in this project. Here’s to continued success and to sharing the love and respect for the open-source community that drives us forward.
+A **big shout-out to the original author(s) and every single contributor** for paving the way. We are committed to maintaining the spirit of open collaboration and innovation that you've instilled in this project. Here’s to continued success and to sharing the love and respect for the open-source community that drives us forward.
 
 Thank you for inspiring us and countless others in this journey.

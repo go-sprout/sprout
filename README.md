@@ -46,7 +46,7 @@ You can track our progress towards Sprout v1.0 by following the documentation pa
   - [Building Function Maps](#building-function-maps)
   - [Working with Templates](#working-with-templates)
 - [Usage: Quick Example (code only)](#usage-quick-example)
-- [Performence Benchmarks](#performence-benchmarks)
+- [Performance Benchmarks](#performance-benchmarks)
   - [Sprig v3.2.3 vs Sprout v0.2](#sprig-v323-vs-sprout-v02)
 - [Development Philosophy (Currently in reflexion to create our)](#development-philosophy-currently-in-reflexion-to-create-our)
 
@@ -57,8 +57,8 @@ Sprout provide a package `sprigin` to provide a drop-in replacement for Sprig in
 
 > [!IMPORTANT]
 > The `sprigin` package is a temporary solution to provide backward compatibility with Sprig. We recommend updating your code to use the Sprout package directly to take advantage of the new features and improvements.
-> 
-> A complete guide are available in the [documentation](https://docs.atom.codes/sprout/migration-from-sprig).
+>
+> A complete guide is available in the [documentation](https://docs.atom.codes/sprout/migration-from-sprig).
 
 ```diff
 import (
@@ -103,7 +103,7 @@ handler := sprout.New(
 ### Working with Registries
 Registries in Sprout are groups of functions that can be added to a handler. They help organize functions and optimize template performance.
 
-You can retrieve all built-ins registries and functions under [Registries](https://docs.atom.codes/sprout/registries/list-of-all-registries).
+You can retrieve all built-in registries and functions under [Registries](https://docs.atom.codes/sprout/registries/list-of-all-registries).
 
 ```go
 import (
@@ -122,7 +122,7 @@ handler.AddRegistries(
 ### Working with Registries Groups
 In some cases, you can use a group of registries to add multiple registries at once.
 
-You can retrieve all built-ins registries groups under [Registry Groups](https://docs.atom.codes/sprout/groups/list-of-all-registry-groups).
+You can retrieve all built-in registries groups under [Registry Groups](https://docs.atom.codes/sprout/groups/list-of-all-registry-groups).
 
 ```go
 import (
@@ -181,7 +181,7 @@ func main() {
 }
 ```
 
-## Performence Benchmarks
+## Performance Benchmarks
 
 To see all the benchmarks, please refer to the [benchmarks](benchmarks/README.md) directory.
 
@@ -204,7 +204,7 @@ So, Sprout v0.5 is approximately 45.3% faster and uses 16.5% less memory than Sp
 
 You can see the full benchmark results [here](benchmarks/README.md).
 
-## Development Philosophy (Currently in reflexion to create our)
+## Development Philosophy (Currently in consideration to create ours)
 
 Our approach to extending and refining Sprout was guided by several key principles:
 
@@ -212,7 +212,7 @@ Our approach to extending and refining Sprout was guided by several key principl
 - Empower developers to create robust templates without sacrificing performance or usability. 
 - Adheres strictly to Go's templating conventions, ensuring a seamless experience for those familiar with Go's native tools.
 - Naming conventions across functions are standardized for predictability and ease of use.
-- Emphasizes error handling, preferring safe defaults over panics.
+- Emphasizes error handling, preferring to safe defaults over panics.
 - Provide a clear and comprehensive documentation to help users understand the library and its features.
 - Maintain a high level of code quality, ensuring that the library is well-tested, performant, and reliable.
 - Continuously improve and optimize the library to meet the needs of the community.

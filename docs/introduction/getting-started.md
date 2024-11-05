@@ -70,7 +70,7 @@ Sprout supports various customization options using handler options:
 
     See more below or in dedicated page [function-aliases.md](../features/function-aliases.md "mention").
 *   **Notices:**\
-    You can specify a notice (info, deprecated, warn) on specific function, this message has writed on the logger at runtime when rendering the template:
+    You can specify a notice (info, deprecated, warn) on specific function, this message has written on the logger at runtime when rendering the template:
 
     ```go
     handler := sprout.New(sprout.WithNotices(sprout.NewInfoNotice("foo", "You use foo")))
@@ -174,4 +174,4 @@ This will render the template with all functions and aliases available.
 
 Sprout provides a structured and powerful way to manage template functions in Go, making it easier to build, maintain, and extend templating functionality. With features like custom registries, aliases, and configurable error handling, Sprout can significantly enhance your templating experience.
 
-For more informations or questions, refer to the [Sprout GitHub repository](https://github.com/go-sprout/sprout).
+For more information or questions, refer to the [Sprout GitHub repository](https://github.com/go-sprout/sprout).

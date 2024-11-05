@@ -119,7 +119,7 @@ As a library developer, you can extend Sprout by creating your [own function reg
 {% endhint %}
 
 {% hint style="success" %}
-Our maintainers and collaborators can assist you if you have question, don't hesitate to [open a discussion on Github](https://github.com/orgs/go-sprout/discussions/categories/q-a) !
+Our maintainers and collaborators can assist you if you have question, don't hesitate to [open a discussion on GitHub](https://github.com/orgs/go-sprout/discussions/categories/q-a) !
 {% endhint %}
 
 ## <mark style="color:purple;">Migrating Common Functions</mark>
@@ -267,7 +267,7 @@ if err != nil {
 
 #### Merge / MergeOverwrite
 
-* **Sprig**: The `merge` and `mergeOverwrite` functions does dereferencing when second value are the default golang value (example: `0` for int).
+* **Sprig**: The `merge` and `mergeOverwrite` functions does dereference when second value are the default golang value (example: `0` for int).
 * **Sprout**: The `merge` and `mergeOverwrite` functions does not dereference and keep the second value as is (example: `0` for int).
 
 ## <mark style="color:purple;">Deprecated Features</mark>
@@ -282,7 +282,7 @@ Move critical operations outside of templates to maintain security.
 {% endhint %}
 
 {% hint style="warning" %}
-Perform cryptographic operations (listed in `crypto` package) outside of templates. the [`crypto`regisry ](registries/crypto.md)will be drop in few versions.
+Perform cryptographic operations (listed in `crypto` package) outside of templates. the [`crypto`registry ](registries/crypto.md)will be drop in few versions.
 {% endhint %}
 
 All deprecated features are flagged with <mark style="color:red;">`// ! DEPRECATED`</mark> in codebase.\
