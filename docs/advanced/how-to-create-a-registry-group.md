@@ -3,6 +3,7 @@
 ## File Naming Conventions
 
 * `{{registry_group_name}}.go`: This file defines the registry group, including key components like structs, interfaces, constants, and variables.
+* `{{registry_group_name}}_test.go`: Includes tests for the registry group to ensure it functions as expected.
 
 {% hint style="info" %}
 This structure ensures consistency and maintainability across different registries, making it easier for developers to contribute and collaborate effectively.\
