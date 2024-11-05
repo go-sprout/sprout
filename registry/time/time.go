@@ -11,9 +11,9 @@ func NewRegistry() *TimeRegistry {
 	return &TimeRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (tr *TimeRegistry) Uid() string {
-	return "time"
+// UID returns the unique identifier of the registry.
+func (tr *TimeRegistry) UID() string {
+	return "go-sprout/sprout.time"
 }
 
 // LinkHandler links the handler to the registry at runtime.

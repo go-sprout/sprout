@@ -22,7 +22,7 @@ type MockRegistry struct {
 
 var errMock = errors.New("mock error")
 
-func (m *MockRegistry) Uid() string {
+func (m *MockRegistry) UID() string {
 	args := m.Called()
 	return args.String(0)
 }
@@ -79,7 +79,7 @@ func TestDefaultHandler_Logger(t *testing.T) {
 func TestDefaultHandler_AddRegistries_Error(t *testing.T) {
 	mockRegistry := new(MockRegistry)
 	mockRegistry.linkHandlerMustCrash = true
-	mockRegistry.On("Uid").Return("mockRegistry")
+	mockRegistry.On("UID").Return("mockRegistry")
 	mockRegistry.On("LinkHandler", mock.Anything).Return(errMock)
 
 	dh := &DefaultHandler{
@@ -98,7 +98,7 @@ func TestDefaultHandler_AddRegistries_Error(t *testing.T) {
 func TestDefaultHandler_AddRegistry_Error_RegisterFuiesctions(t *testing.T) {
 	mockRegistry := new(MockRegistry)
 	mockRegistry.registerFuncsMustCrash = true
-	mockRegistry.On("Uid").Return("mockRegistry")
+	mockRegistry.On("UID").Return("mockRegistry")
 	mockRegistry.On("LinkHandler", mock.Anything).Return()
 	mockRegistry.On("RegisterFunctions", mock.Anything).Return(errMock)
 
@@ -117,7 +117,7 @@ func TestDefaultHandler_AddRegistry_Error_RegisterFuiesctions(t *testing.T) {
 func TestDefaultHandler_AddRegistry_Error_RegisteriesAliases(t *testing.T) {
 	mockRegistry := new(MockRegistryWithAlias)
 	mockRegistry.registerAliasesMustCrash = true
-	mockRegistry.On("Uid").Return("mockRegistry")
+	mockRegistry.On("UID").Return("mockRegistry")
 	mockRegistry.On("LinkHandler", mock.Anything).Return()
 	mockRegistry.On("RegisterFunctions", mock.Anything).Return()
 	mockRegistry.On("RegisterAliases", mock.Anything).Return(errMock)
@@ -139,7 +139,7 @@ func TestDefaultHandler_AddRegistry_Error_RegisteriesAliases(t *testing.T) {
 func TestDefaultHandler_AddRegistry_Error_RegisteriesNotices(t *testing.T) {
 	mockRegistry := new(MockRegistryWithNotices)
 	mockRegistry.registerNoticesMustCrash = true
-	mockRegistry.On("Uid").Return("mockRegistryWithNotices")
+	mockRegistry.On("UID").Return("mockRegistryWithNotices")
 	mockRegistry.On("LinkHandler", mock.Anything).Return()
 	mockRegistry.On("RegisterFunctions", mock.Anything).Return()
 	mockRegistry.On("RegisterNotices", mock.Anything).Return()
@@ -163,7 +163,7 @@ func TestDefaultHandler_AddRegistry_Error_RegisteriesNotices(t *testing.T) {
 // TestDefaultHandler_AddRegistry tests the AddRegistry method of DefaultHandler.
 func TestDefaultHandler_AddRegistry(t *testing.T) {
 	mockRegistry := new(MockRegistry)
-	mockRegistry.On("Uid").Return("mockRegistry")
+	mockRegistry.On("UID").Return("mockRegistry")
 	mockRegistry.On("LinkHandler", mock.Anything).Return()
 	mockRegistry.On("RegisterFunctions", mock.Anything).Return()
 
@@ -184,12 +184,12 @@ func TestDefaultHandler_AddRegistry(t *testing.T) {
 // TestDefaultHandler_AddRegistries tests the AddRegistries method of DefaultHandler.
 func TestDefaultHandler_AddRegistries(t *testing.T) {
 	mockRegistry1 := new(MockRegistry)
-	mockRegistry1.On("Uid").Return("mockRegistry1")
+	mockRegistry1.On("UID").Return("mockRegistry1")
 	mockRegistry1.On("LinkHandler", mock.Anything).Return()
 	mockRegistry1.On("RegisterFunctions", mock.Anything).Return()
 
 	mockRegistry2 := new(MockRegistry)
-	mockRegistry2.On("Uid").Return("mockRegistry2")
+	mockRegistry2.On("UID").Return("mockRegistry2")
 	mockRegistry2.On("LinkHandler", mock.Anything).Return()
 	mockRegistry2.On("RegisterFunctions", mock.Anything).Return()
 
@@ -213,7 +213,7 @@ func TestDefaultHandler_AddRegistries(t *testing.T) {
 // TestDefaultHandler_AddRegistryWithAlias tests AddRegistry when the registry also implements RegistryWithAlias.
 func TestDefaultHandler_AddRegistryWithAlias(t *testing.T) {
 	mockRegistry := new(MockRegistryWithAlias)
-	mockRegistry.On("Uid").Return("mockRegistryWithAlias")
+	mockRegistry.On("UID").Return("mockRegistryWithAlias")
 	mockRegistry.On("LinkHandler", mock.Anything).Return()
 	mockRegistry.On("RegisterFunctions", mock.Anything).Return()
 	mockRegistry.On("RegisterAliases", mock.Anything).Return()
@@ -236,7 +236,7 @@ func TestDefaultHandler_AddRegistryWithAlias(t *testing.T) {
 
 func TestDefaultHandler_AddRegistryWithNotices(t *testing.T) {
 	mockRegistry := new(MockRegistryWithNotices)
-	mockRegistry.On("Uid").Return("mockRegistryWithNotices")
+	mockRegistry.On("UID").Return("mockRegistryWithNotices")
 	mockRegistry.On("LinkHandler", mock.Anything).Return()
 	mockRegistry.On("RegisterFunctions", mock.Anything).Return()
 	mockRegistry.On("RegisterNotices", mock.Anything).Return()

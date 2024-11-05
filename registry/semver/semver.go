@@ -11,9 +11,9 @@ func NewRegistry() *SemverRegistry {
 	return &SemverRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (sr *SemverRegistry) Uid() string {
-	return "semver"
+// UID returns the unique identifier of the registry.
+func (sr *SemverRegistry) UID() string {
+	return "go-sprout/sprout.semver"
 }
 
 // LinkHandler links the handler to the registry at runtime.

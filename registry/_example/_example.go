@@ -13,9 +13,9 @@ func NewRegistry() *ExampleRegistry {
 	return &ExampleRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (or *ExampleRegistry) Uid() string {
-	return "example" // ! Must be unique and in camel case
+// UID returns the unique identifier of the registry.
+func (or *ExampleRegistry) UID() string {
+	return "go-sprout/sprout.exampleofregistry" // ! Must be unique and in lowercase, replace `exampleofregistry` with your registry name and `go-sprout/sprout` with your handle name
 }
 
 // LinkHandler links the handler to the registry at runtime.
