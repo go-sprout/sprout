@@ -11,8 +11,8 @@ func NewRegistry() *ConversionRegistry {
 	return &ConversionRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (or *ConversionRegistry) Uid() string {
+// UID returns the unique identifier of the registry.
+func (or *ConversionRegistry) UID() string {
 	return "go-sprout/sprout.conversion"
 }
 

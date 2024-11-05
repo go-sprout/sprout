@@ -58,13 +58,13 @@ func TestAddAlias(t *testing.T) {
 func TestWithRegistries(t *testing.T) {
 	// Define two registries with functions and aliases
 	mockRegistry1 := new(MockRegistry)
-	mockRegistry1.On("Uid").Return("mockRegistry1")
+	mockRegistry1.On("UID").Return("mockRegistry1")
 	mockRegistry1.On("LinkHandler", mock.Anything).Return(nil)
 	mockRegistry1.On("RegisterFunctions", mock.Anything).Return(nil)
 
 	mockRegistry2 := new(MockRegistry)
 	mockRegistry2.linkHandlerMustCrash = true
-	mockRegistry2.On("Uid").Return("mockRegistry2")
+	mockRegistry2.On("UID").Return("mockRegistry2")
 	mockRegistry2.On("LinkHandler", mock.Anything).Return(nil)
 	mockRegistry1.On("RegisterFunctions", mock.Anything).Return(nil)
 

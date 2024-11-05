@@ -42,8 +42,8 @@ func NewRegistry() *RandomRegistry {
 	return &RandomRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (rr *RandomRegistry) Uid() string {
+// UID returns the unique identifier of the registry.
+func (rr *RandomRegistry) UID() string {
 	return "go-sprout/sprout.random"
 }
 

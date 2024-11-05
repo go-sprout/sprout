@@ -11,8 +11,8 @@ func NewRegistry() *MapsRegistry {
 	return &MapsRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (mr *MapsRegistry) Uid() string {
+// UID returns the unique identifier of the registry.
+func (mr *MapsRegistry) UID() string {
 	return "go-sprout/sprout.maps"
 }
 

@@ -11,8 +11,8 @@ func NewRegistry() *FileSystemRegistry {
 	return &FileSystemRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (fsr *FileSystemRegistry) Uid() string {
+// UID returns the unique identifier of the registry.
+func (fsr *FileSystemRegistry) UID() string {
 	return "go-sprout/sprout.filesystem"
 }
 

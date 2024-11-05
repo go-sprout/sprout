@@ -11,8 +11,8 @@ func NewRegistry() *SemverRegistry {
 	return &SemverRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (sr *SemverRegistry) Uid() string {
+// UID returns the unique identifier of the registry.
+func (sr *SemverRegistry) UID() string {
 	return "go-sprout/sprout.semver"
 }
 

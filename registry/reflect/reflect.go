@@ -11,8 +11,8 @@ func NewRegistry() *ReflectRegistry {
 	return &ReflectRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (rr *ReflectRegistry) Uid() string {
+// UID returns the unique identifier of the registry.
+func (rr *ReflectRegistry) UID() string {
 	return "go-sprout/sprout.reflect"
 }
 

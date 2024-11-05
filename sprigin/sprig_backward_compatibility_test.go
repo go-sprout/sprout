@@ -58,12 +58,12 @@ func TestSprigHandler(t *testing.T) {
 
 	assert.Len(t, handler.registries, 18) // Hardcoded for backward compatibility
 
-	registriesUids := []string{}
+	registriesUIDs := []string{}
 	for _, registry := range handler.registries {
-		registriesUids = append(registriesUids, registry.Uid())
+		registriesUIDs = append(registriesUIDs, registry.UID())
 	}
 
-	assert.ElementsMatch(t, registriesUids, []string{
+	assert.ElementsMatch(t, registriesUIDs, []string{
 		"go-sprout/sprout.std",
 		"go-sprout/sprout.uniqueid",
 		"go-sprout/sprout.semver",
