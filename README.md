@@ -42,6 +42,7 @@ You can track our progress towards Sprout v1.0 by following the documentation pa
   - [Creating a Handler](#creating-a-handler)
   - [Customizing the Handler](#customizing-the-handler)
   - [Working with Registries](#working-with-registries)
+  - [Working with Registries Groups](#working-with-registries-groups)
   - [Building Function Maps](#building-function-maps)
   - [Working with Templates](#working-with-templates)
 - [Usage: Quick Example (code only)](#usage-quick-example)
@@ -115,6 +116,23 @@ import (
 handler.AddRegistries(
   conversion.NewRegistry(),
   std.NewRegistry(),
+)
+```
+
+### Working with Registries Groups
+In some cases, you can use a group of registries to add multiple registries at once.
+
+You can retrieve all built-ins registries groups under [Registry Groups](https://docs.atom.codes/sprout/groups/list-of-all-registry-groups).
+
+```go
+import (
+  "github.com/go-sprout/sprout/group/all"
+)
+
+//...
+
+handler.AddGroup(
+  all.RegistryGroup(),
 )
 ```
 
