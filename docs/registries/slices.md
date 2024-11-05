@@ -79,7 +79,7 @@ The function merges multiple lists into a single, unified list, combining all el
 
 ### <mark style="color:purple;">chunk</mark>
 
-The function divides a list into smaller, equally sized chunks based on the specified size, breaking the original list into manageable sublists.
+The function divides a list into smaller, equally sized chunks based on the specified size, breaking the original list into manageable sub-lists.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Chunk(size int, list any) ([][]any, error)
 </code></pre></td></tr></tbody></table>
@@ -129,7 +129,7 @@ The function removes `nil` and zero-value elements from a list, leaving only non
 
 ### <mark style="color:purple;">flatten</mark>
 
-The function flattens a list into a single-dimensional array, removing nested lists andcombining all elements into a single list.
+The function flattens a list into a single-dimensional array, removing nested lists and combining all elements into a single list.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Flatten(list any) ([]any, error)
 </code></pre></td></tr></tbody></table>

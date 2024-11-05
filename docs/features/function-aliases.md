@@ -14,7 +14,7 @@ To configure aliases, you must use the Sprout function handler.&#x20;
 
 ## How It Works
 
-* **Definition:** An alias acts as a secondary name for a function, referring to the original implementation in memory, the function are not duplicated at runtime.
+* **Definition:** An alias behaves as a secondary name for a function, referring to the original implementation in memory, the function is not duplicated at runtime.
 * **Usage:** When the deprecated (aliased) function names are used, the code behaves as if the new function names were called, ensuring compatibility.
 * **Example:** Suppose `oldFunc` is deprecated in favor of `newFunc` in your template. The alias allows code calling `oldFunc` to execute `newFunc` transparently.
 
@@ -31,7 +31,7 @@ template.New("base").Funcs(handler.Build()).Parse("{{ newFunc }}")
 
 This creates a mapping between an old function name (`oldFunc`) and a new one (`newFunc`). Calls to `oldFunc` within the template are redirected to execute `newFunc`. This enables the template to parse and execute using the new function name seamlessly.
 
-### Add more than one aliases for te same function
+### Add more than one aliases for the same function
 
 To add more aliases for the same original function, simply add more parameters to the `WithAlias` function:
 
@@ -53,7 +53,7 @@ var myAliases = sprout.FunctionAliasMap{
 handler := sprout.New(sprout.WithAliases(myAliases))
 ```
 
-This creates two aliases for two methodes (4 in total). Calling `oldFunc` or `secondAlias` with execute `newFunc` and calling `hi` or `greet` will execute `hello`.
+This creates two aliases for two methods (4 in total). Calling `oldFunc` or `secondAlias` with execute `newFunc` and calling `hi` or `greet` will execute `hello`.
 
 ## Best Practices
 

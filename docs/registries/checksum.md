@@ -70,7 +70,7 @@ Adler32Sum calculates the Adler-32 checksum of the input string and returns it a
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
-{% tab title="Tempalte Example" %}
+{% tab title="Template Example" %}
 ```go
 {{ adler32Sum "" }} // Output: 00000001
 {{ adler32Sum "Hello, World!" }} // Output: 1f9e046a

@@ -33,7 +33,7 @@ _This section's comparisons are based on Sprig v3.2.3. If you're totally new, we
 - **`toDuration` Conversion Function**: A new utility to simplify time conversions across templates. See [PR 27](https://github.com/go-sprout/sprout/pull/27).
 
 ### 📚 **Documentation**
-- **Fancy and complete documentation**: Create a fancy and complete documentatio, ensuring they’re up to date and aligned with Sprout’s growth. [Documentation](https://sprout.atom.codes)
+- **Fancy and complete documentation**: Create a fancy and complete documentation, ensuring they are up-to-date and aligned with Sprout’s growth. [Documentation](https://sprout.atom.codes)
 
 ---
 

@@ -227,7 +227,7 @@ CIDRSize calculates the total number of IP addresses in the given CIDR block. It
 CIDRRangeList generates a list of all IP addresses within the given CIDR block. It works for both IPv4 and IPv6 CIDR blocks, returning a list of all IP addresses as strings. This function is useful for iterating over all IP addresses in a CIDR block or generating a list of IP addresses for further processing.
 
 {% hint style="warning" %}
-Be careful, this method can generate a large number of IP addresses for large CIDR blocks, which may consume a significant amount of memory and processing time.
+Be careful, this method can generate numerous IP addresses for large CIDR blocks, which may consume a significant amount of memory and processing time.
 {% endhint %}
 
 <table data-header-hidden>

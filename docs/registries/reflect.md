@@ -17,7 +17,7 @@ import "github.com/go-sprout/sprout/registry/reflect"
 
 ### <mark style="color:purple;">typeIs</mark>
 
-The function compares the type of a given value (`src`) to a specified target type string (`target`). It returns `true` if the type of `src` matches the target type.
+The function compares the type of the provided value (`src`) to a specified target type string (`target`). It returns `true` if the type of `src` matches the target type.
 
 <table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">TypeIs(target string, src any) bool
 </code></pre></td></tr></tbody></table>
@@ -32,7 +32,7 @@ The function compares the type of a given value (`src`) to a specified target ty
 
 ### <mark style="color:purple;">typeIsLike</mark>
 
-The function compares the type of a given value (`src`) to a target type string (`target`), with an option for a wildcard `*` prefix (pointer). It returns `true` if `src` matches `target` or `*target`, which is useful for checking if a variable is of a specific type or a pointer to that type.
+The function compares the type of the provided value (`src`) to a target type string (`target`), with an option for a wildcard `*` prefix (pointer). It returns `true` if `src` matches `target` or `*target`, which is useful for checking if a variable is of a specific type or a pointer to that type.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">TypeIsLike(target string, src any) bool
 </code></pre></td></tr></tbody></table>

@@ -16,7 +16,7 @@ This feature is crucial for migrating from Sprig v3.2.3 or when upgrading betwee
 
 The Notice Feature works by wrapping existing function calls with additional logic that triggers notices when those functions are invoked.
 
-The notice are sent to the `slog.Logger` configured on the handler, with 2 extra attributes for helping monitoring :&#x20;
+The notice are sent to the `slog.Logger` configured on the handler, with 2 extra attributes for help to monitor :&#x20;
 
 * **function**: how contains the name of the function how trigger this notice.
 * **notice:** how indicate the kind of the notice `info`, `debug` or `deprecated`.
@@ -28,7 +28,7 @@ The notice are sent to the `slog.Logger` configured on the handler, with 2 extra
 First, you need to define a notice for a function that you want to monitor. For example, to mark a function as deprecated:
 
 {% hint style="warning" %}
-**Be careful**, the function name are case-sensitive
+**Be careful**, the function names are case-sensitive
 {% endhint %}
 
 ```go

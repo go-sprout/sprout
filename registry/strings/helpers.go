@@ -209,8 +209,8 @@ func (sr *StringsRegistry) populateMapWithParts(parts []string) map[string]strin
 //	slice := []int{1, 2, 3, 4, 5}
 //	result := sr.convertIntArrayToString(slice, ", ")
 //	fmt.Println(result) // Output: "1, 2, 3, 4, 5"
-func (sr *StringsRegistry) convertIntArrayToString(slice []int, delimeter string) string {
-	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(slice)), delimeter), "[]")
+func (sr *StringsRegistry) convertIntArrayToString(slice []int, delimiter string) string {
+	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(slice)), delimiter), "[]")
 }
 
 // WordWrap formats 'str' into lines of maximum 'wrapLength', optionally wrapping

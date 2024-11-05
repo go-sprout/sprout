@@ -17,5 +17,5 @@ You can found more details about registry groups in the [loader-system-registry-
 {% hint style="info" %}
 You can open an issue to ask to be listed here. We are a community :seedling:
 
-And maybe your registry will be embed on sprout directly, who know :eyes:
+And maybe your registry will be embedded on sprout directly, who know :eyes:
 {% endhint %}

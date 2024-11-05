@@ -34,7 +34,7 @@
 * [Random](registries/random.md)
 * [Reflect](registries/reflect.md)
 * [Regexp](registries/regexp.md)
-* [Semver](registries/semver.md)
+* [SemVer](registries/semver.md)
 * [Slices](registries/slices.md)
 * [Std](registries/std.md)
 * [Strings](registries/strings.md)
@@ -55,4 +55,4 @@
 
 ## Links
 
-* [Github repository](https://github.com/go-sprout/sprout)
+* [GitHub repository](https://github.com/go-sprout/sprout)

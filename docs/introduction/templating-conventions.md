@@ -12,14 +12,14 @@ description: >-
 ### Go Code Formatting
 
 * We follow the standard Go formatting conventions using `gofmt`. Ensure that your code is formatted before submitting a pull request.
-* Run `go fmt ./...` before commiting to format the code
+* Run `go fmt ./...` before committing to format the code.
 
 ### Naming Conventions
 
 #### Registry
 
 * **Packages:** Package names should be short and concise. Use singular nouns (e.g., `util` instead of `utils`). Exception on `strings`, `slices`, `maps` to match the go std package naming.
-* **UID:** The UID of a repository must be in camelCase and prefixed with your name/org separated ny a dot (e.g., `42atomys.myRegistry` instead of `my-registry`)
+* **UID:** The UID of a repository must be in camelCase and prefixed with your name/org separated by a dot (e.g., `42atomys.myRegistry` instead of `my-registry`)
 * **Registry README/Comments:** Each package should have a comment or a README that provides a brief overview of its purpose.
 
 #### Functions
@@ -51,8 +51,8 @@ description: >-
 Directory Layout
 
 ```bash
-├── benchmarks/         # benchmarks used to ensure performence and backward
-├── docs/               # docuementation of the project hosted on sprout.atom.codes
+├── benchmarks/         # benchmarks used to ensure performance and backward
+├── docs/               # documentation of the project hosted on sprout.atom.codes
 ├── internal/helpers/   # private cross registry library code
 ├── pesticide/          # package to help you to test your functions on a template engine
 ├── registry/           # contains all officials registry of sprout

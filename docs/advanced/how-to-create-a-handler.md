@@ -30,7 +30,7 @@ type MyCustomHandler struct {
 
 ### Step 3: Implement the Handler Interface
 
-Next, implement the `Handler` interface methods in your custom struct. I take logger as example
+Next, implement the `Handler` interface methods in your custom struct. I take logger as example.
 
 ```go
 func (h *MyCustomHandler) Logger() *slog.Logger {
