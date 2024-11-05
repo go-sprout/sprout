@@ -62,8 +62,7 @@ func TestDefaultHandler_AddGroups_Error(t *testing.T) {
 	}
 
 	err := dh.AddGroups(group1)
-	require.Error(t, err, "AddRegistry should return an error")
-	assert.Equal(t, errMock, err, "Error should match the mock error")
+	require.ErrorIs(t, err, errMock, "Error should match the mock error")
 
 	mockRegistry.AssertCalled(t, "LinkHandler", dh)
 	mockRegistry.AssertNotCalled(t, "RegisterFunctions", mock.Anything)
@@ -146,8 +145,7 @@ func TestWithGroups_Error(t *testing.T) {
 	}
 
 	err := WithGroups(group1)(dh)
-	require.Error(t, err, "AddRegistry should return an error")
-	assert.Equal(t, errMock, err, "Error should match the mock error")
+	require.ErrorIs(t, err, errMock, "Error should match the mock error")
 
 	mockRegistry.AssertCalled(t, "LinkHandler", dh)
 	mockRegistry.AssertNotCalled(t, "RegisterFunctions", mock.Anything)
