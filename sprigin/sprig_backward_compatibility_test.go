@@ -58,15 +58,29 @@ func TestSprigHandler(t *testing.T) {
 
 	assert.Len(t, handler.registries, 18) // Hardcoded for backward compatibility
 
-	registriesUids := []string{}
+	registriesUIDs := []string{}
 	for _, registry := range handler.registries {
-		registriesUids = append(registriesUids, registry.Uid())
+		registriesUIDs = append(registriesUIDs, registry.UID())
 	}
 
-	assert.ElementsMatch(t, registriesUids, []string{
-		"std", "uniqueid", "semver", "backwardCompatibilityWithSprig",
-		"reflect", "time", "strings", "random", "checksum", "conversion",
-		"numeric", "encoding", "regexp", "slices", "maps", "crypto",
-		"filesystem", "env",
+	assert.ElementsMatch(t, registriesUIDs, []string{
+		"go-sprout/sprout.std",
+		"go-sprout/sprout.uniqueid",
+		"go-sprout/sprout.semver",
+		"go-sprout/sprout.backwardcompatibilitywithsprig",
+		"go-sprout/sprout.reflect",
+		"go-sprout/sprout.time",
+		"go-sprout/sprout.strings",
+		"go-sprout/sprout.random",
+		"go-sprout/sprout.checksum",
+		"go-sprout/sprout.conversion",
+		"go-sprout/sprout.numeric",
+		"go-sprout/sprout.encoding",
+		"go-sprout/sprout.regexp",
+		"go-sprout/sprout.slices",
+		"go-sprout/sprout.maps",
+		"go-sprout/sprout.crypto",
+		"go-sprout/sprout.filesystem",
+		"go-sprout/sprout.env",
 	})
 }

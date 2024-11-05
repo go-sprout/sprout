@@ -11,9 +11,9 @@ func NewRegistry() *StdRegistry {
 	return &StdRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (sr *StdRegistry) Uid() string {
-	return "std"
+// UID returns the unique identifier of the registry.
+func (sr *StdRegistry) UID() string {
+	return "go-sprout/sprout.std"
 }
 
 // LinkHandler links the handler to the registry at runtime.

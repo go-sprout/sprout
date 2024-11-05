@@ -11,9 +11,9 @@ func NewRegistry() *ChecksumRegistry {
 	return &ChecksumRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (cr *ChecksumRegistry) Uid() string {
-	return "checksum"
+// UID returns the unique identifier of the registry.
+func (cr *ChecksumRegistry) UID() string {
+	return "go-sprout/sprout.checksum"
 }
 
 // LinkHandler links the handler to the registry at runtime.

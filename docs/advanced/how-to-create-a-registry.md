@@ -2,11 +2,11 @@
 
 ## File Naming Conventions
 
-* `{{registry_name}}.go`: This file defines the registry, including key components like structs, interfaces, constants, and variables.
-* `functions.go`: Contains the implementation of exported functions, making them accessible to other developers.
-* `functions_test.go`: Includes tests for the exported functions to ensure they function as expected.
-* `helpers.go`: Contains internal helper functions that support the registry but are not exposed for public use.
-* `helpers_test.go`: Holds tests for the helper functions to validate their reliability.
+- `{{registry_name}}.go`: This file defines the registry, including key components like structs, interfaces, constants, and variables.
+- `functions.go`: Contains the implementation of exported functions, making them accessible to other developers.
+- `functions_test.go`: Includes tests for the exported functions to ensure they function as expected.
+- `helpers.go`: Contains internal helper functions that support the registry but are not exposed for public use.
+- `helpers_test.go`: Holds tests for the helper functions to validate their reliability.
 
 {% hint style="info" %}
 This structure ensures consistency and maintainability across different registries, making it easier for developers to contribute and collaborate effectively.\
@@ -42,9 +42,9 @@ func NewRegistry() *OwnRegistry {
   return &OwnRegistry{}
 }
 
-// Uid provides a unique identifier for your registry.
-func (or *OwnRegistry) Uid() string {
-  return "organization/repo.ownregistry" // Ensure this identifier is unique and uses lowercase, prefixed with your organization/repo name separated by a dot.
+// UID provides a unique identifier for your registry.
+func (or *OwnRegistry) UID() string {
+  return "organization/repo.ownregistry" // Ensure this identifier is unique and uses lowercase, prefixed by your handler/repo separated with a dot.
 }
 
 // LinkHandler connects the Handler to your registry, enabling runtime functionalities.

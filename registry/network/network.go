@@ -13,9 +13,9 @@ func NewRegistry() *NetworkRegistry {
 	return &NetworkRegistry{}
 }
 
-// Uid returns the unique identifier of the registry.
-func (nr *NetworkRegistry) Uid() string {
-	return "network" // ! Must be unique and in camel case
+// UID returns the unique identifier of the registry.
+func (nr *NetworkRegistry) UID() string {
+	return "go-sprout/sprout.network"
 }
 
 // LinkHandler links the handler to the registry at runtime.

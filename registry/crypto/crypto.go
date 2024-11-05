@@ -56,9 +56,9 @@ func NewRegistry() *CryptoRegistry {
 	return &CryptoRegistry{}
 }
 
-// Uid returns the unique identifier of the crypto handler.
-func (ch *CryptoRegistry) Uid() string {
-	return "crypto"
+// UID returns the unique identifier of the crypto handler.
+func (ch *CryptoRegistry) UID() string {
+	return "go-sprout/sprout.crypto"
 }
 
 func (ch *CryptoRegistry) LinkHandler(fh sprout.Handler) error {
