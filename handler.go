@@ -111,12 +111,12 @@ func (dh *DefaultHandler) AddRegistries(registries ...Registry) error {
 	return nil
 }
 
-// Build retrieves the complete suite of functiosn and alias that has been configured
+// Build retrieves the complete suite of functions and alias that has been configured
 // within this Handler. This handler is ready to be used with template engines
 // that accept FuncMap, such as html/template or text/template. It will also
 // cache the function map for future use to avoid rebuilding the function map
 // multiple times, so it is safe to call this method multiple times to retrieve
-// the same builded function map.
+// the same built function map.
 //
 // NOTE: This replaces the [github.com/Masterminds/sprig.FuncMap],
 // [github.com/Masterminds/sprig.TxtFuncMap] and [github.com/Masterminds/sprig.HtmlFuncMap]

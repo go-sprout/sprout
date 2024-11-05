@@ -153,7 +153,7 @@ func ToString(v any) string {
 //	Empty("") // Output: true
 //	Empty(0) // Output: true
 //	Empty(false) // Output: true
-//	Empty(sruct{}{}) // Output: false
+//	Empty(struct{}{}) // Output: false
 func Empty(given any) bool {
 	g := reflect.ValueOf(given)
 	if !g.IsValid() {

@@ -137,7 +137,7 @@ func TestDefaultHandler_AddRegistry_Error_RegisterFuiesctions(t *testing.T) {
 	mockRegistry.AssertCalled(t, "RegisterFunctions", dh.cachedFuncsMap)
 }
 
-func TestDefaultHandler_AddRegistry_Error_RegisteriesAliases(t *testing.T) {
+func TestDefaultHandler_AddRegistry_Error_RegistriesAliases(t *testing.T) {
 	mockRegistry := new(MockRegistryWithAlias)
 	mockRegistry.registerAliasesMustCrash = true
 	mockRegistry.On("UID").Return("mockRegistry")
@@ -159,7 +159,7 @@ func TestDefaultHandler_AddRegistry_Error_RegisteriesAliases(t *testing.T) {
 	mockRegistry.AssertCalled(t, "RegisterAliases", dh.cachedFuncsAlias)
 }
 
-func TestDefaultHandler_AddRegistry_Error_RegisteriesNotices(t *testing.T) {
+func TestDefaultHandler_AddRegistry_Error_RegistriesNotices(t *testing.T) {
 	mockRegistry := new(MockRegistryWithNotices)
 	mockRegistry.registerNoticesMustCrash = true
 	mockRegistry.On("UID").Return("mockRegistryWithNotices")

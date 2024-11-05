@@ -95,7 +95,7 @@ func TestOmit(t *testing.T) {
 		{Name: "TestWithTwoValues", Input: `{{ . | omit "a" "b"}}`, ExpectedOutput: "map[]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{ . | omit "nope"}}`, ExpectedOutput: "map[a:1]", Data: map[string]any{"a": 1}},
 		{Name: "TestWithInvalidKeys", Input: `{{ . | omit "a" 1}}`, ExpectedErr: "all keys must be strings", Data: map[string]any{"a": 1}},
-		{Name: "TestInvaidArgumentsType", Input: `{{ . | omit 1 }}`, ExpectedErr: "expected map or string, got int", Data: map[string]any{"a": 1}},
+		{Name: "TestInvalidArgumentsType", Input: `{{ . | omit 1 }}`, ExpectedErr: "expected map or string, got int", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNoMapGivenAsLastArg", Input: `{{ .a | omit "a"}}`, ExpectedErr: "last argument must be a map[string]any", Data: map[string]any{"a": 1}},
 	}
 
