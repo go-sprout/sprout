@@ -53,6 +53,10 @@ handler := sprout.New(
 
 This code sets up your project to utilize the functions from your custom registry, making it easy to integrate and extend functionality.
 
+## You have too many registries to manage?
+
+You can use the [loader-system-registry-group.md](./loader-system-registry-group.md) feature to manage multiple registries at once or use built-in groups.
+
 ## How to create a registry
 
 To show how to create your own registry, go to [how-to-create-a-registry.md](../advanced/how-to-create-a-registry.md "mention")

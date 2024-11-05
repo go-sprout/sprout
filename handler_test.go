@@ -94,6 +94,29 @@ func TestDefaultHandler_AddRegistries_Error(t *testing.T) {
 	mockRegistry.AssertNotCalled(t, "RegisterFunctions", mock.Anything)
 }
 
+func TestDefaultHandler_AddRegistry_MultipleTimes(t *testing.T) {
+	mockRegistry := new(MockRegistry)
+	mockRegistry.On("UID").Return("mockRegistry")
+	mockRegistry.On("LinkHandler", mock.Anything).Return()
+	mockRegistry.On("RegisterFunctions", mock.Anything).Return()
+
+	dh := &DefaultHandler{
+		cachedFuncsMap: make(FunctionMap),
+	}
+
+	err := dh.AddRegistry(mockRegistry)
+	require.NoError(t, err, "AddRegistry should not return an error")
+
+	err = dh.AddRegistry(mockRegistry)
+	require.NoError(t, err, "AddRegistry should not return an error")
+
+	require.Len(t, dh.registries, 1, "Registry should be added to the DefaultHandler")
+	assert.Contains(t, dh.registries, mockRegistry, "Registry should match the mock registry")
+
+	mockRegistry.AssertNumberOfCalls(t, "LinkHandler", 1)
+	mockRegistry.AssertNumberOfCalls(t, "RegisterFunctions", 1)
+}
+
 // TestDefaultHandler_AddRegistries_Error tests the AddRegistry method of DefaultHandler when the registry returns an error.
 func TestDefaultHandler_AddRegistry_Error_RegisterFuiesctions(t *testing.T) {
 	mockRegistry := new(MockRegistry)

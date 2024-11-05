@@ -12,6 +12,7 @@
 ## Features
 
 * [Loader System (Registry)](features/loader-system-registry.md)
+* [Loader System (Registry Group)](features/loader-system-registry-group.md)
 * [Function Aliases](features/function-aliases.md)
 * [Function Notices](features/function-notices.md)
 * [Safe Functions](features/safe-functions.md)
@@ -40,10 +41,17 @@
 * [Time](registries/time.md)
 * [Uniqueid](registries/uniqueid.md)
 
+## Groups
+
+* [List of all registry groups](groups/list-of-all-registry-groups.md)
+* [All](groups/all.md)
+* [Hermetic](groups/hermetic.md)
+
 ## Advanced
 
 * [How to create a handler](advanced/how-to-create-a-handler.md)
 * [How to create a registry](advanced/how-to-create-a-registry.md)
+* [How to create a registry group](advanced/how-to-create-a-registry-group.md)
 
 ## Links
 

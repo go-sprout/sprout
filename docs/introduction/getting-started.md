@@ -53,6 +53,14 @@ Sprout supports various customization options using handler options:
     ```
 
     See more below or in dedicated page [loader-system-registry.md](../features/loader-system-registry.md "mention").
+*   **Load Registry Group:**\
+    You can load a group of registries directly on your handler using the `WithGroups` option:
+
+    ```go
+    handler := sprout.New(sprout.WithGroups(ownregistrygroup.RegistryGroup()))
+    ```
+
+    See more below or in dedicated page [loader-system-registry-group.md](../features/loader-system-registry-group.md "mention").
 *   **Aliases Management:**\
     You can specify your custom aliases directly on your handler:
 
