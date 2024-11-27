@@ -12,7 +12,7 @@ type FileSystem interface {
 	ReadFile(filename string) ([]byte, error)
 }
 
-// OSFileSystem is a concrete implementation of FileSystem using the os and filepath packages.
+// OSFileSystem is a concrete implementation of [FileSystem] using the os and filepath packages.
 type OSFileSystem struct{}
 
 func (fs *OSFileSystem) Glob(pattern string) ([]string, error) {
