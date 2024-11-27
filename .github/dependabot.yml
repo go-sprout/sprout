@@ -2,9 +2,11 @@ version: 2
 updates:
   - package-ecosystem: "gomod"
     directory: "/"
+    open-pull-requests-limit: 10  # avoid spam, if no one reacts
     schedule:
       interval: "weekly"
   - package-ecosystem: "github-actions"
     directory: "/"
+    open-pull-requests-limit: 10  # avoid spam, if no one reacts
     schedule:
       interval: "weekly"
