@@ -25,7 +25,7 @@ The function encodes a given string into its Base64 representation, converting t
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello World" | base64Encode }} // Output: "SGVsbG8gV29ybGQ="
+{{ "Hello World!" | base64Encode }} // Output: "SGVsbG8gV29ybGQh"
 ```
 {% endtab %}
 {% endtabs %}
@@ -40,7 +40,7 @@ The function decodes a Base64 encoded string back to its original form. If the i
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "SGVsbG8gV29ybGQ=" | base64Decode }} // Output: "Hello World"
+{{ "SGVsbG8gV29ybGQh" | base64Decode }} // Output: "Hello World!"
 ```
 {% endtab %}
 {% endtabs %}
@@ -55,7 +55,7 @@ The function encodes a given string into its Base32 representation, converting t
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello World" | base32Encode }} // Output: "JBSWY3DPEBLW64TMMQQQ===="
+{{ "Hello World!" | base32Encode }} // Output: "JBSWY3DPEBLW64TMMQQQ===="
 ```
 {% endtab %}
 {% endtabs %}
@@ -70,7 +70,7 @@ The function decodes a Base32 encoded string back to its original form. If the i
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "JBSWY3DPEBLW64TMMQQQ====" | base32Decode }} // Output: "Hello World"
+{{ "JBSWY3DPEBLW64TMMQQQ====" | base32Decode }} // Output: "Hello World!"
 ```
 {% endtab %}
 {% endtabs %}
@@ -85,8 +85,8 @@ The function converts a JSON string into a corresponding Go data structure, enab
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ '{"name":"John", "age":30}' | fromJson }} // Output: map[name:John age:30], nil
-{{ '{\invalid' | fromJson }} // Error
+{{ "{\"name\":\"John\", \"age\":30}" | fromJson }} // Output: map[age:30 name:John]
+{{ "{\\invalid" | fromJson }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -101,8 +101,8 @@ The function converts a Go data structure into a JSON string, allowing the data 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
-{{ toJson $d }} // Output: {"key1":"value1","key2":"value2","key3":"value3"}, nil
+{{- $d := dict "key1" "value1" "key2" "value2" "key3" "value3" -}}
+{{ toJson $d }} // Output: {\"key1\":\"value1\",\"key2\":\"value2\",\"key3\":\"value3\"}
 ```
 {% endtab %}
 {% endtabs %}
@@ -117,7 +117,7 @@ The function converts a Go data structure into a pretty-printed JSON string, for
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
+{{- $d := dict "key1" "value1" "key2" "value2" "key3" "value3" -}}
 {{ toPrettyJson $d }} // Output: "{\n  \"key1\": \"value1\",\n  \"key2\": \"value2\",\n  \"key3\": \"value3\"\n}"
 ```
 {% endtab %}
@@ -133,8 +133,8 @@ The function converts a Go data structure into a JSON string without escaping HT
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $d := dict "content" "<p>Hello World</p>" }}
-{{ toRawJson $d }} // Output: {"content":"<p>Hello World</p>"}
+{{- $d := dict "content" "<p>Hello World</p>" -}}
+{{ toRawJson $d }} // Output: {\"content\":\"<p>Hello World</p>\"}
 ```
 {% endtab %}
 {% endtabs %}
@@ -149,7 +149,8 @@ The function deserializes a YAML string into a Go map, allowing the structured d
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "name: John Doe\nage: 30" | fromYAML }} // Output: map[name:John Doe age:30], nil
+
+{{ "name: John Doe\nage: 30" | fromYaml }} // Output: map[age:30 name:John Doe]
 ```
 {% endtab %}
 {% endtabs %}
@@ -164,8 +165,8 @@ The function serializes a Go data structure into a YAML string, converting the d
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $d := dict "name" "John Doe" "age" 30 }}
-{{ $d | toYaml }} // Output: name: John Doe\nage: 30
+{{- $d := dict "name" "John Doe" "age" 30 -}}
+{{ $d | toYaml }} // Output: age: 30\nname: John Doe
 ```
 {% endtab %}
 {% endtabs %}

@@ -25,7 +25,7 @@ The function creates a list from the provided elements, collecting them into a s
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 1, 2, 3 | list }} // Output: [1, 2, 3]
+{{ list 1 2 3 }} // Output: [1 2 3]
 ```
 {% endtab %}
 {% endtabs %}
@@ -40,7 +40,7 @@ The function adds an element to the end of an existing list, extending the list 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ ["a", "b"] | append "c"  }} // Output: ["a", "b", "c"], nil
+{{ list "a" "b" | append "c"  }} // Output: [a b c]
 {{ nil | append "c"  }} // Error
 ```
 {% endtab %}
@@ -56,7 +56,7 @@ The function adds an element to the beginning of an existing list, placing the n
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ ["b", "c"] | prepend "a" }} // Output: ["a", "b", "c"]
+{{ list "b" "c" | prepend "a" }} // Output: [a b c]
 {{ nil | prepend "c" }} // Error
 ```
 {% endtab %}
@@ -72,7 +72,7 @@ The function merges multiple lists into a single, unified list, combining all el
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ ["c", "d"] | concat ["a", "b"] }} // Output: ["a", "b", "c", "d"]
+{{ list "c" "d" | concat (list "a" "b") }} // Output: [a b c d]
 ```
 {% endtab %}
 {% endtabs %}
@@ -87,10 +87,8 @@ The function divides a list into smaller, equally sized chunks based on the spec
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ ["a", "b", "c", "d"] | chunk 2 }}
-// Output: [["a", "b"], ["c", "d"]], nil
-{{ chunk 2 nil }}
-// Output: nil, error
+{{ list "a" "b" "c" "d" | chunk 2 }} // Output: [[a b] [c d]]
+{{ chunk 2 nil }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -105,8 +103,8 @@ The function removes duplicate elements from a list, ensuring that each element 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ ["a", "b", "a", "c"] | mustUniq }} // Output: ["a", "b", "c"], nil
-{{ nil | mustUniq }} // Error
+{{ list "a" "b" "a" "c" | uniq }} // Output: [a b c]
+{{ nil | uniq }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -121,7 +119,7 @@ The function removes `nil` and zero-value elements from a list, leaving only non
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ [0, 1, nil, 2, "", 3] | compact }} // Output: [1, 2, 3], nil
+{{ list 1 2 3 "" .Nil | compact }} // Output: [1 2 3]
 {{ nil | compact }} // Error
 ```
 {% endtab %}
@@ -137,8 +135,8 @@ The function flattens a list into a single-dimensional array, removing nested li
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ flatten [[1, 2], [3, 4], 5] }} // Output: [1, 2, 3, 4, 5]
-{{ flatten [[1, [2]], [3, 4], 5] }} // Output: [1, 2, 3, 4, 5]
+{{ flatten (list (list 1 2) (list 3 4) 5) }} // Output: [1 2 3 4 5]
+{{ flatten (list (list 1 (list 2)) (list 3 4) 5) }} // Output: [1 2 3 4 5]
 {{ nil | flatten }} // Error
 ```
 {% endtab %}
@@ -154,8 +152,8 @@ The function flattens a list into a single-dimensional array up to a specified d
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ [[1, [2]], [3, [4]], 5] | flattenDepth -1 }} // Output: [1, 2, 3, 4, 5]
-{{ [[1, [2]], [3, [4]], 5] | flattenDepth 1 }} // Output: [1, [2], 3, [4], 5]
+{{ (list (list 1 (list 2)) (list 3 4) 5) | flattenDepth -1 }} // Output: [1 2 3 4 5]
+{{ (list (list 1 (list 2)) (list 3 (list 4)) 5) | flattenDepth 1 }} // Output: [1 [2] 3 [4] 5]
 {{ nil | flattenDepth }} // Error
 ```
 {% endtab %}
@@ -171,8 +169,7 @@ The function extracts a portion of a list, creating a new slice based on the spe
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ [1, 2, 3, 4, 5] | slice 1, 3 }} // Output: [2, 3]
-{{ slice 1 }} // Error
+{{ list 1 2 3 4 5 | slice 1 3 }} // Output: [2 3]
 ```
 {% endtab %}
 {% endtabs %}
@@ -187,7 +184,7 @@ The function checks if a specified element is present within a collection, retur
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ [1, 2, 3, 4] | has 3 }} // Output: true, nil
+{{ list 1 2 3 4 | has 3 }} // Output: true
 {{ 3 | has 3 }} // Error
 ```
 {% endtab %}
@@ -203,8 +200,8 @@ The function returns a new list that excludes the specified elements, effectivel
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ [1, 2, 3, 4] | without 2, 4 }} // Output: [1, 3], nil
-{{ without nil, nil }} // Error
+{{ list 1 2 3 4 | without 2 4 }} // Output: [1 3]
+{{ without nil }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -219,7 +216,7 @@ The function returns all elements of a list except for the first one, effectivel
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ [1, 2, 3, 4] | rest }} // Output: [2, 3, 4], nil
+{{ list 1 2 3 4 | rest }} // Output: [2 3 4]
 {{ rest 1 }} // Error
 ```
 {% endtab %}
@@ -235,7 +232,7 @@ The function returns all elements of a list except the last one, effectively pro
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ [1, 2, 3, 4] | initial }} // Output: [1, 2, 3]
+{{ list 1 2 3 4 | initial }} // Output: [1 2 3]
 {{ initial 1 }} // Error
 ```
 {% endtab %}
@@ -251,7 +248,7 @@ The function returns the first element of a list.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ [1, 2, 3, 4] | first }} // Output: 1
+{{ list 1 2 3 4 | first }} // Output: 1
 {{ first nil }} // Error
 ```
 {% endtab %}
@@ -267,7 +264,7 @@ The function returns the last element of a list.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ [1, 2, 3, 4] | last }} // Output: 4
+{{ list 1 2 3 4 | last }} // Output: 4
 {{ last nil }} // Error
 ```
 {% endtab %}
@@ -283,7 +280,7 @@ The function returns a new list with the elements in reverse order, flipping the
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ [1, 2, 3, 4] | reverse }} // Output: [4, 3, 2, 1]
+{{ list 1 2 3 4 | reverse }} // Output: [4 3 2 1]
 {{ reverse nil }} // Error
 ```
 {% endtab %}
@@ -299,8 +296,8 @@ The function sorts a list of strings in alphabetical order.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ ["d", "b", "a", "c"] | sortAlpha }} // Output: ["a", "b", "c", "d"]
-{{ [4, 3, 2, 1, "a"] | sortAlpha }} // Output: ["1", "2", "3", "4", "a"]
+{{ list "d" "b" "a" "c" | sortAlpha }} // Output: [a b c d]
+{{ list 4 3 2 1 "a" | sortAlpha }} // Output: [1 2 3 4 a]
 ```
 {% endtab %}
 {% endtabs %}
@@ -319,7 +316,7 @@ This function may be renamed in the future to better reflect its purpose.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "one, two, three" | splitList ", " }} // Output: ["one", "two", "three"]
+{{ "one, two, three" | splitList ", " }} // Output: [one two three]
 ```
 {% endtab %}
 {% endtabs %}
@@ -334,8 +331,8 @@ The function converts a given value into a slice of strings, handling various in
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ strSlice ["a", "b", "c"] }} // Output: ["a", "b", "c"]
-{{ strSlice [5, "a", true, nil, 1] }} // Output: ["5", "a", "true", "1"]
+{{ strSlice (list "a" "b" "c") }} // Output: [a b c]
+{{ strSlice (list 5 "a" true 1) }} // Output: [5 a true 1]
 ```
 {% endtab %}
 {% endtabs %}
@@ -350,7 +347,7 @@ The function generates a slice of integers starting from 0 up to, but not includ
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 5 | until }} // Output: [0 1 2 3 4]
+{{ until 5 }} // Output: [0 1 2 3 4]
 {{ -3 | until }} // Output: [0 -1 -2]
 ```
 {% endtab %}
@@ -366,8 +363,8 @@ The function generates a slice of integers from `start` to `stop` (exclusive), i
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 0, 10, 2 | untilStep }} // Output: [0 2 4 6 8]
-{{ 10, 0, -2 | untilStep }} // Output: [10 8 6 4 2]
+{{ untilStep 0 10 2 }} // Output: [0 2 4 6 8]
+{{ untilStep 10 0 -2 }} // Output: [10 8 6 4 2]
 ```
 {% endtab %}
 {% endtabs %}

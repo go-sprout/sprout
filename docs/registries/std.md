@@ -24,8 +24,9 @@ The function returns a simple greeting string, "Hello!" It serves as a basic tes
 
 {% tabs %}
 {% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go"><strong>{{ hello }} // Output: Hello!
-</strong></code></pre>
+```go
+{{ hello }} // Output: Hello!
+```
 {% endtab %}
 {% endtabs %}
 
@@ -39,10 +40,10 @@ The function returns the first non-empty value from a provided list of arguments
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ nil | default "default" }} // Output: "default"
-{{ "" | default "default" }}  // Output: "default"
-{{ "first" | default "default" }} // Output: "first"
-{{ "first" | default "default" "second" }} // Output: "second"
+{{ .Nil | default "default" }} // Output: default
+{{ "" | default "default" }}  // Output: default
+{{ "first" | default "default" }} // Output: first
+{{ "first" | default "default" "second" }} // Output: second
 ```
 {% endtab %}
 {% endtabs %}
@@ -57,11 +58,11 @@ The function checks if the provided value is empty, returning `true` if it is co
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ nil | empty }} // Output: true
+{{ .Nil | empty }} // Output: true
 {{ "" | empty }} // Output: true
 {{ 0 | empty }} // Output: true
 {{ false | empty }} // Output: true
-{{ struct{}{} | empty }} // Output: false
+{{ .Struct | empty }} // Output: false
 ```
 {% endtab %}
 {% endtabs %}
@@ -76,8 +77,8 @@ The function checks if all values in the provided variadic slice are non-empty. 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 1, "hello", true | all }} // Output: true
-{{ 1, "", true | all }} // Output: false
+{{ all  1 "hello" true }} // Output: true
+{{ all 1 "" true }} // Output: false
 ```
 {% endtab %}
 {% endtabs %}
@@ -92,8 +93,8 @@ The function checks if any of the provided values are non-empty. It returns `tru
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "", 0, false | any }} // Output: false
-{{ "", 0, "text" | any }} // Output: true
+{{ any "" 0 false }} // Output: false
+{{ any "" 0 "text" }} // Output: true
 ```
 {% endtab %}
 {% endtabs %}
@@ -108,7 +109,7 @@ The function returns the first non-empty value from the provided list. If all va
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ nil, "", "first", "second" | coalesce }} // Output: "first"
+{{ coalesce nil "" "first" "second" }} // Output: first
 ```
 {% endtab %}
 {% endtabs %}
@@ -123,8 +124,8 @@ The function mimics the ternary conditional operator found in many programming l
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ true | ternary "yes", "no" }} // Output: "yes"
-{{ false | ternary "yes", "no" }} // Output: "no"
+{{ true | ternary "yes" "no" }} // Output: yes
+{{ false | ternary "yes" "no" }} // Output: no
 ```
 {% endtab %}
 {% endtabs %}
@@ -139,7 +140,7 @@ The function concatenates a series of values into a single string, converting ea
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello", nil, 123, true | cat }} // Output: "Hello 123 true"
+{{ cat "Hello" .Nil 123 true }} // Output: Hello 123 true
 ```
 {% endtab %}
 {% endtabs %}

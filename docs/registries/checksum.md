@@ -24,9 +24,10 @@ SHA1sum calculates the SHA-1 hash of the input string and returns it as a hexade
 
 {% tabs %}
 {% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go"><strong>{{ sha1Sum "" }} // Output: da39a3ee5e6b4b0d3255bfef95601890afd80709
-</strong>{{ sha1Sum "Hello, World!" }} // Output: 0a0a9f2a6772942557ab5355d76af442f8f65e01
-</code></pre>
+```go
+{{ sha1Sum "" }} // Output: da39a3ee5e6b4b0d3255bfef95601890afd80709
+{{ sha1Sum "Hello, World!" }} // Output: 0a0a9f2a6772942557ab5355d76af442f8f65e01
+```
 {% endtab %}
 {% endtabs %}
 
@@ -72,8 +73,8 @@ Adler32Sum calculates the Adler-32 checksum of the input string and returns it a
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ adler32Sum "" }} // Output: 00000001
-{{ adler32Sum "Hello, World!" }} // Output: 1f9e046a
+{{ adler32Sum "" }} // Output: 1
+{{ adler32Sum "Hello, World!" }} // Output: 530449514
 ```
 {% endtab %}
 {% endtabs %}

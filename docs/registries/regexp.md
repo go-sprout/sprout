@@ -24,9 +24,10 @@ The function returns the first match found in the string that corresponds to the
 
 {% tabs %}
 {% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go">{{ "hello world" | regexFind "hello" }} // Output: "hello", nil
-<strong>{{ "hello world" | regexFind "\invalid$^///" }} // Error
-</strong></code></pre>
+```go
+{{ "hello world" | regexFind "hello" }} // Output: "hello"
+{{ "hello world" | regexFind "\\invalid$^///" }} // Error
+```
 {% endtab %}
 {% endtabs %}
 
@@ -40,8 +41,8 @@ The function returns all matches of the regex pattern in the string, up to a spe
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ regexFindAll "a.", "aba acada afa", 3 }} // Output: ["ab", "ac", "af"], nil
-{{ regexFindAll "\invalid$^///", "aba acada afa", 3 }} // Error
+{{ regexFindAll "a." "aba acada afa" 3 }} // Output: [ab a  ac]
+{{ regexFindAll "\\invalid$^///" "aba acada afa" 3 }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -56,8 +57,8 @@ The function checks if the entire string matches the given regular expression pa
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ regexMatch "^[a-zA-Z]+$", "Hello" }} // Output: true, nil
-{{ regexMatch "\invalid$^///", "Hello" }} // Output: false, error
+{{ regexMatch "^[a-zA-Z]+$" "Hello" }} // Output: true
+{{ regexMatch "\\invalid$^///" "Hello" }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -72,8 +73,9 @@ The function splits the string into substrings based on matches of the regex pat
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ mustRegexSplit "\\s+", "hello world from Go", 2 }} // Output: ["hello", "world from Go"], nil
-{{ mustRegexSplit "\invalid$^///", "hello world from Go", 2 }} // Error
+{{ regexSplit "\\s+" "hello world from Go" 2 }}
+// Output(humain readable): [hello "world from Go"]
+{{ regexSplit "\\invalid$^///" "hello world from Go" 2 }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -88,8 +90,8 @@ The function replaces all occurrences of the regex pattern in the string with th
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ regexReplaceAll "\\d", "R2D2 C3PO", "X" }} // Output: "RXDX CXPO", nil
-{{ regexReplaceAll "\invalid$^///", "R2D2 C3PO", "X" }} // Output: "", error
+{{ regexReplaceAll "\\d" "R2D2 C3PO" "X" }} // Output: "RXDX CXPO"
+{{ regexReplaceAll "\\invalid$^///" "R2D2 C3PO" "X" }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -104,8 +106,9 @@ The function replaces all occurrences of the regex pattern in the string with th
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ regexReplaceAllLiteral "world", "hello world", "$1" }} // Output: "hello $1", nil
-{{ regexReplaceAllLiteral "world", "hello world", "\invalid$^///" }} // Output: "", error
+{{ regexReplaceAllLiteral "world" "hello world" "$1" }} // Output: "hello $1"
+{{ regexReplaceAllLiteral "none" "hello world" "all" }} // Output: "hello world"
+{{ regexReplaceAllLiteral "\\invalid$^///" "hello world" "all" }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -120,7 +123,8 @@ The function returns a version of the provided string that can be used as a lite
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ regexQuoteMeta ".+*?^$()[]{}|" }} // Output: "\.\+\*\?\^\$\(\)\[\]\{\}\|"
+{{ regexQuoteMeta ".+*?^$()[]{}|" }}
+// Output: \\.\\+\\*\\?\\^\\$\\(\\)\\[\\]\\{\\}\\|
 ```
 {% endtab %}
 {% endtabs %}
@@ -135,8 +139,8 @@ The function finds the first match of a regex pattern in a string and returns th
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "aaabbb" | regexFindGroups "(a+)(b+)" }} // Output: ["aaabbb", "aaa", "bbb"], nil
-{{ "aaabbb" | regexFindGroups "\invalid$^///" }} // Error
+{{ "aaabbb" | regexFindGroups "(a+)(b+)" }} // Output: [aaabbb aaa bbb]
+{{ "aaabbb" | regexFindGroups "\\invalid$^///" }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -151,9 +155,9 @@ The function finds all matches of a regex pattern in a string up to a specified 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)", -1 }} // Output: [["aaabbb", "aaa", "bbb"], ["aab", "aa", "b"], ["aaabbb", "aaa", "bbb"]], nil
-{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)", 1 }} // Output: [["aaabbb", "aaa", "bbb"]], nil
-{{ "aaabbb" | regexFindAllGroups "\invalid$^///" }} // Error
+{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)" -1 }} // Output: [[aaabbb aaa bbb] [aab aa b] [aaabbb aaa bbb]]
+{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)" 1 }} // Output: [[aaabbb aaa bbb]]
+{{ "aaabbb" | regexFindAllGroups "\\invalid$^///" }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -168,10 +172,10 @@ The function finds the first match of a regex pattern with named capturing group
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "aaabbb" | regexFindNamed "(?P<first>a+)(?P<second>b+)" }} // Output: map["first":"aaa", "second":"bbb"], nil
-{{ "aaabbb" | regexFindNamed "(?P<first>a+)(b+)" }} // Output: map["first":"aaa"], nil
-{{ "bbb" | regexFindNamed "(?P<first>a+)" }} // Output: map[], nil
-{{ "aaabbb" | regexFindNamed "\invalid$^///" }} // Error
+{{ "aaabbb" | regexFindNamed "(?P<first>a+)(?P<second>b+)" }} // Output: map[first:aaa second:bbb]
+{{ "aaabbb" | regexFindNamed "(?P<first>a+)(b+)" }} // Output: map[first:aaa]
+{{ "bbb" | regexFindNamed "(?P<first>a+)" }} // Output: map[]
+{{ "aaabbb" | regexFindNamed "\\invalid$^///" }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -186,10 +190,10 @@ The function finds all matches of a regex pattern with named capturing groups in
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "var1=value1&var2=value2" | regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" -1 }} // Output: [map[param:var1 value:value1] map[param:var2 value:value2]], nil
-{{ "var1=value1&var2=value2" | regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" 1 }} // Output: [map[param:var1 value:value1]], nil
-{{ "var1+value1" | regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" -1 }} // Output: map[], nil
-{{ "var1=value1" | regexFindAllNamed "\invalid$^///" -1 }} // Error
+{{ "var1=value1&var2=value2" | regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" -1 }} // Output: [map[param:var1 value:value1] map[param:var2 value:value2]]
+{{ "var1=value1&var2=value2" | regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" 1 }} // Output: [map[param:var1 value:value1]]
+{{ "var1+value1" | regexFindAllNamed "(?P<param>\\w+)=(?P<value>\\w+)" -1 }} // Output: []
+{{ "var1=value1" | regexFindAllNamed "\\invalid$^///" -1 }} // Error
 ```
 {% endtab %}
 {% endtabs %}

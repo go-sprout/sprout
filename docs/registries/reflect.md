@@ -40,7 +40,7 @@ The function compares the type of the provided value (`src`) to a target type st
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 42 | typeIsLike "*int" }} // Output: true
+{{ 42 | typeIsLike "*int" }} // Output: false
 ```
 {% endtab %}
 {% endtabs %}
@@ -101,11 +101,12 @@ The function checks the presence of a field with the specified name (`name`) in 
 
 {% tabs %}
 {% tab title="Template Example" %}
+Assuming Struct has defined as : `type Struct struct { V string }`
 ```go
-{{ hasField "someExistingField" .someStruct }} // Output: true
-{{ hasField "someNonExistingField" .someStruct }} // Output: false
-{{ .someStruct | hasField "someExistingField" }} // Output: true
-{{ .someStruct | hasField "someNonExistingField" }} // Output: false
+{{ hasField "V" .Struct }} // Output: true
+{{ hasField "someNonExistingField" .Struct }} // Output: false
+{{ .Struct | hasField "V" }} // Output: true
+{{ .Struct | hasField "someNonExistingField" }} // Output: false
 ```
 {% endtab %}
 {% endtabs %}
@@ -120,7 +121,8 @@ The function checks if two variables, `x` and `y`, are deeply equal by comparing
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ {"a":1}, {"a":1} | deepEqual }} // Output: true
+{{ .Struct | deepEqual .Struct }} // Output: true
+{{ .Struct | deepEqual .SecondStruct }} // Output: false
 ```
 {% endtab %}
 {% endtabs %}
@@ -135,8 +137,8 @@ The function performs a deep copy of the provided `element`, creating an exact d
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ {"name":"John"} | deepCopy }} // Output: {"name":"John"}
-{{ nil | deepCopy }} // Output: nil, error
+{{ dict "name" "John" | deepCopy }} // Output: map[name:John]
+{{ nil | deepCopy }} // Error
 ```
 {% endtab %}
 {% endtabs %}

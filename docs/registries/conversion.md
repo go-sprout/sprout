@@ -135,7 +135,7 @@ toOctal parses a value as an octal (base 8) integer.
 ```go
 {{ 777 | toOctal }} // Output: "511"
 {{ "770" | toOctal }} // Output: "504"
-{{ true | toOctal }} // Output: "1"
+{{ true | toOctal }} // Error
 {{ "invalid" | toOctal }} // Error
 ```
 {% endtab %}
@@ -154,7 +154,7 @@ toString converts a value to a string, handling various types effectively.
 {{ 1 | toString }} // Output: "1"
 {{ 1.42 | toString }} // Output: "1.42"
 {{ true | toString }} // Output: "true"
-{{ nil | toString }} // Output: "<nil>"
+{{ .UnknownOrNil | toString }} // Output: "<nil>"
 ```
 {% endtab %}
 {% endtabs %}
@@ -176,11 +176,11 @@ toDate converts a string to a `time.Time` object based on a format specification
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ toDate "2006-01-02", "2024-05-10 11:12:42" }}
-// Output: 2024-05-10 00:00:00 +0000 UTC, nil
+{{ toDate "2006-01-02" "2024-05-10" }}
+// Output: 2024-05-10 00:00:00 +0000 UTC
 ```
 
-_This example will takes the_ `"2024-05-10 11:12:42"` _string and convert it with the layout_ `"2006-01-02"`.
+_This example will takes the_ `"2024-05-10"` _string and convert it with the layout_ `"2006-01-02"`.
 {% endtab %}
 {% endtabs %}
 
@@ -198,11 +198,11 @@ toLocalDate converts a string to a time.Time object based on a format specificat
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "2024-09-17 11:12:42" | toLocalDate "2006-01-02" "Europe/Paris" }}
-// Output: 2024-09-17 00:00:00 +0200 CEST, nil
-{{ "2024-09-17 11:12:42" | toLocalDate "2006-01-02" "MST" }}
-// Output: 2024-09-17 00:00:00 -0700 MST, nil
-{{ "2024-09-17 11:12:42" | toLocalDate "2006-01-02" "invalid" }}
+{{ "2024-09-17" | toLocalDate "2006-01-02" "Europe/Paris" }}
+// Output: 2024-09-17 00:00:00 +0200 CEST
+{{ "2024-09-17" | toLocalDate "2006-01-02" "MST" }}
+// Output: 2024-09-17 00:00:00 -0700 MST
+{{ "2024-09-17" | toLocalDate "2006-01-02" "invalid" }}
 // Error
 ```
 {% endtab %}
@@ -225,8 +225,8 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 {% tab title="Template Example" %}
 ```go
 {{ 1 | toDuration }} // Output: 1ns
-{{ (1000.0 * 1000.0) | toDuration }} // Output: 1ms
-{{ "1m" | toDuration }} // Output: 1m
+{{ 1000.0 | toDuration }} // Output: 1µs
+{{ "1m" | toDuration }} // Output: 1m0s
 {{ "invalid" | toDuration }} // Error
 {{ (toDuration "1h30m").Seconds }} // Output: 5400
 ```
@@ -242,9 +242,10 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 {% endhint %}
 
 {% tabs %}
-{% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go"><strong>{{ "42" | atoi }} // Output: 42
-</strong></code></pre>
+{% tab title="Deprecated Template Example" %}
+```go
+{{ "42" | atoi }} // Output: 42
+```
 
 :x: No error handling
 {% endtab %}
@@ -257,9 +258,10 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 {% endhint %}
 
 {% tabs %}
-{% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go"><strong>`{{ "42" | int }} // Output: 42
-</strong></code></pre>
+{% tab title="Deprecated Template Example" %}
+```go
+{{ "42" | int }} // Output: 42
+```
 {% endtab %}
 {% endtabs %}
 
@@ -270,7 +272,7 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 {% endhint %}
 
 {% tabs %}
-{% tab title="Template Example" %}
+{% tab title="Deprecated Template Example" %}
 ```go
 {{ "42" | int64 }} // Output: 42
 ```
@@ -284,8 +286,9 @@ Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m` and `h`.
 {% endhint %}
 
 {% tabs %}
-{% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go"><strong>`{{ "42.42" | float64 }} // Output: 42.42
-</strong></code></pre>
+{% tab title="Deprecated Template Example" %}
+```go
+{{ "42.42" | float64 }} // Output: 42.42
+```
 {% endtab %}
 {% endtabs %}

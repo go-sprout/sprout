@@ -25,7 +25,7 @@ Uuidv4 generates a new random UUID (Universally Unique Identifier) version 4.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ uuidv4 }} // Output: "3f0c463e-53f5-4f05-a2ec-3c083aa8f937"
+{{ uuidv4 }} // Output(will be different): 3f0c463e-53f5-4f05-a2ec-3c083aa8f937
 ```
 {% endtab %}
 {% endtabs %}

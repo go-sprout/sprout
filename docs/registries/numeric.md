@@ -63,7 +63,6 @@ The function rounds a number to a specified precision, allowing control over the
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 3.746, 2, 0.5 | round }} // Output: 3.75
 {{ round 3.746 2 }} // Output: 3.75
 {{ round 3.746 2 0.5 }} // Output: 3.75
 {{ round "123.5555" 3 }} // Output: 123.556
@@ -102,7 +101,6 @@ The function performs a unary addition, incrementing the provided value by one.
 {% tab title="Template Example" %}
 ```go
 {{ add1 -1 }} // Output: 0
-{{ add1f -1.0}} // Output: 0.0
 {{ add1 1 }} // Output: 2
 {{ add1 1.1 }} // Output: 2.1
 ```
@@ -119,7 +117,7 @@ The function performs subtraction on a slice of values, starting with the first 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 10, 3, 2 | sub }} // Output: 5
+{{ sub 10 3 2 }} // Output: 5
 ```
 {% endtab %}
 {% endtabs %}
@@ -182,7 +180,7 @@ The function divides a sequence of values, starting with the first value, and re
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 30.0, 3.0, 2.0 | divf }} // Output: 5.0
+{{ divf 30.0 3.0 2.0 }} // Output: 5
 {{ 2 | divf 5 4 }} // Output: 0.625
 ```
 {% endtab %}
@@ -198,7 +196,7 @@ The function returns the remainder of the division of `x` by `y`.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 10 | mod 4 }} // Output: 2
+{{ 4 | mod 10 }} // Output: 2
 ```
 {% endtab %}
 {% endtabs %}
@@ -213,7 +211,7 @@ The function returns the minimum value among the provided arguments.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 5, 3, 8, 2 | min }} // Output: 2
+{{ min 5 3 8 2 }} // Output: 2
 ```
 {% endtab %}
 {% endtabs %}
@@ -228,7 +226,7 @@ The function returns the minimum value among the provided floating-point argumen
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 5.2, 3.8, 8.1, 2.6 | minf }} // Output: 2.6
+{{ minf 5.2 3.8 8.1 2.6 }} // Output: 2.6
 ```
 {% endtab %}
 {% endtabs %}
@@ -243,7 +241,7 @@ The function returns the maximum value among the provided arguments.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 5, 3, 8, 2 | max }} // Output: 8
+{{ max 5 3 8 2 }} // Output: 8
 ```
 {% endtab %}
 {% endtabs %}
@@ -258,9 +256,7 @@ The function returns the maximum value among the provided floating-point argumen
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 5.2, 3.8, 8.1, 2.6 | maxf }} // Output: 8.1
+{{ maxf 5.2 3.8 8.1 2.6 }} // Output: 8.1
 ```
 {% endtab %}
 {% endtabs %}
-
-tt

@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"testing"
 	"text/template"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -55,6 +56,9 @@ func TestTemplate(t *testing.T, registry sprout.Registry, tmplString string, dat
 
 func runTemplate(t *testing.T, handler sprout.Handler, tmplString string, data any) (string, error) {
 	t.Helper()
+
+	// Force timezone to UTC (for date parsing)
+	time.Local = time.UTC
 
 	tmpl, err := template.New("test").Funcs(handler.Build()).Parse(tmplString)
 	require.NoError(t, err, "Failed to parse template")

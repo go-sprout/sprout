@@ -20,6 +20,14 @@ tasks:
     summary: Run tests with coverage and generate a coverage report in coverage.out
     cmds:
       - go test -coverprofile=coverage.out ./...
+  test-doc:
+    aliases: [tdoc, tdocu, tdocum]
+    desc: Run tests to validate all documentation examples
+    summary: |
+      Run tests to validate all documentation examples and generate a report
+      with the results.
+    cmds:
+      - go run ./tools/docvalidator
   bench:
     aliases: [benchmarks, benchs, b]
     desc: Run benchmarks between sprig and current sprout implementation

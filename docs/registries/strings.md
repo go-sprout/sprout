@@ -25,7 +25,7 @@ The function removes all whitespace characters from the provided string, elimina
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello World" | nospace }} // Output: "HelloWorld"
+{{ "Hello World" | nospace }} // Output: HelloWorld
 ```
 {% endtab %}
 {% endtabs %}
@@ -40,7 +40,7 @@ The function removes any leading and trailing whitespace from the provided strin
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ " Hello World " | trim }} // Output: "Hello World"
+{{ " Hello World " | trim }} // Output: Hello World
 ```
 {% endtab %}
 {% endtabs %}
@@ -55,7 +55,7 @@ The function removes all instances of any characters in the 'cutset' from both t
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "xyzHelloxyz" | trimAll "xyz" }} // Output: "Hello"
+{{ "xyzHelloxyz" | trimAll "xyz" }} // Output: Hello
 ```
 {% endtab %}
 {% endtabs %}
@@ -69,9 +69,10 @@ The function removes the specified 'prefix' from the start of the provided strin
 
 {% tabs %}
 {% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go"><strong>{{ "HelloWorld" | trimPrefix "Hello" }} // Output: "World"
-</strong>{{ "HelloWorld" | trimPrefix "World" }} // Output: "HelloWorld"
-</code></pre>
+```go
+{{ "HelloWorld" | trimPrefix "Hello" }} // Output: World
+{{ "HelloWorld" | trimPrefix "World" }} // Output: HelloWorld
+```
 {% endtab %}
 {% endtabs %}
 
@@ -85,8 +86,8 @@ The function removes the specified 'suffix' from the end of the provided string 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "HelloWorld" | trimSuffix "Hello" }} // Output: "HelloWorld"
-{{ "HelloWorld" | trimSuffix "World" }} // Output: "Hello"
+{{ "HelloWorld" | trimSuffix "Hello" }} // Output: HelloWorld
+{{ "HelloWorld" | trimSuffix "World" }} // Output: Hello
 ```
 {% endtab %}
 {% endtabs %}
@@ -146,7 +147,7 @@ The function converts all characters in the provided string to lowercase.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "HELLO WORLD" | toLower }} // Output: "hello world"
+{{ "HELLO WORLD" | toLower }} // Output: hello world
 ```
 {% endtab %}
 {% endtabs %}
@@ -161,7 +162,7 @@ The function converts all characters in the provided string to uppercase.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello world" | toUpper }} // Output: "HELLO WORLD"
+{{ "hello world" | toUpper }} // Output: HELLO WORLD
 ```
 {% endtab %}
 {% endtabs %}
@@ -176,7 +177,7 @@ The function replaces all occurrences of a specified substring ('old') in the so
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "banana" | replace "a", "o" }} // Output: "bonono"
+{{ "banana" | replace "a" "o" }} // Output: bonono
 ```
 {% endtab %}
 {% endtabs %}
@@ -191,7 +192,7 @@ The function repeats the provided string a specified number of times.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "ha" | repeat 3 }} // Output: "hahaha"
+{{ "ha" | repeat 3 }} // Output: hahaha
 ```
 {% endtab %}
 {% endtabs %}
@@ -206,8 +207,8 @@ The function concatenates elements of a slice into a single string, with each el
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $list := slice "apple" "banana" "cherry" }}
-{{ $list | join ", " }} // Output: "apple, banana, cherry"
+{{- $list := list "apple" "banana" "cherry" -}}
+{{ $list | join ", " }} // Output: apple, banana, cherry
 ```
 {% endtab %}
 {% endtabs %}
@@ -222,8 +223,8 @@ The function truncates the provided string to a maximum specified length. If the
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello World" | trunc 5 }} // Output: "Hello"
-{{ "Hello World" | trunc -5 }} // Output: "World"
+{{ "Hello World" | trunc 5 }} // Output: Hello
+{{ "Hello World" | trunc -5 }} // Output: World
 ```
 {% endtab %}
 {% endtabs %}
@@ -238,7 +239,7 @@ The function randomly rearranges the characters in the provided string, producin
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello" | shuffle }} // Output: "loleh" (output may vary due to randomness)
+{{ "hello" | shuffle }} // Output(will be different): "loleh"
 ```
 {% endtab %}
 {% endtabs %}
@@ -253,7 +254,7 @@ The function truncates a string to a specified maximum width and appends an elli
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello World" | ellipsis 10 }} // Output: "Hello W..."
+{{ "Hello World" | ellipsis 10 }} // Output: Hello W...
 ```
 {% endtab %}
 {% endtabs %}
@@ -268,7 +269,7 @@ The function truncates a string from both ends, preserving the middle portion an
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello World" | ellipsisBoth 1 10 }} // Output: "...lo Wor..."
+{{ "Hello World" | ellipsisBoth 1 10 }} // Output: ...ello...
 ```
 {% endtab %}
 {% endtabs %}
@@ -283,7 +284,7 @@ The function extracts initials from a string, optionally using specified delimit
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "John Doe" | initials }} // Output: "JD"
+{{ "John Doe" | initials }} // Output: JD
 ```
 {% endtab %}
 {% endtabs %}
@@ -298,8 +299,8 @@ The function returns a specified string ('one') if the count is 1; otherwise, it
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 1 | plural "apple" "apples" }} // Output: "apple"
-{{ 2 | plural "apple" "apples" }} // Output: "apples"
+{{ 1 | plural "apple" "apples" }} // Output: apple
+{{ 2 | plural "apple" "apples" }} // Output: apples
 ```
 {% endtab %}
 {% endtabs %}
@@ -315,7 +316,7 @@ The function breaks a string into lines, ensuring that each line does not exceed
 {% tab title="Template Example" %}
 ```go
 {{ "This is a long string that needs to be wrapped." | wrap 10 }}
-// Output: "This is a\nlong\nstring\nthat needs\nto be\nwrapped."
+// Output: This is a\nlong\nstring\nthat needs\nto be\nwrapped.
 ```
 {% endtab %}
 {% endtabs %}
@@ -331,7 +332,7 @@ The function breaks a string into lines with a specified maximum length, using a
 {% tab title="Template Example" %}
 ```go
 {{ "This is a long string that needs to be wrapped." | wrapWith 10 "<br>" }}
-// Output: "This is a<br>long<br>string<br>that needs<br>to be<br>wrapped."
+// Output: This is a<br>long<br>string<br>that needs<br>to be<br>wrapped.
 ```
 {% endtab %}
 {% endtabs %}
@@ -346,9 +347,9 @@ The function wraps each element in a provided list with double quotes and separa
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $list := slice "hello" "world" 123 }}
+{{- $list := list "hello" "world" 123 -}}
 {{ $list | quote }}
-// Output: "hello" "world" "123"
+// Output(human readable): "hello" "world" "123"
 ```
 {% endtab %}
 {% endtabs %}
@@ -363,9 +364,9 @@ The function wraps each element in the provided list with single quotes and sepa
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $list := slice "hello" "world" 123 }}
+{{- $list := list "hello" "world" 123 -}}
 {{ $list | squote }}
-// Output: 'hello' 'world' '123'
+// Output(human readable): 'hello' 'world' '123'
 ```
 {% endtab %}
 {% endtabs %}
@@ -380,7 +381,7 @@ Converts a string to `camelCase` format.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello world" | toCamelCase }} // Output: "helloWorld"
+{{ "hello world" | toCamelCase }} // Output: helloWorld
 ```
 {% endtab %}
 {% endtabs %}
@@ -395,7 +396,7 @@ Converts a string to `kebab-case` format.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello world" | toKebabCase }} // Output: "hello-world"
+{{ "hello world" | toKebabCase }} // Output: hello-world
 ```
 {% endtab %}
 {% endtabs %}
@@ -410,7 +411,7 @@ Converts a string to `PascalCase` format.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello world" | toPascalCase }} // Output: "HelloWorld"
+{{ "hello world" | toPascalCase }} // Output: HelloWorld
 ```
 {% endtab %}
 {% endtabs %}
@@ -425,7 +426,7 @@ Converts a string to `dot.case` format.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello world" | toDotCase }} // Output: "hello.world"
+{{ "hello world" | toDotCase }} // Output: hello.world
 ```
 {% endtab %}
 {% endtabs %}
@@ -440,7 +441,7 @@ Converts a string to `path/case` format.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello world" | toPathCase }} // Output: "hello/world"
+{{ "hello world" | toPathCase }} // Output: hello/world
 ```
 {% endtab %}
 {% endtabs %}
@@ -455,7 +456,7 @@ Converts a string to `CONSTANT_CASE` format.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello world" | toConstantCase }} // Output: "HELLO_WORLD"
+{{ "hello world" | toConstantCase }} // Output: HELLO_WORLD
 ```
 {% endtab %}
 {% endtabs %}
@@ -470,7 +471,7 @@ Converts a string to `snake_case` format.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello world" | toSnakeCase }} // Output: "hello_world"
+{{ "hello world" | toSnakeCase }} // Output: hello_world
 ```
 {% endtab %}
 {% endtabs %}
@@ -485,7 +486,7 @@ Converts a string to `Title Case` format.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello world" | toTitleCase }} // Output: "Hello World"
+{{ "hello world" | toTitleCase }} // Output: Hello World
 ```
 {% endtab %}
 {% endtabs %}
@@ -500,7 +501,7 @@ Converts the first letter of each word in a string to lowercase.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello World" | untitle }} // Output: "hello world"
+{{ "Hello World" | untitle }} // Output: hello world
 ```
 {% endtab %}
 {% endtabs %}
@@ -515,7 +516,7 @@ Switches the case of each letter in a string, converting lowercase to uppercase 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello World" | swapCase }} // Output: "hELLO wORLD"
+{{ "Hello World" | swapCase }} // Output: hELLO wORLD
 ```
 {% endtab %}
 {% endtabs %}
@@ -530,7 +531,7 @@ Uppercases the first letter of a string while leaving the rest of the string unc
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "hello world" | capitalize }} // Output: "Hello world"
+{{ "hello world" | capitalize }} // Output: Hello world
 {{ "123boo_bar" | capitalize }} // Output: 123Boo_bar
 {{ " Fe bar" | capitalize }} // Output: " Fe bar"
 ```
@@ -547,7 +548,7 @@ Lowercases the first letter of a string while leaving the rest of the string unc
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello World" | uncapitalize }} // Output: "hello World"
+{{ "Hello World" | uncapitalize }} // Output: hello World
 {{ "123Boo_bar" | uncapitalize }} // Output: 123boo_bar
 {{ " Fe bar" | uncapitalize }} // Output: " fe bar"
 ```
@@ -565,7 +566,7 @@ Divides a string into a map of parts based on a specified separator, returning a
 {% tab title="Template Example" %}
 ```go
 {{ "apple,banana,cherry" | split "," }}
-// Output: { "_0":"apple", "_1":"banana", "_2":"cherry" }
+// Output: map[_0:apple _1:banana _2:cherry]
 ```
 {% endtab %}
 {% endtabs %}
@@ -580,8 +581,8 @@ Splits a string into a specified number of parts using a separator, returning a 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "apple,banana,cherry" | split "," 2 }}
-// Output: { "_0":"apple", "_1":"banana,cherry" }
+{{ "apple,banana,cherry" | splitn "," 2 }}
+// Output: map[_0:apple _1:banana,cherry]
 ```
 {% endtab %}
 {% endtabs %}
@@ -596,7 +597,7 @@ Extracts a portion of a string based on given start and end positions, with supp
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello World" | substr 0 5 }} // Output: "Hello"
+{{ "Hello World" | substr 0 5 }} // Output: Hello
 ```
 {% endtab %}
 {% endtabs %}
@@ -626,7 +627,7 @@ Similar to `Indent`, but also adds a newline before the indented lines.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello\nWorld" | nindent 4 }} // Output: "\n    Hello\n    World"
+{{ "Hello\nWorld" | nindent 4 }} // Output: \n    Hello\n    World
 ```
 {% endtab %}
 {% endtabs %}
@@ -641,12 +642,12 @@ Generates a sequence of numbers as a string, allowing for customizable start, en
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ seq 1, 2, 10 }} // Output: "1 3 5 7 9"
-{{ seq 3 -3 2 }} // Output: "3"
+{{ seq 1 2 10 }} // Output: 1 3 5 7 9
+{{ seq 3 -3 2 }} // Output: 3
 {{ seq }} // Output: ""
-{{ seq 0 4 }} // Output: "0 1 2 3 4"
-{{ seq -5 }} // Output: "1 0 -1 -2 -3 -4 -5"
-{{ seq 0 -4 }} // Output: "0 -1 -2 -3 -4"
+{{ seq 0 4 }} // Output: 0 1 2 3 4
+{{ seq -5 }} // Output: 1 0 -1 -2 -3 -4 -5
+{{ seq 0 -4 }} // Output: 0 -1 -2 -3 -4
 ```
 {% endtab %}
 {% endtabs %}
