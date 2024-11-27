@@ -1,5 +1,5 @@
 // Package main provides a utility to process markdown documentation files,
-// extract code examples, execute them, and verify their outputs.
+// extracts code examples, executes them, and verifies their outputs.
 package main
 
 import (
@@ -82,8 +82,8 @@ func run(fs FileSystem) error {
 	})
 
 	if len(files) == 0 {
-		slog.Error("No markdown files found in docs directory.")
-		return fmt.Errorf("no markdown files found in docs directory")
+		slog.Error("No Markdown files found in docs directory.")
+		return fmt.Errorf("no Markdown files found in docs directory")
 	}
 
 	var examples []Example
@@ -118,10 +118,9 @@ func run(fs FileSystem) error {
 	if errCount > 0 {
 		slog.Error("Failed to process some examples", "count", errCount)
 		return fmt.Errorf("failed to process %d examples", errCount)
-	} else {
-		slog.Info("All examples processed successfully")
-		return nil
 	}
+	slog.Info("All examples processed successfully")
+	return nil
 }
 
 // filterFiles filters out unwanted files from the provided list of files.

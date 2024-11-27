@@ -8,8 +8,8 @@ import (
 )
 
 // extractExamples scans the content of a markdown file and extracts code examples.
-// It returns a slice of Example structs, each representing a code example found in the content.
-// This function is used to parse markdown files and find code examples under specific headings.
+// It returns a slice of [Example] structs, each representing a code example found in the content.
+// This function is used to parse Markdown files and find code examples under specific headings.
 func extractExamples(content, filePath string) []Example {
 	var examples []Example
 

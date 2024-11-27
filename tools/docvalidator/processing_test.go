@@ -71,7 +71,6 @@ func TestProcessExample_ErrorExceptedButNoError(t *testing.T) {
 		Expected: "Error",
 	}
 	err := processExample(example)
-	require.Error(t, err)
 	assert.ErrorContains(t, err, "expected an error but the template executed successfully")
 }
 
@@ -85,7 +84,6 @@ func TestProcessExample_ErrorUnexpected(t *testing.T) {
 		Expected: "1",
 	}
 	err := processExample(example)
-	require.Error(t, err)
 	assert.ErrorContains(t, err, "unexpected error during template execution")
 }
 
@@ -100,6 +98,5 @@ func TestProcessExample_OutputMismatch(t *testing.T) {
 		Expected: "Hello, World!",
 	}
 	err := processExample(example)
-	require.Error(t, err)
 	assert.ErrorContains(t, err, "output mismatch")
 }
