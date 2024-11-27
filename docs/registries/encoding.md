@@ -85,7 +85,7 @@ The function converts a JSON string into a corresponding Go data structure, enab
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "{\"name\":\"John\", \"age\":30}" | fromJson }} // Output: map[age:30 name:John]
+{{ `{"name":"John", "age":30}` | fromJson }} // Output: map[age:30 name:John]
 {{ "{\\invalid" | fromJson }} // Error
 ```
 {% endtab %}
