@@ -21,7 +21,7 @@ jobs:
     - name: Test
       run: task test
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4.0.1
+      uses: codecov/codecov-action@v5.0.7
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         codecov_yml_path: .github/codecov.yml
