@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"slices"
 	"strings"
 	"time"
 )
@@ -127,20 +128,14 @@ func run(fs FileSystem) error {
 // It returns a new slice containing only the files that are not in the 'remove' list.
 // This function is used to exclude certain markdown files that should not be processed.
 func filterFiles(files []string, remove []string) []string {
-	var filtered []string
-	for _, file := range files {
-		shouldRemove := false
+	return slices.DeleteFunc(files, func(file string) bool {
 		for _, rem := range remove {
 			if strings.Contains(file, rem) {
-				shouldRemove = true
-				break
+				return true
 			}
 		}
-		if !shouldRemove {
-			filtered = append(filtered, file)
-		}
-	}
-	return filtered
+		return false
+	})
 }
 
 // setLogLevel sets the log level to the specified level. It returns an error if the level is
