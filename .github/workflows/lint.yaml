@@ -1,4 +1,8 @@
-on: [pull_request]
+on:
+  push:
+    branches: [main]
+    tags: [v*]
+  pull_request:
 name: Linters
 permissions:
   # Required: allow read access to the content for analysis.
