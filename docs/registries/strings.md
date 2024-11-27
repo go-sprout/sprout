@@ -592,7 +592,7 @@ Splits a string into a specified number of parts using a separator, returning a 
 Extracts a portion of a string based on given start and end positions, with support for negative indices to count from the end.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Substring(start int, end int, str string) string
-</code></pre></td></tr><tr><td>Must version</td><td><span data-gb-custom-inline data-tag="emoji" data-code="274c">❌</span></td></tr></tbody></table>
+</code></pre></td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="Template Example" %}

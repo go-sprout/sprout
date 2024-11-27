@@ -197,4 +197,3 @@ The function finds all matches of a regex pattern with named capturing groups in
 ```
 {% endtab %}
 {% endtabs %}
-
