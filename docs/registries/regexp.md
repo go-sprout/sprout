@@ -40,8 +40,8 @@ The function returns all matches of the regex pattern in the string, up to a spe
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ regexFindAll "a.", "aba acada afa", 3 }} // Output: ["ab", "ac", "af"], nil
-{{ regexFindAll "\invalid$^///", "aba acada afa", 3 }} // Error
+{{ regexFindAll "a." "aba acada afa" 3 }} // Output: ["ab", "ac", "af"], nil
+{{ regexFindAll "\invalid$^///" "aba acada afa" 3 }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -56,8 +56,8 @@ The function checks if the entire string matches the given regular expression pa
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ regexMatch "^[a-zA-Z]+$", "Hello" }} // Output: true, nil
-{{ regexMatch "\invalid$^///", "Hello" }} // Output: false, error
+{{ regexMatch "^[a-zA-Z]+$" "Hello" }} // Output: true, nil
+{{ regexMatch "\invalid$^///" "Hello" }} // Output: false, error
 ```
 {% endtab %}
 {% endtabs %}
@@ -72,8 +72,8 @@ The function splits the string into substrings based on matches of the regex pat
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ mustRegexSplit "\\s+", "hello world from Go", 2 }} // Output: ["hello", "world from Go"], nil
-{{ mustRegexSplit "\invalid$^///", "hello world from Go", 2 }} // Error
+{{ mustRegexSplit "\\s+" "hello world from Go" 2 }} // Output: ["hello", "world from Go"], nil
+{{ mustRegexSplit "\invalid$^///" "hello world from Go" 2 }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -88,8 +88,8 @@ The function replaces all occurrences of the regex pattern in the string with th
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ regexReplaceAll "\\d", "R2D2 C3PO", "X" }} // Output: "RXDX CXPO", nil
-{{ regexReplaceAll "\invalid$^///", "R2D2 C3PO", "X" }} // Output: "", error
+{{ regexReplaceAll "\\d" "R2D2 C3PO" "X" }} // Output: "RXDX CXPO", nil
+{{ regexReplaceAll "\invalid$^///" "R2D2 C3PO" "X" }} // Output: "", error
 ```
 {% endtab %}
 {% endtabs %}
@@ -104,8 +104,8 @@ The function replaces all occurrences of the regex pattern in the string with th
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ regexReplaceAllLiteral "world", "hello world", "$1" }} // Output: "hello $1", nil
-{{ regexReplaceAllLiteral "world", "hello world", "\invalid$^///" }} // Output: "", error
+{{ regexReplaceAllLiteral "world" "hello world" "$1" }} // Output: "hello $1", nil
+{{ regexReplaceAllLiteral "world" "hello world" "\invalid$^///" }} // Output: "", error
 ```
 {% endtab %}
 {% endtabs %}
@@ -151,8 +151,8 @@ The function finds all matches of a regex pattern in a string up to a specified 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)", -1 }} // Output: [["aaabbb", "aaa", "bbb"], ["aab", "aa", "b"], ["aaabbb", "aaa", "bbb"]], nil
-{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)", 1 }} // Output: [["aaabbb", "aaa", "bbb"]], nil
+{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)" -1 }} // Output: [["aaabbb", "aaa", "bbb"], ["aab", "aa", "b"], ["aaabbb", "aaa", "bbb"]], nil
+{{ "aaabbb aab aaabbb" | regexFindAllGroups "(a+)(b+)" 1 }} // Output: [["aaabbb", "aaa", "bbb"]], nil
 {{ "aaabbb" | regexFindAllGroups "\invalid$^///" }} // Error
 ```
 {% endtab %}
@@ -193,4 +193,3 @@ The function finds all matches of a regex pattern with named capturing groups in
 ```
 {% endtab %}
 {% endtabs %}
-

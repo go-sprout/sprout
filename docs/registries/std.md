@@ -76,8 +76,8 @@ The function checks if all values in the provided variadic slice are non-empty. 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 1, "hello", true | all }} // Output: true
-{{ 1, "", true | all }} // Output: false
+{{ 1 "hello" true | all }} // Output: true
+{{ 1 "" true | all }} // Output: false
 ```
 {% endtab %}
 {% endtabs %}
@@ -92,8 +92,8 @@ The function checks if any of the provided values are non-empty. It returns `tru
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "", 0, false | any }} // Output: false
-{{ "", 0, "text" | any }} // Output: true
+{{ "" 0 false | any }} // Output: false
+{{ "" 0 "text" | any }} // Output: true
 ```
 {% endtab %}
 {% endtabs %}
@@ -108,7 +108,7 @@ The function returns the first non-empty value from the provided list. If all va
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ nil, "", "first", "second" | coalesce }} // Output: "first"
+{{ nil "" "first" "second" | coalesce }} // Output: "first"
 ```
 {% endtab %}
 {% endtabs %}
@@ -123,8 +123,8 @@ The function mimics the ternary conditional operator found in many programming l
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ true | ternary "yes", "no" }} // Output: "yes"
-{{ false | ternary "yes", "no" }} // Output: "no"
+{{ true | ternary "yes" "no" }} // Output: "yes"
+{{ false | ternary "yes" "no" }} // Output: "no"
 ```
 {% endtab %}
 {% endtabs %}
@@ -139,7 +139,7 @@ The function concatenates a series of values into a single string, converting ea
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Hello", nil, 123, true | cat }} // Output: "Hello 123 true"
+{{ "Hello" nil 123 true | cat }} // Output: "Hello 123 true"
 ```
 {% endtab %}
 {% endtabs %}

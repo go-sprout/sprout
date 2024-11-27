@@ -176,7 +176,7 @@ toDate converts a string to a `time.Time` object based on a format specification
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ toDate "2006-01-02", "2024-05-10 11:12:42" }}
+{{ toDate "2006-01-02" "2024-05-10 11:12:42" }}
 // Output: 2024-05-10 00:00:00 +0000 UTC, nil
 ```
 

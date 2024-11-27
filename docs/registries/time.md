@@ -40,8 +40,8 @@ The function formats a given date or the current time into a specified format st
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ dateInZone "Jan 2, 2006", "2023-05-04T15:04:05Z", "UTC" }} // Output: "May 4, 2023"
-{{ dateInZone "Jan 2, 2006", "2023-05-04T15:04:05Z", "invalid" }} // Error
+{{ dateInZone "Jan 2, 2006" "2023-05-04T15:04:05Z" "UTC" }} // Output: "May 4, 2023"
+{{ dateInZone "Jan 2, 2006" "2023-05-04T15:04:05Z" "invalid" }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -181,7 +181,7 @@ The function formats a date into the standard HTML date format (YYYY-MM-DD) base
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "2023-05-04T15:04:05Z", "UTC" | htmlDateInZone }} // Output: "2023-05-04"
+{{ "2023-05-04T15:04:05Z" "UTC" | htmlDateInZone }} // Output: "2023-05-04"
 ```
 {% endtab %}
 {% endtabs %}

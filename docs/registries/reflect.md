@@ -120,7 +120,9 @@ The function checks if two variables, `x` and `y`, are deeply equal by comparing
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ {"a":1}, {"a":1} | deepEqual }} // Output: true
+{{ $d1 := dict "a" 1 }}
+{{ $d2 := dict "a" 1 }}
+{{ $d1 | deepEqual $d2 }} // Output: true
 ```
 {% endtab %}
 {% endtabs %}
@@ -135,7 +137,7 @@ The function performs a deep copy of the provided `element`, creating an exact d
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ {"name":"John"} | deepCopy }} // Output: {"name":"John"}
+{{ (dict "name" "John") | deepCopy }} // Output: {"name":"John"}
 {{ nil | deepCopy }} // Output: nil, error
 ```
 {% endtab %}
