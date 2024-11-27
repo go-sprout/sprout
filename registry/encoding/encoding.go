@@ -33,6 +33,7 @@ func (er *EncodingRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error
 	sprout.AddFunction(funcsMap, "toRawJson", er.ToRawJson)
 	sprout.AddFunction(funcsMap, "fromYaml", er.FromYAML)
 	sprout.AddFunction(funcsMap, "toYaml", er.ToYAML)
+	sprout.AddFunction(funcsMap, "toIndentYaml", er.ToIndentYAML)
 	return nil
 }
 

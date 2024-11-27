@@ -108,6 +108,16 @@ func TestToYAML(t *testing.T) {
 	pesticide.RunTestCases(t, encoding.NewRegistry(), tc)
 }
 
+func TestToIndentYAML(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{Name: "TestEmptyInput", Input: `{{ "" | toIndentYaml 8 }}`, ExpectedOutput: "\"\""},
+		{Name: "TestVariableInput", Input: `{{ .V | toIndentYaml 8 }}`, ExpectedOutput: "bar: baz\nfoo:\n        bar: baz\n        baz: bar", Data: map[string]any{"V": map[string]any{"foo": map[string]any{"baz": "bar", "bar": "baz"}, "bar": "baz"}}},
+		{Name: "TestInvalidInput", Input: `{{ .V | toIndentYaml 8 }}`, ExpectedErr: "yaml encode error", Data: map[string]any{"V": make(chan int)}},
+	}
+
+	pesticide.RunTestCases(t, encoding.NewRegistry(), tc)
+}
+
 func TestMustFromJson(t *testing.T) {
 	tc := []pesticide.TestCase{
 		{

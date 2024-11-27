@@ -170,3 +170,20 @@ The function serializes a Go data structure into a YAML string, converting the d
 {% endtab %}
 {% endtabs %}
 
+### <mark style="color:purple;">toIndentYaml</mark>
+
+The function serializes a Go data structure into a YAML string, converting the data into a format suitable for YAML representation. In addition to toYaml, toIndentYaml takes a parameter to define the indentation width in spaces.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToIndentYAML(indent int, v any) (string, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ $d := dict "name" "John Doe" "age" 30 }}
+{{ $d | toIndentYaml 2 }} // Output: name: John Doe\nage: 30
+```
+{% endtab %}
+{% endtabs %}
+
+
