@@ -249,8 +249,8 @@ func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
 //
 // Example:
 //
-//      {{ $d := dict "name" "John Doe" "age" 30 }}
-//      {{ $d | toIndentYaml 2 }} // Output: name: John Doe\nage: 30
+//      {{ $person := dict "name" "John Doe" "age" 30 "location" (dict "country" "US" "planet" "Earth") }}
+//      {{ $person | toIndentYaml 2 }} // Output: name: John Doe\nage: 30\nlocation:\n  country: US\n  planet: Earth
 
 func (er *EncodingRegistry) ToIndentYAML(indent int, v any) (out string, err error) {
 	// recover panic from yaml package
@@ -259,15 +259,13 @@ func (er *EncodingRegistry) ToIndentYAML(indent int, v any) (out string, err err
 	buf := bytes.Buffer{}
 	enc := yaml.NewEncoder(&buf)
 	enc.SetIndent(indent)
-	err = enc.Encode(&v)
-	if err != nil {
+
+	if err = enc.Encode(&v); err != nil {
 		// code unreachable because yaml.Marshal always panic on error and never
 		// returns an error, but we still need to handle the error for the sake of
 		// consistency. The error message is set by ErrRecoverPanic.
-		return "", fmt.Errorf("yaml encode error: %w", err)
+		return "", fmt.Errorf("YAML encode error: %w", err)
 	}
 
-	data := buf.String()
-
-	return strings.TrimSuffix(string(data), "\n"), nil
+	return strings.TrimSuffix(buf.String(), "\n"), nil
 }

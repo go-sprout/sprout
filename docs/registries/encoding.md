@@ -180,8 +180,8 @@ The function serializes a Go data structure into a YAML string, converting the d
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $d := dict "name" "John Doe" "age" 30 }}
-{{ $d | toIndentYaml 2 }} // Output: name: John Doe\nage: 30
+{{ $person := dict "name" "John Doe" "age" 30 "location" (dict "country" "US" "planet" "Earth") }}
+{{ $person | toIndentYaml 2 }} // Output: name: John Doe\nage: 30\nlocation:\n  country: US\n  planet: Earth
 ```
 {% endtab %}
 {% endtabs %}

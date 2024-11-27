@@ -61,7 +61,7 @@ func TestFromJson(t *testing.T) {
 
 func TestToJson(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | toJson }}`, ExpectedOutput: "\"\""},
+		{Name: "TestEmptyInput", Input: `{{ "" | toJson }}`, ExpectedOutput: `""`},
 		{Name: "TestVariableInput", Input: `{{ .V | toJson }}`, ExpectedOutput: "{\"bar\":\"baz\",\"foo\":55}", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 		{Name: "TestInvalidInput", Input: `{{ .V | toJson }}`, ExpectedErr: "json encode error", Data: map[string]any{"V": make(chan int)}},
 	}
@@ -71,7 +71,7 @@ func TestToJson(t *testing.T) {
 
 func TestToPrettyJson(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | toPrettyJson }}`, ExpectedOutput: "\"\""},
+		{Name: "TestEmptyInput", Input: `{{ "" | toPrettyJson }}`, ExpectedOutput: `""`},
 		{Name: "TestVariableInput", Input: `{{ .V | toPrettyJson }}`, ExpectedOutput: "{\n  \"bar\": \"baz\",\n  \"foo\": 55\n}", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 	}
 
@@ -80,7 +80,7 @@ func TestToPrettyJson(t *testing.T) {
 
 func TestToRawJson(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | toRawJson }}`, ExpectedOutput: "\"\""},
+		{Name: "TestEmptyInput", Input: `{{ "" | toRawJson }}`, ExpectedOutput: `""`},
 		{Name: "TestVariableInput", Input: `{{ .V | toRawJson }}`, ExpectedOutput: "{\"bar\":\"baz\",\"foo\":55}", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 	}
 
@@ -100,7 +100,7 @@ func TestFromYAML(t *testing.T) {
 
 func TestToYAML(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | toYaml }}`, ExpectedOutput: "\"\""},
+		{Name: "TestEmptyInput", Input: `{{ "" | toYaml }}`, ExpectedOutput: `""`},
 		{Name: "TestVariableInput", Input: `{{ .V | toYaml }}`, ExpectedOutput: "bar: baz\nfoo: 55", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 		{Name: "TestInvalidInput", Input: `{{ .V | toYaml }}`, ExpectedErr: "yaml encode error", Data: map[string]any{"V": make(chan int)}},
 	}
@@ -110,7 +110,7 @@ func TestToYAML(t *testing.T) {
 
 func TestToIndentYAML(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | toIndentYaml 8 }}`, ExpectedOutput: "\"\""},
+		{Name: "TestEmptyInput", Input: `{{ "" | toIndentYaml 8 }}`, ExpectedOutput: `""`},
 		{Name: "TestVariableInput", Input: `{{ .V | toIndentYaml 8 }}`, ExpectedOutput: "bar: baz\nfoo:\n        bar: baz\n        baz: bar", Data: map[string]any{"V": map[string]any{"foo": map[string]any{"baz": "bar", "bar": "baz"}, "bar": "baz"}}},
 		{Name: "TestInvalidInput", Input: `{{ .V | toIndentYaml 8 }}`, ExpectedErr: "yaml encode error", Data: map[string]any{"V": make(chan int)}},
 	}
@@ -151,13 +151,13 @@ func TestMustToJson(t *testing.T) {
 		{
 			Name:           "TestEmptyInput",
 			Input:          `{{ "" | mustToJson }}`,
-			ExpectedOutput: "\"\"",
+			ExpectedOutput: `""`,
 			ExpectedErr:    "",
 		},
 		{
 			Name:           "TestVariableInput",
 			Input:          `{{ .V | mustToJson }}`,
-			ExpectedOutput: "{\"bar\":\"baz\",\"foo\":55}",
+			ExpectedOutput: `{"bar":"baz","foo":55}`,
 			Data:           map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}},
 			ExpectedErr:    "",
 		},
@@ -178,7 +178,7 @@ func TestMustToPrettyJson(t *testing.T) {
 		{
 			Name:           "TestEmptyInput",
 			Input:          `{{ "" | mustToPrettyJson }}`,
-			ExpectedOutput: "\"\"",
+			ExpectedOutput: `""`,
 			ExpectedErr:    "",
 		},
 		{
@@ -205,13 +205,13 @@ func TestMustToRawJson(t *testing.T) {
 		{
 			Name:           "TestEmptyInput",
 			Input:          `{{ "" | mustToRawJson }}`,
-			ExpectedOutput: "\"\"",
+			ExpectedOutput: `""`,
 			ExpectedErr:    "",
 		},
 		{
 			Name:           "TestVariableInput",
 			Input:          `{{ .V | mustToRawJson }}`,
-			ExpectedOutput: "{\"bar\":\"baz\",\"foo\":55}",
+			ExpectedOutput: `{"bar":"baz","foo":55}`,
 			Data:           map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}},
 			ExpectedErr:    "",
 		},
@@ -260,7 +260,7 @@ func TestMustToYAML(t *testing.T) {
 		{
 			Name:           "TestEmptyInput",
 			Input:          `{{ "" | mustToYaml }}`,
-			ExpectedOutput: "\"\"",
+			ExpectedOutput: `""`,
 			ExpectedErr:    "",
 		},
 		{
