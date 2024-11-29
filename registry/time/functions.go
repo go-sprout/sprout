@@ -22,7 +22,12 @@ import (
 //
 // [Sprout Documentation: date]: https://docs.atom.codes/sprout/registries/time#date
 func (tr *TimeRegistry) Date(fmt string, date any) (string, error) {
-	return tr.DateInZone(fmt, date, "Local")
+	t := computeTimeFromFormat(date)
+
+	// compute the timezone from the date if it has one
+	loc := time.FixedZone(t.Zone())
+
+	return t.In(loc).Format(fmt), nil
 }
 
 // DateInZone formats a given date or current time into a specified format string in a specified timezone.
@@ -42,23 +47,7 @@ func (tr *TimeRegistry) Date(fmt string, date any) (string, error) {
 //
 // [Sprout Documentation: dateInZone]: https://docs.atom.codes/sprout/registries/time#dateinzone
 func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) (string, error) {
-	// TODO: Change signature
-	var t time.Time
-	switch date := date.(type) {
-	default:
-		t = time.Now()
-	case time.Time:
-		t = date
-	case *time.Time:
-		t = *date
-	case int64:
-		t = time.Unix(date, 0)
-	case int:
-		t = time.Unix(int64(date), 0)
-	case int32:
-		t = time.Unix(int64(date), 0)
-	}
-
+	t := computeTimeFromFormat(date)
 	loc, err := time.LoadLocation(zone)
 	if err != nil {
 		return t.In(time.UTC).Format(fmt), err
