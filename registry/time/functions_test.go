@@ -4,21 +4,97 @@ import (
 	"testing"
 	goTime "time"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/go-sprout/sprout/pesticide"
 	"github.com/go-sprout/sprout/registry/time"
 )
 
 func TestDate(t *testing.T) {
-	timeTest := goTime.Date(2024, 5, 7, 15, 4, 5, 0, goTime.UTC)
+	t.Run("UTC", func(t *testing.T) {
+		timeTest := goTime.Date(2024, 5, 7, 15, 4, 5, 0, goTime.UTC)
+		tc := []pesticide.TestCase{
+			{Name: "TestTimeObject", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": timeTest}},
+			{Name: "TestTimeObjectPointer", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": &timeTest}},
+		}
 
-	tc := []pesticide.TestCase{
-		{Name: "TestTimeObject", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": timeTest}},
-		{Name: "TestTimeObjectPointer", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": &timeTest}},
-		{Name: "TestTimeObjectUnix", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": timeTest.Unix()}},
-		{Name: "TestTimeObjectUnixInt", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": int(timeTest.Unix())}},
-	}
+		pesticide.RunTestCases(t, time.NewRegistry(), tc)
+	})
 
-	pesticide.RunTestCases(t, time.NewRegistry(), tc)
+	t.Run("New York timezone", func(t *testing.T) {
+		local, err := goTime.LoadLocation("America/New_York")
+		require.NoError(t, err)
+
+		timeTest := goTime.Date(2024, 5, 7, 15, 4, 5, 0, local)
+
+		tc := []pesticide.TestCase{
+			{Name: "TestTimeObject", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 -0400", Data: map[string]any{"V": timeTest}},
+			{Name: "TestTimeObjectPointer", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 -0400", Data: map[string]any{"V": &timeTest}},
+		}
+
+		pesticide.RunTestCases(t, time.NewRegistry(), tc)
+	})
+
+	t.Run("New York offset", func(t *testing.T) {
+		timeTest, err := goTime.Parse("02 Jan 06 15:04 -0700", "07 May 24 15:04 -0400")
+		require.NoError(t, err)
+
+		tc := []pesticide.TestCase{
+			{Name: "TestTimeObject", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 -0400", Data: map[string]any{"V": timeTest}},
+			{Name: "TestTimeObjectPointer", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 -0400", Data: map[string]any{"V": &timeTest}},
+		}
+
+		pesticide.RunTestCases(t, time.NewRegistry(), tc)
+	})
+
+	t.Run("New York timezone", func(t *testing.T) {
+		local, err := goTime.LoadLocation("America/New_York")
+		require.NoError(t, err)
+
+		timeTest := goTime.Date(2024, 5, 7, 15, 4, 5, 0, local)
+
+		tc := []pesticide.TestCase{
+			{Name: "TestTimeObject", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 -0400", Data: map[string]any{"V": timeTest}},
+			{Name: "TestTimeObjectPointer", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 -0400", Data: map[string]any{"V": &timeTest}},
+		}
+
+		pesticide.RunTestCases(t, time.NewRegistry(), tc)
+	})
+
+	t.Run("unixtime", func(t *testing.T) {
+		t.Run("UTC", func(t *testing.T) {
+			// temporarily force time.Local to UTC
+			time.ForceTimeLocal(t, goTime.UTC)
+
+			// here we are simulating a [gotime.Now]
+			timeTest := goTime.Date(2024, 5, 7, 15, 4, 5, 0, goTime.UTC)
+
+			tc := []pesticide.TestCase{
+				{Name: "TestTimeObjectUnix", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": timeTest.Unix()}},
+				{Name: "TestTimeObjectUnixInt", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": int(timeTest.Unix())}},
+			}
+
+			pesticide.RunTestCases(t, time.NewRegistry(), tc)
+		})
+
+		t.Run("New York timezone", func(t *testing.T) {
+			local, err := goTime.LoadLocation("America/New_York")
+			require.NoError(t, err)
+
+			// temporarily force time.Local to New York
+			time.ForceTimeLocal(t, local)
+
+			// here we are simulating a [gotime.Now] call
+			timeTest := goTime.Date(2024, 5, 7, 15, 4, 5, 0, local)
+
+			tc := []pesticide.TestCase{
+				{Name: "TestTimeObject", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 -0400", Data: map[string]any{"V": timeTest}},
+				{Name: "TestTimeObjectPointer", Input: `{{ .V | date "02 Jan 06 15:04 -0700" }}`, ExpectedOutput: "07 May 24 15:04 -0400", Data: map[string]any{"V": &timeTest}},
+			}
+
+			pesticide.RunTestCases(t, time.NewRegistry(), tc)
+		})
+	})
 }
 
 func TestDateInZone(t *testing.T) {
@@ -30,7 +106,7 @@ func TestDateInZone(t *testing.T) {
 		{Name: "TestTimeObjectUnix", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "UTC" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": timeTest.Unix()}},
 		{Name: "TestTimeObjectUnixInt", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "UTC" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": int(timeTest.Unix())}},
 		{Name: "TestTimeObjectUnixInt", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "UTC" }}`, ExpectedOutput: "07 May 24 15:04 +0000", Data: map[string]any{"V": int32(timeTest.Unix())}},
-		{Name: "TestWithInvalidInput", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "UTC" }}`, ExpectedOutput: goTime.Now().Format("02 Jan 06 15:04 -0700"), Data: map[string]any{"V": "invalid"}},
+		{Name: "TestWithInvalidInput", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "UTC" }}`, ExpectedOutput: goTime.Now().UTC().Format("02 Jan 06 15:04 -0700"), Data: map[string]any{"V": "invalid"}},
 		{Name: "TestWithInvalidZone", Input: `{{ dateInZone "02 Jan 06 15:04 -0700" .V "invalid" }}`, ExpectedErr: "unknown time zone invalid", Data: map[string]any{"V": timeTest}},
 	}
 
