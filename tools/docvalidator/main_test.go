@@ -77,7 +77,6 @@ func TestRun_NoFiles(t *testing.T) {
 	}
 
 	err := run(fs)
-	require.Error(t, err)
 	assert.ErrorContains(t, err, "no Markdown files found in docs directory")
 }
 
