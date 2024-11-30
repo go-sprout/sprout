@@ -5,7 +5,7 @@ go 1.22.5
 require (
 	github.com/Masterminds/sprig/v3 v3.2.3
 	github.com/go-sprout/sprout v0.3.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 )
 
 require (
