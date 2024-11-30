@@ -157,7 +157,6 @@ func TestRun_FailedExamples(t *testing.T) {
 // TestRun_InvalidLogLevel tests run function with an invalid log level.
 func TestSetLogLevel_InvalidLogLevel(t *testing.T) {
 	err := setLogLevel("invalid")
-	require.Error(t, err)
 	assert.ErrorContains(t, err, "invalid log level")
 }
 
