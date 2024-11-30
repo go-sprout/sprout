@@ -111,7 +111,6 @@ func TestRun_ErrorNoExamples(t *testing.T) {
 	}
 
 	err := run(fs)
-	require.Error(t, err)
 	assert.ErrorContains(t, err, "no code examples found in file")
 }
 
@@ -153,7 +152,6 @@ func TestRun_FailedExamples(t *testing.T) {
 	}
 
 	err := run(fs)
-	require.Error(t, err)
 	assert.ErrorContains(t, err, "failed to process 1 examples")
 }
 
