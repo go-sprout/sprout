@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"path/filepath"
 	"slices"
 	"strings"
-	"time"
 )
 
 // Example represents an individual code example extracted from the markdown files.
@@ -65,11 +65,8 @@ func run(fs FileSystem) error {
 		return err
 	}
 
-	// Force timezone to UTC (for date parsing)
-	time.Local = time.UTC
-
 	// Discover markdown files in the docs directory
-	files, err := fs.Glob("docs/registries/*.md")
+	files, err := fs.Glob(filepath.Join("docs", "registries", "*.md"))
 	if err != nil {
 		return fmt.Errorf("error listing markdown files: %w", err)
 	}
