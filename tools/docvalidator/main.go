@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log/slog"
+	"maps"
 	"os"
 	"path/filepath"
 	"slices"
@@ -22,13 +23,24 @@ type Example struct {
 	Skipped  bool
 }
 
-var logLevel string
+var (
+	// logLevel is a string flag that sets the logging level for the application.
+	logLevel string
+	// logLevels maps log level names to slog.Level values. It is used to set the log level
+	// based on the command-line flag. The default log level is "info".
+	logLevels = map[string]slog.Level{
+		"debug": slog.LevelDebug,
+		"info":  slog.LevelInfo,
+		"warn":  slog.LevelWarn,
+		"error": slog.LevelError,
+	}
+)
 
 // init initializes the logging level from command-line flags.
 // It sets the default logging level to "info", but can be overridden by
 // specifying a different level (debug, info, warn, error) using the -log flag.
 func init() {
-	flag.StringVar(&logLevel, "log", "info", "Set the logging level (debug, info, warn, error)")
+	flag.StringVar(&logLevel, "log", "info", fmt.Sprintf("Set the logging level (%s)", strings.Join(slices.Collect(maps.Keys(logLevels)), ", ")))
 }
 
 // main is the entry point of the application that processes markdown documentation files
@@ -138,19 +150,10 @@ func filterFiles(files []string, remove []string) []string {
 // setLogLevel sets the log level to the specified level. It returns an error if the level is
 // invalid. This function is used to set the log level from the command-line flag.
 func setLogLevel(levelString string) error {
-	var level slog.Level
-	switch strings.ToLower(levelString) {
-	case "debug":
-		level = slog.LevelDebug
-	case "info":
-		level = slog.LevelInfo
-	case "warn":
-		level = slog.LevelWarn
-	case "error":
-		level = slog.LevelError
-	default:
-		return fmt.Errorf("invalid log level: %s", levelString)
+	if level, ok := logLevels[strings.ToLower(levelString)]; ok {
+		slog.SetLogLoggerLevel(level)
+		return nil
 	}
-	slog.SetLogLoggerLevel(level)
-	return nil
+
+	return fmt.Errorf("invalid log level: %s", levelString)
 }
