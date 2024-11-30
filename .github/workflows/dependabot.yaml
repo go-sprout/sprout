@@ -4,10 +4,6 @@ on:
     branches:
       - dependabot/**
 
-concurrency: 
-  cancel-in-progress: true
-  group: ${{ github.workflow }}-${{ github.base_ref }}
-
 permissions:
   contents: write
 
