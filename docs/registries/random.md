@@ -25,7 +25,7 @@ The function generates a random alphanumeric string with the specified length, c
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ randAlphaNumeric 10 }} // Output: "OnmS3BPwBl" (output will vary)
+{{ randAlphaNum 10 }} // Output(will be different): "OnmS3BPwBl"
 ```
 {% endtab %}
 {% endtabs %}
@@ -40,7 +40,7 @@ The function generates a random string consisting of only alphabetic characters 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 10 | randAlpha }} // Output: "rBxkROwxav" (output will vary)
+{{ 10 | randAlpha }} // Output(will be different): "rBxkROwxav"
 ```
 {% endtab %}
 {% endtabs %}
@@ -55,7 +55,7 @@ The function generates a random ASCII string of the specified length, using char
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ randAscii 10 }} // Output: "}]~>_<:^%" (output will vary)
+{{ randAscii 10 }} // Output(will be different): "}]~>_<:^%"
 ```
 {% endtab %}
 {% endtabs %}
@@ -70,7 +70,7 @@ The function generates a random numeric string consisting only of digits, with t
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ randNumeric 10 }} // Output: "3269896295" (output will vary)
+{{ randNumeric 10 }} // Output(will be different): "3269896295"
 ```
 {% endtab %}
 {% endtabs %}
@@ -85,7 +85,7 @@ The function generates a random byte array of the specified length and returns i
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ randBytes 16 }} // Output: "c3RhY2thYnVzZSByb2NrcyE=" (output will vary)
+{{ randBytes 16 }} // Output(will be different): "c3RhY2thYnVzZSByb2NrcyE="
 ```
 {% endtab %}
 {% endtabs %}
@@ -100,7 +100,7 @@ The function generates a random integer between the specified minimum and maximu
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ randInt 1 10 }} // Output: 5
+{{ randInt 1 10 }} // Output(will be different): 5
 ```
 {% endtab %}
 {% endtabs %}

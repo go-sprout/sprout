@@ -101,7 +101,6 @@ The function performs a unary addition, incrementing the provided value by one.
 {% tab title="Template Example" %}
 ```go
 {{ add1 -1 }} // Output: 0
-{{ add1f -1.0}} // Output: 0.0
 {{ add1 1 }} // Output: 2
 {{ add1 1.1 }} // Output: 2.1
 ```
@@ -118,7 +117,7 @@ The function performs subtraction on a slice of values, starting with the first 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 10, 3, 2 | sub }} // Output: 5
+{{ sub 10 3 2 }} // Output: 5
 ```
 {% endtab %}
 {% endtabs %}
@@ -181,7 +180,7 @@ The function divides a sequence of values, starting with the first value, and re
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 30.0 3.0 2.0 | divf }} // Output: 5.0
+{{ divf 30.0 3.0 2.0 }} // Output: 5
 {{ 2 | divf 5 4 }} // Output: 0.625
 ```
 {% endtab %}
@@ -197,7 +196,7 @@ The function returns the remainder of the division of `x` by `y`.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ 10 | mod 4 }} // Output: 2
+{{ 4 | mod 10 }} // Output: 2
 ```
 {% endtab %}
 {% endtabs %}

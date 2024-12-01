@@ -25,10 +25,8 @@ ParseIP parses a string representation of an IP address and returns its [`net.IP
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ parseIP "10.42.0.1" }}
-// Output: net.IP{10, 42, 0, 1}
-{{ parseIP "2001:db8::" }}
-// Output: net.IP{32, 1, 13, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+{{ parseIP "10.42.0.1" }} // Output: 10.42.0.1
+{{ parseIP "2001:db8::" }} // Output: 2001:db8::
 ```
 {% endtab %}
 {% endtabs %}
@@ -44,8 +42,7 @@ ParseMAC parses a string representation of a MAC address and returns its [`net.H
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ parseMAC "01:23:45:67:89:ab" }}
-// Output: net.HardwareAddr{1, 35, 69, 103, 137, 171}
+{{ parseMAC "01:23:45:67:89:ab" }} // Output: 01:23:45:67:89:ab
 ```
 {% endtab %}
 {% endtabs %}
@@ -61,10 +58,8 @@ ParseCIDR parses a string representation of an IP address and prefix length (CID
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ parseCIDR "192.168.0.0/24" }}
-// Output: &net.IPNet{IP: net.IP{192, 168, 0, 0}, Mask: net.CIDRMask(24, 32)}
-{{ parseCIDR "2001:db8::/32" }}
-// Output: &net.IPNet{IP: net.IP{32, 1, 13, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, Mask: net.CIDRMask(32, 128)}
+{{ parseCIDR "192.168.0.0/24" }} // Output: 192.168.0.0/24
+{{ parseCIDR "2001:db8::/32" }} // Output: 2001:db8::/32
 ```
 {% endtab %}
 {% endtabs %}
@@ -272,7 +267,7 @@ CIDRLast returns the last IP address in the given CIDR block.
 {% tab title="Template Example" %}
 ```go
 {{ cidrLast "10.42.0.0/24" }} // Output: 10.42.0.255
-{{ cidrLast "2001:db8::/32" }} // Output: 2001:db8::ffff:ffff
+{{ cidrLast "2001:db8::/32" }} // Output: 2001:db8:ffff:ffff:ffff:ffff:ffff:ffff
 ```
 {% endtab %}
 {% endtabs %}

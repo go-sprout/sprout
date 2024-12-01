@@ -25,7 +25,7 @@ The function formats a given date or the current time into a specified format st
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "2023-05-04T15:04:05Z" | date "Jan 2, 2006" }} // Output: "May 4, 2023"
+{{ "2023-05-04T15:04:05Z" | toDate "2006-01-02T15:04:05Z" | date "Jan 2, 2006" }} // Output: "May 4, 2023"
 ```
 {% endtab %}
 {% endtabs %}
@@ -40,8 +40,11 @@ The function formats a given date or the current time into a specified format st
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ dateInZone "Jan 2, 2006" "2023-05-04T15:04:05Z" "UTC" }} // Output: "May 4, 2023"
-{{ dateInZone "Jan 2, 2006" "2023-05-04T15:04:05Z" "invalid" }} // Error
+{{- $date := "2023-05-04T15:04:05Z" | toDate "2006-01-02T15:04:05Z" -}}
+{{ dateInZone "Jan 2, 2006" $date "UTC" }} // Output: "May 4, 2023"
+
+{{- $date := "2023-05-04T15:04:05Z" | toDate "2006-01-02T15:04:05Z" -}}
+{{ dateInZone "Jan 2, 2006" $date "invalid" }} // Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -71,7 +74,8 @@ The function calculates the time elapsed since a given date.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "2023-05-04T15:04:05Z" | dateAgo }} // Output: "4m"
+{{- $date := now | dateModify "-10h" -}}
+{{ $date | dateAgo }} // Output: 10h0m0s
 ```
 {% endtab %}
 {% endtabs %}
@@ -93,7 +97,7 @@ The function returns the current time.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ now }} // Output: "2023-05-07T15:04:05Z"
+{{ now }} // Output(will be different): "2023-05-07T15:04:05Z"
 ```
 {% endtab %}
 {% endtabs %}
@@ -108,7 +112,7 @@ The function returns the Unix epoch timestamp for a given date.
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ now | unixEpoch }} // Output: "1683306245"
+{{ now | unixEpoch }} // Output(will be different): 1683306245
 ```
 {% endtab %}
 {% endtabs %}
@@ -123,10 +127,12 @@ The function adjusts a given date by a specified duration, returning the modifie
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "2024-05-04T15:04:05Z" | dateModify "48h" }}
-// Output: "2024-05-06T15:04:05Z", nil
-{{ "2024-05-04T15:04:05Z" | dateModify "0z+" }}
-// Output: "0000-00-00T00:00:00Z", error
+{{- $date := "2023-05-04T15:04:05Z" | toDate "2006-01-02T15:04:05Z" -}}
+{{ $date | dateModify "48h" }}
+// Output: 2023-05-06 15:04:05 +0000 UTC
+{{- $date := "2023-05-04T15:04:05Z" | toDate "2006-01-02T15:04:05Z" -}}
+{{ $date | dateModify "0z+" }}
+// Error
 ```
 {% endtab %}
 {% endtabs %}
@@ -144,7 +150,7 @@ The function rounds a duration to the nearest significant time unit, such as yea
 {{ "9600h" | durationRound }} // Output: "1y"
 {{ "960h" | durationRound }} // Output: "1mo"
 {{ "192h" | durationRound }} // Output: "8d"
-{{ "3600s" | durationRound }} // Output: "1h"
+{{ "3600s" | durationRound }} // Output: "60m"
 {{ "300s" | durationRound }} // Output: "5m"
 {{ "61s" | durationRound }} // Output: "1m"
 {{ "59s" | durationRound }} // Output: "59s"
@@ -162,7 +168,8 @@ The function formats a date into the standard HTML date format (YYYY-MM-DD).
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "2023-05-04T15:04:05Z" | htmlDate }} // Output: "2023-05-04"
+{{- $date := "2023-05-04T15:04:05Z" | toDate "2006-01-02T15:04:05Z" -}}
+{{ $date | htmlDate }} // Output: "2023-05-04"
 ```
 {% endtab %}
 {% endtabs %}
@@ -181,7 +188,8 @@ The function formats a date into the standard HTML date format (YYYY-MM-DD) base
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "2023-05-04T15:04:05Z" "UTC" | htmlDateInZone }} // Output: "2023-05-04"
+{{- $date := "2023-05-04T15:04:05Z" | toDate "2006-01-02T15:04:05Z" -}}
+{{ htmlDateInZone $date "UTC" }} // Output: "2023-05-04"
 ```
 {% endtab %}
 {% endtabs %}

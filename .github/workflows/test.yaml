@@ -29,6 +29,20 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         codecov_yml_path: .github/codecov.yml
+  documentation:
+    name: Validate documentation examples
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v5
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Install Task
+      uses: arduino/setup-task@v2
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Test documentation examples
+      run: task test-doc
   compatibility:
     name: Backward compatibility with Sprig v3 (template output)
     runs-on: ubuntu-latest
