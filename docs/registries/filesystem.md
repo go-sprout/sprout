@@ -103,7 +103,7 @@ The function returns the last element of a given path, using the operating syste
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "C:\\path\\to\\file.txt" | osBase }} // Output: "file.txt"
+{{ "C:\\path\\to\\file.txt" | osBase }} // Output(will be different): "file.txt"
 ```
 {% endtab %}
 {% endtabs %}
@@ -118,7 +118,7 @@ The function returns all but the last element of a given path, using the operati
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "C:\\path\\to\\file.txt" | osDir }} // Output: "C:\\path\\to"
+{{ "C:\\path\\to\\file.txt" | osDir }} // Output(will be different): "C:\\path\\to"
 ```
 {% endtab %}
 {% endtabs %}
@@ -148,7 +148,7 @@ The function cleans up a given path, using the operating system's specific path 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "C:\\path\\\\to\\file.txt" | osClean }} // Output: "C:\\path\\to\\file.txt"
+{{ "C:\\path\\\\to\\file.txt" | osClean }} // Output(will be different): "C:\\path\\to\\file.txt"
 ```
 {% endtab %}
 {% endtabs %}
@@ -163,7 +163,7 @@ The function checks whether the given path is absolute, using the operating syst
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "C:\\path\\to\\file.txt" | osIsAbs }} // Output: true
+{{ "C:\\path\\to\\file.txt" | osIsAbs }} // Output(will be different): true
 ```
 {% endtab %}
 {% endtabs %}

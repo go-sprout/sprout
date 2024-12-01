@@ -31,7 +31,7 @@ The `Fail` function creates an error with a specified message and returns a `nil
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ fail "Operation failed" }} // Output: nil, error with "Operation failed"
+{{ fail "Operation failed" }} // Error with "Operation failed"
 ```
 {% endtab %}
 {% endtabs %}

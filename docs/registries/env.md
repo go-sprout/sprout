@@ -24,9 +24,10 @@ The function retrieves the value of a specified environment variable from the sy
 
 {% tabs %}
 {% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go"><strong>{{ env "INVALID" }} // Output: ""
-</strong><strong>{{ "PATH" | env }} // Output: "/usr/bin:/bin:/usr/sbin:/sbin"
-</strong></code></pre>
+```go
+{{ env "INVALID" }} // Output: ""
+{{ "PATH" | env }} // Output(will be different): "/usr/bin:/bin:/usr/sbin:/sbin"
+```
 {% endtab %}
 {% endtabs %}
 
@@ -40,7 +41,7 @@ The function replaces occurrences of `${var}` or `$var` in a string with the cor
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ "Path is $PATH" | expandEnv }} // Output: "Path is /usr/bin:/bin:/usr/sbin:/sbin"
+{{ "Path is $PATH" | expandEnv }} // Output(will be different): "Path is /usr/bin:/bin:/usr/sbin:/sbin"
 ```
 {% endtab %}
 {% endtabs %}

@@ -26,7 +26,7 @@ The function creates a dictionary (map) from a list of alternating keys and valu
 {% tab title="Template Example" %}
 ```go
 {{ dict "key1" "value1" "key2" "value2" }}
-// Output: {"key1": "value1", "key2": "value2"}
+// Output: map[key1:value1 key2:value2]
 ```
 {% endtab %}
 {% endtabs %}
@@ -41,8 +41,8 @@ The function retrieves the value associated with a specified key from a dictiona
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ {"key": "value"} | get "key" }} // Output: "value"
-{{ {"key": "value"} | get "invalid" }} // Output: ""
+{{ dict "key" "value" | get "key" }} // Output: "value"
+{{ dict "key" "value" | get "invalid" }} // Output: ""
 ```
 {% endtab %}
 {% endtabs %}
@@ -57,15 +57,15 @@ The function adds a new key-value pair to a dictionary or updates the value asso
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ {"key": "oldValue"} | set "key" "newValue" }} // Output: {"key": "newValue"}
-{{ {"foo": "bar"} | set "far" "boo" }} // Output: {"foo": "bar", "far": "boo"}
+{{ dict "key" "oldValue" | set "key" "newValue" }} // Output: map[key:newValue]
+{{ dict "foo" "bar" | set "far" "boo" }} // Output: map[far:boo foo:bar]
 ```
 {% endtab %}
 {% endtabs %}
 
 ### <mark style="color:purple;">unset</mark>
 
-The function remove the key-value pair to a dictionary associated with an existing key.
+The function removes a specified key-value pair from a dictionary, returning the modified dictionary without the specified key. If the key is not found, the original dictionary is returned unchanged.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Unset(key string, dict map[string]any) map[string]any
 </code></pre></td></tr></tbody></table>
@@ -73,8 +73,8 @@ The function remove the key-value pair to a dictionary associated with an existi
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ {"key": "value"} | unset "key" }} // Output: {}
-{{ {"key": "value"} | unset "invalid" }} // Output: {"key": "value"}
+{{ dict "key" "value" | unset "key" }} // Output: map[]
+{{ dict "key" "value" | unset "invalid" }} // Output: map[key:value]
 ```
 {% endtab %}
 {% endtabs %}
@@ -89,12 +89,12 @@ The function retrieves all keys from one or more dictionaries, returning them as
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $d := dict "key1" "value1" "key2" "value2"}}
-{{ keys $d }} // Output: ["key1", "key2"]
+{{- $d := dict "key1" "value1" "key2" "value2" -}}
+{{ keys $d | sortAlpha }} // Output: [key1 key2]
 
-{{ $d1 := dict "key1" "value1" }}
-{{ $d2 := dict "key2" "value2" }}
-{{ keys $d1 $d2 }} // Output: ["key1", "key2"]
+{{- $d1 := dict "key1" "value1" -}}
+{{- $d2 := dict "key2" "value2" -}}
+{{ keys $d1 $d2 | sortAlpha }} // Output: [key1 key2]
 ```
 {% endtab %}
 {% endtabs %}
@@ -108,9 +108,10 @@ The function retrieves all values from one or more dictionaries, returning them 
 
 {% tabs %}
 {% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go">{{ $d := dict "key1" "value1" "key2" "value2"}}
-<strong>{{ values $d }} // Output: ["value1", "value2"]
-</strong></code></pre>
+```go
+{{- $d := dict "key1" "value1" "key2" "value2" -}}
+{{ values $d | sortAlpha }} // Output: [value1 value2]
+```
 {% endtab %}
 {% endtabs %}
 
@@ -123,10 +124,11 @@ The function extracts values associated with a specified key from a list of dict
 
 {% tabs %}
 {% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go"><strong>{{ $d1 := dict "key" "value1"}}
-</strong>{{ $d2 := dict "key" "value2" }}
-{{ pluck "key" $d1 $d2 }} // Output: ["value1", "value2"]
-</code></pre>
+```go
+{{- $d1 := dict "key" "value1" -}}
+{{- $d2 := dict "key" "value2" -}}
+{{ pluck "key" $d1 $d2 }} // Output: [value1 value2]
+```
 {% endtab %}
 {% endtabs %}
 
@@ -140,8 +142,8 @@ The function creates a new dictionary that includes only the specified keys from
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
-{{ $d | pick "key1" "key3" }} // Output: {"key1": "value1", "key3": "value3"}
+{{- $d := dict "key1" "value1" "key2" "value2" "key3" "value3" -}}
+{{ $d | pick "key1" "key3" }} // Output: map[key1:value1 key3:value3]
 ```
 {% endtab %}
 {% endtabs %}
@@ -156,8 +158,8 @@ The function creates a new dictionary by excluding the specified keys from the o
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $d := dict "key1" "value1" "key2" "value2" "key3" "value3" }}
-{{ $d | omit "key1" "key3" }} // Output: {"key2": "value2"}
+{{- $d := dict "key1" "value1" "key2" "value2" "key3" "value3" -}}
+{{ $d | omit "key1" "key3" }} // Output: map[key2:value2]
 ```
 {% endtab %}
 {% endtabs %}
@@ -172,9 +174,10 @@ The function navigates through a nested dictionary structure using a sequence of
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $nest := dict "foo" "bar" }}
-{{ $d := dict "key1" "value1" "nested" $nest }}
+{{- $d := dict "key1" "value1" "nested" (dict "foo" "bar") -}}
 {{ $d | dig "nested" "foo" }} // Output: "bar"
+
+{{- $d := dict "key1" "value1" "nested" (dict "foo" "bar") -}}
 {{ $d | dig "nested.foo" }} // Output: "bar"
 ```
 {% endtab %}
@@ -190,8 +193,10 @@ The function checks whether a specified key exists in the dictionary, returning 
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $d := dict "key1" "value1" }}
+{{- $d := dict "key1" "value1" -}}
 {{ $d | hasKey "key1" }} // Output: true
+
+{{- $d := dict "key1" "value1" -}}
 {{ $d | hasKey "key2" }} // Output: false
 ```
 {% endtab %}
@@ -206,10 +211,11 @@ The function combines multiple source maps into a single destination map, adding
 
 {% tabs %}
 {% tab title="Template Example" %}
-<pre class="language-go"><code class="lang-go"><strong>{{ $d1 := dict "a" 1 "b" 2 }}
-</strong><strong>{{ $d2 := dict "b" 3 "c" 4 }}
-</strong><strong>{{ merge $d1 $d2 }} // Output: {"a": 1, "b": 2, "c": 4}, nil
-</strong></code></pre>
+```go
+{{- $d1 := dict "a" 1 "b" 2 -}}
+{{- $d2 := dict "b" 3 "c" 4 -}}
+{{ merge $d1 $d2 }} // Output: map[a:1 b:2 c:4]
+```
 {% endtab %}
 {% endtabs %}
 
@@ -223,9 +229,9 @@ The function combines multiple source maps into a destination map, overwriting e
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ $d1 := dict "a" 1 "b" 2 }}
-{{ $d2 := dict "b" 3 "c" 4 }}
-{{ mergeOverwrite $d1 $d2 }} // Output: {"a": 1, "b": 3, "c": 4}, nil
+{{- $d1 := dict "a" 1 "b" 2 -}}
+{{- $d2 := dict "b" 3 "c" 4 -}}
+{{ mergeOverwrite $d1 $d2 }} // Output: map[a:1 b:3 c:4]
 ```
 {% endtab %}
 {% endtabs %}

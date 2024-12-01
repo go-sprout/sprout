@@ -1,16 +1,17 @@
 module github.com/go-sprout/sprout
 
-go 1.22.5
+go 1.23.3
+toolchain go1.23.0
 
 require (
-	dario.cat/mergo v1.0.0
-	github.com/Masterminds/semver/v3 v3.2.1
+	dario.cat/mergo v1.0.1
+	github.com/Masterminds/semver/v3 v3.3.1
 	github.com/google/uuid v1.6.0
 	github.com/mitchellh/copystructure v1.2.0
-	github.com/spf13/cast v1.6.0
-	github.com/stretchr/testify v1.9.0
-	golang.org/x/crypto v0.25.0
-	golang.org/x/text v0.16.0
+	github.com/spf13/cast v1.7.0
+	github.com/stretchr/testify v1.10.0
+	golang.org/x/crypto v0.29.0
+	golang.org/x/text v0.20.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
