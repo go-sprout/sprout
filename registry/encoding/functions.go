@@ -230,16 +230,42 @@ func (er *EncodingRegistry) FromYAML(str string) (any, error) {
 //	{{ $d := dict "name" "John Doe" "age" 30 }}
 //	{{ $d | toYaml }} // Output: name: John Doe\nage: 30
 func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
+	return er.ToIndentYAML(4, v)
+}
+
+// ToIndentYAML serializes a Go data structure to a YAML string and returns any error
+// that occurs during the serialization. It allows to set an indentation width.
+//
+// Parameters:
+//
+//      v any      - the data structure to serialize.
+//      indent int - the indentation
+//      omitempty bool - omit empty fields (default: false)
+//
+// Returns:
+//
+//      string - the YAML string representation of the data structure.
+//      error - error if the serialization fails.
+//
+// Example:
+//
+//      {{ $person := dict "name" "John Doe" "age" 30 "location" (dict "country" "US" "planet" "Earth") }}
+//      {{ $person | toIndentYaml 2 }} // Output: name: John Doe\nage: 30\nlocation:\n  country: US\n  planet: Earth
+
+func (er *EncodingRegistry) ToIndentYAML(indent int, v any) (out string, err error) {
 	// recover panic from yaml package
 	defer sprout.ErrRecoverPanic(&err, "yaml encode error")
 
-	data, err := yaml.Marshal(v)
-	if err != nil {
+	buf := bytes.Buffer{}
+	enc := yaml.NewEncoder(&buf)
+	enc.SetIndent(indent)
+
+	if err = enc.Encode(&v); err != nil {
 		// code unreachable because yaml.Marshal always panic on error and never
 		// returns an error, but we still need to handle the error for the sake of
 		// consistency. The error message is set by ErrRecoverPanic.
-		return "", fmt.Errorf("yaml encode error: %w", err)
+		return "", fmt.Errorf("YAML encode error: %w", err)
 	}
 
-	return strings.TrimSuffix(string(data), "\n"), nil
+	return strings.TrimSuffix(buf.String(), "\n"), nil
 }
