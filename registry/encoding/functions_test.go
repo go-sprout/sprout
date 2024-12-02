@@ -99,10 +99,17 @@ func TestFromYAML(t *testing.T) {
 }
 
 func TestToYAML(t *testing.T) {
+	type T struct {
+		Foo   string `yaml:"foo"`
+		Omit  string `yaml:"-"`
+		Empty string `yaml:"empty,omitempty"`
+	}
+
 	tc := []pesticide.TestCase{
 		{Name: "TestEmptyInput", Input: `{{ "" | toYaml }}`, ExpectedOutput: `""`},
 		{Name: "TestVariableInput", Input: `{{ .V | toYaml }}`, ExpectedOutput: "bar: baz\nfoo: 55", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 		{Name: "TestInvalidInput", Input: `{{ .V | toYaml }}`, ExpectedErr: "yaml encode error", Data: map[string]any{"V": make(chan int)}},
+		{Name: "TestStructInput", Input: `{{ .V | toYaml }}`, ExpectedOutput: "foo: foo", Data: map[string]any{"V": T{Foo: "foo", Omit: "omit", Empty: ""}}},
 	}
 
 	pesticide.RunTestCases(t, encoding.NewRegistry(), tc)
