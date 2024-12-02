@@ -19,7 +19,7 @@ import "github.com/go-sprout/sprout/registry/time"
 
 The function formats a given date or the current time into a specified format string.
 
-<table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go"> Date(fmt string, date any) (string, error)
+<table data-header-hidden><thead><tr><th width="174">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go"> Date(layout string, date any) (string, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
@@ -34,7 +34,7 @@ The function formats a given date or the current time into a specified format st
 
 The function formats a given date or the current time into a specified format string for a specified timezone.
 
-<table data-header-hidden><thead><tr><th width="124">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DateInZone(fmt string, date any, zone string) (string, error)
+<table data-header-hidden><thead><tr><th width="124">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DateInZone(layout string, date any, zone string) (string, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
@@ -121,7 +121,7 @@ The function returns the Unix epoch timestamp for a given date.
 
 The function adjusts a given date by a specified duration, returning the modified date. If the duration format is incorrect, it returns the original date without any changes, in case of must version, an error is returned.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DateModify(fmt string, date time.Time) (time.Time, error)
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DateModify(layout string, date time.Time) (time.Time, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
