@@ -3,13 +3,13 @@ package conversion_test
 import (
 	"fmt"
 	"testing"
-	goTime "time"
+	"time"
 
 	"github.com/stretchr/testify/require"
 
 	"github.com/go-sprout/sprout/pesticide"
 	"github.com/go-sprout/sprout/registry/conversion"
-	"github.com/go-sprout/sprout/registry/time"
+	rtime "github.com/go-sprout/sprout/registry/time"
 )
 
 func TestToBool(t *testing.T) {
@@ -206,7 +206,7 @@ func TestToDate(t *testing.T) {
 	t.Run("dates without timezone (local time should be assumed)", func(t *testing.T) {
 		t.Run("UTC", func(t *testing.T) {
 			// temporarily force time.Local to UTC
-			time.ForceTimeLocal(t, goTime.UTC)
+			rtime.ForceTimeLocal(t, time.UTC)
 
 			tc := []pesticide.TestCase{
 				{
@@ -227,11 +227,11 @@ func TestToDate(t *testing.T) {
 		})
 
 		t.Run("New York timezone", func(t *testing.T) {
-			local, err := goTime.LoadLocation("America/New_York")
+			local, err := time.LoadLocation("America/New_York")
 			require.NoError(t, err)
 
 			// temporarily force time.Local to New York
-			time.ForceTimeLocal(t, local)
+			rtime.ForceTimeLocal(t, local)
 
 			tc := []pesticide.TestCase{
 				{

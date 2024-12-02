@@ -2,18 +2,18 @@ package time
 
 import (
 	"testing"
-	goTime "time"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestComputeTimeFromFormat(t *testing.T) {
-	now := goTime.Now()
+	now := time.Now()
 
 	tests := []struct {
 		name string
 		date any
-		want goTime.Time
+		want time.Time
 	}{
 		{
 			name: "time.Time",
@@ -28,17 +28,17 @@ func TestComputeTimeFromFormat(t *testing.T) {
 		{
 			name: "int64",
 			date: int64(1643723900),
-			want: goTime.Unix(1643723900, 0),
+			want: time.Unix(1643723900, 0),
 		},
 		{
 			name: "int",
 			date: 1643723900,
-			want: goTime.Unix(int64(1643723900), 0),
+			want: time.Unix(int64(1643723900), 0),
 		},
 		{
 			name: "int32",
 			date: int32(1643723900),
-			want: goTime.Unix(int64(1643723900), 0),
+			want: time.Unix(int64(1643723900), 0),
 		},
 	}
 	for _, tt := range tests {
@@ -53,6 +53,6 @@ func TestComputeTimeFromFormat(t *testing.T) {
 		got := computeTimeFromFormat("invalid date")
 
 		// so we can only guess the date is close to the current time
-		assert.Less(t, goTime.Since(got), 10*goTime.Millisecond)
+		assert.Less(t, time.Since(got), 10*time.Millisecond)
 	})
 }
