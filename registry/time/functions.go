@@ -10,8 +10,8 @@ import (
 //
 // Parameters:
 //
-//	fmt string - the format string.
-//	date any - the date to format or the current time if not a date type.
+//	layout string - the format string.
+//	date   any    - the date to format or the current time if not a date type.
 //
 // Returns:
 //
@@ -21,21 +21,21 @@ import (
 // For an example of this function in a Go template, refer to [Sprout Documentation: date].
 //
 // [Sprout Documentation: date]: https://docs.atom.codes/sprout/registries/time#date
-func (tr *TimeRegistry) Date(fmt string, date any) (string, error) {
+func (tr *TimeRegistry) Date(layout string, date any) (string, error) {
 	t := computeTimeFromFormat(date)
 
 	// compute the timezone from the date if it has one
 	loc := time.FixedZone(t.Zone())
 
-	return t.In(loc).Format(fmt), nil
+	return t.In(loc).Format(layout), nil
 }
 
 // DateInZone formats a given date or current time into a specified format string in a specified timezone.
 //
 // Parameters:
 //
-//	fmt string - the format string.
-//	date any - the date to format, in various acceptable formats.
+//	layout string - the format string.
+//	date any    - the date to format, in various acceptable formats.
 //	zone string - the timezone name.
 //
 // Returns:
@@ -46,14 +46,14 @@ func (tr *TimeRegistry) Date(fmt string, date any) (string, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: dateInZone].
 //
 // [Sprout Documentation: dateInZone]: https://docs.atom.codes/sprout/registries/time#dateinzone
-func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) (string, error) {
+func (tr *TimeRegistry) DateInZone(layout string, date any, zone string) (string, error) {
 	t := computeTimeFromFormat(date)
 	loc, err := time.LoadLocation(zone)
 	if err != nil {
-		return t.In(time.UTC).Format(fmt), err
+		return t.In(time.UTC).Format(layout), err
 	}
 
-	return t.In(loc).Format(fmt), nil
+	return t.In(loc).Format(layout), nil
 }
 
 // Duration converts seconds into a human-readable duration string.
@@ -158,7 +158,7 @@ func (tr *TimeRegistry) UnixEpoch(date time.Time) string {
 //
 // Parameters:
 //
-//	fmt string - the duration string to add to the date, such as "2h" for two hours.
+//	layout string - the duration string to add to the date, such as "2h" for two hours.
 //	date time.Time - the date to modify.
 //
 // Returns:
@@ -169,8 +169,8 @@ func (tr *TimeRegistry) UnixEpoch(date time.Time) string {
 // For an example of this function in a Go template, refer to [Sprout Documentation: dateModify].
 //
 // [Sprout Documentation: dateModify]: https://docs.atom.codes/sprout/registries/time#datemodify
-func (tr *TimeRegistry) DateModify(fmt string, date time.Time) (time.Time, error) {
-	d, err := time.ParseDuration(fmt)
+func (tr *TimeRegistry) DateModify(layout string, date time.Time) (time.Time, error) {
+	d, err := time.ParseDuration(layout)
 	if err != nil {
 		return time.Time{}, err
 	}
