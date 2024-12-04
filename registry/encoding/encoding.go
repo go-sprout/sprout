@@ -44,7 +44,6 @@ func (er *EncodingRegistry) RegisterAliases(aliasesMap sprout.FunctionAliasMap) 
 	sprout.AddAlias(aliasesMap, "toRawJSON", "toRawJson", "mustToRawJson")
 	sprout.AddAlias(aliasesMap, "fromYAML", "fromYaml", "mustFromYaml")
 	sprout.AddAlias(aliasesMap, "toYAML", "toYaml", "mustToYaml")
-	sprout.AddAlias(aliasesMap, "toIndentYAML", "toIndentYaml")
 	return nil
 }
 
@@ -62,7 +61,6 @@ func (er *EncodingRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) er
 	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("toRawJson", "please use `toRawJSON` instead"))
 	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("fromYaml", "please use `fromYAML` instead"))
 	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("toYaml", "please use `toYAML` instead"))
-	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("toIndentYaml", "please use `toIndentYAML` instead"))
 
 	return nil
 }
