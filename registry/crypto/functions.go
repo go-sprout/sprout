@@ -30,9 +30,9 @@ import (
 // input - the string to be hashed.
 // Returns the bcrypt hash as a string.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: bcrypt].
 //
-//	{{ "Hello World" | bcrypt }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
+// [Sprout Documentation: bcrypt]: https://docs.atom.codes/sprout/registries/crypto#bcrypt
 func (ch *CryptoRegistry) Bcrypt(input string) (string, error) {
 	hash, err := bcrypt_lib.GenerateFromPassword([]byte(input), bcrypt_lib.DefaultCost)
 	if err != nil {
@@ -48,9 +48,9 @@ func (ch *CryptoRegistry) Bcrypt(input string) (string, error) {
 // password - the password string for the Htpasswd hash.
 // Returns the generated Htpasswd hash as a string.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: htpasswd].
 //
-//	{{ htpasswd "username" "password" }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
+// [Sprout Documentation: htpasswd]: https://docs.atom.codes/sprout/registries/crypto#htpasswd
 func (ch *CryptoRegistry) Htpasswd(username string, password string) (string, error) {
 	if strings.Contains(username, ":") {
 		return "", fmt.Errorf("invalid username: %s", username)
@@ -71,9 +71,9 @@ func (ch *CryptoRegistry) Htpasswd(username string, password string) (string, er
 // site - the site string used in the derivation process.
 // Returns the derived password as a string.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: derivePassword].
 //
-//	{{ derivePassword 0 "bcrypt" "password" "user" "site" }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
+// [Sprout Documentation: derivePassword]: https://docs.atom.codes/sprout/registries/crypto#derivepassword
 func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password, user, site string) (string, error) {
 	templates := passwordTypeTemplates[passwordType]
 	if templates == nil {
@@ -116,9 +116,9 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 // typ - the type of private key to generate (e.g., "rsa", "dsa", "ecdsa", "ed25519").
 // Returns the generated private key as a string.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: genPrivateKey].
 //
-//	{{ generatePrivateKey "rsa" }} // Output: "-----BEGIN RSA PRIVATE KEY-----"
+// [Sprout Documentation: genPrivateKey]: https://docs.atom.codes/sprout/registries/crypto#genprivatekey
 func (ch *CryptoRegistry) GeneratePrivateKey(typ string) (string, error) {
 	var priv any
 	var err error
@@ -155,9 +155,9 @@ func (ch *CryptoRegistry) GeneratePrivateKey(typ string) (string, error) {
 // b64key - the base64 encoded private key.
 // Returns a certificate and an error.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: buildCustomCert].
 //
-//	{{ buildCustomCertificate "b64cert" "b64key" }} // Output: {"Cert":"b64cert","Key":"b64key"}
+// [Sprout Documentation: buildCustomCert]: https://docs.atom.codes/sprout/registries/crypto#buildcustomcert
 func (ch *CryptoRegistry) BuildCustomCertificate(b64cert string, b64key string) (Certificate, error) {
 	crt := Certificate{}
 
@@ -204,9 +204,9 @@ func (ch *CryptoRegistry) BuildCustomCertificate(b64cert string, b64key string) 
 //   - Certificate: the generated certificate authority
 //   - error: an error if any occurred during the generation process
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: genCA].
 //
-//	{{ generateCertificateAuthority "example.com" 365 }} // Output: {"Cert":"b64cert","Key":"b64key"}
+// [Sprout Documentation: genCA]: https://docs.atom.codes/sprout/registries/crypto#genca
 func (ch *CryptoRegistry) GenerateCertificateAuthority(
 	cn string,
 	daysValid int,
@@ -230,9 +230,9 @@ func (ch *CryptoRegistry) GenerateCertificateAuthority(
 //   - Certificate: the generated certificate authority
 //   - error: an error if any occurred during the generation process
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: genCAWithKey].
 //
-//	{{ generateCertificateAuthorityWithPEMKey "example.com" 365 "privPEM" }} // Output: {"Cert":"b64cert","Key":"b64key"}
+// [Sprout Documentation: genCAWithKey]: https://docs.atom.codes/sprout/registries/crypto#gencawithkey
 func (ch *CryptoRegistry) GenerateCertificateAuthorityWithPEMKey(
 	cn string,
 	daysValid int,
@@ -257,9 +257,9 @@ func (ch *CryptoRegistry) GenerateCertificateAuthorityWithPEMKey(
 //   - Certificate: the generated certificate
 //   - error: an error if any occurred during the generation process
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: genSelfSignedCert].
 //
-//	{{ generateSelfSignedCertificate "example.com" ["127.0.0.1"] ["localhost"] 365 }} // Output: {"Cert":"b64cert","Key":"b64key"}
+// [Sprout Documentation: genSelfSignedCert]: https://docs.atom.codes/sprout/registries/crypto#genselfsignedcert
 func (ch *CryptoRegistry) GenerateSelfSignedCertificate(
 	cn string,
 	ips []any,
@@ -286,9 +286,9 @@ func (ch *CryptoRegistry) GenerateSelfSignedCertificate(
 //   - Certificate: the generated certificate
 //   - error: an error if any occurred during the generation process
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: genSelfSignedCertWithKey].
 //
-//	{{ generateSelfSignedCertificateWithPEMKey "example.com" ["127.0.0.1"] ["localhost"] 365 "privPEM" }} // Output: {"Cert":"b64cert","Key":"b64key"}
+// [Sprout Documentation: genSelfSignedCertWithKey]: https://docs.atom.codes/sprout/registries/crypto#genselfsignedcertwithkey
 func (ch *CryptoRegistry) GenerateSelfSignedCertificateWithPEMKey(
 	cn string,
 	ips []any,
@@ -316,9 +316,9 @@ func (ch *CryptoRegistry) GenerateSelfSignedCertificateWithPEMKey(
 //   - Certificate: the generated certificate
 //   - error: an error if any occurred during the generation process
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: genSignedCert].
 //
-//	{{ generateSignedCertificate "example.com" ["127.0.0.1"] ["localhost"] 365 ca }} // Output: {"Cert":"b64cert","Key":"b64key"}
+// [Sprout Documentation: genSignedCert]: https://docs.atom.codes/sprout/registries/crypto#gensignedcert
 func (ch *CryptoRegistry) GenerateSignedCertificate(
 	cn string,
 	ips []any,
@@ -347,9 +347,9 @@ func (ch *CryptoRegistry) GenerateSignedCertificate(
 //   - Certificate: the generated certificate
 //   - error: an error if any occurred during the generation process
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: genSignedCertWithKey].
 //
-//	{{ generateSignedCertificateWithPEMKey "example.com" ["127.0.0.1"] ["localhost"] 365 ca "privPEM" }} // Output: {"Cert":"b64cert","Key":"b64key"}
+// [Sprout Documentation: genSignedCertWithKey]: https://docs.atom.codes/sprout/registries/crypto#gensignedcertwithkey
 func (ch *CryptoRegistry) GenerateSignedCertificateWithPEMKey(
 	cn string,
 	ips []any,
@@ -375,9 +375,9 @@ func (ch *CryptoRegistry) GenerateSignedCertificateWithPEMKey(
 //   - string: the encrypted text as a base64-encoded string
 //   - error: an error if any occurred during the encryption process
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: encryptAES].
 //
-//	{{ encryptAES "password" "plaintext" }} // Output: "b64encrypted"
+// [Sprout Documentation: encryptAES]: https://docs.atom.codes/sprout/registries/crypto#encryptaes
 func (ch *CryptoRegistry) EncryptAES(password string, plaintext string) (string, error) {
 	if plaintext == "" {
 		return "", nil
@@ -419,9 +419,9 @@ func (ch *CryptoRegistry) EncryptAES(password string, plaintext string) (string,
 //   - string: the decrypted text
 //   - error: an error if any occurred during the decryption process
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: decryptAES].
 //
-//	{{ decryptAES "password" "b64encrypted" }} // Output: "plaintext"
+// [Sprout Documentation: decryptAES]: https://docs.atom.codes/sprout/registries/crypto#decryptaes
 func (ch *CryptoRegistry) DecryptAES(password string, crypt64 string) (string, error) {
 	if crypt64 == "" {
 		return "", nil

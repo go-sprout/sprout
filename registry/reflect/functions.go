@@ -20,9 +20,9 @@ import (
 //
 //	bool - true if 'src' is of type 'target', false otherwise.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: typeIs].
 //
-//	{{ "int", 42 | typeIs }} // Output: true
+// [Sprout Documentation: typeIs]: https://docs.atom.codes/sprout/registries/reflect#typeis
 func (rr *ReflectRegistry) TypeIs(target string, src any) bool {
 	return target == rr.TypeOf(src)
 }
@@ -41,9 +41,9 @@ func (rr *ReflectRegistry) TypeIs(target string, src any) bool {
 //
 //	bool - true if the type of 'src' matches 'target' or '*'+target, false otherwise.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: typeIsLike].
 //
-//	{{ "*int", 42 | typeIsLike }} // Output: true
+// [Sprout Documentation: typeIsLike]: https://docs.atom.codes/sprout/registries/reflect#typeislike
 func (rr *ReflectRegistry) TypeIsLike(target string, src any) bool {
 	t := rr.TypeOf(src)
 	return target == t || "*"+target == t
@@ -59,9 +59,9 @@ func (rr *ReflectRegistry) TypeIsLike(target string, src any) bool {
 //
 //	string - the string representation of 'src's type.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: typeOf].
 //
-//	{{ 42 | typeOf }} // Output: "int"
+// [Sprout Documentation: typeOf]: https://docs.atom.codes/sprout/registries/reflect#typeof
 func (rr *ReflectRegistry) TypeOf(src any) string {
 	return fmt.Sprintf("%T", src)
 }
@@ -79,9 +79,9 @@ func (rr *ReflectRegistry) TypeOf(src any) string {
 //	bool - true if 'src's kind is 'target', false otherwise.
 //	error - when 'src' is nil.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: kindIs].
 //
-//	{{ "int", 42 | kindIs }} // Output: true
+// [Sprout Documentation: kindIs]: https://docs.atom.codes/sprout/registries/reflect#kindis
 func (rr *ReflectRegistry) KindIs(target string, src any) (bool, error) {
 	result, err := rr.KindOf(src)
 	if err != nil {
@@ -102,9 +102,9 @@ func (rr *ReflectRegistry) KindIs(target string, src any) (bool, error) {
 //	string - the string representation of 'src's kind.
 //	error - when 'src' is nil.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: kindOf].
 //
-//	{{ 42 | kindOf }} // Output: "int"
+// [Sprout Documentation: kindOf]: https://docs.atom.codes/sprout/registries/reflect#kindof
 func (rr *ReflectRegistry) KindOf(src any) (string, error) {
 	if src == nil {
 		return "", errors.New("src must not be nil")
@@ -125,10 +125,9 @@ func (rr *ReflectRegistry) KindOf(src any) (string, error) {
 //	bool - true if the struct 'src' contains a field with the name 'name', false otherwise.
 //	error - when the last argument is not a struct.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: hasField].
 //
-//	{{ hasField "someExistingField" .someStruct }} // Output: true
-//	{{ hasField "someNonExistingField" .someStruct }} // Output: false
+// [Sprout Documentation: hasField]: https://docs.atom.codes/sprout/registries/reflect#hasfield
 func (rr *ReflectRegistry) HasField(name string, src any) (bool, error) {
 	rv := reflect.Indirect(reflect.ValueOf(src))
 	if rv.Kind() != reflect.Struct {
@@ -148,9 +147,9 @@ func (rr *ReflectRegistry) HasField(name string, src any) (bool, error) {
 //
 //	bool - true if 'x' and 'y' are deeply equal, false otherwise.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: deepEqual].
 //
-//	{{ {"a":1}, {"a":1} | deepEqual }} // Output: true
+// [Sprout Documentation: deepEqual]: https://docs.atom.codes/sprout/registries/reflect#deepequal
 func (rr *ReflectRegistry) DeepEqual(x, y any) bool {
 	return reflect.DeepEqual(y, x)
 }
@@ -167,9 +166,9 @@ func (rr *ReflectRegistry) DeepEqual(x, y any) bool {
 //	any - a deep copy of 'element'.
 //	error - when 'element' is nil.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: deepCopy].
 //
-//	{{ {"name":"John"} | deepCopy }} // Output: {"name":"John"}
+// [Sprout Documentation: deepCopy]: https://docs.atom.codes/sprout/registries/reflect#deepcopy
 func (rr *ReflectRegistry) DeepCopy(element any) (any, error) {
 	if element == nil {
 		return nil, errors.New("element cannot be nil")

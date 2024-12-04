@@ -23,9 +23,9 @@ import (
 //
 //	string - the Base64 encoded string.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: base64Encode].
 //
-//	{{ "Hello World" | base64Encode }} // Output: "SGVsbG8gV29ybGQ="
+// [Sprout Documentation: base64Encode]: https://docs.atom.codes/sprout/registries/encoding#base64encode
 func (er *EncodingRegistry) Base64Encode(str string) string {
 	return base64.StdEncoding.EncodeToString([]byte(str))
 }
@@ -42,9 +42,9 @@ func (er *EncodingRegistry) Base64Encode(str string) string {
 //	string - the decoded string, or an error message if the decoding fails.
 //	error - an error message if the decoding fails.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: base64Decode].
 //
-//	{{ "SGVsbG8gV29ybGQ=" | base64Decode }} // Output: "Hello World"
+// [Sprout Documentation: base64Decode]: https://docs.atom.codes/sprout/registries/encoding#base64decode
 func (er *EncodingRegistry) Base64Decode(str string) (string, error) {
 	bytes, err := base64.StdEncoding.DecodeString(str)
 	if err != nil {
@@ -63,9 +63,9 @@ func (er *EncodingRegistry) Base64Decode(str string) (string, error) {
 //
 //	string - the Base32 encoded string.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: base32Encode].
 //
-//	{{ "Hello World" | base32Encode }} // Output: "JBSWY3DPEBLW64TMMQQQ===="
+// [Sprout Documentation: base32Encode]: https://docs.atom.codes/sprout/registries/encoding#base32encode
 func (er *EncodingRegistry) Base32Encode(str string) string {
 	return base32.StdEncoding.EncodeToString([]byte(str))
 }
@@ -82,9 +82,9 @@ func (er *EncodingRegistry) Base32Encode(str string) string {
 //	string - the decoded string, or an error message if the decoding fails.
 //	error - an error message if the decoding fails.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: base32Decode].
 //
-//	{{ "JBSWY3DPEBLW64TMMQQQ====" | base32Decode }} // Output: "Hello World"
+// [Sprout Documentation: base32Decode]: https://docs.atom.codes/sprout/registries/encoding#base32decode
 func (er *EncodingRegistry) Base32Decode(str string) (string, error) {
 	bytes, err := base32.StdEncoding.DecodeString(str)
 	if err != nil {
@@ -105,9 +105,9 @@ func (er *EncodingRegistry) Base32Decode(str string) (string, error) {
 //	any - the decoded Go data structure.
 //	error - error encountered during decoding, if any.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: fromJson].
 //
-//	{{ `{"name":"John", "age":30}` | fromJson }} // Output: map[name:John age:30], nil
+// [Sprout Documentation: fromJson]: https://docs.atom.codes/sprout/registries/encoding#fromjson
 func (er *EncodingRegistry) FromJson(v string) (any, error) {
 	var output any
 	err := json.Unmarshal([]byte(v), &output)
@@ -129,9 +129,9 @@ func (er *EncodingRegistry) FromJson(v string) (any, error) {
 //	string - the JSON-encoded string.
 //	error - error encountered during encoding, if any.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: toJson].
 //
-//	{{ {"name": "John", "age": 30} | toJson }} // Output: "{"age":30,"name":"John"}", nil
+// [Sprout Documentation: toJson]: https://docs.atom.codes/sprout/registries/encoding#tojson
 func (er *EncodingRegistry) ToJson(v any) (string, error) {
 	output, err := json.Marshal(v)
 	if err != nil {
@@ -152,9 +152,9 @@ func (er *EncodingRegistry) ToJson(v any) (string, error) {
 //	string - the pretty-printed JSON string.
 //	error - error encountered during encoding, if any.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: toPrettyJson].
 //
-//	{{ {"name": "John", "age": 30} | toPrettyJson }} // Output: "{\n  \"age\": 30,\n  \"name\": \"John\"\n}", nil
+// [Sprout Documentation: toPrettyJson]: https://docs.atom.codes/sprout/registries/encoding#toprettyjson
 func (er *EncodingRegistry) ToPrettyJson(v any) (string, error) {
 	output, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
@@ -175,9 +175,9 @@ func (er *EncodingRegistry) ToPrettyJson(v any) (string, error) {
 //	string - the raw JSON string.
 //	error - error encountered during encoding, if any.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: toRawJson].
 //
-//	{{ {"content": "<div>Hello World!</div>"} | toRawJson }} // Output: "{\"content\":\"<div>Hello World!</div>\"}", nil
+// [Sprout Documentation: toRawJson]: https://docs.atom.codes/sprout/registries/encoding#torawjson
 func (er *EncodingRegistry) ToRawJson(v any) (string, error) {
 	buf := new(bytes.Buffer)
 	enc := json.NewEncoder(buf)
@@ -200,9 +200,9 @@ func (er *EncodingRegistry) ToRawJson(v any) (string, error) {
 //	any - a map representing the YAML data. Returns nil if deserialization fails.
 //	error - an error message if the YAML content cannot be deserialized.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: fromYaml].
 //
-//	{{ "name: John Doe\nage: 30" | fromYaml }} // Output: map[name:John Doe age:30]
+// [Sprout Documentation: fromYaml]: https://docs.atom.codes/sprout/registries/encoding#fromyaml
 func (er *EncodingRegistry) FromYAML(str string) (any, error) {
 	m := make(map[string]any)
 
@@ -225,10 +225,9 @@ func (er *EncodingRegistry) FromYAML(str string) (any, error) {
 //	string - the YAML string representation of the data structure.
 //	error - error if the serialization fails.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: toYaml].
 //
-//	{{ $d := dict "name" "John Doe" "age" 30 }}
-//	{{ $d | toYaml }} // Output: name: John Doe\nage: 30
+// [Sprout Documentation: toYaml]: https://docs.atom.codes/sprout/registries/encoding#toyaml
 func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
 	return er.ToIndentYAML(4, v)
 }
@@ -238,20 +237,18 @@ func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
 //
 // Parameters:
 //
-//      v any      - the data structure to serialize.
-//      indent int - the indentation
-//      omitempty bool - omit empty fields (default: false)
+//	v any      - the data structure to serialize.
+//	indent int - the indentation
+//	omitempty bool - omit empty fields (default: false)
 //
 // Returns:
 //
-//      string - the YAML string representation of the data structure.
-//      error - error if the serialization fails.
+//	string - the YAML string representation of the data structure.
+//	error - error if the serialization fails.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: toIndentYaml].
 //
-//      {{ $person := dict "name" "John Doe" "age" 30 "location" (dict "country" "US" "planet" "Earth") }}
-//      {{ $person | toIndentYaml 2 }} // Output: name: John Doe\nage: 30\nlocation:\n  country: US\n  planet: Earth
-
+// [Sprout Documentation: toIndentYaml]: https://docs.atom.codes/sprout/registries/encoding#toindentyaml
 func (er *EncodingRegistry) ToIndentYAML(indent int, v any) (out string, err error) {
 	// recover panic from yaml package
 	defer sprout.ErrRecoverPanic(&err, "yaml encode error")

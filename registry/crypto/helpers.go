@@ -19,6 +19,12 @@ import (
 	"time"
 )
 
+// getNetIPs takes a slice of any, which should contain IP addresses as strings and
+// returns a slice of net.IP and an error.
+//
+// If the input is empty or nil, it will return an empty slice of net.IP.
+//
+// It will also return an error if the input contains any non-string values.
 func (ch *CryptoRegistry) getNetIPs(ips []any) ([]net.IP, error) {
 	if ips == nil {
 		return []net.IP{}, nil
@@ -41,6 +47,12 @@ func (ch *CryptoRegistry) getNetIPs(ips []any) ([]net.IP, error) {
 	return netIPs, nil
 }
 
+// getAlternateDNSStrs takes a slice of any, which should contain DNS names as
+// strings and returns a slice of strings and an error.
+//
+// If the input is empty or nil, it will return an empty slice of strings.
+//
+// It will also return an error if the input contains any non-string values.
 func (ch *CryptoRegistry) getAlternateDNSStrs(alternateDNS []any) ([]string, error) {
 	if alternateDNS == nil {
 		return []string{}, nil
@@ -61,6 +73,19 @@ func (ch *CryptoRegistry) getAlternateDNSStrs(alternateDNS []any) ([]string, err
 	return alternateDNSStrs, nil
 }
 
+// getBaseCertTemplate generates a base x509.Certificate template that can be
+// used to create a self-signed certificate or a certificate signed by a
+// certificate authority.
+//
+// Parameters:
+//   - cn: the common name for the certificate
+//   - ips: a list of IP addresses
+//   - alternateDNS: a list of alternate DNS names
+//   - daysValid: the number of days the certificate is valid for
+//
+// Returns:
+//   - *x509.Certificate: the generated certificate template
+//   - error: an error if any occurred during the generation process
 func (ch *CryptoRegistry) getBaseCertTemplate(
 	cn string,
 	ips []any,
@@ -98,6 +123,19 @@ func (ch *CryptoRegistry) getBaseCertTemplate(
 	}, nil
 }
 
+// pemBlockForKey returns a PEM block for the given private key.
+//
+// The function handles different types of private keys, including RSA, DSA,
+// and ECDSA, by marshalling them into their respective PEM formats. For keys
+// that do not match these types, it attempts to marshal them using the PKCS#8
+// format.
+//
+// Parameters:
+//   - priv: the private key to be converted into a PEM block.
+//
+// Returns:
+//   - *pem.Block: the PEM block representation of the private key, or nil if
+//     the key type is unsupported or conversion fails.
 func (ch *CryptoRegistry) pemBlockForKey(priv any) *pem.Block {
 	switch k := priv.(type) {
 	case *rsa.PrivateKey:
@@ -122,6 +160,19 @@ func (ch *CryptoRegistry) pemBlockForKey(priv any) *pem.Block {
 	}
 }
 
+// parsePrivateKeyPEM parses a PEM-encoded private key block into a crypto.PrivateKey.
+//
+// The function handles different types of private keys, including RSA, DSA, and ECDSA,
+// by decoding them from their respective PEM formats. For keys that do not match these
+// types, it returns an error.
+//
+// Parameters:
+//   - pemBlock: the PEM-encoded private key block to be parsed.
+//
+// Returns:
+//   - crypto.PrivateKey: the parsed private key, or nil if the key type is unsupported
+//     or parsing fails.
+//   - error: an error if parsing fails.
 func (ch *CryptoRegistry) parsePrivateKeyPEM(pemBlock string) (crypto.PrivateKey, error) {
 	block, _ := pem.Decode([]byte(pemBlock))
 	if block == nil {
@@ -172,6 +223,11 @@ func (ch *CryptoRegistry) parsePrivateKeyPEM(pemBlock string) (crypto.PrivateKey
 	}
 }
 
+// getPublicKey extracts the public key from a given private key.
+//
+// This function will return the public key associated with the given private key.
+// If the private key is of a type that does not support public key extraction,
+// an error will be returned instead.
 func (ch *CryptoRegistry) getPublicKey(priv crypto.PrivateKey) (crypto.PublicKey, error) {
 	switch k := priv.(type) {
 	case interface{ Public() crypto.PublicKey }:
@@ -183,6 +239,16 @@ func (ch *CryptoRegistry) getPublicKey(priv crypto.PrivateKey) (crypto.PublicKey
 	}
 }
 
+// generateCertificateAuthorityWithKeyInternal generates a certificate authority using the provided common name, validity period, and private key.
+//
+// Parameters:
+//   - cn: the common name for the certificate authority
+//   - daysValid: the number of days the certificate authority is valid for
+//   - priv: the private key to use for signing the certificate authority
+//
+// Returns:
+//   - Certificate: the generated certificate authority
+//   - error: an error if any occurred during the generation process
 func (ch *CryptoRegistry) generateCertificateAuthorityWithKeyInternal(
 	cn string,
 	daysValid int,
@@ -205,6 +271,18 @@ func (ch *CryptoRegistry) generateCertificateAuthorityWithKeyInternal(
 	return ca, err
 }
 
+// generateSelfSignedCertificateWithKeyInternal generates a self-signed certificate using a given private key.
+//
+// Parameters:
+//   - cn: the common name for the certificate
+//   - ips: a list of IP addresses
+//   - alternateDNS: a list of alternate DNS names
+//   - daysValid: the number of days the certificate is valid for
+//   - priv: the private key to use for signing the certificate
+//
+// Returns:
+//   - Certificate: the generated self-signed certificate
+//   - error: an error if any occurred during the generation process
 func (ch *CryptoRegistry) generateSelfSignedCertificateWithKeyInternal(
 	cn string,
 	ips []any,
@@ -224,6 +302,19 @@ func (ch *CryptoRegistry) generateSelfSignedCertificateWithKeyInternal(
 	return cert, err
 }
 
+// generateSignedCertificateWithKeyInternal generates a signed certificate using a given certificate authority and private key.
+//
+// Parameters:
+//   - cn: the common name for the certificate
+//   - ips: a list of IP addresses
+//   - alternateDNS: a list of alternate DNS names
+//   - daysValid: the number of days the certificate is valid for
+//   - ca: the certificate authority to sign with
+//   - priv: the private key to use for signing the certificate
+//
+// Returns:
+//   - Certificate: the generated signed certificate
+//   - error: an error if any occurred during the generation process
 func (ch *CryptoRegistry) generateSignedCertificateWithKeyInternal(
 	cn string,
 	ips []any,

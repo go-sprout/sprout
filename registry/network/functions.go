@@ -21,10 +21,9 @@ import (
 //	net.IP - the parsed IP address in its net.IP format.
 //	error - an error if the string cannot be parsed as a valid IP address.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: parseIP].
 //
-//	{{ parseIP "10.42.0.1" }} // Output: net.IP{10, 42, 0, 1}
-//	{{ parseIP "2001:db8::" }} // Output: net.IP{32, 1, 13, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+// [Sprout Documentation: parseIP]: https://docs.atom.codes/sprout/registries/network#parseip
 func (nr *NetworkRegistry) ParseIP(str string) (net.IP, error) {
 	ip := net.ParseIP(str)
 	if ip == nil {
@@ -48,9 +47,9 @@ func (nr *NetworkRegistry) ParseIP(str string) (net.IP, error) {
 //	net.HardwareAddr - the parsed MAC address in its net.HardwareAddr format.
 //	error - an error if the string cannot be parsed as a valid MAC address.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: parseMAC].
 //
-//	{{ parseMAC "01:23:45:67:89:ab" }} // Output: net.HardwareAddr{1, 35, 69, 103, 137, 171}
+// [Sprout Documentation: parseMAC]: https://docs.atom.codes/sprout/registries/network#parsemac
 func (nr *NetworkRegistry) ParseMAC(str string) (net.HardwareAddr, error) {
 	mac, err := net.ParseMAC(str)
 	if err != nil {
@@ -75,10 +74,9 @@ func (nr *NetworkRegistry) ParseMAC(str string) (net.HardwareAddr, error) {
 //	*net.IPNet - the parsed IP network in its *net.IPNet format.
 //	error - an error if the string cannot be parsed as valid CIDR notation.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: parseCIDR].
 //
-//	{{ parseCIDR "192.168.0.0/24" }}  // Output: &net.IPNet{IP: net.IP{192, 168, 0, 0}, Mask: net.CIDRMask(24, 32)}
-//	{{ parseCIDR "2001:db8::/32" }}   // Output: &net.IPNet{IP: net.IP{32, 1, 13, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, Mask: net.CIDRMask(32, 128)}
+// [Sprout Documentation: parseCIDR]: https://docs.atom.codes/sprout/registries/network#parsecidr
 func (nr *NetworkRegistry) ParseCIDR(str string) (*net.IPNet, error) {
 	_, cidr, err := net.ParseCIDR(str)
 	if err != nil {
@@ -100,10 +98,9 @@ func (nr *NetworkRegistry) ParseCIDR(str string) (*net.IPNet, error) {
 //	uint8 - the IP version, 4 for IPv4 or 16 for IPv6.
 //	error - an error if the IP address is invalid or cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: ipVersion].
 //
-//	{{ ipVersion "192.168.0.1" }} // Output: 4
-//	{{ ipVersion "2001:db8::" }} // Output: 6
+// [Sprout Documentation: ipVersion]: https://docs.atom.codes/sprout/registries/network#ipversion
 func (nr *NetworkRegistry) IPVersion(ipStr string) (uint8, error) {
 	ip, err := nr.ParseIP(ipStr)
 	if err != nil {
@@ -127,10 +124,9 @@ func (nr *NetworkRegistry) IPVersion(ipStr string) (uint8, error) {
 //	bool - true if the IP address is a loopback address.
 //	error - an error if the IP address is invalid or cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: ipisLoopback].
 //
-//	{{ ipIsLoopback "127.0.0.1" }}  // Output: true
-//	{{ ipIsLoopback "192.168.0.1" }} // Output: false
+// [Sprout Documentation: ipisLoopback]: https://docs.atom.codes/sprout/registries/network#ipisloopback
 func (nr *NetworkRegistry) IPIsLoopback(ipStr string) (bool, error) {
 	ip, err := nr.ParseIP(ipStr)
 	if err != nil {
@@ -155,10 +151,9 @@ func (nr *NetworkRegistry) IPIsLoopback(ipStr string) (bool, error) {
 //	bool - true if the IP address is a global unicast address.
 //	error - an error if the IP address is invalid or cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: ipIsGlobalUnicast].
 //
-//	{{ ipIsGlobalUnicast "8.8.8.8" }} // Output: true
-//	{{ ipIsGlobalUnicast "127.0.0.1" }} // Output: false
+// [Sprout Documentation: ipIsGlobalUnicast]: https://docs.atom.codes/sprout/registries/network#ipisglobalunicast
 func (nr *NetworkRegistry) IPIsGlobalUnicast(ipStr string) (bool, error) {
 	ip, err := nr.ParseIP(ipStr)
 	if err != nil {
@@ -182,10 +177,9 @@ func (nr *NetworkRegistry) IPIsGlobalUnicast(ipStr string) (bool, error) {
 //	bool - true if the IP address is a multicast address.
 //	error - an error if the IP address is invalid or cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: ipIsMulticast].
 //
-//	{{ ipIsMulticast "224.0.0.1" }} // Output: true
-//	{{ ipIsMulticast "192.168.0.1" }} // Output: false
+// [Sprout Documentation: ipIsMulticast]: https://docs.atom.codes/sprout/registries/network#ipismulticast
 func (nr *NetworkRegistry) IPIsMulticast(ipStr string) (bool, error) {
 	ip, err := nr.ParseIP(ipStr)
 	if err != nil {
@@ -210,10 +204,9 @@ func (nr *NetworkRegistry) IPIsMulticast(ipStr string) (bool, error) {
 //	bool - true if the IP address is a private address.
 //	error - an error if the IP address is invalid or cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: ipIsPrivate].
 //
-//	{{ ipIsPrivate "192.168.0.1" }} // Output: true
-//	{{ ipIsPrivate "8.8.8.8" }} // Output: false
+// [Sprout Documentation: ipIsPrivate]: https://docs.atom.codes/sprout/registries/network#ipisprivate
 func (nr *NetworkRegistry) IPIsPrivate(ipStr string) (bool, error) {
 	ip, err := nr.ParseIP(ipStr)
 	if err != nil {
@@ -239,10 +232,9 @@ func (nr *NetworkRegistry) IPIsPrivate(ipStr string) (bool, error) {
 //	net.IP - the incremented IP address.
 //	error - an error if the IP address overflows or if the IP version cannot be determined.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: ipIncrement].
 //
-//	{{ parseIP "192.168.0.1" | ipIncrement }} // Output: 192.168.0.2
-//	{{ parseIP "ffff::" | ipIncrement }}      // Output: ffff::1
+// [Sprout Documentation: ipIncrement]: https://docs.atom.codes/sprout/registries/network#ipincrement
 func (nr *NetworkRegistry) IPIncrement(ip net.IP) (net.IP, error) {
 	switch nr.determineIPVersion(ip) {
 	case 4:
@@ -284,10 +276,9 @@ func (nr *NetworkRegistry) IPIncrement(ip net.IP) (net.IP, error) {
 //	net.IP - the decremented IP address.
 //	error - an error if the IP address underflows or if the IP version cannot be determined.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: ipDecrement].
 //
-//	{{ parseIP "192.168.0.2" | ipDecrement }} // Output: 192.168.0.1
-//	{{ parseIP "ffff::1" | ipDecrement }}     // Output: ffff::
+// [Sprout Documentation: ipDecrement]: https://docs.atom.codes/sprout/registries/network#ipdecrement
 func (nr *NetworkRegistry) IPDecrement(ip net.IP) (net.IP, error) {
 	switch nr.determineIPVersion(ip) {
 	case 4:
@@ -329,10 +320,9 @@ func (nr *NetworkRegistry) IPDecrement(ip net.IP) (net.IP, error) {
 //	bool - true if the IP address is within the CIDR block, false otherwise.
 //	error - an error if the CIDR block or IP address cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: cidrContains].
 //
-//	{{ cidrContains "192.168.0.0/24" "192.168.0.1" }}  // Output: true
-//	{{ cidrContains "192.168.0.0/24" "10.0.0.1" }}     // Output: false
+// [Sprout Documentation: cidrContains]: https://docs.atom.codes/sprout/registries/network#cidrcontains
 func (nr *NetworkRegistry) CIDRContains(cidrStr string, ip string) (bool, error) {
 	parsedCIRDR, err := nr.ParseCIDR(cidrStr)
 	if err != nil {
@@ -362,10 +352,11 @@ func (nr *NetworkRegistry) CIDRContains(cidrStr string, ip string) (bool, error)
 //	*big.Int - the total number of IP addresses in the CIDR block.
 //	error - an error if the CIDR block cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: cidrSize].
 //
-//	{{ cidrSize "192.168.0.0/24" }}   // Output: 256
 //	{{ cidrSize "2001:db8::/32" }}    // Output: 79228162514264337593543950336 (IPv6 range)
+//
+// [Sprout Documentation: cidrSize]: https://docs.atom.codes/sprout/registries/network#cidrsize
 func (nr *NetworkRegistry) CIDRSize(cidrStr string) (*big.Int, error) {
 	cidr, err := nr.ParseCIDR(cidrStr)
 	if err != nil {
@@ -396,10 +387,9 @@ func (nr *NetworkRegistry) CIDRSize(cidrStr string) (*big.Int, error) {
 //	[]net.IP - a slice containing all IP addresses within the CIDR block.
 //	error - an error if the CIDR block cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: cidrRangeList].
 //
-//	{{ range cidrRangeList "10.42.1.1/32" }}{{ . }}{{ end }} // Output: 10.42.1.1
-//	{{ range cidrRangeList "2001:db8::/128" }}{{ . }}{{ end }} // Output: 2001:db8::
+// [Sprout Documentation: cidrRangeList]: https://docs.atom.codes/sprout/registries/network#cidrrangelist
 func (nr *NetworkRegistry) CIDRRangeList(cidrStr string) ([]net.IP, error) {
 	cidr, err := nr.ParseCIDR(cidrStr)
 	if err != nil {
@@ -446,10 +436,9 @@ func (nr *NetworkRegistry) CIDRRangeList(cidrStr string) ([]net.IP, error) {
 //	string - the first IP address as a string.
 //	error - an error if the CIDR block cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: cidrFirst].
 //
-//	{{ cidrFirst "10.42.0.0/24" }} // Output: 10.42.0.0
-//	{{ cidrFirst "2001:db8::/32" }} // Output: 2001:db8::
+// [Sprout Documentation: cidrFirst]: https://docs.atom.codes/sprout/registries/network#cidrfirst
 func (nr *NetworkRegistry) CIDRFirst(cidrStr string) (string, error) {
 	cidr, err := nr.ParseCIDR(cidrStr)
 	if err != nil {
@@ -470,10 +459,9 @@ func (nr *NetworkRegistry) CIDRFirst(cidrStr string) (string, error) {
 //	string - the last IP address as a string.
 //	error - an error if the CIDR block cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: cidrLast].
 //
-//	{{ cidrLast "10.42.0.0/24" }} // Output: 10.42.0.255
-//	{{ cidrLast "2001:db8::/32" }} // Output: 2001:db8::ffff:ffff
+// [Sprout Documentation: cidrLast]: https://docs.atom.codes/sprout/registries/network#cidrlast
 func (nr *NetworkRegistry) CIDRLast(cidrStr string) (string, error) {
 	cidr, err := nr.ParseCIDR(cidrStr)
 	if err != nil {
@@ -496,12 +484,9 @@ func (nr *NetworkRegistry) CIDRLast(cidrStr string) (string, error) {
 //	bool - true if the two CIDR blocks overlap, false otherwise.
 //	error - an error if either of the CIDR blocks cannot be parsed.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: cidrOverlap].
 //
-//	{{ cidrOverlap "10.42.0.0/24" "10.42.0.0/16" }} // Output: true
-//	{{ cidrOverlap "192.168.1.0/24" "192.168.2.0/24" }} // Output: false
-//	{{ cidrOverlap "2001:db8::/64" "2001:db8::/32" }} // Output: true
-//	{{ cidrOverlap "2001:db8::/64" "2001:db8:1::/64" }} // Output: false
+// [Sprout Documentation: cidrOverlap]: https://docs.atom.codes/sprout/registries/network#cidroverlap
 func (nr *NetworkRegistry) CIDROverlap(cidrStrA, cidrStrB string) (bool, error) {
 	cidrA, err := nr.ParseCIDR(cidrStrA)
 	if err != nil {

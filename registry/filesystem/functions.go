@@ -15,9 +15,9 @@ import (
 //
 //	string - the base element of the path.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: pathBase].
 //
-//	{{ "/path/to/file.txt" | pathBase }} // Output: "file.txt"
+// [Sprout Documentation: pathBase]: https://docs.atom.codes/sprout/registries/filesystem#pathbase
 func (fsr *FileSystemRegistry) PathBase(str string) string {
 	return path.Base(str)
 }
@@ -33,9 +33,9 @@ func (fsr *FileSystemRegistry) PathBase(str string) string {
 //
 //	string - the directory part of the path.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: pathDir].
 //
-//	{{ "/path/to/file.txt" | pathDir }} // Output: "/path/to"
+// [Sprout Documentation: pathDir]: https://docs.atom.codes/sprout/registries/filesystem#pathdir
 func (fsr *FileSystemRegistry) PathDir(str string) string {
 	return path.Dir(str)
 }
@@ -50,9 +50,9 @@ func (fsr *FileSystemRegistry) PathDir(str string) string {
 //
 //	string - the extension of the file in the path.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: pathExt].
 //
-//	{{ "/path/to/file.txt" | pathExt }} // Output: ".txt"
+// [Sprout Documentation: pathExt]: https://docs.atom.codes/sprout/registries/filesystem#pathext
 func (fsr *FileSystemRegistry) PathExt(str string) string {
 	return path.Ext(str)
 }
@@ -67,9 +67,9 @@ func (fsr *FileSystemRegistry) PathExt(str string) string {
 //
 //	string - the cleaned path.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: pathClean].
 //
-//	{{ "/path//to/file.txt" | pathClean }} // Output: "/path/to/file.txt"
+// [Sprout Documentation: pathClean]: https://docs.atom.codes/sprout/registries/filesystem#pathclean
 func (fsr *FileSystemRegistry) PathClean(str string) string {
 	return path.Clean(str)
 }
@@ -84,9 +84,9 @@ func (fsr *FileSystemRegistry) PathClean(str string) string {
 //
 //	bool - true if the path is absolute, otherwise false.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: pathIsAbs].
 //
-//	{{ "/path/to/file.txt" | pathIsAbs }} // Output: true
+// [Sprout Documentation: pathIsAbs]: https://docs.atom.codes/sprout/registries/filesystem#pathisabs
 func (fsr *FileSystemRegistry) PathIsAbs(str string) bool {
 	return path.IsAbs(str)
 }
@@ -102,9 +102,9 @@ func (fsr *FileSystemRegistry) PathIsAbs(str string) bool {
 //
 //	string - the base element of the path.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: osBase].
 //
-//	{{ "C:\\path\\to\\file.txt" | osBase }} // Output: "file.txt"
+// [Sprout Documentation: osBase]: https://docs.atom.codes/sprout/registries/filesystem#osbase
 func (fsr *FileSystemRegistry) OsBase(str string) string {
 	return filepath.Base(str)
 }
@@ -120,9 +120,9 @@ func (fsr *FileSystemRegistry) OsBase(str string) string {
 //
 //	string - the directory part of the path.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: osDir].
 //
-//	{{ "C:\\path\\to\\file.txt" | osDir }} // Output: "C:\\path\\to"
+// [Sprout Documentation: osDir]: https://docs.atom.codes/sprout/registries/filesystem#osdir
 func (fsr *FileSystemRegistry) OsDir(str string) string {
 	return filepath.Dir(str)
 }
@@ -138,9 +138,9 @@ func (fsr *FileSystemRegistry) OsDir(str string) string {
 //
 //	string - the extension of the file in the path.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: osExt].
 //
-//	{{ "C:\\path\\to\\file.txt" | osExt }} // Output: ".txt"
+// [Sprout Documentation: osExt]: https://docs.atom.codes/sprout/registries/filesystem#osext
 func (fsr *FileSystemRegistry) OsExt(str string) string {
 	return filepath.Ext(str)
 }
@@ -156,9 +156,9 @@ func (fsr *FileSystemRegistry) OsExt(str string) string {
 //
 //	string - the cleaned path.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: osClean].
 //
-//	{{ "C:\\path\\\\to\\file.txt" | osClean }} // Output: "C:\\path\\to\\file.txt"
+// [Sprout Documentation: osClean]: https://docs.atom.codes/sprout/registries/filesystem#osclean
 func (fsr *FileSystemRegistry) OsClean(str string) string {
 	return filepath.Clean(str)
 }
@@ -173,9 +173,9 @@ func (fsr *FileSystemRegistry) OsClean(str string) string {
 //
 //	bool - true if the path is absolute, otherwise false.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: osIsAbs].
 //
-//	{{ "C:\\path\\to\\file.txt" | osIsAbs }} // Output: true
+// [Sprout Documentation: osIsAbs]: https://docs.atom.codes/sprout/registries/filesystem#osisabs
 func (fsr *FileSystemRegistry) OsIsAbs(str string) bool {
 	return filepath.IsAbs(str)
 }

@@ -1,3 +1,10 @@
+// This package is an example of how to create a new registry for Sprout.
+//
+// You can use this package as a template to create your own registry and
+// replace all instances of `example` with your registry name following the
+// conventions. You can see more on [Documentation]
+//
+// [Documentation]: https://docs.atom.codes/sprout/advanced/how-to-create-a-registry
 package example
 
 import (
@@ -31,11 +38,15 @@ func (or *ExampleRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error 
 }
 
 func (or *ExampleRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) error {
-	// Register your alias here if you have any or remove this method
+	// Register your alias here if you have any or remove this method if you don't have any
+	// You can see more on [Documentation]
+	// [Documentation]: https://docs.atom.codes/sprout/features/function-aliases
 	return nil
 }
 
 func (or *ExampleRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) error {
-	// Register your notices here if you have any or remove this method
+	// Register your notices here if you have any or remove this method if you don't have any
+	// You can see more on [Documentation]
+	// [Documentation]: https://docs.atom.codes/sprout/features/function-notices
 	return nil
 }

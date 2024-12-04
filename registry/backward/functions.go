@@ -23,9 +23,9 @@ import (
 //	*uint - always returns nil, indicating no value is associated with the failure.
 //	error - the error object containing the provided message.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: sha256Sum].
 //
-//	{{ "Operation failed" | fail }} // Output: nil, error with "Operation failed"
+// [Sprout Documentation: sha256Sum]: https://docs.atom.codes/sprout/registries/backward#fail
 func (bcr *BackwardCompatibilityRegistry) Fail(message string) (*uint, error) {
 	return nil, errors.New(message)
 }
@@ -43,9 +43,9 @@ func (bcr *BackwardCompatibilityRegistry) Fail(message string) (*uint, error) {
 //									"hostname", "path", "query", "opaque", "fragment", and "userinfo".
 //	error - an error object if the URL string is invalid.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: urlParse].
 //
-//	{{ "https://example.com/path?query=1#fragment" | urlParse }} // Output: map[fragment:fragment host:example.com hostname:example.com path:path query:query scheme:https]
+// [Sprout Documentation: urlParse]: https://docs.atom.codes/sprout/registries/backward#urlparse
 func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) (map[string]any, error) {
 	dict := map[string]any{}
 	parsedURL, err := url.Parse(v)
@@ -81,9 +81,9 @@ func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) (map[string]any, er
 //	string - the constructed URL string.
 //	error - an error object if the URL components are invalid.
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: urlJoin].
 //
-//	{{ dict scheme="https" host="example.com" path="/path" query="query=1" opaque="opaque" fragment="fragment" | urlJoin }} // Output: "https://example.com/path?query=1#fragment"
+// [Sprout Documentation: urlJoin]: https://docs.atom.codes/sprout/registries/backward#urljoin
 func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) (string, error) {
 	resURL := url.URL{
 		Scheme:   bcr.get(d, "scheme").(string),
@@ -121,9 +121,9 @@ func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) (string, err
 //
 // Note: This function currently lacks error handling
 //
-// Example:
+// For an example of this function in a go template, refer to [Sprout Documentation: getHostByName].
 //
-//	{{ getHostByName "example.com" }} // Output: "237.84.2.178"
+// [Sprout Documentation: getHostByName]: https://docs.atom.codes/sprout/registries/checksum#gethostbyname
 func (bcr *BackwardCompatibilityRegistry) GetHostByName(name string) (string, error) {
 	addrs, err := net.LookupHost(name)
 	if err != nil {

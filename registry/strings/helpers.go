@@ -93,17 +93,6 @@ func (sr *StringsRegistry) initials(str string, delimiters string) string {
 //
 //	string - the transformed string.
 //
-// Example:
-//
-//	style := caseStyle{
-//	    Separator:       '_',
-//	    CapitalizeNext:  true,
-//	    ForceLowercase:  false,
-//	    InsertSeparator: true,
-//	}
-//	transformed := sr.transformString(style, "hello world")
-//	Output: "Hello_World"
-//
 // Note:
 //
 //	This example demonstrates how to use the function to capitalize the first letter of
@@ -178,12 +167,6 @@ func (sr *StringsRegistry) transformString(style caseStyle, str string) string {
 // Returns:
 //
 //	map[string]string - a map where each key corresponds to an index (with an underscore prefix) of the string in the input array.
-//
-// Example:
-//
-//	parts := []string{"apple", "banana", "cherry"}
-//	result := sr.populateMapWithParts(parts)
-//	fmt.Println(result) // Output: {"_0": "apple", "_1": "banana", "_2": "cherry"}
 func (sr *StringsRegistry) populateMapWithParts(parts []string) map[string]string {
 	res := make(map[string]string, len(parts))
 	for i, v := range parts {
@@ -203,12 +186,6 @@ func (sr *StringsRegistry) populateMapWithParts(parts []string) map[string]strin
 // Returns:
 //
 //	string - the resulting string that concatenates all the integers in the array separated by the specified delimiter.
-//
-// Example:
-//
-//	slice := []int{1, 2, 3, 4, 5}
-//	result := sr.convertIntArrayToString(slice, ", ")
-//	fmt.Println(result) // Output: "1, 2, 3, 4, 5"
 func (sr *StringsRegistry) convertIntArrayToString(slice []int, delimiter string) string {
 	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(slice)), delimiter), "[]")
 }
@@ -226,11 +203,6 @@ func (sr *StringsRegistry) convertIntArrayToString(slice []int, delimiter string
 // Returns:
 //
 //	string - the wrapped string.
-//
-// Example:
-//
-//	wrapped := sr.wordWrap(10, "\n", true, "This is a long wordwrap example")
-//	fmt.Println(wrapped)
 func (sr *StringsRegistry) wordWrap(wrapLength int, newLineCharacter string, wrapLongWords bool, str string) string {
 	if wrapLength < 1 {
 		wrapLength = 1
@@ -285,11 +257,6 @@ func (sr *StringsRegistry) wordWrap(wrapLength int, newLineCharacter string, wra
 // Returns:
 //
 //	string - the modified string with the first letter in the desired casing.
-//
-// Example:
-//
-//	result := sr.swapFirstLetter("123hello", cassingUpper)
-//	fmt.Println(result) // Output: "123Hello"
 func swapFirstLetter(str string, shouldUppercase bool) string {
 	var conditionFunc func(r rune) bool
 	var updateFunc func(r rune) rune
