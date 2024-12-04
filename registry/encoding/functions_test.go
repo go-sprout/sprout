@@ -59,29 +59,29 @@ func TestFromJson(t *testing.T) {
 	pesticide.RunTestCases(t, encoding.NewRegistry(), tc)
 }
 
-func TestToJson(t *testing.T) {
+func TestToJSON(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | toJson }}`, ExpectedOutput: `""`},
-		{Name: "TestVariableInput", Input: `{{ .V | toJson }}`, ExpectedOutput: "{\"bar\":\"baz\",\"foo\":55}", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
-		{Name: "TestInvalidInput", Input: `{{ .V | toJson }}`, ExpectedErr: "json encode error", Data: map[string]any{"V": make(chan int)}},
+		{Name: "TestEmptyInput", Input: `{{ "" | toJSON }}`, ExpectedOutput: `""`},
+		{Name: "TestVariableInput", Input: `{{ .V | toJSON }}`, ExpectedOutput: "{\"bar\":\"baz\",\"foo\":55}", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
+		{Name: "TestInvalidInput", Input: `{{ .V | toJSON }}`, ExpectedErr: "json encode error", Data: map[string]any{"V": make(chan int)}},
 	}
 
 	pesticide.RunTestCases(t, encoding.NewRegistry(), tc)
 }
 
-func TestToPrettyJson(t *testing.T) {
+func TestToPrettyJSON(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | toPrettyJson }}`, ExpectedOutput: `""`},
-		{Name: "TestVariableInput", Input: `{{ .V | toPrettyJson }}`, ExpectedOutput: "{\n  \"bar\": \"baz\",\n  \"foo\": 55\n}", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
+		{Name: "TestEmptyInput", Input: `{{ "" | toPrettyJSON }}`, ExpectedOutput: `""`},
+		{Name: "TestVariableInput", Input: `{{ .V | toPrettyJSON }}`, ExpectedOutput: "{\n  \"bar\": \"baz\",\n  \"foo\": 55\n}", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 	}
 
 	pesticide.RunTestCases(t, encoding.NewRegistry(), tc)
 }
 
-func TestToRawJson(t *testing.T) {
+func TestToRawJSON(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | toRawJson }}`, ExpectedOutput: `""`},
-		{Name: "TestVariableInput", Input: `{{ .V | toRawJson }}`, ExpectedOutput: "{\"bar\":\"baz\",\"foo\":55}", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
+		{Name: "TestEmptyInput", Input: `{{ "" | toRawJSON }}`, ExpectedOutput: `""`},
+		{Name: "TestVariableInput", Input: `{{ .V | toRawJSON }}`, ExpectedOutput: "{\"bar\":\"baz\",\"foo\":55}", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
 	}
 
 	pesticide.RunTestCases(t, encoding.NewRegistry(), tc)
@@ -89,10 +89,10 @@ func TestToRawJson(t *testing.T) {
 
 func TestFromYAML(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | fromYaml }}`, ExpectedOutput: "map[]"},
-		{Name: "TestVariableInput", Input: `{{ .V | fromYaml }}`, ExpectedOutput: "map[bar:map[baz:1] foo:55]", Data: map[string]any{"V": "foo: 55\nbar:\n  baz: 1\n"}},
-		{Name: "TestAccessField", Input: `{{ (.V | fromYaml).foo }}`, ExpectedOutput: "55", Data: map[string]any{"V": "foo: 55"}},
-		{Name: "TestInvalidInput", Input: "{{ .V | fromYaml }}", ExpectedErr: "yaml decode error", Data: map[string]any{"V": "foo: :: baz"}},
+		{Name: "TestEmptyInput", Input: `{{ "" | fromYAML }}`, ExpectedOutput: "map[]"},
+		{Name: "TestVariableInput", Input: `{{ .V | fromYAML }}`, ExpectedOutput: "map[bar:map[baz:1] foo:55]", Data: map[string]any{"V": "foo: 55\nbar:\n  baz: 1\n"}},
+		{Name: "TestAccessField", Input: `{{ (.V | fromYAML).foo }}`, ExpectedOutput: "55", Data: map[string]any{"V": "foo: 55"}},
+		{Name: "TestInvalidInput", Input: "{{ .V | fromYAML }}", ExpectedErr: "yaml decode error", Data: map[string]any{"V": "foo: :: baz"}},
 	}
 
 	pesticide.RunTestCases(t, encoding.NewRegistry(), tc)
@@ -100,9 +100,9 @@ func TestFromYAML(t *testing.T) {
 
 func TestToYAML(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | toYaml }}`, ExpectedOutput: `""`},
-		{Name: "TestVariableInput", Input: `{{ .V | toYaml }}`, ExpectedOutput: "bar: baz\nfoo: 55", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
-		{Name: "TestInvalidInput", Input: `{{ .V | toYaml }}`, ExpectedErr: "yaml encode error", Data: map[string]any{"V": make(chan int)}},
+		{Name: "TestEmptyInput", Input: `{{ "" | toYAML }}`, ExpectedOutput: `""`},
+		{Name: "TestVariableInput", Input: `{{ .V | toYAML }}`, ExpectedOutput: "bar: baz\nfoo: 55", Data: map[string]any{"V": map[string]any{"foo": 55, "bar": "baz"}}},
+		{Name: "TestInvalidInput", Input: `{{ .V | toYAML }}`, ExpectedErr: "yaml encode error", Data: map[string]any{"V": make(chan int)}},
 	}
 
 	pesticide.RunTestCases(t, encoding.NewRegistry(), tc)
@@ -110,9 +110,9 @@ func TestToYAML(t *testing.T) {
 
 func TestToIndentYAML(t *testing.T) {
 	tc := []pesticide.TestCase{
-		{Name: "TestEmptyInput", Input: `{{ "" | toIndentYaml 8 }}`, ExpectedOutput: `""`},
-		{Name: "TestVariableInput", Input: `{{ .V | toIndentYaml 8 }}`, ExpectedOutput: "bar: baz\nfoo:\n        bar: baz\n        baz: bar", Data: map[string]any{"V": map[string]any{"foo": map[string]any{"baz": "bar", "bar": "baz"}, "bar": "baz"}}},
-		{Name: "TestInvalidInput", Input: `{{ .V | toIndentYaml 8 }}`, ExpectedErr: "yaml encode error", Data: map[string]any{"V": make(chan int)}},
+		{Name: "TestEmptyInput", Input: `{{ "" | toIndentYAML 8 }}`, ExpectedOutput: `""`},
+		{Name: "TestVariableInput", Input: `{{ .V | toIndentYAML 8 }}`, ExpectedOutput: "bar: baz\nfoo:\n        bar: baz\n        baz: bar", Data: map[string]any{"V": map[string]any{"foo": map[string]any{"baz": "bar", "bar": "baz"}, "bar": "baz"}}},
+		{Name: "TestInvalidInput", Input: `{{ .V | toIndentYAML 8 }}`, ExpectedErr: "yaml encode error", Data: map[string]any{"V": make(chan int)}},
 	}
 
 	pesticide.RunTestCases(t, encoding.NewRegistry(), tc)
