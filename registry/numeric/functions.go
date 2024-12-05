@@ -20,7 +20,7 @@ import (
 //	float64 - the floored value.
 //	error - an error if the input cannot be converted to float64.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: floor].
+// For an example of this function in a Go template, refer to [Sprout Documentation: floor].
 //
 // [Sprout Documentation: floor]: https://docs.atom.codes/sprout/registries/numeric#floor
 func (nr *NumericRegistry) Floor(num any) (float64, error) {
@@ -43,7 +43,7 @@ func (nr *NumericRegistry) Floor(num any) (float64, error) {
 //	float64 - the ceiled value.
 //	error - an error if the input cannot be converted to float64.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: ceil].
+// For an example of this function in a Go template, refer to [Sprout Documentation: ceil].
 //
 // [Sprout Documentation: ceil]: https://docs.atom.codes/sprout/registries/numeric#ceil
 func (nr *NumericRegistry) Ceil(num any) (float64, error) {
@@ -69,7 +69,7 @@ func (nr *NumericRegistry) Ceil(num any) (float64, error) {
 //
 // error - an error if the input cannot be converted to float64.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: round].
+// For an example of this function in a Go template, refer to [Sprout Documentation: round].
 //
 // [Sprout Documentation: round]: https://docs.atom.codes/sprout/registries/numeric#round
 func (nr *NumericRegistry) Round(num any, poww int, roundOpts ...float64) (float64, error) {
@@ -104,7 +104,7 @@ func (nr *NumericRegistry) Round(num any, poww int, roundOpts ...float64) (float
 //	any - the sum of the values, converted to the type of the first value.
 //	error - when a value cannot be converted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: add].
+// For an example of this function in a Go template, refer to [Sprout Documentation: add].
 //
 // [Sprout Documentation: add]: https://docs.atom.codes/sprout/registries/numeric#add-addf
 func (nr *NumericRegistry) Add(values ...any) (any, error) {
@@ -122,7 +122,7 @@ func (nr *NumericRegistry) Add(values ...any) (any, error) {
 //	any - the sum of the value and 1, converted to the type of the input.
 //	error - when a value cannot be converted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: add1].
+// For an example of this function in a Go template, refer to [Sprout Documentation: add1].
 //
 // [Sprout Documentation: add1]: https://docs.atom.codes/sprout/registries/numeric#add1-add1f
 func (nr *NumericRegistry) Add1(x any) (any, error) {
@@ -141,7 +141,7 @@ func (nr *NumericRegistry) Add1(x any) (any, error) {
 //	any - the result of the subtraction, converted to the type of the first value.
 //	error - when a value cannot be converted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: sub].
+// For an example of this function in a Go template, refer to [Sprout Documentation: sub].
 //
 // [Sprout Documentation: sub]: https://docs.atom.codes/sprout/registries/numeric#sub-subf
 func (nr *NumericRegistry) Sub(values ...any) (any, error) {
@@ -159,7 +159,7 @@ func (nr *NumericRegistry) Sub(values ...any) (any, error) {
 //	int64 - the product of the values.
 //	error - an error if the result cannot be converted to int64.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: mul].
+// For an example of this function in a Go template, refer to [Sprout Documentation: mul].
 //
 // [Sprout Documentation: mul]: https://docs.atom.codes/sprout/registries/numeric#mul
 func (nr *NumericRegistry) MulInt(values ...any) (int64, error) {
@@ -182,7 +182,7 @@ func (nr *NumericRegistry) MulInt(values ...any) (int64, error) {
 //	any - the product of the values, converted to the type of the first value.
 //	error - when a value cannot be converted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: mulf].
+// For an example of this function in a Go template, refer to [Sprout Documentation: mulf].
 //
 // [Sprout Documentation: mulf]: https://docs.atom.codes/sprout/registries/numeric#mulf
 func (nr *NumericRegistry) Mulf(values ...any) (any, error) {
@@ -199,7 +199,7 @@ func (nr *NumericRegistry) Mulf(values ...any) (any, error) {
 //
 //	int64 - the quotient of the division.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: div].
+// For an example of this function in a Go template, refer to [Sprout Documentation: div].
 //
 // [Sprout Documentation: div]: https://docs.atom.codes/sprout/registries/numeric#div
 func (nr *NumericRegistry) DivInt(values ...any) (int64, error) {
@@ -221,7 +221,7 @@ func (nr *NumericRegistry) DivInt(values ...any) (int64, error) {
 //
 //	any - the quotient of the division, converted to the type of the first value.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: divf].
+// For an example of this function in a Go template, refer to [Sprout Documentation: divf].
 //
 // [Sprout Documentation: divf]: https://docs.atom.codes/sprout/registries/numeric#divf
 func (nr *NumericRegistry) Divf(values ...any) (any, error) {
@@ -248,7 +248,7 @@ func (nr *NumericRegistry) Divf(values ...any) (any, error) {
 //	any - the remainder, converted to the type of 'x'.
 //	error - when a value cannot be converted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: mod].
+// For an example of this function in a Go template, refer to [Sprout Documentation: mod].
 //
 // [Sprout Documentation: mod]: https://docs.atom.codes/sprout/registries/numeric#mod
 func (nr *NumericRegistry) Mod(x, y any) (any, error) {
@@ -280,7 +280,7 @@ func (nr *NumericRegistry) Mod(x, y any) (any, error) {
 //	int64 - the smallest number among the inputs.
 //	error - when a value cannot be converted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: min].
+// For an example of this function in a Go template, refer to [Sprout Documentation: min].
 //
 // [Sprout Documentation: min]: https://docs.atom.codes/sprout/registries/numeric#min
 func (nr *NumericRegistry) Min(a any, i ...any) (int64, error) {
@@ -313,7 +313,7 @@ func (nr *NumericRegistry) Min(a any, i ...any) (int64, error) {
 //	float64 - the smallest number among the inputs.
 //	error - when a value cannot be converted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: minf].
+// For an example of this function in a Go template, refer to [Sprout Documentation: minf].
 //
 // [Sprout Documentation: minf]: https://docs.atom.codes/sprout/registries/numeric#minf
 func (nr *NumericRegistry) Minf(a any, i ...any) (float64, error) {
@@ -343,7 +343,7 @@ func (nr *NumericRegistry) Minf(a any, i ...any) (float64, error) {
 //	int64 - the largest number among the inputs.
 //	error - when a value cannot be converted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: max].
+// For an example of this function in a Go template, refer to [Sprout Documentation: max].
 //
 // [Sprout Documentation: max]: https://docs.atom.codes/sprout/registries/numeric#max
 func (nr *NumericRegistry) Max(a any, i ...any) (int64, error) {
@@ -377,7 +377,7 @@ func (nr *NumericRegistry) Max(a any, i ...any) (int64, error) {
 //	float64 - the largest number among the inputs.
 //	error - when a value cannot be converted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: maxf].
+// For an example of this function in a Go template, refer to [Sprout Documentation: maxf].
 //
 // [Sprout Documentation: maxf]: https://docs.atom.codes/sprout/registries/numeric#maxf
 func (nr *NumericRegistry) Maxf(a any, i ...any) (float64, error) {

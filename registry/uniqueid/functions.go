@@ -12,7 +12,7 @@ import (
 //
 //	string - a new UUID string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: uuidv4].
+// For an example of this function in a Go template, refer to [Sprout Documentation: uuidv4].
 //
 // [Sprout Documentation: uuidv4]: https://docs.atom.codes/sprout/registries/uniqueid#uuidv4
 func (ur *UniqueIDRegistry) Uuidv4() string {

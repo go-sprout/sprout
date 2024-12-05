@@ -20,7 +20,7 @@ import (
 //
 //	bool - true if 'src' is of type 'target', false otherwise.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: typeIs].
+// For an example of this function in a Go template, refer to [Sprout Documentation: typeIs].
 //
 // [Sprout Documentation: typeIs]: https://docs.atom.codes/sprout/registries/reflect#typeis
 func (rr *ReflectRegistry) TypeIs(target string, src any) bool {
@@ -41,7 +41,7 @@ func (rr *ReflectRegistry) TypeIs(target string, src any) bool {
 //
 //	bool - true if the type of 'src' matches 'target' or '*'+target, false otherwise.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: typeIsLike].
+// For an example of this function in a Go template, refer to [Sprout Documentation: typeIsLike].
 //
 // [Sprout Documentation: typeIsLike]: https://docs.atom.codes/sprout/registries/reflect#typeislike
 func (rr *ReflectRegistry) TypeIsLike(target string, src any) bool {
@@ -59,7 +59,7 @@ func (rr *ReflectRegistry) TypeIsLike(target string, src any) bool {
 //
 //	string - the string representation of 'src's type.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: typeOf].
+// For an example of this function in a Go template, refer to [Sprout Documentation: typeOf].
 //
 // [Sprout Documentation: typeOf]: https://docs.atom.codes/sprout/registries/reflect#typeof
 func (rr *ReflectRegistry) TypeOf(src any) string {
@@ -79,7 +79,7 @@ func (rr *ReflectRegistry) TypeOf(src any) string {
 //	bool - true if 'src's kind is 'target', false otherwise.
 //	error - when 'src' is nil.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: kindIs].
+// For an example of this function in a Go template, refer to [Sprout Documentation: kindIs].
 //
 // [Sprout Documentation: kindIs]: https://docs.atom.codes/sprout/registries/reflect#kindis
 func (rr *ReflectRegistry) KindIs(target string, src any) (bool, error) {
@@ -102,7 +102,7 @@ func (rr *ReflectRegistry) KindIs(target string, src any) (bool, error) {
 //	string - the string representation of 'src's kind.
 //	error - when 'src' is nil.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: kindOf].
+// For an example of this function in a Go template, refer to [Sprout Documentation: kindOf].
 //
 // [Sprout Documentation: kindOf]: https://docs.atom.codes/sprout/registries/reflect#kindof
 func (rr *ReflectRegistry) KindOf(src any) (string, error) {
@@ -125,7 +125,7 @@ func (rr *ReflectRegistry) KindOf(src any) (string, error) {
 //	bool - true if the struct 'src' contains a field with the name 'name', false otherwise.
 //	error - when the last argument is not a struct.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: hasField].
+// For an example of this function in a Go template, refer to [Sprout Documentation: hasField].
 //
 // [Sprout Documentation: hasField]: https://docs.atom.codes/sprout/registries/reflect#hasfield
 func (rr *ReflectRegistry) HasField(name string, src any) (bool, error) {
@@ -147,7 +147,7 @@ func (rr *ReflectRegistry) HasField(name string, src any) (bool, error) {
 //
 //	bool - true if 'x' and 'y' are deeply equal, false otherwise.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: deepEqual].
+// For an example of this function in a Go template, refer to [Sprout Documentation: deepEqual].
 //
 // [Sprout Documentation: deepEqual]: https://docs.atom.codes/sprout/registries/reflect#deepequal
 func (rr *ReflectRegistry) DeepEqual(x, y any) bool {
@@ -166,7 +166,7 @@ func (rr *ReflectRegistry) DeepEqual(x, y any) bool {
 //	any - a deep copy of 'element'.
 //	error - when 'element' is nil.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: deepCopy].
+// For an example of this function in a Go template, refer to [Sprout Documentation: deepCopy].
 //
 // [Sprout Documentation: deepCopy]: https://docs.atom.codes/sprout/registries/reflect#deepcopy
 func (rr *ReflectRegistry) DeepCopy(element any) (any, error) {

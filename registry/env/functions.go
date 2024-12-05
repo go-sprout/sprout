@@ -14,7 +14,7 @@ import (
 //
 //	string - the value of the environment variable.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: env].
+// For an example of this function in a Go template, refer to [Sprout Documentation: env].
 //
 // [Sprout Documentation: env]: https://docs.atom.codes/sprout/registries/env#env
 func (er *EnvironmentRegistry) Env(key string) string {
@@ -32,7 +32,7 @@ func (er *EnvironmentRegistry) Env(key string) string {
 //
 //	string - the expanded string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: expandEnv].
+// For an example of this function in a Go template, refer to [Sprout Documentation: expandEnv].
 //
 // [Sprout Documentation: expandEnv]: https://docs.atom.codes/sprout/registries/env#expandenv
 func (er *EnvironmentRegistry) ExpandEnv(str string) string {

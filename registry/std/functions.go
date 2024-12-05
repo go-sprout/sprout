@@ -34,7 +34,7 @@ func (sr *StdRegistry) Hello() string {
 //	any - the first element of `given`, or `defaultValue` if `given` is empty
 //	      or all values are empty.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: default].
+// For an example of this function in a Go template, refer to [Sprout Documentation: default].
 //
 // [Sprout Documentation: default]: https://docs.atom.codes/sprout/registries/std#default
 func (sr *StdRegistry) Default(defaultValue any, given ...any) any {
@@ -63,7 +63,7 @@ func (sr *StdRegistry) Default(defaultValue any, given ...any) any {
 //
 //	bool - true if 'given' is empty, false otherwise.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: empty].
+// For an example of this function in a Go template, refer to [Sprout Documentation: empty].
 //
 // [Sprout Documentation: empty]: https://docs.atom.codes/sprout/registries/std#empty
 func (sr *StdRegistry) Empty(given any) bool {
@@ -81,7 +81,7 @@ func (sr *StdRegistry) Empty(given any) bool {
 //
 //	bool - true if all values are non-empty, false otherwise.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: all].
+// For an example of this function in a Go template, refer to [Sprout Documentation: all].
 //
 // [Sprout Documentation: all]: https://docs.atom.codes/sprout/registries/std#all
 func (sr *StdRegistry) All(values ...any) bool {
@@ -104,7 +104,7 @@ func (sr *StdRegistry) All(values ...any) bool {
 //
 //	bool - true if any value is non-empty, false if all are empty.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: any].
+// For an example of this function in a Go template, refer to [Sprout Documentation: any].
 //
 // [Sprout Documentation: any]: https://docs.atom.codes/sprout/registries/std#any
 func (sr *StdRegistry) Any(values ...any) bool {
@@ -128,7 +128,7 @@ func (sr *StdRegistry) Any(values ...any) bool {
 //
 //	any - the first non-empty value, or nil if all values are empty.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: coalesce].
+// For an example of this function in a Go template, refer to [Sprout Documentation: coalesce].
 //
 // [Sprout Documentation: coalesce]: https://docs.atom.codes/sprout/registries/std#coalesce
 func (sr *StdRegistry) Coalesce(values ...any) any {
@@ -153,7 +153,7 @@ func (sr *StdRegistry) Coalesce(values ...any) any {
 //
 //	any - the result based on the evaluated condition.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: ternary].
+// For an example of this function in a Go template, refer to [Sprout Documentation: ternary].
 //
 // [Sprout Documentation: ternary]: https://docs.atom.codes/sprout/registries/std#ternary
 func (sr *StdRegistry) Ternary(trueValue any, falseValue any, condition bool) any {
@@ -177,7 +177,7 @@ func (sr *StdRegistry) Ternary(trueValue any, falseValue any, condition bool) an
 //	string - a single string composed of all non-nil input values separated
 //	         by spaces.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: cat].
+// For an example of this function in a Go template, refer to [Sprout Documentation: cat].
 //
 // [Sprout Documentation: cat]: https://docs.atom.codes/sprout/registries/std#cat
 func (sr *StdRegistry) Cat(values ...any) string {

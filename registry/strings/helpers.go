@@ -92,12 +92,6 @@ func (sr *StringsRegistry) initials(str string, delimiters string) string {
 // Returns:
 //
 //	string - the transformed string.
-//
-// Note:
-//
-//	This example demonstrates how to use the function to capitalize the first letter of
-//	each word and insert underscores between words, which is common in identifiers like
-//	variable names in programming.
 func (sr *StringsRegistry) transformString(style caseStyle, str string) string {
 	var result strings.Builder
 	result.Grow(len(str) + 10) // Allocate a bit more for potential separators

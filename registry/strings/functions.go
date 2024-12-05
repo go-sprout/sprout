@@ -23,7 +23,7 @@ import (
 //
 //	string - the modified string with all whitespace characters removed.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: nospace].
+// For an example of this function in a Go template, refer to [Sprout Documentation: nospace].
 //
 // [Sprout Documentation: nospace]: https://docs.atom.codes/sprout/registries/strings#nospace
 func (sr *StringsRegistry) Nospace(str string) string {
@@ -45,7 +45,7 @@ func (sr *StringsRegistry) Nospace(str string) string {
 //
 //	string - the trimmed string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: trim].
+// For an example of this function in a Go template, refer to [Sprout Documentation: trim].
 //
 // [Sprout Documentation: trim]: https://docs.atom.codes/sprout/registries/strings#trim
 func (sr *StringsRegistry) Trim(str string) string {
@@ -64,7 +64,7 @@ func (sr *StringsRegistry) Trim(str string) string {
 //
 //	string - the string with specified characters removed.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: trimAll].
+// For an example of this function in a Go template, refer to [Sprout Documentation: trimAll].
 //
 // [Sprout Documentation: trimAll]: https://docs.atom.codes/sprout/registries/strings#trimall
 func (sr *StringsRegistry) TrimAll(cutset string, str string) string {
@@ -82,7 +82,7 @@ func (sr *StringsRegistry) TrimAll(cutset string, str string) string {
 //
 //	string - the string with the prefix removed if it was present.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: trimPrefix].
+// For an example of this function in a Go template, refer to [Sprout Documentation: trimPrefix].
 //
 // [Sprout Documentation: trimPrefix]: https://docs.atom.codes/sprout/registries/strings#trimprefix
 func (sr *StringsRegistry) TrimPrefix(prefix string, str string) string {
@@ -100,7 +100,7 @@ func (sr *StringsRegistry) TrimPrefix(prefix string, str string) string {
 //
 //	string - the string with the suffix removed if it was present.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: trimSuffix].
+// For an example of this function in a Go template, refer to [Sprout Documentation: trimSuffix].
 //
 // [Sprout Documentation: trimSuffix]: https://docs.atom.codes/sprout/registries/strings#trimsuffix
 func (sr *StringsRegistry) TrimSuffix(suffix string, str string) string {
@@ -118,7 +118,7 @@ func (sr *StringsRegistry) TrimSuffix(suffix string, str string) string {
 //
 //	bool - true if 'str' contains 'substring', false otherwise.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: contains].
+// For an example of this function in a Go template, refer to [Sprout Documentation: contains].
 //
 // [Sprout Documentation: contains]: https://docs.atom.codes/sprout/registries/strings#contains
 func (sr *StringsRegistry) Contains(substring string, str string) bool {
@@ -136,7 +136,7 @@ func (sr *StringsRegistry) Contains(substring string, str string) bool {
 //
 //	bool - true if 'str' starts with 'prefix', false otherwise.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: hasPrefix].
+// For an example of this function in a Go template, refer to [Sprout Documentation: hasPrefix].
 //
 // [Sprout Documentation: hasPrefix]: https://docs.atom.codes/sprout/registries/strings#hasprefix
 func (sr *StringsRegistry) HasPrefix(prefix string, str string) bool {
@@ -154,7 +154,7 @@ func (sr *StringsRegistry) HasPrefix(prefix string, str string) bool {
 //
 //	bool - true if 'str' ends with 'suffix', false otherwise.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: hasSuffix].
+// For an example of this function in a Go template, refer to [Sprout Documentation: hasSuffix].
 //
 // [Sprout Documentation: hasSuffix]: https://docs.atom.codes/sprout/registries/strings#hassuffix
 func (sr *StringsRegistry) HasSuffix(suffix string, str string) bool {
@@ -171,7 +171,7 @@ func (sr *StringsRegistry) HasSuffix(suffix string, str string) bool {
 //
 //	string - the lowercase version of the input string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toLower].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toLower].
 //
 // [Sprout Documentation: toLower]: https://docs.atom.codes/sprout/registries/strings#tolower
 func (sr *StringsRegistry) ToLower(str string) string {
@@ -188,7 +188,7 @@ func (sr *StringsRegistry) ToLower(str string) string {
 //
 //	string - the uppercase version of the input string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toUpper].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toUpper].
 //
 // [Sprout Documentation: toUpper]: https://docs.atom.codes/sprout/registries/strings#toupper
 func (sr *StringsRegistry) ToUpper(str string) string {
@@ -207,7 +207,7 @@ func (sr *StringsRegistry) ToUpper(str string) string {
 //
 //	string - the modified string after all replacements.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: replace].
+// For an example of this function in a Go template, refer to [Sprout Documentation: replace].
 //
 // [Sprout Documentation: replace]: https://docs.atom.codes/sprout/registries/strings#replace
 func (sr *StringsRegistry) Replace(old, new, src string) string {
@@ -225,7 +225,7 @@ func (sr *StringsRegistry) Replace(old, new, src string) string {
 //
 //	string - the repeated string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: repeat].
+// For an example of this function in a Go template, refer to [Sprout Documentation: repeat].
 //
 // [Sprout Documentation: repeat]: https://docs.atom.codes/sprout/registries/strings#repeat
 func (sr *StringsRegistry) Repeat(count int, str string) string {
@@ -245,7 +245,7 @@ func (sr *StringsRegistry) Repeat(count int, str string) string {
 //
 //	string - the concatenated string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: join].
+// For an example of this function in a Go template, refer to [Sprout Documentation: join].
 //
 // [Sprout Documentation: join]: https://docs.atom.codes/sprout/registries/strings#join
 func (sr *StringsRegistry) Join(sep string, v any) string {
@@ -265,7 +265,7 @@ func (sr *StringsRegistry) Join(sep string, v any) string {
 //
 //	string - the truncated string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: trunc].
+// For an example of this function in a Go template, refer to [Sprout Documentation: trunc].
 //
 // [Sprout Documentation: trunc]: https://docs.atom.codes/sprout/registries/strings#trunc
 func (sr *StringsRegistry) Trunc(count int, str string) string {
@@ -292,7 +292,7 @@ func (sr *StringsRegistry) Trunc(count int, str string) string {
 //
 //	string - the shuffled string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: shuffle].
+// For an example of this function in a Go template, refer to [Sprout Documentation: shuffle].
 //
 // [Sprout Documentation: shuffle]: https://docs.atom.codes/sprout/registries/strings#shuffle
 func (sr *StringsRegistry) Shuffle(str string) string {
@@ -315,7 +315,7 @@ func (sr *StringsRegistry) Shuffle(str string) string {
 //
 //	string - the possibly truncated string with an ellipsis.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: ellipsis].
+// For an example of this function in a Go template, refer to [Sprout Documentation: ellipsis].
 //
 // [Sprout Documentation: ellipsis]: https://docs.atom.codes/sprout/registries/strings#ellipsis
 func (sr *StringsRegistry) Ellipsis(maxWidth int, str string) string {
@@ -335,7 +335,7 @@ func (sr *StringsRegistry) Ellipsis(maxWidth int, str string) string {
 //
 //	string - the truncated string with ellipses on both ends.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: ellipsisBoth].
+// For an example of this function in a Go template, refer to [Sprout Documentation: ellipsisBoth].
 //
 // [Sprout Documentation: ellipsisBoth]: https://docs.atom.codes/sprout/registries/strings#ellipsisboth
 func (sr *StringsRegistry) EllipsisBoth(offset int, maxWidth int, str string) string {
@@ -354,7 +354,7 @@ func (sr *StringsRegistry) EllipsisBoth(offset int, maxWidth int, str string) st
 //
 //	string - the initials of the words in 'str'.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: initials].
+// For an example of this function in a Go template, refer to [Sprout Documentation: initials].
 //
 // [Sprout Documentation: initials]: https://docs.atom.codes/sprout/registries/strings#initials
 func (sr *StringsRegistry) Initials(str string) string {
@@ -373,7 +373,7 @@ func (sr *StringsRegistry) Initials(str string) string {
 //
 //	string - either 'one' or 'many' based on 'count'.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: plural].
+// For an example of this function in a Go template, refer to [Sprout Documentation: plural].
 //
 // [Sprout Documentation: plural]: https://docs.atom.codes/sprout/registries/strings#plural
 func (sr *StringsRegistry) Plural(one, many string, count int) string {
@@ -395,7 +395,7 @@ func (sr *StringsRegistry) Plural(one, many string, count int) string {
 //
 //	string - the wrapped string using newline characters to separate lines.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: wrap].
+// For an example of this function in a Go template, refer to [Sprout Documentation: wrap].
 //
 // [Sprout Documentation: wrap]: https://docs.atom.codes/sprout/registries/strings#wrap
 func (sr *StringsRegistry) Wrap(length int, str string) string {
@@ -415,7 +415,7 @@ func (sr *StringsRegistry) Wrap(length int, str string) string {
 //
 //	string - the wrapped string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: wrapWith].
+// For an example of this function in a Go template, refer to [Sprout Documentation: wrapWith].
 //
 // [Sprout Documentation: wrapWith]: https://docs.atom.codes/sprout/registries/strings#wrapwith
 func (sr *StringsRegistry) WrapWith(length int, newLineCharacter string, str string) string {
@@ -432,7 +432,7 @@ func (sr *StringsRegistry) WrapWith(length int, newLineCharacter string, str str
 //
 //	string - a single string with each element double quoted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: quote].
+// For an example of this function in a Go template, refer to [Sprout Documentation: quote].
 //
 // [Sprout Documentation: quote]: https://docs.atom.codes/sprout/registries/strings#quote
 func (sr *StringsRegistry) Quote(elements ...any) string {
@@ -460,7 +460,7 @@ func (sr *StringsRegistry) Quote(elements ...any) string {
 //
 //	string - a single string with each element single quoted.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: squote].
+// For an example of this function in a Go template, refer to [Sprout Documentation: squote].
 //
 // [Sprout Documentation: squote]: https://docs.atom.codes/sprout/registries/strings#squote
 func (sr *StringsRegistry) Squote(elements ...any) string {
@@ -490,7 +490,7 @@ func (sr *StringsRegistry) Squote(elements ...any) string {
 //
 //	string - the string converted to camelCase.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toCamelCase].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toCamelCase].
 //
 // [Sprout Documentation: toCamelCase]: https://docs.atom.codes/sprout/registries/strings#tocamelcase
 func (sr *StringsRegistry) ToCamelCase(str string) string {
@@ -524,7 +524,7 @@ func (sr *StringsRegistry) ToKebabCase(str string) string {
 //
 //	string - the string converted to PascalCase.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toPascalCase].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toPascalCase].
 //
 // [Sprout Documentation: toPascalCase]: https://docs.atom.codes/sprout/registries/strings#topascalcase
 func (sr *StringsRegistry) ToPascalCase(str string) string {
@@ -541,7 +541,7 @@ func (sr *StringsRegistry) ToPascalCase(str string) string {
 //
 //	string - the string converted to dot.case.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toDotCase].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toDotCase].
 //
 // [Sprout Documentation: toDotCase]: https://docs.atom.codes/sprout/registries/strings#todotcase
 func (sr *StringsRegistry) ToDotCase(str string) string {
@@ -558,7 +558,7 @@ func (sr *StringsRegistry) ToDotCase(str string) string {
 //
 //	string - the string converted to path/case.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toPathCase].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toPathCase].
 //
 // [Sprout Documentation: toPathCase]: https://docs.atom.codes/sprout/registries/strings#topathcase
 func (sr *StringsRegistry) ToPathCase(str string) string {
@@ -573,7 +573,7 @@ func (sr *StringsRegistry) ToPathCase(str string) string {
 //
 // Returns:
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toConstantCase].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toConstantCase].
 //
 // [Sprout Documentation: toConstantCase]: https://docs.atom.codes/sprout/registries/strings#toconstantcase
 func (sr *StringsRegistry) ToConstantCase(str string) string {
@@ -590,7 +590,7 @@ func (sr *StringsRegistry) ToConstantCase(str string) string {
 //
 //	string - the string converted to snake_case.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toSnakeCase].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toSnakeCase].
 //
 // [Sprout Documentation: toSnakeCase]: https://docs.atom.codes/sprout/registries/strings#tosnakecase
 func (sr *StringsRegistry) ToSnakeCase(str string) string {
@@ -607,7 +607,7 @@ func (sr *StringsRegistry) ToSnakeCase(str string) string {
 //
 //	string - the string converted to Title Case.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toTitleCase].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toTitleCase].
 //
 // [Sprout Documentation: toTitleCase]: https://docs.atom.codes/sprout/registries/strings#totitlecase
 func (sr *StringsRegistry) ToTitleCase(str string) string {
@@ -624,7 +624,7 @@ func (sr *StringsRegistry) ToTitleCase(str string) string {
 //
 //	string - the converted string with each word starting in lowercase.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: untitle].
+// For an example of this function in a Go template, refer to [Sprout Documentation: untitle].
 //
 // [Sprout Documentation: untitle]: https://docs.atom.codes/sprout/registries/strings#untitle
 func (sr *StringsRegistry) Untitle(str string) string {
@@ -660,7 +660,7 @@ func (sr *StringsRegistry) Untitle(str string) string {
 //
 //	string - the string with each character's case switched.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: swapCase].
+// For an example of this function in a Go template, refer to [Sprout Documentation: swapCase].
 //
 // [Sprout Documentation: swapCase]: https://docs.atom.codes/sprout/registries/strings#swapcase
 func (sr *StringsRegistry) SwapCase(str string) string {
@@ -682,7 +682,7 @@ func (sr *StringsRegistry) SwapCase(str string) string {
 //
 //	string - the string with the first letter capitalized.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: capitalize].
+// For an example of this function in a Go template, refer to [Sprout Documentation: capitalize].
 //
 // [Sprout Documentation: capitalize]: https://docs.atom.codes/sprout/registries/strings#capitalize
 func (sr *StringsRegistry) Capitalize(str string) string {
@@ -699,7 +699,7 @@ func (sr *StringsRegistry) Capitalize(str string) string {
 //
 //	string - the string with the first letter in lowercase.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: uncapitalize].
+// For an example of this function in a Go template, refer to [Sprout Documentation: uncapitalize].
 //
 // [Sprout Documentation: uncapitalize]: https://docs.atom.codes/sprout/registries/strings#uncapitalize
 func (sr *StringsRegistry) Uncapitalize(str string) string {
@@ -717,7 +717,7 @@ func (sr *StringsRegistry) Uncapitalize(str string) string {
 //
 //	map[string]string - a map of the split parts.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: split].
+// For an example of this function in a Go template, refer to [Sprout Documentation: split].
 //
 // [Sprout Documentation: split]: https://docs.atom.codes/sprout/registries/strings#split
 func (sr *StringsRegistry) Split(sep, str string) map[string]string {
@@ -738,7 +738,7 @@ func (sr *StringsRegistry) Split(sep, str string) map[string]string {
 //
 //	map[string]string - a map of the split parts.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: splitn].
+// For an example of this function in a Go template, refer to [Sprout Documentation: splitn].
 //
 // [Sprout Documentation: splitn]: https://docs.atom.codes/sprout/registries/strings#splitn
 func (sr *StringsRegistry) Splitn(sep string, n int, str string) map[string]string {
@@ -760,7 +760,7 @@ func (sr *StringsRegistry) Splitn(sep string, n int, str string) map[string]stri
 //
 //	string - the extracted substring.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: substr].
+// For an example of this function in a Go template, refer to [Sprout Documentation: substr].
 //
 // [Sprout Documentation: substr]: https://docs.atom.codes/sprout/registries/strings#substr
 func (sr *StringsRegistry) Substring(start, end int, str string) string {
@@ -795,7 +795,7 @@ func (sr *StringsRegistry) Substring(start, end int, str string) string {
 //
 //	string - the indented string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: indent].
+// For an example of this function in a Go template, refer to [Sprout Documentation: indent].
 //
 // [Sprout Documentation: indent]: https://docs.atom.codes/sprout/registries/strings#indent
 func (sr *StringsRegistry) Indent(spaces int, str string) string {
@@ -824,7 +824,7 @@ func (sr *StringsRegistry) Indent(spaces int, str string) string {
 // Returns:
 //	string - the indented string with a newline at the start.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: nindent].
+// For an example of this function in a Go template, refer to [Sprout Documentation: nindent].
 //
 // [Sprout Documentation: nindent]: https://docs.atom.codes/sprout/registries/strings#nindent
 
@@ -844,7 +844,7 @@ func (sr *StringsRegistry) Nindent(spaces int, str string) string {
 //
 //	string - a space-separated string of numbers in the sequence.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: seq].
+// For an example of this function in a Go template, refer to [Sprout Documentation: seq].
 //
 // [Sprout Documentation: seq]: https://docs.atom.codes/sprout/registries/strings#seq
 func (sr *StringsRegistry) Seq(params ...int) string {

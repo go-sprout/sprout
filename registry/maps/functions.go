@@ -20,7 +20,7 @@ import (
 //
 //	map[string]any - the created dictionary.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: dict].
+// For an example of this function in a Go template, refer to [Sprout Documentation: dict].
 //
 // [Sprout Documentation: dict]: https://docs.atom.codes/sprout/registries/maps#dict
 func (mr *MapsRegistry) Dict(values ...any) map[string]any {
@@ -52,7 +52,7 @@ func (mr *MapsRegistry) Dict(values ...any) map[string]any {
 //	any - the value associated with the key, or an empty string if the key does not exist.
 //	error - protect against undesired behavior due to migration to new signature.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: get].
+// For an example of this function in a Go template, refer to [Sprout Documentation: get].
 //
 // [Sprout Documentation: get]: https://docs.atom.codes/sprout/registries/maps#get
 func (mr *MapsRegistry) Get(args ...any) (any, error) {
@@ -94,7 +94,7 @@ func (mr *MapsRegistry) Get(args ...any) (any, error) {
 //	map[string]any - the updated dictionary.
 //	error - protect against undesired behavior due to migration to new signature.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: set].
+// For an example of this function in a Go template, refer to [Sprout Documentation: set].
 //
 // [Sprout Documentation: set]: https://docs.atom.codes/sprout/registries/maps#set
 func (mr *MapsRegistry) Set(args ...any) (map[string]any, error) {
@@ -136,7 +136,7 @@ func (mr *MapsRegistry) Set(args ...any) (map[string]any, error) {
 //	map[string]any - the dictionary after removing the key.
 //	error - protect against undesired behavior due to migration to new signature.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: unset].
+// For an example of this function in a Go template, refer to [Sprout Documentation: unset].
 //
 // [Sprout Documentation: unset]: https://docs.atom.codes/sprout/registries/maps#unset
 func (mr *MapsRegistry) Unset(args ...any) (map[string]any, error) {
@@ -176,7 +176,7 @@ func (mr *MapsRegistry) Unset(args ...any) (map[string]any, error) {
 //
 //	[]string - a list of all keys from the dictionaries.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: keys].
+// For an example of this function in a Go template, refer to [Sprout Documentation: keys].
 //
 // [Sprout Documentation: keys]: https://docs.atom.codes/sprout/registries/maps#keys
 func (mr *MapsRegistry) Keys(dicts ...map[string]any) []string {
@@ -206,7 +206,7 @@ func (mr *MapsRegistry) Keys(dicts ...map[string]any) []string {
 //
 //	[]any - a list of all values from the dictionary.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: values].
+// For an example of this function in a Go template, refer to [Sprout Documentation: values].
 //
 // [Sprout Documentation: values]: https://docs.atom.codes/sprout/registries/maps#values
 func (mr *MapsRegistry) Values(dicts ...map[string]any) []any {
@@ -237,7 +237,7 @@ func (mr *MapsRegistry) Values(dicts ...map[string]any) []any {
 //
 //	[]any - a list of values associated with the key from each dictionary.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: pluck].
+// For an example of this function in a Go template, refer to [Sprout Documentation: pluck].
 //
 // [Sprout Documentation: pluck]: https://docs.atom.codes/sprout/registries/maps#pluck
 func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
@@ -264,7 +264,7 @@ func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
 //	map[string]any - a dictionary containing only the picked keys and their values.
 //	error - protect against undesired behavior due to migration to new signature.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: pick].
+// For an example of this function in a Go template, refer to [Sprout Documentation: pick].
 //
 // [Sprout Documentation: pick]: https://docs.atom.codes/sprout/registries/maps#pick
 func (mr *MapsRegistry) Pick(args ...any) (map[string]any, error) {
@@ -320,7 +320,7 @@ func (mr *MapsRegistry) Pick(args ...any) (map[string]any, error) {
 //	map[string]any - a dictionary without the omitted keys.
 //	error - protect against undesired behavior due to migration to new signature.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: omit].
+// For an example of this function in a Go template, refer to [Sprout Documentation: omit].
 //
 // [Sprout Documentation: omit]: https://docs.atom.codes/sprout/registries/maps#omit
 func (mr *MapsRegistry) Omit(args ...any) (map[string]any, error) {
@@ -380,7 +380,7 @@ func (mr *MapsRegistry) Omit(args ...any) (map[string]any, error) {
 //	any - the value found at the nested key path or nil if any key in the path is not found.
 //	error - an error if there are fewer than three arguments, if the last argument is not a dictionary, or if any key is not a string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: dig].
+// For an example of this function in a Go template, refer to [Sprout Documentation: dig].
 //
 // [Sprout Documentation: dig]: https://docs.atom.codes/sprout/registries/maps#dig
 func (mr *MapsRegistry) Dig(args ...any) (any, error) {
@@ -413,7 +413,7 @@ func (mr *MapsRegistry) Dig(args ...any) (any, error) {
 //	bool - true if the key exists, otherwise false.
 //	error - protect against undesired behavior due to migration to new signature.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: hasKey].
+// For an example of this function in a Go template, refer to [Sprout Documentation: hasKey].
 //
 // [Sprout Documentation: hasKey]: https://docs.atom.codes/sprout/registries/maps#haskey
 func (mr *MapsRegistry) HasKey(args ...any) (bool, error) {
@@ -454,7 +454,7 @@ func (mr *MapsRegistry) HasKey(args ...any) (bool, error) {
 //	any - the merged destination map.
 //	error - error if the merge fails.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: merge].
+// For an example of this function in a Go template, refer to [Sprout Documentation: merge].
 //
 // [Sprout Documentation: merge]: https://docs.atom.codes/sprout/registries/maps#merge
 func (mr *MapsRegistry) Merge(dest map[string]any, srcs ...map[string]any) (any, error) {
@@ -482,7 +482,7 @@ func (mr *MapsRegistry) Merge(dest map[string]any, srcs ...map[string]any) (any,
 //	any - the merged destination map with overwritten values where applicable.
 //	error - error if the merge fails.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: mergeOverwrite].
+// For an example of this function in a Go template, refer to [Sprout Documentation: mergeOverwrite].
 //
 // [Sprout Documentation: mergeOverwrite]: https://docs.atom.codes/sprout/registries/maps#mergeoverwrite
 func (mr *MapsRegistry) MergeOverwrite(dest map[string]any, srcs ...map[string]any) (any, error) {

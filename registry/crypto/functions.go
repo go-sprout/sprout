@@ -30,7 +30,7 @@ import (
 // input - the string to be hashed.
 // Returns the bcrypt hash as a string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: bcrypt].
+// For an example of this function in a Go template, refer to [Sprout Documentation: bcrypt].
 //
 // [Sprout Documentation: bcrypt]: https://docs.atom.codes/sprout/registries/crypto#bcrypt
 func (ch *CryptoRegistry) Bcrypt(input string) (string, error) {
@@ -48,7 +48,7 @@ func (ch *CryptoRegistry) Bcrypt(input string) (string, error) {
 // password - the password string for the Htpasswd hash.
 // Returns the generated Htpasswd hash as a string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: htpasswd].
+// For an example of this function in a Go template, refer to [Sprout Documentation: htpasswd].
 //
 // [Sprout Documentation: htpasswd]: https://docs.atom.codes/sprout/registries/crypto#htpasswd
 func (ch *CryptoRegistry) Htpasswd(username string, password string) (string, error) {
@@ -71,7 +71,7 @@ func (ch *CryptoRegistry) Htpasswd(username string, password string) (string, er
 // site - the site string used in the derivation process.
 // Returns the derived password as a string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: derivePassword].
+// For an example of this function in a Go template, refer to [Sprout Documentation: derivePassword].
 //
 // [Sprout Documentation: derivePassword]: https://docs.atom.codes/sprout/registries/crypto#derivepassword
 func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password, user, site string) (string, error) {
@@ -116,7 +116,7 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 // typ - the type of private key to generate (e.g., "rsa", "dsa", "ecdsa", "ed25519").
 // Returns the generated private key as a string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: genPrivateKey].
+// For an example of this function in a Go template, refer to [Sprout Documentation: genPrivateKey].
 //
 // [Sprout Documentation: genPrivateKey]: https://docs.atom.codes/sprout/registries/crypto#genprivatekey
 func (ch *CryptoRegistry) GeneratePrivateKey(typ string) (string, error) {
@@ -155,7 +155,7 @@ func (ch *CryptoRegistry) GeneratePrivateKey(typ string) (string, error) {
 // b64key - the base64 encoded private key.
 // Returns a certificate and an error.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: buildCustomCert].
+// For an example of this function in a Go template, refer to [Sprout Documentation: buildCustomCert].
 //
 // [Sprout Documentation: buildCustomCert]: https://docs.atom.codes/sprout/registries/crypto#buildcustomcert
 func (ch *CryptoRegistry) BuildCustomCertificate(b64cert string, b64key string) (Certificate, error) {
@@ -204,7 +204,7 @@ func (ch *CryptoRegistry) BuildCustomCertificate(b64cert string, b64key string) 
 //   - Certificate: the generated certificate authority
 //   - error: an error if any occurred during the generation process
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: genCA].
+// For an example of this function in a Go template, refer to [Sprout Documentation: genCA].
 //
 // [Sprout Documentation: genCA]: https://docs.atom.codes/sprout/registries/crypto#genca
 func (ch *CryptoRegistry) GenerateCertificateAuthority(
@@ -230,7 +230,7 @@ func (ch *CryptoRegistry) GenerateCertificateAuthority(
 //   - Certificate: the generated certificate authority
 //   - error: an error if any occurred during the generation process
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: genCAWithKey].
+// For an example of this function in a Go template, refer to [Sprout Documentation: genCAWithKey].
 //
 // [Sprout Documentation: genCAWithKey]: https://docs.atom.codes/sprout/registries/crypto#gencawithkey
 func (ch *CryptoRegistry) GenerateCertificateAuthorityWithPEMKey(
@@ -257,7 +257,7 @@ func (ch *CryptoRegistry) GenerateCertificateAuthorityWithPEMKey(
 //   - Certificate: the generated certificate
 //   - error: an error if any occurred during the generation process
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: genSelfSignedCert].
+// For an example of this function in a Go template, refer to [Sprout Documentation: genSelfSignedCert].
 //
 // [Sprout Documentation: genSelfSignedCert]: https://docs.atom.codes/sprout/registries/crypto#genselfsignedcert
 func (ch *CryptoRegistry) GenerateSelfSignedCertificate(
@@ -286,7 +286,7 @@ func (ch *CryptoRegistry) GenerateSelfSignedCertificate(
 //   - Certificate: the generated certificate
 //   - error: an error if any occurred during the generation process
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: genSelfSignedCertWithKey].
+// For an example of this function in a Go template, refer to [Sprout Documentation: genSelfSignedCertWithKey].
 //
 // [Sprout Documentation: genSelfSignedCertWithKey]: https://docs.atom.codes/sprout/registries/crypto#genselfsignedcertwithkey
 func (ch *CryptoRegistry) GenerateSelfSignedCertificateWithPEMKey(
@@ -316,7 +316,7 @@ func (ch *CryptoRegistry) GenerateSelfSignedCertificateWithPEMKey(
 //   - Certificate: the generated certificate
 //   - error: an error if any occurred during the generation process
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: genSignedCert].
+// For an example of this function in a Go template, refer to [Sprout Documentation: genSignedCert].
 //
 // [Sprout Documentation: genSignedCert]: https://docs.atom.codes/sprout/registries/crypto#gensignedcert
 func (ch *CryptoRegistry) GenerateSignedCertificate(
@@ -347,7 +347,7 @@ func (ch *CryptoRegistry) GenerateSignedCertificate(
 //   - Certificate: the generated certificate
 //   - error: an error if any occurred during the generation process
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: genSignedCertWithKey].
+// For an example of this function in a Go template, refer to [Sprout Documentation: genSignedCertWithKey].
 //
 // [Sprout Documentation: genSignedCertWithKey]: https://docs.atom.codes/sprout/registries/crypto#gensignedcertwithkey
 func (ch *CryptoRegistry) GenerateSignedCertificateWithPEMKey(
@@ -375,7 +375,7 @@ func (ch *CryptoRegistry) GenerateSignedCertificateWithPEMKey(
 //   - string: the encrypted text as a base64-encoded string
 //   - error: an error if any occurred during the encryption process
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: encryptAES].
+// For an example of this function in a Go template, refer to [Sprout Documentation: encryptAES].
 //
 // [Sprout Documentation: encryptAES]: https://docs.atom.codes/sprout/registries/crypto#encryptaes
 func (ch *CryptoRegistry) EncryptAES(password string, plaintext string) (string, error) {
@@ -419,7 +419,7 @@ func (ch *CryptoRegistry) EncryptAES(password string, plaintext string) (string,
 //   - string: the decrypted text
 //   - error: an error if any occurred during the decryption process
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: decryptAES].
+// For an example of this function in a Go template, refer to [Sprout Documentation: decryptAES].
 //
 // [Sprout Documentation: decryptAES]: https://docs.atom.codes/sprout/registries/crypto#decryptaes
 func (ch *CryptoRegistry) DecryptAES(password string, crypt64 string) (string, error) {

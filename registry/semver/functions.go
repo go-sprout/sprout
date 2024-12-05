@@ -15,7 +15,7 @@ import (
 //	*semver.Version - the parsed semantic version object.
 //	error - an error if the version string is invalid.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: semver].
+// For an example of this function in a Go template, refer to [Sprout Documentation: semver].
 //
 // [Sprout Documentation: semver]: https://docs.atom.codes/sprout/registries/semver#semver
 func (fh *SemverRegistry) Semver(version string) (*semver.Version, error) {
@@ -34,7 +34,7 @@ func (fh *SemverRegistry) Semver(version string) (*semver.Version, error) {
 //	bool - true if the version satisfies the constraint, false otherwise.
 //	error - an error if either the constraint or version string is invalid.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: semverCompare].
+// For an example of this function in a Go template, refer to [Sprout Documentation: semverCompare].
 //
 // [Sprout Documentation: semverCompare]: https://docs.atom.codes/sprout/registries/semver#semvercompare
 func (fh *SemverRegistry) SemverCompare(constraint, version string) (bool, error) {

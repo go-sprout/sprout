@@ -14,7 +14,7 @@ import (
 //
 //	string - the escaped regex pattern.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexQuoteMeta].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexQuoteMeta].
 //
 // [Sprout Documentation: regexQuoteMeta]: https://docs.atom.codes/sprout/registries/regexp#regexquotemeta
 func (rr *RegexpRegistry) RegexQuoteMeta(str string) string {
@@ -34,7 +34,7 @@ func (rr *RegexpRegistry) RegexQuoteMeta(str string) string {
 //	string - the first regex match found.
 //	error - error if the regex fails to compile.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexFind].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexFind].
 //
 // [Sprout Documentation: regexFind]: https://docs.atom.codes/sprout/registries/regexp#regexfind
 func (rr *RegexpRegistry) RegexFind(regex string, str string) (string, error) {
@@ -59,7 +59,7 @@ func (rr *RegexpRegistry) RegexFind(regex string, str string) (string, error) {
 //	[]string - all regex matches found.
 //	error - error if the regex fails to compile.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexFindAll].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexFindAll].
 //
 // [Sprout Documentation: regexFindAll]: https://docs.atom.codes/sprout/registries/regexp#regexfindall
 func (rr *RegexpRegistry) RegexFindAll(regex string, str string, n int) ([]string, error) {
@@ -82,7 +82,7 @@ func (rr *RegexpRegistry) RegexFindAll(regex string, str string, n int) ([]strin
 //	bool - true if the string matches the regex pattern, otherwise false.
 //	error - error if the regex fails to compile.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexMatch].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexMatch].
 //
 // [Sprout Documentation: regexMatch]: https://docs.atom.codes/sprout/registries/regexp#regexmatch
 func (rr *RegexpRegistry) RegexMatch(regex string, str string) (bool, error) {
@@ -103,7 +103,7 @@ func (rr *RegexpRegistry) RegexMatch(regex string, str string) (bool, error) {
 //	[]string - the substrings resulting from the split.
 //	error - error if the regex fails to compile.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexSplit].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexSplit].
 //
 // [Sprout Documentation: regexSplit]: https://docs.atom.codes/sprout/registries/regexp#regexsplit
 func (rr *RegexpRegistry) RegexSplit(regex string, str string, n int) ([]string, error) {
@@ -128,7 +128,7 @@ func (rr *RegexpRegistry) RegexSplit(regex string, str string, n int) ([]string,
 //	string - the modified string after all replacements.
 //	error - error if the regex fails to compile.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexReplaceAll].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexReplaceAll].
 //
 // [Sprout Documentation: regexReplaceAll]: https://docs.atom.codes/sprout/registries/regexp#regexreplaceall
 func (rr *RegexpRegistry) RegexReplaceAll(regex string, str string, replacedBy string) (string, error) {
@@ -153,7 +153,7 @@ func (rr *RegexpRegistry) RegexReplaceAll(regex string, str string, replacedBy s
 //	string - the modified string after all replacements, treating the replacement text as literal text.
 //	error - error if the regex fails to compile.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexReplaceAllLiteral].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexReplaceAllLiteral].
 //
 // [Sprout Documentation: regexReplaceAllLiteral]: https://docs.atom.codes/sprout/registries/regexp#regexreplaceallliteral
 func (rr *RegexpRegistry) RegexReplaceAllLiteral(regex string, s string, replacedBy string) (string, error) {
@@ -177,7 +177,7 @@ func (rr *RegexpRegistry) RegexReplaceAllLiteral(regex string, s string, replace
 //	[]string - the matched groups from the first regex match found.
 //	error - error if the regex fails to compile.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexFindGroups].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexFindGroups].
 //
 // [Sprout Documentation: regexFindGroups]: https://docs.atom.codes/sprout/registries/regexp#regexfindgroups
 func (rr *RegexpRegistry) RegexFindGroups(regex string, str string) ([]string, error) {
@@ -206,7 +206,7 @@ func (rr *RegexpRegistry) RegexFindGroups(regex string, str string) ([]string, e
 //	[][]string - a slice containing the matched groups for each match found.
 //	error - error if the regex fails to compile.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexFindAllGroups].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexFindAllGroups].
 //
 // [Sprout Documentation: regexFindAllGroups]: https://docs.atom.codes/sprout/registries/regexp#regexfindallgroups
 func (rr *RegexpRegistry) RegexFindAllGroups(regex string, n int, str string) ([][]string, error) {
@@ -235,7 +235,7 @@ func (rr *RegexpRegistry) RegexFindAllGroups(regex string, n int, str string) ([
 //	map[string]string - a map of group names to their corresponding matched strings.
 //	error - error if the regex fails to compile.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexFindNamed].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexFindNamed].
 //
 // [Sprout Documentation: regexFindNamed]: https://docs.atom.codes/sprout/registries/regexp#regexfindnamed
 func (rr *RegexpRegistry) RegexFindNamed(regex string, str string) (map[string]string, error) {
@@ -272,7 +272,7 @@ func (rr *RegexpRegistry) RegexFindNamed(regex string, str string) (map[string]s
 //	[]map[string]string - a slice containing a map of group names to their corresponding matched strings for each match found.
 //	error - error if the regex fails to compile.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: regexFindAllNamed].
+// For an example of this function in a Go template, refer to [Sprout Documentation: regexFindAllNamed].
 //
 // [Sprout Documentation: regexFindAllNamed]: https://docs.atom.codes/sprout/registries/regexp#regexfindallnamed
 func (rr *RegexpRegistry) RegexFindAllNamed(regex string, n int, str string) ([]map[string]string, error) {

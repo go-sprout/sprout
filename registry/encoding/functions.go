@@ -23,7 +23,7 @@ import (
 //
 //	string - the Base64 encoded string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: base64Encode].
+// For an example of this function in a Go template, refer to [Sprout Documentation: base64Encode].
 //
 // [Sprout Documentation: base64Encode]: https://docs.atom.codes/sprout/registries/encoding#base64encode
 func (er *EncodingRegistry) Base64Encode(str string) string {
@@ -42,7 +42,7 @@ func (er *EncodingRegistry) Base64Encode(str string) string {
 //	string - the decoded string, or an error message if the decoding fails.
 //	error - an error message if the decoding fails.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: base64Decode].
+// For an example of this function in a Go template, refer to [Sprout Documentation: base64Decode].
 //
 // [Sprout Documentation: base64Decode]: https://docs.atom.codes/sprout/registries/encoding#base64decode
 func (er *EncodingRegistry) Base64Decode(str string) (string, error) {
@@ -63,7 +63,7 @@ func (er *EncodingRegistry) Base64Decode(str string) (string, error) {
 //
 //	string - the Base32 encoded string.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: base32Encode].
+// For an example of this function in a Go template, refer to [Sprout Documentation: base32Encode].
 //
 // [Sprout Documentation: base32Encode]: https://docs.atom.codes/sprout/registries/encoding#base32encode
 func (er *EncodingRegistry) Base32Encode(str string) string {
@@ -82,7 +82,7 @@ func (er *EncodingRegistry) Base32Encode(str string) string {
 //	string - the decoded string, or an error message if the decoding fails.
 //	error - an error message if the decoding fails.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: base32Decode].
+// For an example of this function in a Go template, refer to [Sprout Documentation: base32Decode].
 //
 // [Sprout Documentation: base32Decode]: https://docs.atom.codes/sprout/registries/encoding#base32decode
 func (er *EncodingRegistry) Base32Decode(str string) (string, error) {
@@ -105,7 +105,7 @@ func (er *EncodingRegistry) Base32Decode(str string) (string, error) {
 //	any - the decoded Go data structure.
 //	error - error encountered during decoding, if any.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: fromJson].
+// For an example of this function in a Go template, refer to [Sprout Documentation: fromJson].
 //
 // [Sprout Documentation: fromJson]: https://docs.atom.codes/sprout/registries/encoding#fromjson
 func (er *EncodingRegistry) FromJson(v string) (any, error) {
@@ -129,7 +129,7 @@ func (er *EncodingRegistry) FromJson(v string) (any, error) {
 //	string - the JSON-encoded string.
 //	error - error encountered during encoding, if any.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toJson].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toJson].
 //
 // [Sprout Documentation: toJson]: https://docs.atom.codes/sprout/registries/encoding#tojson
 func (er *EncodingRegistry) ToJson(v any) (string, error) {
@@ -152,7 +152,7 @@ func (er *EncodingRegistry) ToJson(v any) (string, error) {
 //	string - the pretty-printed JSON string.
 //	error - error encountered during encoding, if any.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toPrettyJson].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toPrettyJson].
 //
 // [Sprout Documentation: toPrettyJson]: https://docs.atom.codes/sprout/registries/encoding#toprettyjson
 func (er *EncodingRegistry) ToPrettyJson(v any) (string, error) {
@@ -175,7 +175,7 @@ func (er *EncodingRegistry) ToPrettyJson(v any) (string, error) {
 //	string - the raw JSON string.
 //	error - error encountered during encoding, if any.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toRawJson].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toRawJson].
 //
 // [Sprout Documentation: toRawJson]: https://docs.atom.codes/sprout/registries/encoding#torawjson
 func (er *EncodingRegistry) ToRawJson(v any) (string, error) {
@@ -200,7 +200,7 @@ func (er *EncodingRegistry) ToRawJson(v any) (string, error) {
 //	any - a map representing the YAML data. Returns nil if deserialization fails.
 //	error - an error message if the YAML content cannot be deserialized.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: fromYaml].
+// For an example of this function in a Go template, refer to [Sprout Documentation: fromYaml].
 //
 // [Sprout Documentation: fromYaml]: https://docs.atom.codes/sprout/registries/encoding#fromyaml
 func (er *EncodingRegistry) FromYAML(str string) (any, error) {
@@ -225,7 +225,7 @@ func (er *EncodingRegistry) FromYAML(str string) (any, error) {
 //	string - the YAML string representation of the data structure.
 //	error - error if the serialization fails.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toYaml].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toYaml].
 //
 // [Sprout Documentation: toYaml]: https://docs.atom.codes/sprout/registries/encoding#toyaml
 func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
@@ -246,7 +246,7 @@ func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
 //	string - the YAML string representation of the data structure.
 //	error - error if the serialization fails.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: toIndentYaml].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toIndentYaml].
 //
 // [Sprout Documentation: toIndentYaml]: https://docs.atom.codes/sprout/registries/encoding#toindentyaml
 func (er *EncodingRegistry) ToIndentYAML(indent int, v any) (out string, err error) {

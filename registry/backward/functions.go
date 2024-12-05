@@ -23,7 +23,7 @@ import (
 //	*uint - always returns nil, indicating no value is associated with the failure.
 //	error - the error object containing the provided message.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: sha256Sum].
+// For an example of this function in a Go template, refer to [Sprout Documentation: sha256Sum].
 //
 // [Sprout Documentation: sha256Sum]: https://docs.atom.codes/sprout/registries/backward#fail
 func (bcr *BackwardCompatibilityRegistry) Fail(message string) (*uint, error) {
@@ -43,7 +43,7 @@ func (bcr *BackwardCompatibilityRegistry) Fail(message string) (*uint, error) {
 //									"hostname", "path", "query", "opaque", "fragment", and "userinfo".
 //	error - an error object if the URL string is invalid.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: urlParse].
+// For an example of this function in a Go template, refer to [Sprout Documentation: urlParse].
 //
 // [Sprout Documentation: urlParse]: https://docs.atom.codes/sprout/registries/backward#urlparse
 func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) (map[string]any, error) {
@@ -81,7 +81,7 @@ func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) (map[string]any, er
 //	string - the constructed URL string.
 //	error - an error object if the URL components are invalid.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: urlJoin].
+// For an example of this function in a Go template, refer to [Sprout Documentation: urlJoin].
 //
 // [Sprout Documentation: urlJoin]: https://docs.atom.codes/sprout/registries/backward#urljoin
 func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) (string, error) {
@@ -121,7 +121,7 @@ func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) (string, err
 //
 // Note: This function currently lacks error handling
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: getHostByName].
+// For an example of this function in a Go template, refer to [Sprout Documentation: getHostByName].
 //
 // [Sprout Documentation: getHostByName]: https://docs.atom.codes/sprout/registries/checksum#gethostbyname
 func (bcr *BackwardCompatibilityRegistry) GetHostByName(name string) (string, error) {
