@@ -8,7 +8,7 @@ import (
 //
 // Parameters:
 //
-//	version string - the version string to parse into a semantic version object.
+//	value string - the version string to parse into a semantic version object.
 //
 // Returns:
 //
@@ -18,8 +18,8 @@ import (
 // For an example of this function in a Go template, refer to [Sprout Documentation: semver].
 //
 // [Sprout Documentation: semver]: https://docs.atom.codes/sprout/registries/semver#semver
-func (fh *SemverRegistry) Semver(version string) (*semver.Version, error) {
-	return semver.NewVersion(version)
+func (fh *SemverRegistry) Semver(value string) (*semver.Version, error) {
+	return semver.NewVersion(value)
 }
 
 // SemverCompare checks if a given version string satisfies a specified semantic version constraint.
@@ -27,7 +27,7 @@ func (fh *SemverRegistry) Semver(version string) (*semver.Version, error) {
 // Parameters:
 //
 //	constraint string - the version constraint to check against.
-//	version string - the version string to validate against the constraint.
+//	value string - the version string to validate against the constraint.
 //
 // Returns:
 //
@@ -37,13 +37,13 @@ func (fh *SemverRegistry) Semver(version string) (*semver.Version, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: semverCompare].
 //
 // [Sprout Documentation: semverCompare]: https://docs.atom.codes/sprout/registries/semver#semvercompare
-func (fh *SemverRegistry) SemverCompare(constraint, version string) (bool, error) {
+func (fh *SemverRegistry) SemverCompare(constraint, value string) (bool, error) {
 	c, err := semver.NewConstraint(constraint)
 	if err != nil {
 		return false, err
 	}
 
-	v, err := semver.NewVersion(version)
+	v, err := semver.NewVersion(value)
 	if err != nil {
 		return false, err
 	}

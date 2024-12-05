@@ -35,13 +35,13 @@ func (sr *SlicesRegistry) inList(haystack []any, needle any) bool {
 //
 // Parameters:
 //
-//	v - the value to check for comparability.
+//	value - the value to check for comparability.
 //
 // Returns:
 //
 //	true if the value is a basic comparable type, false otherwise.
-func (sr *SlicesRegistry) isComparable(v any) bool {
-	switch v.(type) {
+func (sr *SlicesRegistry) isComparable(value any) bool {
+	switch value.(type) {
 	case int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64,
 		float32, float64, string, bool:
 		return true
@@ -58,16 +58,16 @@ func (sr *SlicesRegistry) isComparable(v any) bool {
 //
 // Parameters:
 //
-//	val - the slice or array to flatten
+//	value - the slice or array to flatten
 //	remainingDeep - the maximum depth of recursion
 //
 // Returns:
 //
 //	a single-dimensional list of elements from the input slice or array.
-func (sr *SlicesRegistry) flattenSlice(val reflect.Value, remainingDeep int) []any {
-	result := make([]any, 0, val.Len())
-	for i := 0; i < val.Len(); i++ {
-		item := val.Index(i)
+func (sr *SlicesRegistry) flattenSlice(value reflect.Value, remainingDeep int) []any {
+	result := make([]any, 0, value.Len())
+	for i := 0; i < value.Len(); i++ {
+		item := value.Index(i)
 
 		if item.Kind() == reflect.Interface {
 			item = item.Elem()

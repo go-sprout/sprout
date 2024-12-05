@@ -13,12 +13,12 @@ func (sr *StdRegistry) Hello() string {
 	return "Hello!"
 }
 
-// Default returns the first non-empty value from the given arguments or a
+// Default returns the first non-empty value from the value arguments or a
 // default value if the argument list is empty or the first element is empty.
 // It accepts a default value `defaultValue` of any type and a variadic slice
-// `given` of any type. If `given` is not provided or the first element in
-// `given` is empty, it returns `defaultValue`.
-// Otherwise, it returns the first element of `given`.
+// `value` of any type. If `value` is not provided or the first element in
+// `value` is empty, it returns `defaultValue`.
+// Otherwise, it returns the first element of `value`.
 // If you want to catch the first non-empty value from a list of values, use
 // the `Coalesce` function instead.
 //
@@ -26,48 +26,48 @@ func (sr *StdRegistry) Hello() string {
 //
 //	defaultValue any - the default value to return if no valid argument is
 //	                   provided or if the first argument is empty.
-//	given ...any     - a variadic slice of any type to check the first
+//	value ...any     - a variadic slice of any type to check the first
 //	                   element of it for emptiness.
 //
 // Returns:
 //
-//	any - the first element of `given`, or `defaultValue` if `given` is empty
+//	any - the first element of `value`, or `defaultValue` if `value` is empty
 //	      or all values are empty.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: default].
 //
 // [Sprout Documentation: default]: https://docs.atom.codes/sprout/registries/std#default
-func (sr *StdRegistry) Default(defaultValue any, given ...any) any {
-	if len(given) == 0 || helpers.Empty(given[0]) {
+func (sr *StdRegistry) Default(defaultValue any, value ...any) any {
+	if len(value) == 0 || helpers.Empty(value[0]) {
 		return defaultValue
 	}
-	return given[0]
+	return value[0]
 }
 
-// Empty evaluates the emptiness of the provided value 'given'. It returns
-// true if 'given' is considered empty based on its type. This method is
+// Empty evaluates the emptiness of the provided value 'value'. It returns
+// true if 'value' is considered empty based on its type. This method is
 // essential for determining the presence or absence of meaningful value
 // across various data types.
 //
 // This method utilizes the reflect package to inspect the type and value of
-// 'given'. Depending on the type, it checks for nil pointers, zero-length
+// 'value'. Depending on the type, it checks for nil pointers, zero-length
 // collections (arrays, slices, maps, and strings), zero values of numeric
 // types (integers, floats, complex numbers, unsigned ints), and false for
 // booleans.
 //
 // Parameters:
 //
-//	given any - the value to be evaluated for emptiness.
+//	value any - the value to be evaluated for emptiness.
 //
 // Returns:
 //
-//	bool - true if 'given' is empty, false otherwise.
+//	bool - true if 'value' is empty, false otherwise.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: empty].
 //
 // [Sprout Documentation: empty]: https://docs.atom.codes/sprout/registries/std#empty
-func (sr *StdRegistry) Empty(given any) bool {
-	return helpers.Empty(given)
+func (sr *StdRegistry) Empty(value any) bool {
+	return helpers.Empty(value)
 }
 
 // All checks if all values in the provided variadic slice are non-empty.

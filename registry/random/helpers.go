@@ -11,7 +11,7 @@ import (
 //
 // Parameters:
 //
-//	count int - the length of the string to generate.
+//	size int - the length of the string to generate.
 //	opts *randomOpts - options specifying character sets to include in the string.
 //
 // Returns:
@@ -22,8 +22,8 @@ import (
 //
 //	opts := &randomOpts{withLetters: true, withNumbers: true}
 //	randomStr := rr.randomString(10, opts) // Generates a 10-character alphanumeric string.
-func (rr *RandomRegistry) randomString(count int, opts *randomOpts) string {
-	if count <= 0 {
+func (rr *RandomRegistry) randomString(size int, opts *randomOpts) string {
+	if size <= 0 {
 		return ""
 	}
 
@@ -57,10 +57,10 @@ func (rr *RandomRegistry) randomString(count int, opts *randomOpts) string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(count)
+	builder.Grow(size)
 
 	maxIndex := big.NewInt(int64(len(opts.withChars)))
-	for i := 0; i < count; i++ {
+	for i := 0; i < size; i++ {
 		index, _ := cryptorand.Int(cryptorand.Reader, maxIndex)
 		builder.WriteRune(opts.withChars[index.Int64()])
 	}

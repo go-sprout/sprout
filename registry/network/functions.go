@@ -14,7 +14,7 @@ import (
 //
 // Parameters:
 //
-//	str string - the string representation of the IP address.
+//	value string - the string representation of the IP address.
 //
 // Returns:
 //
@@ -24,8 +24,8 @@ import (
 // For an example of this function in a Go template, refer to [Sprout Documentation: parseIP].
 //
 // [Sprout Documentation: parseIP]: https://docs.atom.codes/sprout/registries/network#parseip
-func (nr *NetworkRegistry) ParseIP(str string) (net.IP, error) {
-	ip := net.ParseIP(str)
+func (nr *NetworkRegistry) ParseIP(value string) (net.IP, error) {
+	ip := net.ParseIP(value)
 	if ip == nil {
 		return nil, errors.New("invalid IP address")
 	}
@@ -40,7 +40,7 @@ func (nr *NetworkRegistry) ParseIP(str string) (net.IP, error) {
 //
 // Parameters:
 //
-//	str string - the string representation of the MAC address.
+//	value string - the string representation of the MAC address.
 //
 // Returns:
 //
@@ -50,8 +50,8 @@ func (nr *NetworkRegistry) ParseIP(str string) (net.IP, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: parseMAC].
 //
 // [Sprout Documentation: parseMAC]: https://docs.atom.codes/sprout/registries/network#parsemac
-func (nr *NetworkRegistry) ParseMAC(str string) (net.HardwareAddr, error) {
-	mac, err := net.ParseMAC(str)
+func (nr *NetworkRegistry) ParseMAC(value string) (net.HardwareAddr, error) {
+	mac, err := net.ParseMAC(value)
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse MAC address: %w", err)
 	}
@@ -67,7 +67,7 @@ func (nr *NetworkRegistry) ParseMAC(str string) (net.HardwareAddr, error) {
 //
 // Parameters:
 //
-//	str string - the string representation of the CIDR block.
+//	value string - the string representation of the CIDR block.
 //
 // Returns:
 //
@@ -77,8 +77,8 @@ func (nr *NetworkRegistry) ParseMAC(str string) (net.HardwareAddr, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: parseCIDR].
 //
 // [Sprout Documentation: parseCIDR]: https://docs.atom.codes/sprout/registries/network#parsecidr
-func (nr *NetworkRegistry) ParseCIDR(str string) (*net.IPNet, error) {
-	_, cidr, err := net.ParseCIDR(str)
+func (nr *NetworkRegistry) ParseCIDR(value string) (*net.IPNet, error) {
+	_, cidr, err := net.ParseCIDR(value)
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse CIDR: %w", err)
 	}

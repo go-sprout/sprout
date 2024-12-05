@@ -17,7 +17,7 @@ import (
 //
 // Parameters:
 //
-//	str string - the string to encode.
+//	value string - the string to encode.
 //
 // Returns:
 //
@@ -26,8 +26,8 @@ import (
 // For an example of this function in a Go template, refer to [Sprout Documentation: base64Encode].
 //
 // [Sprout Documentation: base64Encode]: https://docs.atom.codes/sprout/registries/encoding#base64encode
-func (er *EncodingRegistry) Base64Encode(str string) string {
-	return base64.StdEncoding.EncodeToString([]byte(str))
+func (er *EncodingRegistry) Base64Encode(value string) string {
+	return base64.StdEncoding.EncodeToString([]byte(value))
 }
 
 // Base64Decode decodes a Base64 encoded string back to its original form.
@@ -35,7 +35,7 @@ func (er *EncodingRegistry) Base64Encode(str string) string {
 //
 // Parameters:
 //
-//	str string - the Base64 encoded string to decode.
+//	value string - the Base64 encoded string to decode.
 //
 // Returns:
 //
@@ -45,8 +45,8 @@ func (er *EncodingRegistry) Base64Encode(str string) string {
 // For an example of this function in a Go template, refer to [Sprout Documentation: base64Decode].
 //
 // [Sprout Documentation: base64Decode]: https://docs.atom.codes/sprout/registries/encoding#base64decode
-func (er *EncodingRegistry) Base64Decode(str string) (string, error) {
-	bytes, err := base64.StdEncoding.DecodeString(str)
+func (er *EncodingRegistry) Base64Decode(value string) (string, error) {
+	bytes, err := base64.StdEncoding.DecodeString(value)
 	if err != nil {
 		return "", fmt.Errorf("base64 decode error: %w", err)
 	}
@@ -57,7 +57,7 @@ func (er *EncodingRegistry) Base64Decode(str string) (string, error) {
 //
 // Parameters:
 //
-//	str string - the string to encode.
+//	value string - the string to encode.
 //
 // Returns:
 //
@@ -66,8 +66,8 @@ func (er *EncodingRegistry) Base64Decode(str string) (string, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: base32Encode].
 //
 // [Sprout Documentation: base32Encode]: https://docs.atom.codes/sprout/registries/encoding#base32encode
-func (er *EncodingRegistry) Base32Encode(str string) string {
-	return base32.StdEncoding.EncodeToString([]byte(str))
+func (er *EncodingRegistry) Base32Encode(value string) string {
+	return base32.StdEncoding.EncodeToString([]byte(value))
 }
 
 // Base32Decode decodes a Base32 encoded string back to its original form.
@@ -75,7 +75,7 @@ func (er *EncodingRegistry) Base32Encode(str string) string {
 //
 // Parameters:
 //
-//	str string - the Base32 encoded string to decode.
+//	value string - the Base32 encoded string to decode.
 //
 // Returns:
 //
@@ -85,8 +85,8 @@ func (er *EncodingRegistry) Base32Encode(str string) string {
 // For an example of this function in a Go template, refer to [Sprout Documentation: base32Decode].
 //
 // [Sprout Documentation: base32Decode]: https://docs.atom.codes/sprout/registries/encoding#base32decode
-func (er *EncodingRegistry) Base32Decode(str string) (string, error) {
-	bytes, err := base32.StdEncoding.DecodeString(str)
+func (er *EncodingRegistry) Base32Decode(value string) (string, error) {
+	bytes, err := base32.StdEncoding.DecodeString(value)
 	if err != nil {
 		return "", fmt.Errorf("base32 decode error: %w", err)
 	}
@@ -98,7 +98,7 @@ func (er *EncodingRegistry) Base32Decode(str string) (string, error) {
 //
 // Parameters:
 //
-//	v string - the JSON string to decode.
+//	value string - the JSON string to decode.
 //
 // Returns:
 //
@@ -108,9 +108,9 @@ func (er *EncodingRegistry) Base32Decode(str string) (string, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: fromJson].
 //
 // [Sprout Documentation: fromJson]: https://docs.atom.codes/sprout/registries/encoding#fromjson
-func (er *EncodingRegistry) FromJson(v string) (any, error) {
+func (er *EncodingRegistry) FromJson(value string) (any, error) {
 	var output any
-	err := json.Unmarshal([]byte(v), &output)
+	err := json.Unmarshal([]byte(value), &output)
 	if err != nil {
 		return nil, fmt.Errorf("json decode error: %w", err)
 	}
@@ -122,7 +122,7 @@ func (er *EncodingRegistry) FromJson(v string) (any, error) {
 //
 // Parameters:
 //
-//	v any - the Go data structure to encode.
+//	value any - the Go data structure to encode.
 //
 // Returns:
 //
@@ -132,8 +132,8 @@ func (er *EncodingRegistry) FromJson(v string) (any, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: toJson].
 //
 // [Sprout Documentation: toJson]: https://docs.atom.codes/sprout/registries/encoding#tojson
-func (er *EncodingRegistry) ToJson(v any) (string, error) {
-	output, err := json.Marshal(v)
+func (er *EncodingRegistry) ToJson(value any) (string, error) {
+	output, err := json.Marshal(value)
 	if err != nil {
 		return "", fmt.Errorf("json encode error: %w", err)
 	}
@@ -145,7 +145,7 @@ func (er *EncodingRegistry) ToJson(v any) (string, error) {
 //
 // Parameters:
 //
-//	v any - the Go data structure to encode.
+//	value any - the Go data structure to encode.
 //
 // Returns:
 //
@@ -155,8 +155,8 @@ func (er *EncodingRegistry) ToJson(v any) (string, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: toPrettyJson].
 //
 // [Sprout Documentation: toPrettyJson]: https://docs.atom.codes/sprout/registries/encoding#toprettyjson
-func (er *EncodingRegistry) ToPrettyJson(v any) (string, error) {
-	output, err := json.MarshalIndent(v, "", "  ")
+func (er *EncodingRegistry) ToPrettyJson(value any) (string, error) {
+	output, err := json.MarshalIndent(value, "", "  ")
 	if err != nil {
 		return "", fmt.Errorf("json encode error: %w", err)
 	}
@@ -168,7 +168,7 @@ func (er *EncodingRegistry) ToPrettyJson(v any) (string, error) {
 //
 // Parameters:
 //
-//	v any - the Go data structure to encode.
+//	value any - the Go data structure to encode.
 //
 // Returns:
 //
@@ -178,11 +178,11 @@ func (er *EncodingRegistry) ToPrettyJson(v any) (string, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: toRawJson].
 //
 // [Sprout Documentation: toRawJson]: https://docs.atom.codes/sprout/registries/encoding#torawjson
-func (er *EncodingRegistry) ToRawJson(v any) (string, error) {
+func (er *EncodingRegistry) ToRawJson(value any) (string, error) {
 	buf := new(bytes.Buffer)
 	enc := json.NewEncoder(buf)
 	enc.SetEscapeHTML(false)
-	err := enc.Encode(&v)
+	err := enc.Encode(&value)
 	if err != nil {
 		return "", fmt.Errorf("json encode error: %w", err)
 	}
@@ -193,7 +193,7 @@ func (er *EncodingRegistry) ToRawJson(v any) (string, error) {
 //
 // Parameters:
 //
-//	str string - the YAML string to deserialize.
+//	value string - the YAML string to deserialize.
 //
 // Returns:
 //
@@ -203,10 +203,10 @@ func (er *EncodingRegistry) ToRawJson(v any) (string, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: fromYaml].
 //
 // [Sprout Documentation: fromYaml]: https://docs.atom.codes/sprout/registries/encoding#fromyaml
-func (er *EncodingRegistry) FromYAML(str string) (any, error) {
+func (er *EncodingRegistry) FromYAML(value string) (any, error) {
 	m := make(map[string]any)
 
-	if err := yaml.Unmarshal([]byte(str), &m); err != nil {
+	if err := yaml.Unmarshal([]byte(value), &m); err != nil {
 		return nil, fmt.Errorf("yaml decode error: %w", err)
 	}
 
@@ -218,7 +218,7 @@ func (er *EncodingRegistry) FromYAML(str string) (any, error) {
 //
 // Parameters:
 //
-//	v any - the data structure to serialize.
+//	value any - the data structure to serialize.
 //
 // Returns:
 //
@@ -228,8 +228,8 @@ func (er *EncodingRegistry) FromYAML(str string) (any, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: toYaml].
 //
 // [Sprout Documentation: toYaml]: https://docs.atom.codes/sprout/registries/encoding#toyaml
-func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
-	return er.ToIndentYAML(4, v)
+func (er *EncodingRegistry) ToYAML(value any) (out string, err error) {
+	return er.ToIndentYAML(4, value)
 }
 
 // ToIndentYAML serializes a Go data structure to a YAML string and returns any error
@@ -237,7 +237,7 @@ func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
 //
 // Parameters:
 //
-//	v any      - the data structure to serialize.
+//	value any      - the data structure to serialize.
 //	indent int - the indentation
 //	omitempty bool - omit empty fields (default: false)
 //
@@ -249,7 +249,7 @@ func (er *EncodingRegistry) ToYAML(v any) (out string, err error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: toIndentYaml].
 //
 // [Sprout Documentation: toIndentYaml]: https://docs.atom.codes/sprout/registries/encoding#toindentyaml
-func (er *EncodingRegistry) ToIndentYAML(indent int, v any) (out string, err error) {
+func (er *EncodingRegistry) ToIndentYAML(indent int, value any) (out string, err error) {
 	// recover panic from yaml package
 	defer sprout.ErrRecoverPanic(&err, "yaml encode error")
 
@@ -257,7 +257,7 @@ func (er *EncodingRegistry) ToIndentYAML(indent int, v any) (out string, err err
 	enc := yaml.NewEncoder(&buf)
 	enc.SetIndent(indent)
 
-	if err = enc.Encode(&v); err != nil {
+	if err = enc.Encode(&value); err != nil {
 		// code unreachable because yaml.Marshal always panic on error and never
 		// returns an error, but we still need to handle the error for the sake of
 		// consistency. The error message is set by ErrRecoverPanic.

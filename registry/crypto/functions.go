@@ -25,16 +25,16 @@ import (
 	"golang.org/x/crypto/scrypt"
 )
 
-// Bcrypt generates a bcrypt hash from the given input string.
+// Bcrypt generates a bcrypt hash from the given value string.
 //
-// input - the string to be hashed.
+// value - the string to be hashed.
 // Returns the bcrypt hash as a string.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: bcrypt].
 //
 // [Sprout Documentation: bcrypt]: https://docs.atom.codes/sprout/registries/crypto#bcrypt
-func (ch *CryptoRegistry) Bcrypt(input string) (string, error) {
-	hash, err := bcrypt_lib.GenerateFromPassword([]byte(input), bcrypt_lib.DefaultCost)
+func (ch *CryptoRegistry) Bcrypt(value string) (string, error) {
+	hash, err := bcrypt_lib.GenerateFromPassword([]byte(value), bcrypt_lib.DefaultCost)
 	if err != nil {
 		return "", fmt.Errorf("failed to encrypt string with bcrypt: %w", err)
 	}

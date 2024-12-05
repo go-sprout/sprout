@@ -10,7 +10,7 @@ import (
 //
 // Parameters:
 //
-//	count int - the length of the string to generate.
+//	size int - the length of the string to generate.
 //
 // Returns:
 //
@@ -19,15 +19,15 @@ import (
 // For an example of this function in a Go template, refer to [Sprout Documentation: randAlphaNum].
 //
 // [Sprout Documentation: randAlphaNum]: https://docs.atom.codes/sprout/registries/random#randalphanum
-func (rr *RandomRegistry) RandAlphaNumeric(count int) string {
-	return rr.randomString(count, &randomOpts{withLetters: true, withNumbers: true})
+func (rr *RandomRegistry) RandAlphaNumeric(size int) string {
+	return rr.randomString(size, &randomOpts{withLetters: true, withNumbers: true})
 }
 
 // RandAlpha generates a random alphabetic string of specified length.
 //
 // Parameters:
 //
-//	count int - the length of the string to generate.
+//	size int - the length of the string to generate.
 //
 // Returns:
 //
@@ -36,15 +36,15 @@ func (rr *RandomRegistry) RandAlphaNumeric(count int) string {
 // For an example of this function in a Go template, refer to [Sprout Documentation: randAlpha].
 //
 // [Sprout Documentation: randAlpha]: https://docs.atom.codes/sprout/registries/random#randalpha
-func (rr *RandomRegistry) RandAlpha(count int) string {
-	return rr.randomString(count, &randomOpts{withLetters: true})
+func (rr *RandomRegistry) RandAlpha(size int) string {
+	return rr.randomString(size, &randomOpts{withLetters: true})
 }
 
 // RandAscii generates a random ASCII string (character codes 32 to 126) of specified length.
 //
 // Parameters:
 //
-//	count int - the length of the string to generate.
+//	size int - the length of the string to generate.
 //
 // Returns:
 //
@@ -53,15 +53,15 @@ func (rr *RandomRegistry) RandAlpha(count int) string {
 // For an example of this function in a Go template, refer to [Sprout Documentation: randAscii].
 //
 // [Sprout Documentation: randAscii]: https://docs.atom.codes/sprout/registries/random#randascii
-func (rr *RandomRegistry) RandAscii(count int) string {
-	return rr.randomString(count, &randomOpts{withAscii: true})
+func (rr *RandomRegistry) RandAscii(size int) string {
+	return rr.randomString(size, &randomOpts{withAscii: true})
 }
 
 // RandNumeric generates a random numeric string of specified length.
 //
 // Parameters:
 //
-//	count int - the length of the string to generate.
+//	size int - the length of the string to generate.
 //
 // Returns:
 //
@@ -70,15 +70,15 @@ func (rr *RandomRegistry) RandAscii(count int) string {
 // For an example of this function in a Go template, refer to [Sprout Documentation: randNumeric].
 //
 // [Sprout Documentation: randNumeric]: https://docs.atom.codes/sprout/registries/random#randnumeric
-func (rr *RandomRegistry) RandNumeric(count int) string {
-	return rr.randomString(count, &randomOpts{withNumbers: true})
+func (rr *RandomRegistry) RandNumeric(size int) string {
+	return rr.randomString(size, &randomOpts{withNumbers: true})
 }
 
 // RandBytes generates a random byte array of specified length and returns it as a base64 encoded string.
 //
 // Parameters:
 //
-//	count int - the number of bytes to generate.
+//	size int - the number of bytes to generate.
 //
 // Returns:
 //
@@ -87,12 +87,12 @@ func (rr *RandomRegistry) RandNumeric(count int) string {
 // For an example of this function in a Go template, refer to [Sprout Documentation: randBytes].
 //
 // [Sprout Documentation: randBytes]: https://docs.atom.codes/sprout/registries/random#randbytes
-func (rr *RandomRegistry) RandBytes(count int) (string, error) {
-	if count <= 0 {
+func (rr *RandomRegistry) RandBytes(size int) (string, error) {
+	if size <= 0 {
 		return "", nil
 	}
 
-	buf := make([]byte, count)
+	buf := make([]byte, size)
 	_, err := cryptorand.Read(buf)
 	if err != nil {
 		return "", err

@@ -35,7 +35,7 @@ func (bcr *BackwardCompatibilityRegistry) Fail(message string) (*uint, error) {
 //
 // Parameters:
 //
-//	v string - the URL string to parse.
+//	value string - the URL string to parse.
 //
 // Returns:
 //
@@ -46,9 +46,9 @@ func (bcr *BackwardCompatibilityRegistry) Fail(message string) (*uint, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: urlParse].
 //
 // [Sprout Documentation: urlParse]: https://docs.atom.codes/sprout/registries/backward#urlparse
-func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) (map[string]any, error) {
+func (bcr *BackwardCompatibilityRegistry) UrlParse(value string) (map[string]any, error) {
 	dict := map[string]any{}
-	parsedURL, err := url.Parse(v)
+	parsedURL, err := url.Parse(value)
 	if err != nil {
 		return dict, fmt.Errorf("unable to parse url: %w", err)
 	}
@@ -73,7 +73,7 @@ func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) (map[string]any, er
 //
 // Parameters:
 //
-//	d map[string]any - a map containing the URL components: "scheme", "host",
+//	dataMap map[string]any - a map containing the URL components: "scheme", "host",
 //											"path", "query", "opaque", "fragment", and "userinfo".
 //
 // Returns:
@@ -84,16 +84,16 @@ func (bcr *BackwardCompatibilityRegistry) UrlParse(v string) (map[string]any, er
 // For an example of this function in a Go template, refer to [Sprout Documentation: urlJoin].
 //
 // [Sprout Documentation: urlJoin]: https://docs.atom.codes/sprout/registries/backward#urljoin
-func (bcr *BackwardCompatibilityRegistry) UrlJoin(d map[string]any) (string, error) {
+func (bcr *BackwardCompatibilityRegistry) UrlJoin(dataMap map[string]any) (string, error) {
 	resURL := url.URL{
-		Scheme:   bcr.get(d, "scheme").(string),
-		Host:     bcr.get(d, "host").(string),
-		Path:     bcr.get(d, "path").(string),
-		RawQuery: bcr.get(d, "query").(string),
-		Opaque:   bcr.get(d, "opaque").(string),
-		Fragment: bcr.get(d, "fragment").(string),
+		Scheme:   bcr.get(dataMap, "scheme").(string),
+		Host:     bcr.get(dataMap, "host").(string),
+		Path:     bcr.get(dataMap, "path").(string),
+		RawQuery: bcr.get(dataMap, "query").(string),
+		Opaque:   bcr.get(dataMap, "opaque").(string),
+		Fragment: bcr.get(dataMap, "fragment").(string),
 	}
-	userinfo := bcr.get(d, "userinfo").(string)
+	userinfo := bcr.get(dataMap, "userinfo").(string)
 	var user *url.Userinfo
 	if userinfo != "" {
 		tempURL, err := url.Parse(fmt.Sprintf("proto://%s@host", userinfo))

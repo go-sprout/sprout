@@ -805,7 +805,7 @@ func (sr *SlicesRegistry) SortAlpha(list any) []string {
 // Parameters:
 //
 //	sep string - the delimiter used to split the string.
-//	str string - the string to split.
+//	value string - the string to split.
 //
 // Returns:
 //
@@ -814,8 +814,8 @@ func (sr *SlicesRegistry) SortAlpha(list any) []string {
 // For an example of this function in a Go template, refer to [Sprout Documentation: splitList].
 //
 // [Sprout Documentation: splitList]: https://docs.atom.codes/sprout/registries/slices#splitlist
-func (sr *SlicesRegistry) SplitList(sep string, str string) []string {
-	return strings.Split(str, sep)
+func (sr *SlicesRegistry) SplitList(sep string, value string) []string {
+	return strings.Split(value, sep)
 }
 
 // StrSlice converts a value to a slice of strings, handling various types

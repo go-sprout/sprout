@@ -13,7 +13,7 @@ import (
 //
 // Parameters:
 //
-//	num any - the number to floor, expected to be numeric or convertible to float64.
+//	value any - the number to floor, expected to be numeric or convertible to float64.
 //
 // Returns:
 //
@@ -23,10 +23,10 @@ import (
 // For an example of this function in a Go template, refer to [Sprout Documentation: floor].
 //
 // [Sprout Documentation: floor]: https://docs.atom.codes/sprout/registries/numeric#floor
-func (nr *NumericRegistry) Floor(num any) (float64, error) {
-	float, err := cast.ToFloat64E(num)
+func (nr *NumericRegistry) Floor(value any) (float64, error) {
+	float, err := cast.ToFloat64E(value)
 	if err != nil {
-		return 0.0, sprout.NewErrConvertFailed("float64", num, err)
+		return 0.0, sprout.NewErrConvertFailed("float64", value, err)
 	}
 
 	return math.Floor(float), nil
@@ -36,7 +36,7 @@ func (nr *NumericRegistry) Floor(num any) (float64, error) {
 //
 // Parameters:
 //
-//	num any - the number to ceil, expected to be numeric or convertible to float64.
+//	value any - the number to ceil, expected to be numeric or convertible to float64.
 //
 // Returns:
 //
@@ -46,10 +46,10 @@ func (nr *NumericRegistry) Floor(num any) (float64, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: ceil].
 //
 // [Sprout Documentation: ceil]: https://docs.atom.codes/sprout/registries/numeric#ceil
-func (nr *NumericRegistry) Ceil(num any) (float64, error) {
-	float, err := cast.ToFloat64E(num)
+func (nr *NumericRegistry) Ceil(value any) (float64, error) {
+	float, err := cast.ToFloat64E(value)
 	if err != nil {
-		return 0.0, sprout.NewErrConvertFailed("float64", num, err)
+		return 0.0, sprout.NewErrConvertFailed("float64", value, err)
 	}
 
 	return math.Ceil(float), nil
@@ -59,7 +59,7 @@ func (nr *NumericRegistry) Ceil(num any) (float64, error) {
 //
 // Parameters:
 //
-//	num any - the number to round.
+//	value any - the number to round.
 //	poww int - the power of ten to which to round.
 //	roundOpts ...float64 - optional threshold for rounding up (default is 0.5).
 //
@@ -72,7 +72,7 @@ func (nr *NumericRegistry) Ceil(num any) (float64, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: round].
 //
 // [Sprout Documentation: round]: https://docs.atom.codes/sprout/registries/numeric#round
-func (nr *NumericRegistry) Round(num any, poww int, roundOpts ...float64) (float64, error) {
+func (nr *NumericRegistry) Round(value any, poww int, roundOpts ...float64) (float64, error) {
 	// ! NEED TO CHANGE PARAMS ORDER
 	roundOn := 0.5
 	if len(roundOpts) > 0 {
@@ -80,9 +80,9 @@ func (nr *NumericRegistry) Round(num any, poww int, roundOpts ...float64) (float
 	}
 
 	pow := math.Pow(10, float64(poww))
-	float, err := cast.ToFloat64E(num)
+	float, err := cast.ToFloat64E(value)
 	if err != nil {
-		return 0.0, sprout.NewErrConvertFailed("float64", num, err)
+		return 0.0, sprout.NewErrConvertFailed("float64", value, err)
 	}
 
 	digit := float * pow
@@ -115,7 +115,7 @@ func (nr *NumericRegistry) Add(values ...any) (any, error) {
 //
 // Parameters:
 //
-//	x any - the number to add.
+//	value any - the number to add.
 //
 // Returns:
 //
@@ -125,9 +125,9 @@ func (nr *NumericRegistry) Add(values ...any) (any, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: add1].
 //
 // [Sprout Documentation: add1]: https://docs.atom.codes/sprout/registries/numeric#add1-add1f
-func (nr *NumericRegistry) Add1(x any) (any, error) {
-	one := reflect.ValueOf(1).Convert(reflect.TypeOf(x)).Interface()
-	return nr.Add(x, one)
+func (nr *NumericRegistry) Add1(value any) (any, error) {
+	one := reflect.ValueOf(1).Convert(reflect.TypeOf(value)).Interface()
+	return nr.Add(value, one)
 }
 
 // Sub performs subtraction on a slice of values, starting with the first value.
@@ -241,7 +241,8 @@ func (nr *NumericRegistry) Divf(values ...any) (any, error) {
 //
 // Parameters:
 //
-//	x any, y any - numbers to divide, expected to be numeric or convertible to float64.
+//	value any - the number to divide.
+//	divisor any - the number to divide by.
 //
 // Returns:
 //
@@ -251,29 +252,29 @@ func (nr *NumericRegistry) Divf(values ...any) (any, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: mod].
 //
 // [Sprout Documentation: mod]: https://docs.atom.codes/sprout/registries/numeric#mod
-func (nr *NumericRegistry) Mod(x, y any) (any, error) {
-	floatX, err := cast.ToFloat64E(x)
+func (nr *NumericRegistry) Mod(value, divisor any) (any, error) {
+	floatX, err := cast.ToFloat64E(value)
 	if err != nil {
-		return 0, sprout.NewErrConvertFailed("float64", x, err)
+		return 0, sprout.NewErrConvertFailed("float64", value, err)
 	}
 
-	floatY, err := cast.ToFloat64E(y)
+	floatY, err := cast.ToFloat64E(divisor)
 	if err != nil {
-		return 0, sprout.NewErrConvertFailed("float64", y, err)
+		return 0, sprout.NewErrConvertFailed("float64", divisor, err)
 	}
 
 	result := math.Mod(floatX, floatY)
 
 	// Convert the result to the same type as the input
-	return reflect.ValueOf(result).Convert(reflect.TypeOf(x)).Interface(), nil
+	return reflect.ValueOf(result).Convert(reflect.TypeOf(value)).Interface(), nil
 }
 
 // Min returns the minimum value among the provided arguments.
 //
 // Parameters:
 //
-//	a any - the first number to compare.
-//	i ...any - additional numbers to compare.
+//	subtrahend  any - the first number to compare.
+//	values ...any - additional numbers to compare.
 //
 // Returns:
 //
@@ -283,13 +284,13 @@ func (nr *NumericRegistry) Mod(x, y any) (any, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: min].
 //
 // [Sprout Documentation: min]: https://docs.atom.codes/sprout/registries/numeric#min
-func (nr *NumericRegistry) Min(a any, i ...any) (int64, error) {
-	intA, err := cast.ToInt64E(a)
+func (nr *NumericRegistry) Min(subtrahend any, values ...any) (int64, error) {
+	intA, err := cast.ToInt64E(subtrahend)
 	if err != nil {
-		return 0, sprout.NewErrConvertFailed("int64", a, err)
+		return 0, sprout.NewErrConvertFailed("int64", subtrahend, err)
 	}
 
-	for _, b := range i {
+	for _, b := range values {
 		intB, err := cast.ToInt64E(b)
 		if err != nil {
 			return 0, sprout.NewErrConvertFailed("int64", b, err)
@@ -305,8 +306,8 @@ func (nr *NumericRegistry) Min(a any, i ...any) (int64, error) {
 //
 // Parameters:
 //
-//	a any - the first number to compare, expected to be numeric or convertible to float64.
-//	i ...any - additional numbers to compare.
+//	subtrahend any - the first number to compare, expected to be numeric or convertible to float64.
+//	values ...any - additional numbers to compare.
 //
 // Returns:
 //
@@ -316,12 +317,12 @@ func (nr *NumericRegistry) Min(a any, i ...any) (int64, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: minf].
 //
 // [Sprout Documentation: minf]: https://docs.atom.codes/sprout/registries/numeric#minf
-func (nr *NumericRegistry) Minf(a any, i ...any) (float64, error) {
-	floatA, err := cast.ToFloat64E(a)
+func (nr *NumericRegistry) Minf(subtrahend any, values ...any) (float64, error) {
+	floatA, err := cast.ToFloat64E(subtrahend)
 	if err != nil {
-		return 0, sprout.NewErrConvertFailed("float64", a, err)
+		return 0, sprout.NewErrConvertFailed("float64", subtrahend, err)
 	}
-	for _, b := range i {
+	for _, b := range values {
 		floatB, err := cast.ToFloat64E(b)
 		if err != nil {
 			return 0, sprout.NewErrConvertFailed("float64", b, err)
@@ -335,8 +336,8 @@ func (nr *NumericRegistry) Minf(a any, i ...any) (float64, error) {
 //
 // Parameters:
 //
-//	a any - the first number to compare.
-//	i ...any - additional numbers to compare.
+//	value any - the first number to compare.
+//	values ...any - additional numbers to compare.
 //
 // Returns:
 //
@@ -346,13 +347,13 @@ func (nr *NumericRegistry) Minf(a any, i ...any) (float64, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: max].
 //
 // [Sprout Documentation: max]: https://docs.atom.codes/sprout/registries/numeric#max
-func (nr *NumericRegistry) Max(a any, i ...any) (int64, error) {
-	intA, err := cast.ToInt64E(a)
+func (nr *NumericRegistry) Max(value any, values ...any) (int64, error) {
+	intA, err := cast.ToInt64E(value)
 	if err != nil {
-		return 0, sprout.NewErrConvertFailed("int64", a, err)
+		return 0, sprout.NewErrConvertFailed("int64", value, err)
 	}
 
-	for _, b := range i {
+	for _, b := range values {
 		intB, err := cast.ToInt64E(b)
 		if err != nil {
 			return 0, sprout.NewErrConvertFailed("int64", b, err)
@@ -369,8 +370,8 @@ func (nr *NumericRegistry) Max(a any, i ...any) (int64, error) {
 //
 // Parameters:
 //
-//	a any - the first number to compare, expected to be numeric or convertible to float64.
-//	i ...any - additional numbers to compare.
+//	value any - the first number to compare, expected to be numeric or convertible to float64.
+//	values .any - additional numbers to compare.
 //
 // Returns:
 //
@@ -380,12 +381,12 @@ func (nr *NumericRegistry) Max(a any, i ...any) (int64, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: maxf].
 //
 // [Sprout Documentation: maxf]: https://docs.atom.codes/sprout/registries/numeric#maxf
-func (nr *NumericRegistry) Maxf(a any, i ...any) (float64, error) {
-	floatA, err := cast.ToFloat64E(a)
+func (nr *NumericRegistry) Maxf(value any, values ...any) (float64, error) {
+	floatA, err := cast.ToFloat64E(value)
 	if err != nil {
-		return 0, sprout.NewErrConvertFailed("float64", a, err)
+		return 0, sprout.NewErrConvertFailed("float64", value, err)
 	}
-	for _, b := range i {
+	for _, b := range values {
 		floatB, err := cast.ToFloat64E(b)
 		if err != nil {
 			return 0, sprout.NewErrConvertFailed("float64", b, err)
