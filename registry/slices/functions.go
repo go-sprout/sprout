@@ -635,7 +635,7 @@ func (sr *SlicesRegistry) Rest(list any) ([]any, error) {
 //	[]any - the list without the last element.
 //	error - error if the list is nil or not a slice/array.
 //
-// For an example of this function in a go template, refer to [Sprout Documentation: initial].
+// For an example of this function in a Go template, refer to [Sprout Documentation: initial].
 //
 // [Sprout Documentation: initial]: https://docs.atom.codes/sprout/registries/slices#initial
 func (sr *SlicesRegistry) Initial(list any) ([]any, error) {

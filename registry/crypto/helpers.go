@@ -20,9 +20,9 @@ import (
 )
 
 // getNetIPs takes a slice of any, which should contain IP addresses as strings and
-// returns a slice of net.IP and an error.
+// returns a slice of [net.IP] and an error.
 //
-// If the input is empty or nil, it will return an empty slice of net.IP.
+// If the input is empty or nil, it will return an empty slice of [net.IP].
 //
 // It will also return an error if the input contains any non-string values.
 func (ch *CryptoRegistry) getNetIPs(ips []any) ([]net.IP, error) {
