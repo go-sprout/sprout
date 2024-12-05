@@ -21,12 +21,6 @@ import (
 // Returns:
 //
 //	any - Result of the operation, converted to the type of the first slice element.
-//
-// Example:
-//
-//	add := func(a, b float64) float64 { return a + b }
-//	result := operateNumeric([]any{1.5, 2.5}, add, 0)
-//	fmt.Println(result) // Output: 4.0 (type float64 if first element is float64)
 func operateNumeric(values []any, op numericOperation, initial any) (any, error) {
 	if len(values) == 0 {
 		return initial, nil

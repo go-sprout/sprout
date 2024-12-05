@@ -7,31 +7,31 @@ import (
 	"unicode/utf8"
 )
 
-// ellipsis truncates 'str' from both ends, preserving the middle part of
+// ellipsis truncates 'value' from both ends, preserving the middle part of
 // the string and appending ellipses to both ends if needed.
 //
 // Parameters:
 //
 //	offset int - starting position for preserving text.
 //	maxWidth int - the maximum width of the string including the ellipsis.
-//	str string - the string to truncate.
+//	value string - the string to truncate.
 //
 // Returns:
 //
 //	string - the possibly truncated string with an ellipsis.
-func (sr *StringsRegistry) ellipsis(str string, offset int, maxWidth int) string {
+func (sr *StringsRegistry) ellipsis(value string, offset int, maxWidth int) string {
 	ellipsis := "..."
 	// Return the original string if maxWidth is less than 4, or the offset
 	// create exclusive dot string,  it's not possible to add an ellipsis.
 	if maxWidth < 4 || offset > 0 && maxWidth < 7 {
-		return str
+		return value
 	}
 
-	runeCount := utf8.RuneCountInString(str)
+	runeCount := utf8.RuneCountInString(value)
 
 	// If the string doesn't need trimming, return it as is.
 	if runeCount <= maxWidth || runeCount <= offset {
-		return str[offset:]
+		return value[offset:]
 	}
 
 	// Determine end position for the substring, ensuring room for the ellipsis.
@@ -41,7 +41,7 @@ func (sr *StringsRegistry) ellipsis(str string, offset int, maxWidth int) string
 	}
 
 	// Convert the string to a slice of runes to properly handle multi-byte characters.
-	runes := []rune(str)
+	runes := []rune(value)
 
 	// Return the substring with an ellipsis, directly constructing the string in the return statement.
 	if offset > 0 {
@@ -50,26 +50,26 @@ func (sr *StringsRegistry) ellipsis(str string, offset int, maxWidth int) string
 	return string(runes[offset:endPos]) + ellipsis
 }
 
-// initials extracts the initials from 'str', using 'delimiters' to determine
+// initials extracts the initials from 'value', using 'delimiters' to determine
 // word boundaries.
 //
 // Parameters:
 //
-//	str string - the string from which to extract initials.
+//	value string - the string from which to extract initials.
 //	delimiters string - the string containing delimiter characters.
 //
 // Returns:
 //
-//	string - the initials of the words in 'str'.
-func (sr *StringsRegistry) initials(str string, delimiters string) string {
+//	string - the initials of the words in 'value'.
+func (sr *StringsRegistry) initials(value string, delimiters string) string {
 	// Define a function to determine if a rune is a delimiter.
 	isDelimiter := func(r rune) bool {
 		return strings.ContainsRune(delimiters, r)
 	}
 
-	words := strings.FieldsFunc(str, isDelimiter)
+	words := strings.FieldsFunc(value, isDelimiter)
 	runes := make([]rune, len(words))
-	for i, word := range strings.FieldsFunc(str, isDelimiter) {
+	for i, word := range strings.FieldsFunc(value, isDelimiter) {
 		if i == 0 || unicode.IsLetter(rune(word[0])) {
 			runes[i] = rune(word[0])
 		}
@@ -78,7 +78,7 @@ func (sr *StringsRegistry) initials(str string, delimiters string) string {
 	return string(runes)
 }
 
-// transformString modifies the string 'str' based on various case styling rules
+// transformString modifies the string 'value' based on various case styling rules
 // specified in the 'style' parameter. It can capitalize, lowercase, and insert
 // separators according to the rules provided.
 //
@@ -87,31 +87,14 @@ func (sr *StringsRegistry) initials(str string, delimiters string) string {
 //	style caseStyle - a struct specifying how to transform the string, including
 //	                  capitalization rules, insertion of separators, and whether
 //	                  to force lowercase.
-//	str string - the string to transform.
+//	value string - the string to transform.
 //
 // Returns:
 //
 //	string - the transformed string.
-//
-// Example:
-//
-//	style := caseStyle{
-//	    Separator:       '_',
-//	    CapitalizeNext:  true,
-//	    ForceLowercase:  false,
-//	    InsertSeparator: true,
-//	}
-//	transformed := sr.transformString(style, "hello world")
-//	Output: "Hello_World"
-//
-// Note:
-//
-//	This example demonstrates how to use the function to capitalize the first letter of
-//	each word and insert underscores between words, which is common in identifiers like
-//	variable names in programming.
-func (sr *StringsRegistry) transformString(style caseStyle, str string) string {
+func (sr *StringsRegistry) transformString(style caseStyle, value string) string {
 	var result strings.Builder
-	result.Grow(len(str) + 10) // Allocate a bit more for potential separators
+	result.Grow(len(value) + 10) // Allocate a bit more for potential separators
 
 	capitalizeNext := style.CapitalizeNext
 	var lastRune, lastLetter, nextRune rune = 0, 0, 0
@@ -120,9 +103,9 @@ func (sr *StringsRegistry) transformString(style caseStyle, str string) string {
 		capitalizeNext = false
 	}
 
-	for i, r := range str {
-		if i+1 < len(str) {
-			nextRune = rune(str[i+1])
+	for i, r := range value {
+		if i+1 < len(value) {
+			nextRune = rune(value[i+1])
 		}
 
 		if r == ' ' || r == '-' || r == '_' {
@@ -178,12 +161,6 @@ func (sr *StringsRegistry) transformString(style caseStyle, str string) string {
 // Returns:
 //
 //	map[string]string - a map where each key corresponds to an index (with an underscore prefix) of the string in the input array.
-//
-// Example:
-//
-//	parts := []string{"apple", "banana", "cherry"}
-//	result := sr.populateMapWithParts(parts)
-//	fmt.Println(result) // Output: {"_0": "apple", "_1": "banana", "_2": "cherry"}
 func (sr *StringsRegistry) populateMapWithParts(parts []string) map[string]string {
 	res := make(map[string]string, len(parts))
 	for i, v := range parts {
@@ -203,22 +180,16 @@ func (sr *StringsRegistry) populateMapWithParts(parts []string) map[string]strin
 // Returns:
 //
 //	string - the resulting string that concatenates all the integers in the array separated by the specified delimiter.
-//
-// Example:
-//
-//	slice := []int{1, 2, 3, 4, 5}
-//	result := sr.convertIntArrayToString(slice, ", ")
-//	fmt.Println(result) // Output: "1, 2, 3, 4, 5"
 func (sr *StringsRegistry) convertIntArrayToString(slice []int, delimiter string) string {
 	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(slice)), delimiter), "[]")
 }
 
-// WordWrap formats 'str' into lines of maximum 'wrapLength', optionally wrapping
+// WordWrap formats 'value' into lines of maximum 'wrapLength', optionally wrapping
 // long words and using 'newLineCharacter' for line breaks.
 //
 // Parameters:
 //
-//	str string - the string to wrap.
+//	value string - the string to wrap.
 //	wrapLength int - the maximum length of each line.
 //	newLineCharacter string - the string used to denote new lines.
 //	wrapLongWords bool - true to wrap long words that exceed the line length.
@@ -226,12 +197,7 @@ func (sr *StringsRegistry) convertIntArrayToString(slice []int, delimiter string
 // Returns:
 //
 //	string - the wrapped string.
-//
-// Example:
-//
-//	wrapped := sr.wordWrap(10, "\n", true, "This is a long wordwrap example")
-//	fmt.Println(wrapped)
-func (sr *StringsRegistry) wordWrap(wrapLength int, newLineCharacter string, wrapLongWords bool, str string) string {
+func (sr *StringsRegistry) wordWrap(wrapLength int, newLineCharacter string, wrapLongWords bool, value string) string {
 	if wrapLength < 1 {
 		wrapLength = 1
 	}
@@ -242,7 +208,7 @@ func (sr *StringsRegistry) wordWrap(wrapLength int, newLineCharacter string, wra
 	var resultBuilder strings.Builder
 	var currentLineLength int
 
-	for _, word := range strings.Fields(str) {
+	for _, word := range strings.Fields(value) {
 		wordLength := utf8.RuneCountInString(word)
 
 		// If the word is too long and should be wrapped, or it fits in the remaining line length
@@ -274,23 +240,18 @@ func (sr *StringsRegistry) wordWrap(wrapLength int, newLineCharacter string, wra
 	return resultBuilder.String()
 }
 
-// swapFirstLetter swaps the first letter of the string 'str' to uppercase or
+// swapFirstLetter swaps the first letter of the string 'value' to uppercase or
 // lowercase. The casing is determined by the 'casing' parameter.
 //
 // Parameters:
 //
-//	str string - the string to modify.
+//	value string - the string to modify.
 //	shouldUppercaseFirst bool - the casing to apply to the first letter.
 //
 // Returns:
 //
 //	string - the modified string with the first letter in the desired casing.
-//
-// Example:
-//
-//	result := sr.swapFirstLetter("123hello", cassingUpper)
-//	fmt.Println(result) // Output: "123Hello"
-func swapFirstLetter(str string, shouldUppercase bool) string {
+func swapFirstLetter(value string, shouldUppercase bool) string {
 	var conditionFunc func(r rune) bool
 	var updateFunc func(r rune) rune
 
@@ -302,13 +263,13 @@ func swapFirstLetter(str string, shouldUppercase bool) string {
 		updateFunc = unicode.ToLower
 	}
 
-	buf := []byte(str)
+	buf := []byte(value)
 	for i := 0; i < len(buf); {
 		r, size := utf8.DecodeRune(buf[i:])
 
 		if unicode.IsLetter(r) {
 			if conditionFunc(r) {
-				return str
+				return value
 			}
 
 			upperRune := updateFunc(r)
@@ -319,5 +280,5 @@ func swapFirstLetter(str string, shouldUppercase bool) string {
 
 		i += size
 	}
-	return str
+	return value
 }

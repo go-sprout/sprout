@@ -12,126 +12,126 @@ import (
 //
 // Parameters:
 //
-//	v any - the value to convert to a boolean. This can be any types reasonably be converted to true or false.
+//	value any - the value to convert to a boolean. This can be any types reasonably be converted to true or false.
 //
 // Returns:
 //
 //	bool - the boolean representation of the value.
 //	error - error if the value cannot be converted to a boolean.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toBool].
 //
-//	{{ "true" | toBool }} // Output: true
-func (cr *ConversionRegistry) ToBool(v any) (bool, error) {
-	return cast.ToBoolE(v)
+// [Sprout Documentation: toBool]: https://docs.atom.codes/sprout/registries/conversion#tobool
+func (cr *ConversionRegistry) ToBool(value any) (bool, error) {
+	return cast.ToBoolE(value)
 }
 
 // ToInt converts a value to an int using robust type casting.
 //
 // Parameters:
 //
-//	v any - the value to convert to an int.
+//	value any - the value to convert to an int.
 //
 // Returns:
 //
 //	int - the integer representation of the value.
 //	error - error if the value cannot be converted to an int.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toInt].
 //
-//	{{ "123" | toInt }} // Output: 123
-func (cr *ConversionRegistry) ToInt(v any) (int, error) {
-	return cast.ToIntE(v)
+// [Sprout Documentation: toInt]: https://docs.atom.codes/sprout/registries/conversion#toint
+func (cr *ConversionRegistry) ToInt(value any) (int, error) {
+	return cast.ToIntE(value)
 }
 
 // ToInt64 converts a value to an int64, accommodating larger integer values.
 //
 // Parameters:
 //
-//	v any - the value to convert to an int64.
+//	value any - the value to convert to an int64.
 //
 // Returns:
 //
 //	int64 - the int64 representation of the value.
 //	error - error if the value cannot be converted to an int64.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toInt64].
 //
-//	{{ "123456789012" | toInt64 }} // Output: 123456789012
-func (cr *ConversionRegistry) ToInt64(v any) (int64, error) {
-	return cast.ToInt64E(v)
+// [Sprout Documentation: toInt64]: https://docs.atom.codes/sprout/registries/conversion#toint64
+func (cr *ConversionRegistry) ToInt64(value any) (int64, error) {
+	return cast.ToInt64E(value)
 }
 
 // ToUint converts a value to a uint.
 //
 // Parameters:
 //
-//	v any - the value to convert to uint. This value can be of any type that is numerically convertible.
+//	value any - the value to convert to uint. This value can be of any type that is numerically convertible.
 //
 // Returns:
 //
 //	uint - the uint representation of the value.
 //	error - error if the value cannot be converted to a uint.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toUint].
 //
-//	{{ "123" | toUint }} // Output: 123
-func (cr *ConversionRegistry) ToUint(v any) (uint, error) {
-	return cast.ToUintE(v)
+// [Sprout Documentation: toUint]: https://docs.atom.codes/sprout/registries/conversion#touint
+func (cr *ConversionRegistry) ToUint(value any) (uint, error) {
+	return cast.ToUintE(value)
 }
 
 // ToUint64 converts a value to a uint64.
 //
 // Parameters:
 //
-//	v any - the value to convert to uint64. This value can be of any type that is numerically convertible.
+//	value any - the value to convert to uint64. This value can be of any type that is numerically convertible.
 //
 // Returns:
 //
 //	uint64 - the uint64 representation of the value.
 //	error - error if the value cannot be converted to a uint64.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toUint64].
 //
-//	{{ "123456789012345" | toUint64 }} // Output: 123456789012345
-func (cr *ConversionRegistry) ToUint64(v any) (uint64, error) {
-	return cast.ToUint64E(v)
+// [Sprout Documentation: toUint64]: https://docs.atom.codes/sprout/registries/conversion#touint64
+func (cr *ConversionRegistry) ToUint64(value any) (uint64, error) {
+	return cast.ToUint64E(value)
 }
 
 // ToFloat64 converts a value to a float64.
 //
 // Parameters:
 //
-//	v any - the value to convert to a float64.
+//	value any - the value to convert to a float64.
 //
 // Returns:
 //
 //	float64 - the float64 representation of the value.
 //	error - error if the value cannot be converted to a float64.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toFloat64].
 //
-//	{{ "123.456" | toFloat64 }} // Output: 123.456
-func (cr *ConversionRegistry) ToFloat64(v any) (float64, error) {
-	return cast.ToFloat64E(v)
+// [Sprout Documentation: toFloat64]: https://docs.atom.codes/sprout/registries/conversion#tofloat64
+func (cr *ConversionRegistry) ToFloat64(value any) (float64, error) {
+	return cast.ToFloat64E(value)
 }
 
 // ToOctal parses a string value as an octal (base 8) integer.
 //
 // Parameters:
 //
-//	v any - the string representing an octal number.
+//	value any - the string representing an octal number.
 //
 // Returns:
 //
 //	int64 - the decimal (base 10) representation of the octal value.
 //	error - error if the value cannot be converted to an octal number.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toOctal].
 //
-//	{{ "123" | toOctal }} // Output: 83 (since "123" in octal is 83 in decimal)
-func (cr *ConversionRegistry) ToOctal(v any) (int64, error) {
-	result, err := strconv.ParseInt(fmt.Sprint(v), 8, 64)
+// [Sprout Documentation: toOctal]: https://docs.atom.codes/sprout/registries/conversion#tooctal
+func (cr *ConversionRegistry) ToOctal(value any) (int64, error) {
+	result, err := strconv.ParseInt(fmt.Sprint(value), 8, 64)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse octal: %w", err)
 	}
@@ -142,27 +142,27 @@ func (cr *ConversionRegistry) ToOctal(v any) (int64, error) {
 //
 // Parameters:
 //
-//	v any - the value to convert to a string.
+//	value any - the value to convert to a string.
 //
 // Returns:
 //
 //	string - the string representation of the value.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toString].
 //
-//	{{ 123 | toString }} // Output: "123"
-func (cr *ConversionRegistry) ToString(v any) string {
-	switch v := v.(type) {
+// [Sprout Documentation: toString]: https://docs.atom.codes/sprout/registries/conversion#tostring
+func (cr *ConversionRegistry) ToString(value any) string {
+	switch value := value.(type) {
 	case string:
-		return v
+		return value
 	case []byte:
-		return string(v)
+		return string(value)
 	case error:
-		return v.Error()
+		return value.Error()
 	case fmt.Stringer:
-		return v.String()
+		return value.String()
 	default:
-		return fmt.Sprint(v)
+		return fmt.Sprint(value)
 	}
 }
 
@@ -171,18 +171,18 @@ func (cr *ConversionRegistry) ToString(v any) string {
 // Parameters:
 //
 //	fmt string - the date format string.
-//	str string - the date string to parse.
+//	value string - the date string to parse.
 //
 // Returns:
 //
 //	time.Time - the parsed date.
 //	error - error if the date string does not conform to the format.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toDate].
 //
-//	{{ "2023-05-04" | toDate "2006-01-02" }} // Output: 2023-05-04 00:00:00 +0000 UTC
-func (cr *ConversionRegistry) ToDate(fmt, str string) (time.Time, error) {
-	return time.ParseInLocation(fmt, str, time.Local)
+// [Sprout Documentation: toDate]: https://docs.atom.codes/sprout/registries/conversion#todate
+func (cr *ConversionRegistry) ToDate(fmt, value string) (time.Time, error) {
+	return time.ParseInLocation(fmt, value, time.Local)
 }
 
 // ToLocalDate converts a string to a time.Time object based on a format specification
@@ -191,39 +191,39 @@ func (cr *ConversionRegistry) ToDate(fmt, str string) (time.Time, error) {
 // Parameters:
 //
 //	fmt string - the date format string.
-//	str string - the date string to parse.
+//	value string - the date string to parse.
 //
 // Returns:
 //
 //	time.Time - the parsed date.
 //	error - error if the date string does not conform to the format.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toLocalDate].
 //
-//	{{ "2023-05-04" | toLocalDate "2006-01-02" "Europe/Paris" }} // Output: 2023-05-04 00:00:00 +0200 UTC
-func (cr *ConversionRegistry) ToLocalDate(fmt, timezone, str string) (time.Time, error) {
+// [Sprout Documentation: toLocalDate]: https://docs.atom.codes/sprout/registries/conversion#tolocaldate
+func (cr *ConversionRegistry) ToLocalDate(fmt, timezone, value string) (time.Time, error) {
 	location, err := time.LoadLocation(timezone)
 	if err != nil {
 		return time.Time{}, err
 	}
 
-	return time.ParseInLocation(fmt, str, location)
+	return time.ParseInLocation(fmt, value, location)
 }
 
 // ToDuration converts a value to a time.Duration.
 //
 // Parameters:
 //
-//	v any - the value to convert to time.Duration. This value can be a string, int, or another compatible type.
+//	value any - the value to convert to time.Duration. This value can be a string, int, or another compatible type.
 //
 // Returns:
 //
 //	time.Duration - the duration representation of the value.
 //	error - error if the value cannot be converted to a duration.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toDuration].
 //
-//	{{ (toDuration "1h30m").Seconds }} // Output: 5400
-func (cr *ConversionRegistry) ToDuration(v any) (time.Duration, error) {
-	return cast.ToDurationE(v)
+// [Sprout Documentation: toDuration]: https://docs.atom.codes/sprout/registries/conversion#toduration
+func (cr *ConversionRegistry) ToDuration(value any) (time.Duration, error) {
+	return cast.ToDurationE(value)
 }
