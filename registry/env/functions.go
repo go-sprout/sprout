@@ -14,9 +14,9 @@ import (
 //
 //	string - the value of the environment variable.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: env].
 //
-//	{{ "PATH" | env }} // Output: "/usr/bin:/bin:/usr/sbin:/sbin"
+// [Sprout Documentation: env]: https://docs.atom.codes/sprout/registries/env#env
 func (er *EnvironmentRegistry) Env(key string) string {
 	return os.Getenv(key)
 }
@@ -26,15 +26,15 @@ func (er *EnvironmentRegistry) Env(key string) string {
 //
 // Parameters:
 //
-//	str string - the string with environment variables to expand.
+//	value string - the string with environment variables to expand.
 //
 // Returns:
 //
 //	string - the expanded string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: expandEnv].
 //
-//	{{ "Path is $PATH" | expandEnv }} // Output: "Path is /usr/bin:/bin:/usr/sbin:/sbin"
-func (er *EnvironmentRegistry) ExpandEnv(str string) string {
-	return os.ExpandEnv(str)
+// [Sprout Documentation: expandEnv]: https://docs.atom.codes/sprout/registries/env#expandenv
+func (er *EnvironmentRegistry) ExpandEnv(value string) string {
+	return os.ExpandEnv(value)
 }

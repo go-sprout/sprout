@@ -18,9 +18,9 @@ import (
 //	string - the formatted date.
 //	error - when the timezone is invalid or the date is not in a valid format.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: date].
 //
-//	{{ "2023-05-04T15:04:05Z" | date "Jan 2, 2006" }} // Output: "May 4, 2023"
+// [Sprout Documentation: date]: https://docs.atom.codes/sprout/registries/time#date
 func (tr *TimeRegistry) Date(fmt string, date any) (string, error) {
 	return tr.DateInZone(fmt, date, "Local")
 }
@@ -38,12 +38,11 @@ func (tr *TimeRegistry) Date(fmt string, date any) (string, error) {
 //	string - the formatted date.
 //	error - when the timezone is invalid or the date is not in a valid format.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: dateInZone].
 //
-//	{{ dateInZone "Jan 2, 2006", "2023-05-04T15:04:05Z", "UTC" }} // Output: "May 4, 2023"
-//
-// TODO: Change signature
+// [Sprout Documentation: dateInZone]: https://docs.atom.codes/sprout/registries/time#dateinzone
 func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) (string, error) {
+	// TODO: Change signature
 	var t time.Time
 	switch date := date.(type) {
 	default:
@@ -78,9 +77,9 @@ func (tr *TimeRegistry) DateInZone(fmt string, date any, zone string) (string, e
 //
 //	string - the human-readable duration.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: duration].
 //
-//	{{ 3661 | duration }} // Output: "1h1m1s"
+// [Sprout Documentation: duration]: https://docs.atom.codes/sprout/registries/time#duration
 func (tr *TimeRegistry) Duration(sec any) string {
 	var n int64
 	switch value := sec.(type) {
@@ -110,9 +109,9 @@ func (tr *TimeRegistry) Duration(sec any) string {
 //
 //	string - a human-readable string describing how long ago the date was.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: dateAgo].
 //
-//	{{ "2023-05-04T15:04:05Z" | dateAgo }} // Output: "4m"
+// [Sprout Documentation: dateAgo]: https://docs.atom.codes/sprout/registries/time#dateago
 func (tr *TimeRegistry) DateAgo(date any) string {
 	var t time.Time
 
@@ -141,9 +140,9 @@ func (tr *TimeRegistry) DateAgo(date any) string {
 //
 //	time.Time - the current time.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: now].
 //
-//	{{ now }} // Output: "2023-05-07T15:04:05Z"
+// [Sprout Documentation: now]: https://docs.atom.codes/sprout/registries/time#now
 func (tr *TimeRegistry) Now() time.Time {
 	return time.Now()
 }
@@ -158,9 +157,9 @@ func (tr *TimeRegistry) Now() time.Time {
 //
 //	string - the Unix timestamp as a string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: unixEpoch].
 //
-//	{{ now | unixEpoch }} // Output: "1683306245"
+// [Sprout Documentation: unixEpoch]: https://docs.atom.codes/sprout/registries/time#unixepoch
 func (tr *TimeRegistry) UnixEpoch(date time.Time) string {
 	return strconv.FormatInt(date.Unix(), 10)
 }
@@ -169,16 +168,18 @@ func (tr *TimeRegistry) UnixEpoch(date time.Time) string {
 // format is incorrect, it returns an error.
 //
 // Parameters:
-//   fmt string - the duration string to add to the date, such as "2h" for two hours.
-//   date time.Time - the date to modify.
+//
+//	fmt string - the duration string to add to the date, such as "2h" for two hours.
+//	date time.Time - the date to modify.
 //
 // Returns:
-//   time.Time - the modified date after adding the duration
-//	 error - an error if the duration format is incorrect
 //
-// Example:
-//   {{ "2024-05-04T15:04:05Z" | dateModify "48h" }} // Outputs the date two days later
-
+//	  time.Time - the modified date after adding the duration
+//		 error - an error if the duration format is incorrect
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: dateModify].
+//
+// [Sprout Documentation: dateModify]: https://docs.atom.codes/sprout/registries/time#datemodify
 func (tr *TimeRegistry) DateModify(fmt string, date time.Time) (time.Time, error) {
 	d, err := time.ParseDuration(fmt)
 	if err != nil {
@@ -197,9 +198,9 @@ func (tr *TimeRegistry) DateModify(fmt string, date time.Time) (time.Time, error
 //
 //	string - the rounded duration.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: durationRound].
 //
-//	{{ "3600s" | durationRound }} // Output: "1h"
+// [Sprout Documentation: durationRound]: https://docs.atom.codes/sprout/registries/time#durationround
 func (tr *TimeRegistry) DurationRound(duration any) string {
 	var d time.Duration
 
@@ -276,9 +277,9 @@ func (tr *TimeRegistry) DurationRound(duration any) string {
 //	string - the formatted date in HTML format.
 //	error - when the timezone is invalid or the date is not in a valid format.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: htmlDate].
 //
-//	{{ "2023-05-04T15:04:05Z" | htmlDate }} // Output: "2023-05-04"
+// [Sprout Documentation: htmlDate]: https://docs.atom.codes/sprout/registries/time#htmldate
 func (tr *TimeRegistry) HtmlDate(date any) (string, error) {
 	return tr.DateInZone("2006-01-02", date, "Local")
 }
@@ -295,11 +296,10 @@ func (tr *TimeRegistry) HtmlDate(date any) (string, error) {
 //	string - the formatted date in HTML format.
 //	error - when the timezone is invalid or the date is not in a valid format.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: htmlDateInZone].
 //
-//	{{ "2023-05-04T15:04:05Z", "UTC" | htmlDateInZone }} // Output: "2023-05-04"
-//
-// TODO: Change signature
+// [Sprout Documentation: htmlDateInZone]: https://docs.atom.codes/sprout/registries/time#htmldateinzone
 func (tr *TimeRegistry) HtmlDateInZone(date any, zone string) (string, error) {
+	// TODO: Change signature
 	return tr.DateInZone("2006-01-02", date, zone)
 }

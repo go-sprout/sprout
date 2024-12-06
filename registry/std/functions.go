@@ -13,12 +13,12 @@ func (sr *StdRegistry) Hello() string {
 	return "Hello!"
 }
 
-// Default returns the first non-empty value from the given arguments or a
+// Default returns the first non-empty value from the value arguments or a
 // default value if the argument list is empty or the first element is empty.
 // It accepts a default value `defaultValue` of any type and a variadic slice
-// `given` of any type. If `given` is not provided or the first element in
-// `given` is empty, it returns `defaultValue`.
-// Otherwise, it returns the first element of `given`.
+// `value` of any type. If `value` is not provided or the first element in
+// `value` is empty, it returns `defaultValue`.
+// Otherwise, it returns the first element of `value`.
 // If you want to catch the first non-empty value from a list of values, use
 // the `Coalesce` function instead.
 //
@@ -26,55 +26,48 @@ func (sr *StdRegistry) Hello() string {
 //
 //	defaultValue any - the default value to return if no valid argument is
 //	                   provided or if the first argument is empty.
-//	given ...any     - a variadic slice of any type to check the first
+//	value ...any     - a variadic slice of any type to check the first
 //	                   element of it for emptiness.
 //
 // Returns:
 //
-//	any - the first element of `given`, or `defaultValue` if `given` is empty
+//	any - the first element of `value`, or `defaultValue` if `value` is empty
 //	      or all values are empty.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: default].
 //
-//	{{ nil | default "default" }} // Output: "default"
-//	{{ "" | default "default" }}  // Output: "default"
-//	{{ "first" | default "default" }} // Output: "first"
-//	{{ "first" | default "default" "second" }} // Output: "second"
-func (sr *StdRegistry) Default(defaultValue any, given ...any) any {
-	if len(given) == 0 || helpers.Empty(given[0]) {
+// [Sprout Documentation: default]: https://docs.atom.codes/sprout/registries/std#default
+func (sr *StdRegistry) Default(defaultValue any, value ...any) any {
+	if len(value) == 0 || helpers.Empty(value[0]) {
 		return defaultValue
 	}
-	return given[0]
+	return value[0]
 }
 
-// Empty evaluates the emptiness of the provided value 'given'. It returns
-// true if 'given' is considered empty based on its type. This method is
+// Empty evaluates the emptiness of the provided value 'value'. It returns
+// true if 'value' is considered empty based on its type. This method is
 // essential for determining the presence or absence of meaningful value
 // across various data types.
 //
-// Parameters:
-//
-//	given any - the value to be evaluated for emptiness.
-//
-// Returns:
-//
-//	bool - true if 'given' is empty, false otherwise.
-//
 // This method utilizes the reflect package to inspect the type and value of
-// 'given'. Depending on the type, it checks for nil pointers, zero-length
+// 'value'. Depending on the type, it checks for nil pointers, zero-length
 // collections (arrays, slices, maps, and strings), zero values of numeric
 // types (integers, floats, complex numbers, unsigned ints), and false for
 // booleans.
 //
-// Example:
+// Parameters:
 //
-//	{{ nil | empty }} // Output: true
-//	{{ "" | empty }} // Output: true
-//	{{ 0 | empty }} // Output: true
-//	{{ false | empty }} // Output: true
-//	{{ struct{}{} | empty }} // Output: false
-func (sr *StdRegistry) Empty(given any) bool {
-	return helpers.Empty(given)
+//	value any - the value to be evaluated for emptiness.
+//
+// Returns:
+//
+//	bool - true if 'value' is empty, false otherwise.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: empty].
+//
+// [Sprout Documentation: empty]: https://docs.atom.codes/sprout/registries/std#empty
+func (sr *StdRegistry) Empty(value any) bool {
+	return helpers.Empty(value)
 }
 
 // All checks if all values in the provided variadic slice are non-empty.
@@ -88,10 +81,9 @@ func (sr *StdRegistry) Empty(given any) bool {
 //
 //	bool - true if all values are non-empty, false otherwise.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: all].
 //
-//	{{ 1, "hello", true | all }} // Output: true
-//	{{ 1, "", true | all }} // Output: false
+// [Sprout Documentation: all]: https://docs.atom.codes/sprout/registries/std#all
 func (sr *StdRegistry) All(values ...any) bool {
 	for _, val := range values {
 		if helpers.Empty(val) {
@@ -105,15 +97,16 @@ func (sr *StdRegistry) All(values ...any) bool {
 // It returns true if at least one value is non-empty.
 //
 // Parameters:
+//
 //	values ...any - a variadic parameter list of values to be checked.
 //
 // Returns:
+//
 //	bool - true if any value is non-empty, false if all are empty.
 //
-// Example:
-//	{{ "", 0, false | any }} // Output: false
-//	{{ "", 0, "text" | any }} // Output: true
-
+// For an example of this function in a Go template, refer to [Sprout Documentation: any].
+//
+// [Sprout Documentation: any]: https://docs.atom.codes/sprout/registries/std#any
 func (sr *StdRegistry) Any(values ...any) bool {
 	for _, val := range values {
 		if !helpers.Empty(val) {
@@ -127,15 +120,17 @@ func (sr *StdRegistry) Any(values ...any) bool {
 // If all values are empty, it returns nil.
 //
 // Parameters:
-//	values ...any - a variadic parameter list of values from which the first
-//                   non-empty value should be selected.
+//
+//		values ...any - a variadic parameter list of values from which the first
+//	                  non-empty value should be selected.
 //
 // Returns:
+//
 //	any - the first non-empty value, or nil if all values are empty.
 //
-// Example:
-//	{{ nil, "", "first", "second" | coalesce }} // Output: "first"
-
+// For an example of this function in a Go template, refer to [Sprout Documentation: coalesce].
+//
+// [Sprout Documentation: coalesce]: https://docs.atom.codes/sprout/registries/std#coalesce
 func (sr *StdRegistry) Coalesce(values ...any) any {
 	for _, val := range values {
 		if !helpers.Empty(val) {
@@ -158,10 +153,9 @@ func (sr *StdRegistry) Coalesce(values ...any) any {
 //
 //	any - the result based on the evaluated condition.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: ternary].
 //
-//	{{ "yes", "no", true | ternary }} // Output: "yes"
-//	{{ "yes", "no", false | ternary }} // Output: "no"
+// [Sprout Documentation: ternary]: https://docs.atom.codes/sprout/registries/std#ternary
 func (sr *StdRegistry) Ternary(trueValue any, falseValue any, condition bool) any {
 	if condition {
 		return trueValue
@@ -183,9 +177,9 @@ func (sr *StdRegistry) Ternary(trueValue any, falseValue any, condition bool) an
 //	string - a single string composed of all non-nil input values separated
 //	         by spaces.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: cat].
 //
-//	{{ "Hello", nil, 123, true | cat }} // Output: "Hello 123 true"
+// [Sprout Documentation: cat]: https://docs.atom.codes/sprout/registries/std#cat
 func (sr *StdRegistry) Cat(values ...any) string {
 	var builder strings.Builder
 	for i, item := range values {

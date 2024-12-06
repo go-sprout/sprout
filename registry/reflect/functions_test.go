@@ -63,7 +63,7 @@ func TestKindIs(t *testing.T) {
 		{Name: "TestKindIsString", Input: `{{42 | kindIs "string"}}`, ExpectedOutput: "false"},
 		{Name: "TestKindIsVariable", Input: `{{$var := 42}}{{kindIs "string" $var}}`, ExpectedOutput: "false"},
 		{Name: "TestKindIsStruct", Input: `{{.var | kindIs "ptr"}}`, ExpectedOutput: "true", Data: map[string]any{"var": &testStruct{}}},
-		{Name: "TestKindIsInterfaceNil", Input: `{{.var | kindIs "ptr"}}`, ExpectedErr: "src must not be nil", Data: map[string]any{"V": nilInterface}},
+		{Name: "TestKindIsInterfaceNil", Input: `{{.var | kindIs "ptr"}}`, ExpectedErr: "value must not be nil", Data: map[string]any{"V": nilInterface}},
 	}
 
 	pesticide.RunTestCases(t, reflect.NewRegistry(), tc)
@@ -80,8 +80,8 @@ func TestKindOf(t *testing.T) {
 		{Name: "TestKindOfStruct", Input: `{{kindOf .var}}`, ExpectedOutput: "ptr", Data: map[string]any{"var": &testStruct{}}},
 		{Name: "TestKindOfStructWithoutPointerMark", Input: `{{kindOf .var}}`, ExpectedOutput: "struct", Data: map[string]any{"var": testStruct{}}},
 		{Name: "TestKindOfIntNil", Input: `{{kindOf .V }}`, ExpectedOutput: "ptr", Data: map[string]any{"V": nilPointer}},
-		{Name: "TestKindOfInterfaceNil", Input: `{{kindOf .V }}`, ExpectedErr: "src must not be nil", Data: map[string]any{"V": nilInterface}},
-		{Name: "TestKindOfAnyNil", Input: `{{kindOf nil}}`, ExpectedErr: "src must not be nil"},
+		{Name: "TestKindOfInterfaceNil", Input: `{{kindOf .V }}`, ExpectedErr: "value must not be nil", Data: map[string]any{"V": nilInterface}},
+		{Name: "TestKindOfAnyNil", Input: `{{kindOf nil}}`, ExpectedErr: "value must not be nil"},
 	}
 
 	pesticide.RunTestCases(t, reflect.NewRegistry(), tc)
@@ -139,7 +139,7 @@ func TestDeepCopy(t *testing.T) {
 		{Name: "TestDeepCopyVariable", Input: `{{$a := 42}}{{$b := deepCopy $a}}{{$b}}`, ExpectedOutput: "42"},
 		{Name: "TestDeepCopyDifferent", Input: `{{$a := 42}}{{$b := deepCopy "42"}}{{$b}}`, ExpectedOutput: "42"},
 		{Name: "TestDeepCopyDifferentType", Input: `{{$a := 42}}{{$b := deepCopy 42.0}}{{$b}}`, ExpectedOutput: "42"},
-		{Name: "TestDeepCopyNil", Input: `{{$b := deepCopy .a}}`, ExpectedErr: "element cannot be nil", Data: map[string]any{"a": nil}},
+		{Name: "TestDeepCopyNil", Input: `{{$b := deepCopy .a}}`, ExpectedErr: "value cannot be nil", Data: map[string]any{"a": nil}},
 		{Input: `{{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ values $d | sortAlpha | join "," }}`, ExpectedOutput: "1,2"},
 		{Input: `{{- $d := dict "a" 1 "b" 2 | deepCopy }}{{ keys $d | sortAlpha | join "," }}`, ExpectedOutput: "a,b"},
 		{Input: `{{- $one := dict "foo" (dict "bar" "baz") "qux" true -}}{{ deepCopy $one }}`, ExpectedOutput: "map[foo:map[bar:baz] qux:true]"},

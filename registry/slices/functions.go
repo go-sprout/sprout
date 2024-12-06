@@ -22,9 +22,9 @@ import (
 //
 //	[]any - the created list containing the provided elements.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: list].
 //
-//	{{ 1, 2, 3 | list }} // Output: [1, 2, 3]
+// [Sprout Documentation: list]: https://docs.atom.codes/sprout/registries/slices#list
 func (sr *SlicesRegistry) List(values ...any) []any {
 	return values
 }
@@ -42,9 +42,9 @@ func (sr *SlicesRegistry) List(values ...any) []any {
 //	[]any - the new list with the element appended.
 //	error - protect against undesired behavior due to migration to new signature.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: append].
 //
-//	{{ ["a", "b"] | append "c"  }} // Output: ["a", "b", "c"], nil
+// [Sprout Documentation: append]: https://docs.atom.codes/sprout/registries/slices#append
 func (sr *SlicesRegistry) Append(args ...any) ([]any, error) {
 	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
 	// ! Due to change in signature, this function still supports the old signature
@@ -112,9 +112,9 @@ func (sr *SlicesRegistry) Append(args ...any) ([]any, error) {
 //	[]any - the new list with the element prepended.
 //	error - protect against undesired behavior due to migration to new signature.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: prepend].
 //
-//	{{ ["b", "c"] | prepend "a" }} // Output: ["a", "b", "c"], nil
+// [Sprout Documentation: prepend]: https://docs.atom.codes/sprout/registries/slices#prepend
 func (sr *SlicesRegistry) Prepend(args ...any) ([]any, error) {
 	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
 	// ! Due to change in signature, this function still supports the old signature
@@ -168,9 +168,9 @@ func (sr *SlicesRegistry) Prepend(args ...any) ([]any, error) {
 //
 //	any - a single concatenated list containing elements from all provided lists.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: concat].
 //
-//	{{ ["c", "d"] | concat ["a", "b"] }} // Output: ["a", "b", "c", "d"]
+// [Sprout Documentation: concat]: https://docs.atom.codes/sprout/registries/slices#concat
 func (sr *SlicesRegistry) Concat(lists ...any) any {
 	// Estimate the total length to preallocate the result slice
 	var totalLen int
@@ -218,9 +218,9 @@ func (sr *SlicesRegistry) Concat(lists ...any) any {
 //	[][]any - a list of chunks.
 //	error - error if the list is nil or not a slice/array.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: chunk].
 //
-//	{{ ["a", "b", "c", "d"] | chunk 2 }} // Output: [["a", "b"], ["c", "d"]], nil
+// [Sprout Documentation: chunk]: https://docs.atom.codes/sprout/registries/slices#chunk
 func (sr *SlicesRegistry) Chunk(size int, list any) ([][]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot chunk nil")
@@ -270,9 +270,9 @@ func (sr *SlicesRegistry) Chunk(size int, list any) ([][]any, error) {
 //	[]any - a list containing only the unique elements.
 //	error - error if the list is nil or not a slice/array.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: uniq].
 //
-//	{{ ["a", "b", "a", "c"] | uniq }} // Output: ["a", "b", "c"], nil
+// [Sprout Documentation: uniq]: https://docs.atom.codes/sprout/registries/slices#uniq
 func (sr *SlicesRegistry) Uniq(list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot uniq nil")
@@ -315,9 +315,9 @@ func (sr *SlicesRegistry) Uniq(list any) ([]any, error) {
 //	[]any - the list without nil or zero-value elements.
 //	error - error if the list is nil or not a slice/array.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: compact].
 //
-//	{{ [0, 1, nil, 2, "", 3] | compact }} // Output: [1, 2, 3], nil
+// [Sprout Documentation: compact]: https://docs.atom.codes/sprout/registries/slices#compact
 func (sr *SlicesRegistry) Compact(list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot compact nil")
@@ -355,9 +355,9 @@ func (sr *SlicesRegistry) Compact(list any) ([]any, error) {
 //	[]any - the flattened list.
 //	error - error if the list is nil or not a slice/array.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: flatten].
 //
-//	{{ flatten [[1, 2], [3, 4], 5] }} // Output: [1, 2, 3, 4, 5]
+// [Sprout Documentation: flatten]: https://docs.atom.codes/sprout/registries/slices#flatten
 func (sr *SlicesRegistry) Flatten(list any) ([]any, error) {
 	return sr.FlattenDepth(-1, list)
 }
@@ -375,9 +375,9 @@ func (sr *SlicesRegistry) Flatten(list any) ([]any, error) {
 //	[]any - the flattened list.
 //	error - error if the list is nil or not a slice/array.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: flattenDepth].
 //
-//	{{ [[1, 2, [3], 4], 5] | flattenDepth 1 }} // Output: [1, 2, [3], 4, 5]
+// [Sprout Documentation: flattenDepth]: https://docs.atom.codes/sprout/registries/slices#flattendepth
 func (sr *SlicesRegistry) FlattenDepth(deep int, list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot flatten nil")
@@ -408,9 +408,9 @@ func (sr *SlicesRegistry) FlattenDepth(deep int, list any) ([]any, error) {
 //	any - the sliced part of the list.
 //	error - protect against undesired behavior due to migration to new signature.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: slice].
 //
-//	{{ [1, 2, 3, 4, 5] | slice 1, 3 }} // Output: [2, 3], nil
+// [Sprout Documentation: slice]: https://docs.atom.codes/sprout/registries/slices#slice
 func (sr *SlicesRegistry) Slice(args ...any) (any, error) {
 	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
 	// ! Due to change in signature, this function still supports the old signature
@@ -488,9 +488,9 @@ func (sr *SlicesRegistry) Slice(args ...any) (any, error) {
 //	bool - true if the element is found, otherwise false.
 //	error - error if the list is not a type that can be searched (not a slice or array).
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: has].
 //
-//	{{ [1, 2, 3, 4] | has 3 }} // Output: true, nil
+// [Sprout Documentation: has]: https://docs.atom.codes/sprout/registries/slices#has
 func (sr *SlicesRegistry) Has(element any, list any) (bool, error) {
 	if list == nil {
 		return false, nil
@@ -527,9 +527,9 @@ func (sr *SlicesRegistry) Has(element any, list any) (bool, error) {
 //	[]any - the list excluding the specified elements.
 //	error - protect against undesired behavior due to migration to new signature.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: without].
 //
-//	{{ [1, 2, 3, 4] | without 2, 4 }} // Output: [1, 3], nil
+// [Sprout Documentation: without]: https://docs.atom.codes/sprout/registries/slices#without
 func (sr *SlicesRegistry) Without(args ...any) ([]any, error) {
 	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
 	// ! Due to change in signature, this function still supports the old signature
@@ -595,9 +595,9 @@ func (sr *SlicesRegistry) Without(args ...any) ([]any, error) {
 //	[]any - the list without the first element.
 //	error - error if the list is nil or not a slice/array.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: rest].
 //
-//	{{ [1, 2, 3, 4] | rest }} // Output: [2, 3, 4], nil
+// [Sprout Documentation: rest]: https://docs.atom.codes/sprout/registries/slices#rest
 func (sr *SlicesRegistry) Rest(list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot rest nil")
@@ -635,9 +635,9 @@ func (sr *SlicesRegistry) Rest(list any) ([]any, error) {
 //	[]any - the list without the last element.
 //	error - error if the list is nil or not a slice/array.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: initial].
 //
-//	{{ [1, 2, 3, 4] | initial }} // Output: [1, 2, 3], nil
+// [Sprout Documentation: initial]: https://docs.atom.codes/sprout/registries/slices#initial
 func (sr *SlicesRegistry) Initial(list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot initial nil")
@@ -675,9 +675,9 @@ func (sr *SlicesRegistry) Initial(list any) ([]any, error) {
 //	any - the first element of the list.
 //	error - error if the list is nil, empty, or not a slice/array.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: first].
 //
-//	{{ [1, 2, 3, 4] | first }} // Output: 1, nil
+// [Sprout Documentation: first]: https://docs.atom.codes/sprout/registries/slices#first
 func (sr *SlicesRegistry) First(list any) (any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot first nil")
@@ -710,9 +710,9 @@ func (sr *SlicesRegistry) First(list any) (any, error) {
 //	any - the last element of the list.
 //	error - error if the list is nil, empty, or not a slice/array.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: last].
 //
-//	{{ [1, 2, 3, 4] | last }} // Output: 4, nil
+// [Sprout Documentation: last]: https://docs.atom.codes/sprout/registries/slices#last
 func (sr *SlicesRegistry) Last(list any) (any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot last nil")
@@ -745,9 +745,9 @@ func (sr *SlicesRegistry) Last(list any) (any, error) {
 //	[]any - the list in reverse order.
 //	error - error if the list is nil or not a slice/array.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: reverse].
 //
-//	{{ [1, 2, 3, 4] | reverse }} // Output: [4, 3, 2, 1], nil
+// [Sprout Documentation: reverse]: https://docs.atom.codes/sprout/registries/slices#reverse
 func (sr *SlicesRegistry) Reverse(list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot reverse nil")
@@ -782,9 +782,9 @@ func (sr *SlicesRegistry) Reverse(list any) ([]any, error) {
 //
 //	[]string - the sorted list.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: sortAlpha].
 //
-//	{{ ["d", "b", "a", "c"] | sortAlpha }} // Output: ["a", "b", "c", "d"]
+// [Sprout Documentation: sortAlpha]: https://docs.atom.codes/sprout/registries/slices#sortalpha
 func (sr *SlicesRegistry) SortAlpha(list any) []string {
 	kind := reflect.Indirect(reflect.ValueOf(list)).Kind()
 	switch kind {
@@ -805,17 +805,17 @@ func (sr *SlicesRegistry) SortAlpha(list any) []string {
 // Parameters:
 //
 //	sep string - the delimiter used to split the string.
-//	str string - the string to split.
+//	value string - the string to split.
 //
 // Returns:
 //
 //	[]string - a slice containing the substrings obtained from splitting the input string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: splitList].
 //
-//	{{ "one, two, three" | splitList ", " }} // Output: ["one", "two", "three"]
-func (sr *SlicesRegistry) SplitList(sep string, str string) []string {
-	return strings.Split(str, sep)
+// [Sprout Documentation: splitList]: https://docs.atom.codes/sprout/registries/slices#splitlist
+func (sr *SlicesRegistry) SplitList(sep string, value string) []string {
+	return strings.Split(value, sep)
 }
 
 // StrSlice converts a value to a slice of strings, handling various types
@@ -829,9 +829,9 @@ func (sr *SlicesRegistry) SplitList(sep string, str string) []string {
 //
 //	[]string - the converted slice of strings.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: strSlice].
 //
-//	{{ strSlice any["a", "b", "c"] }} // Output: ["a", "b", "c"]
+// [Sprout Documentation: strSlice]: https://docs.atom.codes/sprout/registries/slices#strslice
 func (sr *SlicesRegistry) StrSlice(value any) []string {
 	return helpers.StrSlice(value)
 }
@@ -842,16 +842,17 @@ func (sr *SlicesRegistry) StrSlice(value any) []string {
 // the range and step dynamically.
 //
 // Parameters:
-//   count int - the endpoint (exclusive) of the range to generate.
+//
+//	count int - the endpoint (exclusive) of the range to generate.
 //
 // Returns:
-//   []int - a slice of integers from 0 to 'count' with the appropriate step
-//           depending on whether 'count' is positive or negative.
 //
-// Example:
-//   {{ 5 | until }} // Output: [0 1 2 3 4]
-//   {{ -3 | until }} // Output: [0 -1 -2]
-
+//	[]int - a slice of integers from 0 to 'count' with the appropriate step
+//	        depending on whether 'count' is positive or negative.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: until].
+//
+// [Sprout Documentation: until]: https://docs.atom.codes/sprout/registries/slices#until
 func (sr *SlicesRegistry) Until(count int) []int {
 	step := 1
 	if count < 0 {
@@ -878,10 +879,9 @@ func (sr *SlicesRegistry) Until(count int) []int {
 //	        parameters, or an empty slice if the parameters are inconsistent
 //	        with the desired range and step.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: untilStep].
 //
-//	{{ 0, 10, 2 | untilStep }} // Output: [0 2 4 6 8]
-//	{{ 10, 0, -2 | untilStep }} // Output: [10 8 6 4 2]
+// [Sprout Documentation: untilStep]: https://docs.atom.codes/sprout/registries/slices#untilstep
 func (sr *SlicesRegistry) UntilStep(start, stop, step int) []int {
 	return helpers.UntilStep(start, stop, step)
 }

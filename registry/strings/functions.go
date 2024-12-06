@@ -17,39 +17,39 @@ import (
 //
 // Parameters:
 //
-//	str string - the string from which to remove whitespace.
+//	value string - the string from which to remove whitespace.
 //
 // Returns:
 //
 //	string - the modified string with all whitespace characters removed.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: nospace].
 //
-//	{{ "Hello World" | nospace }} // Output: "HelloWorld"
-func (sr *StringsRegistry) Nospace(str string) string {
+// [Sprout Documentation: nospace]: https://docs.atom.codes/sprout/registries/strings#nospace
+func (sr *StringsRegistry) Nospace(value string) string {
 	return strings.Map(func(r rune) rune {
 		if unicode.IsSpace(r) {
 			return -1
 		}
 		return r
-	}, str)
+	}, value)
 }
 
 // Trim removes leading and trailing whitespace from the string.
 //
 // Parameters:
 //
-//	str string - the string to trim.
+//	value string - the string to trim.
 //
 // Returns:
 //
 //	string - the trimmed string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: trim].
 //
-//	{{ " Hello World " | trim }} // Output: "Hello World"
-func (sr *StringsRegistry) Trim(str string) string {
-	return strings.TrimSpace(str)
+// [Sprout Documentation: trim]: https://docs.atom.codes/sprout/registries/strings#trim
+func (sr *StringsRegistry) Trim(value string) string {
+	return strings.TrimSpace(value)
 }
 
 // TrimAll removes all occurrences of any characters in 'cutset' from both the
@@ -58,17 +58,17 @@ func (sr *StringsRegistry) Trim(str string) string {
 // Parameters:
 //
 //	cutset string - a string of characters to remove from the string.
-//	str string - the string to trim.
+//	value string - the string to trim.
 //
 // Returns:
 //
 //	string - the string with specified characters removed.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: trimAll].
 //
-//	{{ "xyzHelloxyz" | trimAll "xyz" }} // Output: "Hello"
-func (sr *StringsRegistry) TrimAll(cutset string, str string) string {
-	return strings.Trim(str, cutset)
+// [Sprout Documentation: trimAll]: https://docs.atom.codes/sprout/registries/strings#trimall
+func (sr *StringsRegistry) TrimAll(cutset string, value string) string {
+	return strings.Trim(value, cutset)
 }
 
 // TrimPrefix removes the 'prefix' from the start of 'str' if present.
@@ -76,17 +76,17 @@ func (sr *StringsRegistry) TrimAll(cutset string, str string) string {
 // Parameters:
 //
 //	prefix string - the prefix to remove.
-//	str string - the string to trim.
+//	value string - the string to trim.
 //
 // Returns:
 //
 //	string - the string with the prefix removed if it was present.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: trimPrefix].
 //
-//	{{ "HelloWorld" | trimPrefix "Hello" }} // Output: "World"
-func (sr *StringsRegistry) TrimPrefix(prefix string, str string) string {
-	return strings.TrimPrefix(str, prefix)
+// [Sprout Documentation: trimPrefix]: https://docs.atom.codes/sprout/registries/strings#trimprefix
+func (sr *StringsRegistry) TrimPrefix(prefix string, value string) string {
+	return strings.TrimPrefix(value, prefix)
 }
 
 // TrimSuffix removes the 'suffix' from the end of 'str' if present.
@@ -94,17 +94,17 @@ func (sr *StringsRegistry) TrimPrefix(prefix string, str string) string {
 // Parameters:
 //
 //	suffix string - the suffix to remove.
-//	str string - the string to trim.
+//	value string - the string to trim.
 //
 // Returns:
 //
 //	string - the string with the suffix removed if it was present.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: trimSuffix].
 //
-//	{{ "HelloWorld" | trimSuffix "World" }} // Output: "Hello"
-func (sr *StringsRegistry) TrimSuffix(suffix string, str string) string {
-	return strings.TrimSuffix(str, suffix)
+// [Sprout Documentation: trimSuffix]: https://docs.atom.codes/sprout/registries/strings#trimsuffix
+func (sr *StringsRegistry) TrimSuffix(suffix string, value string) string {
+	return strings.TrimSuffix(value, suffix)
 }
 
 // Contains checks if 'str' contains the 'substring'.
@@ -112,17 +112,17 @@ func (sr *StringsRegistry) TrimSuffix(suffix string, str string) string {
 // Parameters:
 //
 //	substring string - the substring to search for.
-//	str string - the string to search within.
+//	value string - the string to search within.
 //
 // Returns:
 //
 //	bool - true if 'str' contains 'substring', false otherwise.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: contains].
 //
-//	{{ "Hello" | contains "ell" }} // Output: true
-func (sr *StringsRegistry) Contains(substring string, str string) bool {
-	return strings.Contains(str, substring)
+// [Sprout Documentation: contains]: https://docs.atom.codes/sprout/registries/strings#contains
+func (sr *StringsRegistry) Contains(substring string, value string) bool {
+	return strings.Contains(value, substring)
 }
 
 // HasPrefix checks if 'str' starts with the specified 'prefix'.
@@ -130,17 +130,17 @@ func (sr *StringsRegistry) Contains(substring string, str string) bool {
 // Parameters:
 //
 //	prefix string - the prefix to check.
-//	str string - the string to check.
+//	value string - the string to check.
 //
 // Returns:
 //
 //	bool - true if 'str' starts with 'prefix', false otherwise.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: hasPrefix].
 //
-//	{{ "HelloWorld" | hasPrefix "Hello" }} // Output: true
-func (sr *StringsRegistry) HasPrefix(prefix string, str string) bool {
-	return strings.HasPrefix(str, prefix)
+// [Sprout Documentation: hasPrefix]: https://docs.atom.codes/sprout/registries/strings#hasprefix
+func (sr *StringsRegistry) HasPrefix(prefix string, value string) bool {
+	return strings.HasPrefix(value, prefix)
 }
 
 // HasSuffix checks if 'str' ends with the specified 'suffix'.
@@ -148,51 +148,51 @@ func (sr *StringsRegistry) HasPrefix(prefix string, str string) bool {
 // Parameters:
 //
 //	suffix string - the suffix to check.
-//	str string - the string to check.
+//	value string - the string to check.
 //
 // Returns:
 //
 //	bool - true if 'str' ends with 'suffix', false otherwise.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: hasSuffix].
 //
-//	{{ "HelloWorld" | hasSuffix "World" }} // Output: true
-func (sr *StringsRegistry) HasSuffix(suffix string, str string) bool {
-	return strings.HasSuffix(str, suffix)
+// [Sprout Documentation: hasSuffix]: https://docs.atom.codes/sprout/registries/strings#hassuffix
+func (sr *StringsRegistry) HasSuffix(suffix string, value string) bool {
+	return strings.HasSuffix(value, suffix)
 }
 
 // ToLower converts all characters in the provided string to lowercase.
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
 //	string - the lowercase version of the input string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toLower].
 //
-//	{{ "HELLO WORLD" | toLower }} // Output: "hello world"
-func (sr *StringsRegistry) ToLower(str string) string {
-	return strings.ToLower(str)
+// [Sprout Documentation: toLower]: https://docs.atom.codes/sprout/registries/strings#tolower
+func (sr *StringsRegistry) ToLower(value string) string {
+	return strings.ToLower(value)
 }
 
 // ToUpper converts all characters in the provided string to uppercase.
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
 //	string - the uppercase version of the input string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toUpper].
 //
-//	{{ "hello world" | toUpper }} // Output: "HELLO WORLD"
-func (sr *StringsRegistry) ToUpper(str string) string {
-	return strings.ToUpper(str)
+// [Sprout Documentation: toUpper]: https://docs.atom.codes/sprout/registries/strings#toupper
+func (sr *StringsRegistry) ToUpper(value string) string {
+	return strings.ToUpper(value)
 }
 
 // Replace replaces all occurrences of 'old' in 'src' with 'new'.
@@ -201,17 +201,17 @@ func (sr *StringsRegistry) ToUpper(str string) string {
 //
 //	old string - the substring to be replaced.
 //	new string - the substring to replace with.
-//	src string - the source string where replacements take place.
+//	value string - the source string where replacements take place.
 //
 // Returns:
 //
 //	string - the modified string after all replacements.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: replace].
 //
-//	{{ "banana" | replace "a", "o" }} // Output: "bonono"
-func (sr *StringsRegistry) Replace(old, new, src string) string {
-	return strings.ReplaceAll(src, old, new)
+// [Sprout Documentation: replace]: https://docs.atom.codes/sprout/registries/strings#replace
+func (sr *StringsRegistry) Replace(old, new, value string) string {
+	return strings.ReplaceAll(value, old, new)
 }
 
 // Repeat repeats the string 'str' for 'count' times.
@@ -219,17 +219,17 @@ func (sr *StringsRegistry) Replace(old, new, src string) string {
 // Parameters:
 //
 //	count int - the number of times to repeat.
-//	str string - the string to repeat.
+//	value string - the string to repeat.
 //
 // Returns:
 //
 //	string - the repeated string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: repeat].
 //
-//	{{ "ha" | repeat 3 }} // Output: "hahaha"
-func (sr *StringsRegistry) Repeat(count int, str string) string {
-	return strings.Repeat(str, count)
+// [Sprout Documentation: repeat]: https://docs.atom.codes/sprout/registries/strings#repeat
+func (sr *StringsRegistry) Repeat(count int, value string) string {
+	return strings.Repeat(value, count)
 }
 
 // Join concatenates the elements of a slice into a single string separated by 'sep'.
@@ -239,18 +239,17 @@ func (sr *StringsRegistry) Repeat(count int, str string) string {
 // Parameters:
 //
 //	sep string - the separator string.
-//	v any - the slice to join, can be of any slice type.
+//	value any - the slice to join, can be of any slice type.
 //
 // Returns:
 //
 //	string - the concatenated string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: join].
 //
-//	{{ $list := slice "apple" "banana" "cherry" }}
-//	{{ $list | join ", " }} // Output: "apple, banana, cherry"
-func (sr *StringsRegistry) Join(sep string, v any) string {
-	return strings.Join(helpers.StrSlice(v), sep)
+// [Sprout Documentation: join]: https://docs.atom.codes/sprout/registries/strings#join
+func (sr *StringsRegistry) Join(sep string, value any) string {
+	return strings.Join(helpers.StrSlice(value), sep)
 }
 
 // Trunc truncates 's' to a maximum length 'count'. If 'count' is negative, it removes
@@ -260,49 +259,48 @@ func (sr *StringsRegistry) Join(sep string, v any) string {
 //
 //	count int - the number of characters to keep. Negative values indicate truncation
 //	            from the beginning.
-//	str string - the string to truncate.
+//	value string - the string to truncate.
 //
 // Returns:
 //
 //	string - the truncated string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: trunc].
 //
-//	{{ "Hello World" | trunc 5 }} // Output: "Hello"
-//	{{ "Hello World" | trunc -5 }} // Output: "World"
-func (sr *StringsRegistry) Trunc(count int, str string) string {
-	length := len(str)
+// [Sprout Documentation: trunc]: https://docs.atom.codes/sprout/registries/strings#trunc
+func (sr *StringsRegistry) Trunc(count int, value string) string {
+	length := len(value)
 
 	if count < 0 && length+count > 0 {
-		return str[length+count:]
+		return value[length+count:]
 	}
 
 	if count >= 0 && length > count {
-		return str[:count]
+		return value[:count]
 	}
 
-	return str
+	return value
 }
 
 // Shuffle randomly rearranges the characters in 'str'.
 //
 // Parameters:
 //
-//	str string - the string to shuffle.
+//	value string - the string to shuffle.
 //
 // Returns:
 //
 //	string - the shuffled string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: shuffle].
 //
-//	{{ "hello" | shuffle }} // Output: "loleh" (output may vary due to randomness)
-func (sr *StringsRegistry) Shuffle(str string) string {
-	r := []rune(str)
-	mathrand.New(randSource).Shuffle(len(r), func(i, j int) {
-		r[i], r[j] = r[j], r[i]
+// [Sprout Documentation: shuffle]: https://docs.atom.codes/sprout/registries/strings#shuffle
+func (sr *StringsRegistry) Shuffle(value string) string {
+	runes := []rune(value)
+	mathrand.New(randSource).Shuffle(len(runes), func(i, j int) {
+		runes[i], runes[j] = runes[j], runes[i]
 	})
-	return string(r)
+	return string(runes)
 }
 
 // Ellipsis truncates 'str' to 'maxWidth' and appends an ellipsis if the string
@@ -311,17 +309,17 @@ func (sr *StringsRegistry) Shuffle(str string) string {
 // Parameters:
 //
 //	maxWidth int - the maximum width of the string including the ellipsis.
-//	str string - the string to truncate.
+//	value string - the string to truncate.
 //
 // Returns:
 //
 //	string - the possibly truncated string with an ellipsis.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: ellipsis].
 //
-//	{{ "Hello World" | ellipsis 10 }} // Output: "Hello W..."
-func (sr *StringsRegistry) Ellipsis(maxWidth int, str string) string {
-	return sr.ellipsis(str, 0, maxWidth)
+// [Sprout Documentation: ellipsis]: https://docs.atom.codes/sprout/registries/strings#ellipsis
+func (sr *StringsRegistry) Ellipsis(maxWidth int, value string) string {
+	return sr.ellipsis(value, 0, maxWidth)
 }
 
 // EllipsisBoth truncates 'str' from both ends, preserving the middle part of
@@ -331,17 +329,17 @@ func (sr *StringsRegistry) Ellipsis(maxWidth int, str string) string {
 //
 //	offset int - starting position for preserving text.
 //	maxWidth int - the total maximum width including ellipses.
-//	str string - the string to truncate.
+//	value string - the string to truncate.
 //
 // Returns:
 //
 //	string - the truncated string with ellipses on both ends.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: ellipsisBoth].
 //
-//	{{ "Hello World" | ellipsisBoth 1 10 }} // Output: "...lo Wor..."
-func (sr *StringsRegistry) EllipsisBoth(offset int, maxWidth int, str string) string {
-	return sr.ellipsis(str, offset, maxWidth)
+// [Sprout Documentation: ellipsisBoth]: https://docs.atom.codes/sprout/registries/strings#ellipsisboth
+func (sr *StringsRegistry) EllipsisBoth(offset int, maxWidth int, value string) string {
+	return sr.ellipsis(value, offset, maxWidth)
 }
 
 // Initials extracts the initials from 'str', using optional 'delimiters' to
@@ -349,18 +347,17 @@ func (sr *StringsRegistry) EllipsisBoth(offset int, maxWidth int, str string) st
 //
 // Parameters:
 //
-//	str string - the string from which to extract initials.
-//	delimiters string - optional string containing delimiter characters.
+//	value string - the string from which to extract initials.
 //
 // Returns:
 //
 //	string - the initials of the words in 'str'.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: initials].
 //
-//	{{ "John Doe" | initials }} // Output: "JD"
-func (sr *StringsRegistry) Initials(str string) string {
-	return sr.initials(str, " ")
+// [Sprout Documentation: initials]: https://docs.atom.codes/sprout/registries/strings#initials
+func (sr *StringsRegistry) Initials(value string) string {
+	return sr.initials(value, " ")
 }
 
 // Plural returns 'one' if 'count' is 1, otherwise it returns 'many'.
@@ -375,10 +372,9 @@ func (sr *StringsRegistry) Initials(str string) string {
 //
 //	string - either 'one' or 'many' based on 'count'.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: plural].
 //
-//	{{ 1 | plural "apple" "apples" }} // Output: "apple"
-//	{{ 2 | plural "apple" "apples" }} // Output: "apples"
+// [Sprout Documentation: plural]: https://docs.atom.codes/sprout/registries/strings#plural
 func (sr *StringsRegistry) Plural(one, many string, count int) string {
 	if count == 1 {
 		return one
@@ -386,66 +382,62 @@ func (sr *StringsRegistry) Plural(one, many string, count int) string {
 	return many
 }
 
-// Wrap breaks 'str' into lines with a maximum length of 'length'.
+// Wrap breaks 'value' into lines with a maximum length of 'length'.
 // It ensures that words are not split across lines unless necessary.
 //
 // Parameters:
 //
 //	length int - the maximum length of each line.
-//	str string - the string to be wrapped.
+//	value string - the string to be wrapped.
 //
 // Returns:
 //
 //	string - the wrapped string using newline characters to separate lines.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: wrap].
 //
-//	{{ "This is a long string that needs to be wrapped." | wrap 10 }}
-//	Output: "This is a\nlong\nstring\nthat needs\nto be\nwrapped."
-func (sr *StringsRegistry) Wrap(length int, str string) string {
-	return sr.wordWrap(length, "", false, str)
+// [Sprout Documentation: wrap]: https://docs.atom.codes/sprout/registries/strings#wrap
+func (sr *StringsRegistry) Wrap(length int, value string) string {
+	return sr.wordWrap(length, "", false, value)
 }
 
-// WrapWith breaks 'str' into lines of maximum 'length', using 'newLineCharacter'
+// WrapWith breaks 'value' into lines of maximum 'length', using 'newLineCharacter'
 // to separate lines. It wraps words only when they exceed the line length.
 //
 // Parameters:
 //
 //	length int - the maximum line length.
 //	newLineCharacter string - the character(s) used to denote new lines.
-//	str string - the string to wrap.
+//	value string - the string to wrap.
 //
 // Returns:
 //
 //	string - the wrapped string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: wrapWith].
 //
-//	{{ "This is a long string that needs to be wrapped." | wrapWith 10 "<br>" }}
-//	Output: "This is a<br>long<br>string<br>that needs<br>to be<br>wrapped."
-func (sr *StringsRegistry) WrapWith(length int, newLineCharacter string, str string) string {
-	return sr.wordWrap(length, newLineCharacter, true, str)
+// [Sprout Documentation: wrapWith]: https://docs.atom.codes/sprout/registries/strings#wrapwith
+func (sr *StringsRegistry) WrapWith(length int, newLineCharacter string, value string) string {
+	return sr.wordWrap(length, newLineCharacter, true, value)
 }
 
-// Quote wraps each element in 'elements' with double quotes and separates them with spaces.
+// Quote wraps each element in 'values' with double quotes and separates them with spaces.
 //
 // Parameters:
 //
-//	elements ...any - the elements to be quoted.
+//	values ...any - the elements to be quoted.
 //
 // Returns:
 //
 //	string - a single string with each element double quoted.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: quote].
 //
-//	 {{ $list := slice "hello" "world" 123 }}
-//		{{ $list | quote }}
-//		Output: "hello" "world" "123"
-func (sr *StringsRegistry) Quote(elements ...any) string {
+// [Sprout Documentation: quote]: https://docs.atom.codes/sprout/registries/strings#quote
+func (sr *StringsRegistry) Quote(values ...any) string {
 	var build strings.Builder
 
-	for i, elem := range elements {
+	for i, elem := range values {
 		if elem == nil {
 			continue
 		}
@@ -457,24 +449,22 @@ func (sr *StringsRegistry) Quote(elements ...any) string {
 	return build.String()
 }
 
-// Squote wraps each element in 'elements' with single quotes and separates them with spaces.
+// Squote wraps each element in 'values' with single quotes and separates them with spaces.
 //
 // Parameters:
 //
-//	elements ...any - the elements to be single quoted.
+//	values ...any - the elements to be single quoted.
 //
 // Returns:
 //
 //	string - a single string with each element single quoted.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: squote].
 //
-//	 {{ $list := slice "hello" "world" 123 }}
-//		{{ $list | squote }}
-//	Output: 'hello' 'world' '123'
-func (sr *StringsRegistry) Squote(elements ...any) string {
+// [Sprout Documentation: squote]: https://docs.atom.codes/sprout/registries/strings#squote
+func (sr *StringsRegistry) Squote(values ...any) string {
 	var builder strings.Builder
-	for i, elem := range elements {
+	for i, elem := range values {
 		if elem == nil {
 			continue
 		}
@@ -493,24 +483,24 @@ func (sr *StringsRegistry) Squote(elements ...any) string {
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
 //	string - the string converted to camelCase.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toCamelCase].
 //
-//	{{ "hello world" | toCamelCase }} // Output: "helloWorld"
-func (sr *StringsRegistry) ToCamelCase(str string) string {
-	return sr.transformString(camelCaseStyle, str)
+// [Sprout Documentation: toCamelCase]: https://docs.atom.codes/sprout/registries/strings#tocamelcase
+func (sr *StringsRegistry) ToCamelCase(value string) string {
+	return sr.transformString(camelCaseStyle, value)
 }
 
 // ToKebabCase converts a string to kebab-case.
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
@@ -519,131 +509,129 @@ func (sr *StringsRegistry) ToCamelCase(str string) string {
 // Example:
 //
 //	{{ "hello world" | toKebabCase }} // Output: "hello-world"
-func (sr *StringsRegistry) ToKebabCase(str string) string {
-	return sr.transformString(kebabCaseStyle, str)
+func (sr *StringsRegistry) ToKebabCase(value string) string {
+	return sr.transformString(kebabCaseStyle, value)
 }
 
 // ToPascalCase converts a string to PascalCase.
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
 //	string - the string converted to PascalCase.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toPascalCase].
 //
-//	{{ "hello world" | toPascalCase }} // Output: "HelloWorld"
-func (sr *StringsRegistry) ToPascalCase(str string) string {
-	return sr.transformString(pascalCaseStyle, str)
+// [Sprout Documentation: toPascalCase]: https://docs.atom.codes/sprout/registries/strings#topascalcase
+func (sr *StringsRegistry) ToPascalCase(value string) string {
+	return sr.transformString(pascalCaseStyle, value)
 }
 
 // ToDotCase converts a string to dot.case.
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
 //	string - the string converted to dot.case.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toDotCase].
 //
-//	{{ "hello world" | toDotCase }} // Output: "hello.world"
-func (sr *StringsRegistry) ToDotCase(str string) string {
-	return sr.transformString(dotCaseStyle, str)
+// [Sprout Documentation: toDotCase]: https://docs.atom.codes/sprout/registries/strings#todotcase
+func (sr *StringsRegistry) ToDotCase(value string) string {
+	return sr.transformString(dotCaseStyle, value)
 }
 
 // ToPathCase converts a string to path/case.
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
 //	string - the string converted to path/case.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toPathCase].
 //
-//	{{ "hello world" | toPathCase }} // Output: "hello/world"
-func (sr *StringsRegistry) ToPathCase(str string) string {
-	return sr.transformString(pathCaseStyle, str)
+// [Sprout Documentation: toPathCase]: https://docs.atom.codes/sprout/registries/strings#topathcase
+func (sr *StringsRegistry) ToPathCase(value string) string {
+	return sr.transformString(pathCaseStyle, value)
 }
 
 // ToConstantCase converts a string to CONSTANT_CASE.
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
-//	string - the string converted to CONSTANT_CASE.
+// For an example of this function in a Go template, refer to [Sprout Documentation: toConstantCase].
 //
-// Example:
-//
-//	{{ "hello world" | toConstantCase }} // Output: "HELLO_WORLD"
-func (sr *StringsRegistry) ToConstantCase(str string) string {
-	return sr.transformString(constantCaseStyle, str)
+// [Sprout Documentation: toConstantCase]: https://docs.atom.codes/sprout/registries/strings#toconstantcase
+func (sr *StringsRegistry) ToConstantCase(value string) string {
+	return sr.transformString(constantCaseStyle, value)
 }
 
 // ToSnakeCase converts a string to snake_case.
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
 //	string - the string converted to snake_case.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toSnakeCase].
 //
-//	{{ "hello world" | toSnakeCase }} // Output: "hello_world"
-func (sr *StringsRegistry) ToSnakeCase(str string) string {
-	return sr.transformString(snakeCaseStyle, str)
+// [Sprout Documentation: toSnakeCase]: https://docs.atom.codes/sprout/registries/strings#tosnakecase
+func (sr *StringsRegistry) ToSnakeCase(value string) string {
+	return sr.transformString(snakeCaseStyle, value)
 }
 
 // ToTitleCase converts a string to Title Case.
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
 //	string - the string converted to Title Case.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: toTitleCase].
 //
-//	{{ "hello world" | toTitleCase }} // Output: "Hello World"
-func (sr *StringsRegistry) ToTitleCase(str string) string {
-	return cases.Title(language.English).String(str)
+// [Sprout Documentation: toTitleCase]: https://docs.atom.codes/sprout/registries/strings#totitlecase
+func (sr *StringsRegistry) ToTitleCase(value string) string {
+	return cases.Title(language.English).String(value)
 }
 
 // Untitle converts the first letter of each word in 'str' to lowercase.
 //
 // Parameters:
 //
-//	str string - the string to be converted.
+//	value string - the string to be converted.
 //
 // Returns:
 //
 //	string - the converted string with each word starting in lowercase.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: untitle].
 //
-//	{{ "Hello World" | untitle }} // Output: "hello world"
-func (sr *StringsRegistry) Untitle(str string) string {
+// [Sprout Documentation: untitle]: https://docs.atom.codes/sprout/registries/strings#untitle
+func (sr *StringsRegistry) Untitle(value string) string {
 	var result strings.Builder
 
 	// Process each rune in the input string
 	startOfWord := true
-	for _, r := range str {
+	for _, r := range value {
 		if unicode.IsSpace(r) {
 			startOfWord = true
 			result.WriteRune(r)
@@ -660,100 +648,100 @@ func (sr *StringsRegistry) Untitle(str string) string {
 	return result.String()
 }
 
-// SwapCase switches the case of each letter in 'str'. Lowercase letters become
+// SwapCase switches the case of each letter in 'value'. Lowercase letters become
 // uppercase and vice versa.
 //
 // Parameters:
 //
-//	str string - the string to convert.
+//	value string - the string to convert.
 //
 // Returns:
 //
 //	string - the string with each character's case switched.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: swapCase].
 //
-//	{{ "Hello World" | swapCase }} // Output: "hELLO wORLD"
-func (sr *StringsRegistry) SwapCase(str string) string {
+// [Sprout Documentation: swapCase]: https://docs.atom.codes/sprout/registries/strings#swapcase
+func (sr *StringsRegistry) SwapCase(value string) string {
 	return strings.Map(func(r rune) rune {
 		if unicode.IsLower(r) {
 			return unicode.ToUpper(r)
 		}
 		return unicode.ToLower(r)
-	}, str)
+	}, value)
 }
 
-// Capitalize capitalizes the first letter of 'str'.
+// Capitalize capitalizes the first letter of 'value'.
 //
 // Parameters:
 //
-//	str string - the string to capitalize.
+//	value string - the string to capitalize.
 //
 // Returns:
 //
 //	string - the string with the first letter capitalized.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: capitalize].
 //
-//	{{ "hello world" | capitalize }} // Output: "Hello world"
-func (sr *StringsRegistry) Capitalize(str string) string {
-	return swapFirstLetter(str, true)
+// [Sprout Documentation: capitalize]: https://docs.atom.codes/sprout/registries/strings#capitalize
+func (sr *StringsRegistry) Capitalize(value string) string {
+	return swapFirstLetter(value, true)
 }
 
-// Uncapitalize converts the first letter of 'str' to lowercase.
+// Uncapitalize converts the first letter of 'value' to lowercase.
 //
 // Parameters:
 //
-//	str string - the string to uncapitalize.
+//	value string - the string to uncapitalize.
 //
 // Returns:
 //
 //	string - the string with the first letter in lowercase.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: uncapitalize].
 //
-//	{{ "Hello World" | uncapitalize }} // Output: "hello World"
-func (sr *StringsRegistry) Uncapitalize(str string) string {
-	return swapFirstLetter(str, false)
+// [Sprout Documentation: uncapitalize]: https://docs.atom.codes/sprout/registries/strings#uncapitalize
+func (sr *StringsRegistry) Uncapitalize(value string) string {
+	return swapFirstLetter(value, false)
 }
 
-// Split divides 'orig' into a map of string parts using 'sep' as the separator.
+// Split divides 'value' into a map of string parts using 'sep' as the separator.
 //
 // Parameters:
 //
 //	sep string - the separator string.
-//	orig string - the original string to split.
+//	value string - the original string to split.
 //
 // Returns:
 //
 //	map[string]string - a map of the split parts.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: split].
 //
-//	{{ "apple,banana,cherry" | split "," }} // Output: { "_0":"apple", "_1":"banana", "_2":"cherry" }
-func (sr *StringsRegistry) Split(sep, str string) map[string]string {
-	parts := strings.Split(str, sep)
+// [Sprout Documentation: split]: https://docs.atom.codes/sprout/registries/strings#split
+func (sr *StringsRegistry) Split(sep, value string) map[string]string {
+	parts := strings.Split(value, sep)
 	return sr.populateMapWithParts(parts)
 }
 
-// Splitn divides 'orig' into a map of string parts using 'sep' as the separator
+// Splitn divides 'value' into a map of string parts using 'sep' as the separator
 // up to 'n' parts.
 //
 // Parameters:
 //
 //	sep string - the separator string.
 //	n int - the maximum number of substrings to return.
-//	orig string - the original string to split.
+//	value string - the original string to split.
 //
 // Returns:
 //
 //	map[string]string - a map of the split parts.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: splitn].
 //
-//	{{ "apple,banana,cherry" | split "," 2 }} // Output: { "_0":"apple", "_1":"banana,cherry" }
-func (sr *StringsRegistry) Splitn(sep string, n int, str string) map[string]string {
-	parts := strings.SplitN(str, sep, n)
+// [Sprout Documentation: splitn]: https://docs.atom.codes/sprout/registries/strings#splitn
+func (sr *StringsRegistry) Splitn(sep string, n int, value string) map[string]string {
+	parts := strings.SplitN(value, sep, n)
 	return sr.populateMapWithParts(parts)
 }
 
@@ -765,17 +753,17 @@ func (sr *StringsRegistry) Splitn(sep string, n int, str string) map[string]stri
 //
 //	start int - the starting index.
 //	end int - the ending index, exclusive.
-//	str string - the source string.
+//	value string - the source string.
 //
 // Returns:
 //
 //	string - the extracted substring.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: substr].
 //
-//	{{ "Hello World" | substring 0 5 }} // Output: "Hello"
-func (sr *StringsRegistry) Substring(start, end int, str string) string {
-	length := len(str)
+// [Sprout Documentation: substr]: https://docs.atom.codes/sprout/registries/strings#substr
+func (sr *StringsRegistry) Substring(start, end int, value string) string {
+	length := len(value)
 
 	if start < 0 {
 		start = length + start
@@ -792,27 +780,27 @@ func (sr *StringsRegistry) Substring(start, end int, str string) string {
 	if start > end {
 		return ""
 	}
-	return str[start:end]
+	return value[start:end]
 }
 
-// Indent adds spaces to the beginning of each line in 'str'.
+// Indent adds spaces to the beginning of each line in 'value'.
 //
 // Parameters:
 //
 //	spaces int - the number of spaces to add.
-//	str string - the string to indent.
+//	value string - the string to indent.
 //
 // Returns:
 //
 //	string - the indented string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: indent].
 //
-//	{{ "Hello\nWorld" | indent 4 }} // Output: "    Hello\n    World"
-func (sr *StringsRegistry) Indent(spaces int, str string) string {
+// [Sprout Documentation: indent]: https://docs.atom.codes/sprout/registries/strings#indent
+func (sr *StringsRegistry) Indent(spaces int, value string) string {
 	var builder strings.Builder
 	pad := strings.Repeat(" ", spaces)
-	lines := strings.Split(str, "\n")
+	lines := strings.Split(value, "\n")
 
 	for i, line := range lines {
 		if i > 0 {
@@ -830,16 +818,17 @@ func (sr *StringsRegistry) Indent(spaces int, str string) string {
 //
 // Parameters:
 //	spaces int - the number of spaces to add after the newline.
-//	str string - the string to indent.
+//	value string - the string to indent.
 //
 // Returns:
 //	string - the indented string with a newline at the start.
 //
-// Example:
-//	{{ "Hello\nWorld" | nindent 4 }} // Output: "\n    Hello\n    World"
+// For an example of this function in a Go template, refer to [Sprout Documentation: nindent].
+//
+// [Sprout Documentation: nindent]: https://docs.atom.codes/sprout/registries/strings#nindent
 
-func (sr *StringsRegistry) Nindent(spaces int, str string) string {
-	return "\n" + sr.Indent(spaces, str)
+func (sr *StringsRegistry) Nindent(spaces int, value string) string {
+	return "\n" + sr.Indent(spaces, value)
 }
 
 // Seq generates a sequence of numbers as a string. It can take 0, 1, 2, or 3
@@ -854,9 +843,9 @@ func (sr *StringsRegistry) Nindent(spaces int, str string) string {
 //
 //	string - a space-separated string of numbers in the sequence.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: seq].
 //
-//	{{ seq 1, 2, 10 }} // Output: "1 3 5 7 9"
+// [Sprout Documentation: seq]: https://docs.atom.codes/sprout/registries/strings#seq
 func (sr *StringsRegistry) Seq(params ...int) string {
 	increment := 1
 	switch len(params) {

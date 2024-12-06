@@ -12,9 +12,9 @@ import (
 //
 //	string - a new UUID string.
 //
-// Example:
+// For an example of this function in a Go template, refer to [Sprout Documentation: uuidv4].
 //
-//	{{ uuidv4 }} // Output: "3f0c463e-53f5-4f05-a2ec-3c083aa8f937"
+// [Sprout Documentation: uuidv4]: https://docs.atom.codes/sprout/registries/uniqueid#uuidv4
 func (ur *UniqueIDRegistry) Uuidv4() string {
 	return uuid.New().String()
 }

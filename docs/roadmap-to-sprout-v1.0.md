@@ -45,7 +45,7 @@ Aim to minimize memory allocations as much as possible to alleviate the burden o
 
 ### :white\_check\_mark: Native Error Handling - <mark style="color:green;">**DONE**</mark>
 
-Follow default go template error handling mechanisms for all functions to ensure that errors are managed gracefully and efficiently.
+Follow default Go template error handling mechanisms for all functions to ensure that errors are managed gracefully and efficiently.
 
 {% hint style="success" %}
 These features are implemented on v0.6.0, documentation can be found here:
