@@ -93,7 +93,7 @@ func (er *EncodingRegistry) Base32Decode(value string) (string, error) {
 	return string(bytes), nil
 }
 
-// FromJson decodes a JSON string into a Go data structure, returning an
+// FromJSON decodes a JSON string into a Go data structure, returning an
 // error if decoding fails.
 //
 // Parameters:
@@ -105,10 +105,10 @@ func (er *EncodingRegistry) Base32Decode(value string) (string, error) {
 //	any - the decoded Go data structure.
 //	error - error encountered during decoding, if any.
 //
-// For an example of this function in a Go template, refer to [Sprout Documentation: fromJson].
+// For an example of this function in a Go template, refer to [Sprout Documentation: fromJSON].
 //
-// [Sprout Documentation: fromJson]: https://docs.atom.codes/sprout/registries/encoding#fromjson
-func (er *EncodingRegistry) FromJson(value string) (any, error) {
+// [Sprout Documentation: fromJSON]: https://docs.atom.codes/sprout/registries/encoding#fromjson
+func (er *EncodingRegistry) FromJSON(value string) (any, error) {
 	var output any
 	err := json.Unmarshal([]byte(value), &output)
 	if err != nil {
@@ -117,7 +117,7 @@ func (er *EncodingRegistry) FromJson(value string) (any, error) {
 	return output, err
 }
 
-// ToJson encodes a Go data structure into a JSON string, returning an error
+// ToJSON encodes a Go data structure into a JSON string, returning an error
 // if encoding fails.
 //
 // Parameters:
@@ -129,10 +129,10 @@ func (er *EncodingRegistry) FromJson(value string) (any, error) {
 //	string - the JSON-encoded string.
 //	error - error encountered during encoding, if any.
 //
-// For an example of this function in a Go template, refer to [Sprout Documentation: toJson].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toJSON].
 //
-// [Sprout Documentation: toJson]: https://docs.atom.codes/sprout/registries/encoding#tojson
-func (er *EncodingRegistry) ToJson(value any) (string, error) {
+// [Sprout Documentation: toJSON]: https://docs.atom.codes/sprout/registries/encoding#tojson
+func (er *EncodingRegistry) ToJSON(value any) (string, error) {
 	output, err := json.Marshal(value)
 	if err != nil {
 		return "", fmt.Errorf("json encode error: %w", err)
@@ -140,7 +140,7 @@ func (er *EncodingRegistry) ToJson(value any) (string, error) {
 	return string(output), nil
 }
 
-// ToPrettyJson encodes a Go data structure into a pretty-printed JSON
+// ToPrettyJSON encodes a Go data structure into a pretty-printed JSON
 // string, returning an error if encoding fails.
 //
 // Parameters:
@@ -152,10 +152,10 @@ func (er *EncodingRegistry) ToJson(value any) (string, error) {
 //	string - the pretty-printed JSON string.
 //	error - error encountered during encoding, if any.
 //
-// For an example of this function in a Go template, refer to [Sprout Documentation: toPrettyJson].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toPrettyJSON].
 //
-// [Sprout Documentation: toPrettyJson]: https://docs.atom.codes/sprout/registries/encoding#toprettyjson
-func (er *EncodingRegistry) ToPrettyJson(value any) (string, error) {
+// [Sprout Documentation: toPrettyJSON]: https://docs.atom.codes/sprout/registries/encoding#toprettyjson
+func (er *EncodingRegistry) ToPrettyJSON(value any) (string, error) {
 	output, err := json.MarshalIndent(value, "", "  ")
 	if err != nil {
 		return "", fmt.Errorf("json encode error: %w", err)
@@ -163,7 +163,7 @@ func (er *EncodingRegistry) ToPrettyJson(value any) (string, error) {
 	return string(output), nil
 }
 
-// ToRawJson encodes a Go data structure into a JSON string without escaping
+// ToRawJSON encodes a Go data structure into a JSON string without escaping
 // HTML, returning an error if encoding fails.
 //
 // Parameters:
@@ -175,10 +175,10 @@ func (er *EncodingRegistry) ToPrettyJson(value any) (string, error) {
 //	string - the raw JSON string.
 //	error - error encountered during encoding, if any.
 //
-// For an example of this function in a Go template, refer to [Sprout Documentation: toRawJson].
+// For an example of this function in a Go template, refer to [Sprout Documentation: toRawJSON].
 //
-// [Sprout Documentation: toRawJson]: https://docs.atom.codes/sprout/registries/encoding#torawjson
-func (er *EncodingRegistry) ToRawJson(value any) (string, error) {
+// [Sprout Documentation: toRawJSON]: https://docs.atom.codes/sprout/registries/encoding#torawjson
+func (er *EncodingRegistry) ToRawJSON(value any) (string, error) {
 	buf := new(bytes.Buffer)
 	enc := json.NewEncoder(buf)
 	enc.SetEscapeHTML(false)
