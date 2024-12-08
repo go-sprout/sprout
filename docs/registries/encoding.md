@@ -79,7 +79,7 @@ The function decodes a Base32 encoded string back to its original form. If the i
 
 The function converts a JSON string into a corresponding Go data structure, enabling easy manipulation of the JSON data in a Go environment.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">fromJSON(v string) (any, error)
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">FromJSON(v string) (any, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
@@ -111,7 +111,7 @@ The function converts a Go data structure into a JSON string, allowing the data 
 
 The function converts a Go data structure into a pretty-printed JSON string, formatting the output with indentation and line breaks for better readability.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toPrettyJSON(v any) (string, error)
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToPrettyJSON(v any) (string, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
@@ -127,7 +127,7 @@ The function converts a Go data structure into a pretty-printed JSON string, for
 
 The function converts a Go data structure into a JSON string without escaping HTML characters, preserving the raw content as it is.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toRawJSON(v any) (string, error)
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToRawJSON(v any) (string, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
@@ -143,7 +143,7 @@ The function converts a Go data structure into a JSON string without escaping HT
 
 The function deserializes a YAML string into a Go map, allowing the structured data from YAML to be used and manipulated within a Go program.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">fromYAML(v string) (any, error)
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">FromYAML(v string) (any, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
@@ -159,7 +159,7 @@ The function deserializes a YAML string into a Go map, allowing the structured d
 
 The function serializes a Go data structure into a YAML string, converting the data into a format suitable for YAML representation.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toYAML(v any) (string, error)
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToYAML(v any) (string, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
@@ -175,7 +175,7 @@ The function serializes a Go data structure into a YAML string, converting the d
 
 The function serializes a Go data structure into a YAML string, converting the data into a format suitable for YAML representation. In addition to toYAML, toIndentYAML takes a parameter to define the indentation width in spaces.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">toIndentYAML(indent int, v any) (string, error)
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToIndentYAML(indent int, v any) (string, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
