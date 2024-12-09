@@ -1,7 +1,6 @@
 module github.com/go-sprout/sprout
 
 go 1.23.3
-toolchain go1.23.0
 
 require (
 	dario.cat/mergo v1.0.1
@@ -10,8 +9,8 @@ require (
 	github.com/mitchellh/copystructure v1.2.0
 	github.com/spf13/cast v1.7.0
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/crypto v0.29.0
-	golang.org/x/text v0.20.0
+	golang.org/x/crypto v0.30.0
+	golang.org/x/text v0.21.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
