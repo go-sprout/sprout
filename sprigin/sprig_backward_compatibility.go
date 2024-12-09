@@ -3,7 +3,7 @@ package sprigin
 import (
 	htemplate "html/template"
 	"log/slog"
-	gostrings "strings"
+	"strings"
 	ttemplate "text/template"
 
 	"github.com/go-sprout/sprout"
@@ -23,7 +23,7 @@ import (
 	"github.com/go-sprout/sprout/registry/semver"
 	"github.com/go-sprout/sprout/registry/slices"
 	"github.com/go-sprout/sprout/registry/std"
-	"github.com/go-sprout/sprout/registry/strings"
+	rstrings "github.com/go-sprout/sprout/registry/strings"
 	"github.com/go-sprout/sprout/registry/time"
 	"github.com/go-sprout/sprout/registry/uniqueid"
 )
@@ -164,7 +164,7 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 		backward.NewRegistry(),
 		reflect.NewRegistry(),
 		time.NewRegistry(),
-		strings.NewRegistry(),
+		rstrings.NewRegistry(),
 		random.NewRegistry(),
 		checksum.NewRegistry(),
 		conversion.NewRegistry(),
@@ -197,7 +197,7 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 	// BACKWARDS COMPATIBILITY
 	// Ensure error handling is consistent with sprig functions
 	for funcName, fn := range sh.funcsMap {
-		if !gostrings.HasPrefix(funcName, "must") {
+		if !strings.HasPrefix(funcName, "must") {
 			sh.funcsMap[funcName] = func(args ...any) (any, error) {
 				out, _ := runtime.SafeCall(fn, args...)
 				return out, nil
