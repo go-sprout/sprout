@@ -9,7 +9,6 @@ import (
 
 	"github.com/go-sprout/sprout/pesticide"
 	"github.com/go-sprout/sprout/registry/conversion"
-	rtime "github.com/go-sprout/sprout/registry/time"
 )
 
 func TestToBool(t *testing.T) {
@@ -137,7 +136,7 @@ func TestToDate(t *testing.T) {
 		require.NoError(t, err)
 
 		// temporarily force time.Local to New York
-		rtime.ForceTimeLocal(t, local)
+		pesticide.ForceTimeLocal(t, local)
 
 		tc := []pesticide.TestCase{
 			{
@@ -177,7 +176,7 @@ func TestToDate(t *testing.T) {
 		require.NoError(t, err)
 
 		// temporarily force time.Local to New York
-		rtime.ForceTimeLocal(t, local)
+		pesticide.ForceTimeLocal(t, local)
 
 		tc := []pesticide.TestCase{
 			{
@@ -206,7 +205,7 @@ func TestToDate(t *testing.T) {
 	t.Run("dates without timezone (local time should be assumed)", func(t *testing.T) {
 		t.Run("UTC", func(t *testing.T) {
 			// temporarily force time.Local to UTC
-			rtime.ForceTimeLocal(t, time.UTC)
+			pesticide.ForceTimeLocal(t, time.UTC)
 
 			tc := []pesticide.TestCase{
 				{
@@ -231,7 +230,7 @@ func TestToDate(t *testing.T) {
 			require.NoError(t, err)
 
 			// temporarily force time.Local to New York
-			rtime.ForceTimeLocal(t, local)
+			pesticide.ForceTimeLocal(t, local)
 
 			tc := []pesticide.TestCase{
 				{

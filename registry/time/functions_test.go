@@ -64,7 +64,7 @@ func TestDate(t *testing.T) {
 	t.Run("unixtime", func(t *testing.T) {
 		t.Run("UTC", func(t *testing.T) {
 			// temporarily force time.Local to UTC
-			rtime.ForceTimeLocal(t, time.UTC)
+			pesticide.ForceTimeLocal(t, time.UTC)
 
 			// here we are simulating a [gotime.Now]
 			timeTest := time.Date(2024, 5, 7, 15, 4, 5, 0, time.UTC)
@@ -82,7 +82,7 @@ func TestDate(t *testing.T) {
 			require.NoError(t, err)
 
 			// temporarily force time.Local to New York
-			rtime.ForceTimeLocal(t, local)
+			pesticide.ForceTimeLocal(t, local)
 
 			// here we are simulating a [gotime.Now] call
 			timeTest := time.Date(2024, 5, 7, 15, 4, 5, 0, local)
