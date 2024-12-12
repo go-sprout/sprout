@@ -1,5 +1,5 @@
 ---
-# Thanks to @ccoVeille for the configuration template from 
+# Thanks to @ccoVeille for the configuration template from
 # https://github.com/ccoVeille/golangci-lint-config-examples
 linters:
   enable:
@@ -9,6 +9,7 @@ linters:
     - gofumpt
     - gosimple
     - govet
+    - importas
     - ineffassign
     - staticcheck
     - misspell
@@ -19,6 +20,13 @@ linters:
     - usestdlibvars
 
 linters-settings:
+  importas:
+    alias:
+      # prevent conflicts with std packages
+      - pkg:  github.com/go-sprout/sprout/registry/time
+        alias: rtime
+      - pkg:  github.com/go-sprout/sprout/registry/strings
+        alias: rstrings
   gofumpt:
     module-path: github.com/go-sprout/sprout
   misspell:
