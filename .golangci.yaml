@@ -23,10 +23,8 @@ linters-settings:
   importas:
     alias:
       # prevent conflicts with std packages
-      - pkg:  github.com/go-sprout/sprout/registry/time
-        alias: rtime
-      - pkg:  github.com/go-sprout/sprout/registry/strings
-        alias: rstrings
+      - pkg:  github.com/go-sprout/sprout/registry/(\w+)
+        alias: r$1
   gofumpt:
     module-path: github.com/go-sprout/sprout
   misspell:
