@@ -22,9 +22,10 @@ linters:
 linters-settings:
   importas:
     alias:
-      # prevent conflicts with std packages
-      - pkg:  github.com/go-sprout/sprout/registry/(\w+)
-        alias: r$1
+      # prevent conflicts with first level std packages
+      - pkg:  "[a-z][0-9a-z]+"
+        alias: ""
+
   gofumpt:
     module-path: github.com/go-sprout/sprout
   misspell:
