@@ -3,7 +3,7 @@ package sprout
 import (
 	"log/slog"
 	"slices"
-	gostrings "strings"
+	"strings"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -259,7 +259,7 @@ func safeFuncName(name string) string {
 		return ""
 	}
 
-	var b gostrings.Builder
+	var b strings.Builder
 	b.Grow(len(name) + 4)
 
 	b.WriteString("safe")

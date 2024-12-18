@@ -170,7 +170,7 @@ func (cr *ConversionRegistry) ToString(value any) string {
 //
 // Parameters:
 //
-//	fmt string - the date format string.
+//	layout string - the date format string.
 //	value string - the date string to parse.
 //
 // Returns:
@@ -181,8 +181,8 @@ func (cr *ConversionRegistry) ToString(value any) string {
 // For an example of this function in a Go template, refer to [Sprout Documentation: toDate].
 //
 // [Sprout Documentation: toDate]: https://docs.atom.codes/sprout/registries/conversion#todate
-func (cr *ConversionRegistry) ToDate(fmt, value string) (time.Time, error) {
-	return time.ParseInLocation(fmt, value, time.Local)
+func (cr *ConversionRegistry) ToDate(layout, value string) (time.Time, error) {
+	return time.ParseInLocation(layout, value, time.Local)
 }
 
 // ToLocalDate converts a string to a time.Time object based on a format specification
@@ -190,7 +190,7 @@ func (cr *ConversionRegistry) ToDate(fmt, value string) (time.Time, error) {
 //
 // Parameters:
 //
-//	fmt string - the date format string.
+//	layout string - the date format string.
 //	value string - the date string to parse.
 //
 // Returns:
@@ -201,13 +201,13 @@ func (cr *ConversionRegistry) ToDate(fmt, value string) (time.Time, error) {
 // For an example of this function in a Go template, refer to [Sprout Documentation: toLocalDate].
 //
 // [Sprout Documentation: toLocalDate]: https://docs.atom.codes/sprout/registries/conversion#tolocaldate
-func (cr *ConversionRegistry) ToLocalDate(fmt, timezone, value string) (time.Time, error) {
+func (cr *ConversionRegistry) ToLocalDate(layout, timezone, value string) (time.Time, error) {
 	location, err := time.LoadLocation(timezone)
 	if err != nil {
 		return time.Time{}, err
 	}
 
-	return time.ParseInLocation(fmt, value, location)
+	return time.ParseInLocation(layout, value, location)
 }
 
 // ToDuration converts a value to a time.Duration.

@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 	"text/template"
-	gotime "time"
+	"time"
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/go-sprout/sprout"
@@ -29,7 +29,7 @@ import (
 	"github.com/go-sprout/sprout/registry/slices"
 	"github.com/go-sprout/sprout/registry/std"
 	"github.com/go-sprout/sprout/registry/strings"
-	"github.com/go-sprout/sprout/registry/time"
+	rtime "github.com/go-sprout/sprout/registry/time"
 	"github.com/go-sprout/sprout/registry/uniqueid"
 	"github.com/go-sprout/sprout/sprigin"
 	"github.com/stretchr/testify/assert"
@@ -48,8 +48,8 @@ var data = map[string]any{
 	"object":      struct{ Name string }{"example object"},
 	"func":        func() string { return "example function" },
 	"error":       fmt.Errorf("example error"),
-	"time":        gotime.Now(),
-	"duration":    5 * gotime.Second,
+	"time":        time.Now(),
+	"duration":    5 * time.Second,
 	"channel":     make(chan any),
 	"json":        `{"foo": "bar"}`,
 	"yaml":        "foo: bar",
@@ -136,7 +136,7 @@ func sproutBench(templatePath string) {
 		semver.NewRegistry(),
 		backward.NewRegistry(),
 		reflect.NewRegistry(),
-		time.NewRegistry(),
+		rtime.NewRegistry(),
 		strings.NewRegistry(),
 		random.NewRegistry(),
 		checksum.NewRegistry(),

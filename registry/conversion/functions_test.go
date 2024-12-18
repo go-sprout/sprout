@@ -3,6 +3,9 @@ package conversion_test
 import (
 	"fmt"
 	"testing"
+	"time"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/go-sprout/sprout/pesticide"
 	"github.com/go-sprout/sprout/registry/conversion"
@@ -120,34 +123,152 @@ func TestToString(t *testing.T) {
 }
 
 func TestToDate(t *testing.T) {
-	tc := []pesticide.TestCase{
-		{
-			Name:           "TestDate",
-			Input:          `{{$v := toDate "2006-01-02" .V }}{{typeOf $v}}-{{$v}}`,
-			Data:           map[string]any{"V": "2024-05-09"},
-			ExpectedOutput: "time.Time-2024-05-09 00:00:00 +0000 UTC",
-		},
-		{
-			Name:           "TestDate",
-			Input:          `{{$v := toDate "2006-01-02 15:04:05 MST" .V }}{{typeOf $v}}-{{$v}}`,
-			Data:           map[string]any{"V": "2024-05-09 00:00:00 UTC"},
-			ExpectedOutput: "time.Time-2024-05-09 00:00:00 +0000 UTC",
-		},
-		{
-			Name:        "TestInvalidValue",
-			Input:       `{{$v := toDate "2006-01-02" .V }}{{typeOf $v}}-{{$v}}`,
-			Data:        map[string]any{"V": ""},
-			ExpectedErr: "cannot parse \"\" as \"2006\"",
-		},
-		{
-			Name:        "TestInvalidLayout",
-			Input:       `{{$v := toDate "invalid" .V }}{{typeOf $v}}-{{$v}}`,
-			Data:        map[string]any{"V": "2024-05-09"},
-			ExpectedErr: "cannot parse \"2024-05-09\" as \"invalid\"",
-		},
-	}
+	t.Run("dates with numeric timezone offset", func(t *testing.T) {
+		// Please refer to https://pkg.go.dev/time#Parse
+		// When parsing a time with a zone offset like -0700,
+		// if the offset corresponds to a time zone used by the current location (Local),
+		// then Parse uses that location and zone in the returned time.
+		// Otherwise it records the time as being in a fabricated location with time fixed at the given zone offset.
 
-	pesticide.RunTestCases(t, conversion.NewRegistry(), tc)
+		// So we have to temporarily force time.Local a known timezone
+		// to validate the behavior of toDate function
+		local, err := time.LoadLocation("America/New_York")
+		require.NoError(t, err)
+
+		// temporarily force time.Local to New York
+		pesticide.ForceTimeLocal(t, local)
+
+		tc := []pesticide.TestCase{
+			{
+				Name:           "date with UTC timezone",
+				Input:          `{{$v := toDate "2006-01-02 15:04:05 -0700" .V }}{{typeOf $v}}-{{$v}}`,
+				Data:           map[string]any{"V": "2024-05-09 00:00:00 +0000"},
+				ExpectedOutput: "time.Time-2024-05-09 00:00:00 +0000 +0000",
+			},
+			{
+				Name:           "date with non-UTC timezone equal to local timezone",
+				Input:          `{{$v := toDate "2006-01-02 15:04:05 -0700" .V }}{{typeOf $v}}-{{$v}}`,
+				Data:           map[string]any{"V": "2024-05-09 00:00:00 -0400"},
+				ExpectedOutput: "time.Time-2024-05-09 00:00:00 -0400 EDT",
+			},
+			{
+				Name:           "date with non-UTC timezone different than local",
+				Input:          `{{$v := toDate "2006-01-02 15:04:05 -0700" .V }}{{typeOf $v}}-{{$v}}`,
+				Data:           map[string]any{"V": "2024-05-09 00:00:00 -0700"},
+				ExpectedOutput: "time.Time-2024-05-09 00:00:00 -0700 -0700",
+			},
+		}
+
+		pesticide.RunTestCases(t, conversion.NewRegistry(), tc)
+	})
+
+	t.Run("dates with abbreviated timezone", func(t *testing.T) {
+		// Please refer to https://pkg.go.dev/time#Parse
+		// When parsing a time with a zone abbreviation like MST,
+		// if the zone abbreviation has a defined offset in the current location,
+		// then that offset is used.
+		// The zone abbreviation "UTC" is recognized as UTC regardless of location.
+		// To avoid such problems, prefer time layouts that use a numeric zone offset, or use ParseInLocation.
+
+		// So we have to temporarily force time.Local a known timezone
+		// to validate the behavior of toDate function
+		local, err := time.LoadLocation("America/New_York")
+		require.NoError(t, err)
+
+		// temporarily force time.Local to New York
+		pesticide.ForceTimeLocal(t, local)
+
+		tc := []pesticide.TestCase{
+			{
+				Name:           "date with UTC timezone",
+				Input:          `{{$v := toDate "2006-01-02 15:04:05 MST" .V }}{{typeOf $v}}-{{$v}}`,
+				Data:           map[string]any{"V": "2024-05-09 00:00:00 UTC"},
+				ExpectedOutput: "time.Time-2024-05-09 00:00:00 +0000 UTC",
+			},
+			{
+				Name:           "date with non-UTC timezone equal to local timezone",
+				Input:          `{{$v := toDate "2006-01-02 15:04:05 MST" .V }}{{typeOf $v}}-{{$v}}`,
+				Data:           map[string]any{"V": "2024-05-09 00:00:00 EDT"},
+				ExpectedOutput: "time.Time-2024-05-09 00:00:00 -0400 EDT",
+			},
+			{
+				Name:           "date with non-UTC timezone different than local",
+				Input:          `{{$v := toDate "2006-01-02 15:04:05 MST" .V }}{{typeOf $v}}-{{$v}}`,
+				Data:           map[string]any{"V": "2024-05-09 00:00:00 MST"},
+				ExpectedOutput: "time.Time-2024-05-09 00:00:00 +0000 MST",
+			},
+		}
+
+		pesticide.RunTestCases(t, conversion.NewRegistry(), tc)
+	})
+
+	t.Run("dates without timezone (local time should be assumed)", func(t *testing.T) {
+		t.Run("UTC", func(t *testing.T) {
+			// temporarily force time.Local to UTC
+			pesticide.ForceTimeLocal(t, time.UTC)
+
+			tc := []pesticide.TestCase{
+				{
+					Name:           "short date",
+					Input:          `{{$v := toDate "2006-01-02" .V }}{{typeOf $v}}-{{$v}}`,
+					Data:           map[string]any{"V": "2024-05-09"},
+					ExpectedOutput: "time.Time-2024-05-09 00:00:00 +0000 UTC",
+				},
+				{
+					Name:           "datetime ",
+					Input:          `{{$v := toDate "2006-01-02 15:04:05" .V }}{{typeOf $v}}-{{$v}}`,
+					Data:           map[string]any{"V": "2024-05-09 01:02:03"},
+					ExpectedOutput: "time.Time-2024-05-09 01:02:03 +0000 UTC",
+				},
+			}
+
+			pesticide.RunTestCases(t, conversion.NewRegistry(), tc)
+		})
+
+		t.Run("New York timezone", func(t *testing.T) {
+			local, err := time.LoadLocation("America/New_York")
+			require.NoError(t, err)
+
+			// temporarily force time.Local to New York
+			pesticide.ForceTimeLocal(t, local)
+
+			tc := []pesticide.TestCase{
+				{
+					Name:           "short date",
+					Input:          `{{$v := toDate "2006-01-02" .V }}{{typeOf $v}}-{{$v}}`,
+					Data:           map[string]any{"V": "2024-05-09"},
+					ExpectedOutput: "time.Time-2024-05-09 00:00:00 -0400 EDT",
+				},
+				{
+					Name:           "datetime ",
+					Input:          `{{$v := toDate "2006-01-02 15:04:05" .V }}{{typeOf $v}}-{{$v}}`,
+					Data:           map[string]any{"V": "2024-05-09 01:02:03"},
+					ExpectedOutput: "time.Time-2024-05-09 01:02:03 -0400 EDT",
+				},
+			}
+
+			pesticide.RunTestCases(t, conversion.NewRegistry(), tc)
+		})
+	})
+
+	t.Run("invalid layout", func(t *testing.T) {
+		tc := []pesticide.TestCase{
+			{
+				Name:        "TestInvalidValue",
+				Input:       `{{$v := toDate "2006-01-02" .V }}{{typeOf $v}}-{{$v}}`,
+				Data:        map[string]any{"V": ""},
+				ExpectedErr: `cannot parse "" as "2006"`,
+			},
+			{
+				Name:        "TestInvalidLayout",
+				Input:       `{{$v := toDate "invalid" .V }}{{typeOf $v}}-{{$v}}`,
+				Data:        map[string]any{"V": "2024-05-09"},
+				ExpectedErr: `cannot parse "2024-05-09" as "invalid"`,
+			},
+		}
+
+		pesticide.RunTestCases(t, conversion.NewRegistry(), tc)
+	})
 }
 
 func TestToLocalDate(t *testing.T) {

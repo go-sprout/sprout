@@ -192,7 +192,7 @@ See more about Golang Layout on the [official documentation](https://go.dev/src/
 
 toLocalDate converts a string to a time.Time object based on a format specification and the local timezone.
 
-<table data-header-hidden><thead><tr><th width="162">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToLocalDate(fmt, timezone, str string) (time.Time, error)
+<table data-header-hidden><thead><tr><th width="162">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToLocalDate(layout, timezone, value string) (time.Time, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}
