@@ -1,6 +1,6 @@
 # Changelog
 
-## Release v1.0.0: Sprout Genesis 🌱 (2024-10-xx)
+## Release v1.0.0: Sprout Genesis 🌱 (2025-01-16)
 
 > 🌱 A New Era of Functionality, Flexibility, and Performance!
 
