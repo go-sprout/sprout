@@ -140,7 +140,7 @@ func (ch *CryptoRegistry) GeneratePrivateKey(typ string) (string, error) {
 	case "ed25519":
 		_, priv, err = ed25519.GenerateKey(cryptorand.Reader)
 	default:
-		return "", fmt.Errorf("Unknown type %s", typ)
+		return "", fmt.Errorf("unknown type %s", typ)
 	}
 	if err != nil {
 		return "", fmt.Errorf("failed to generate private key: %w", err)
