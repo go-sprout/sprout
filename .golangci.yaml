@@ -1,54 +1,56 @@
 ---
 # Thanks to @ccoVeille for the configuration template from
 # https://github.com/ccoVeille/golangci-lint-config-examples
+version: "2"
 linters:
   enable:
     - errorlint
-    - gci
     - gocritic
-    - gofumpt
-    - gosimple
-    - govet
     - importas
-    - ineffassign
-    - staticcheck
+    - mirror
     - misspell
     - testifylint
-    - errcheck
     - thelper
-    - mirror
     - usestdlibvars
-
-linters-settings:
-  importas:
-    alias:
-      # prevent conflicts with first level std packages
-      - pkg:  "[a-z][0-9a-z]+"
-        alias: ""
-
-  gofumpt:
-    module-path: github.com/go-sprout/sprout
-  misspell:
-    ignore-words:
-      - "nto" # Used in the codebase in format "\nto" (as a newline)
-  gci:
-    sections:
-      - standard
-      - default
-      - prefix(github.com/go-sprout)
-  testifylint:
-    enable:
-      - float-compare
-      - go-require
-      - bool-compare
-      - compares
-      - empty
-      - error-is-as
-      - error-nil
-      - expected-actual
-      - len
-      - require-error
-      - suite-dont-use-pkg
-      - suite-extra-assert-call
-run:
-  timeout: 5m
+  settings:
+    importas:
+      alias:
+       # prevent conflicts with first level std packages
+        - pkg: '[a-z][0-9a-z]+'
+          alias: ""
+    misspell:
+      ignore-rules:
+        - nto  # Used in the codebase in format "\nto" (as a newline)
+    testifylint:
+      enable:
+        - float-compare
+        - go-require
+        - bool-compare
+        - compares
+        - empty
+        - error-is-as
+        - error-nil
+        - expected-actual
+        - len
+        - require-error
+        - suite-dont-use-pkg
+        - suite-extra-assert-call
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+formatters:
+  enable:
+    - gci
+    - gofumpt
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - prefix(github.com/go-sprout)
+    gofumpt:
+      module-path: github.com/go-sprout/sprout
