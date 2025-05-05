@@ -9,7 +9,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.3.1
 	github.com/google/uuid v1.6.0
 	github.com/mitchellh/copystructure v1.2.0
-	github.com/spf13/cast v1.7.1
+	github.com/spf13/cast v1.8.0
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/crypto v0.37.0
 	golang.org/x/text v0.24.0
