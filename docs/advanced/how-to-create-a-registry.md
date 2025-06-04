@@ -55,9 +55,11 @@ func (or *OwnRegistry) LinkHandler(fh sprout.Handler) error {
 
 // RegisterFunctions adds the provided functions into the given function map.
 // This method is called by an Handler to register all functions of a registry.
-func (or *OwnRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
+func (or *OwnRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
   // Example of registering a function
   sprout.AddFunction(funcsMap, "yourFunction", or.YourFunction)
+
+  return nil
 }
 
 // OPTIONAL: Your registry don't needs to register aliases to work.
@@ -66,6 +68,8 @@ func (or *OwnRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) {
 func (or *OwnRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) error {
   // Example of registering an alias
   sprout.AddAlias(aliasMap, "yourFunction", "yourAlias")
+
+  return nil
 }
 ```
 
