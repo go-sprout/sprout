@@ -11,8 +11,8 @@ require (
 	github.com/mitchellh/copystructure v1.2.0
 	github.com/spf13/cast v1.9.2
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/crypto v0.38.0
-	golang.org/x/text v0.25.0
+	golang.org/x/crypto v0.39.0
+	golang.org/x/text v0.26.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
