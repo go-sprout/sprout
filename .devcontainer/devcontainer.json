@@ -2,9 +2,9 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/go
 {
   "name": "Sprout",
-  "image": "mcr.microsoft.com/devcontainers/go:1.22-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/go:1.24-bullseye",
   "features": {
-    "ghcr.io/devcontainers-contrib/features/go-task:1": {}
+    "ghcr.io/devcontainers-extra/features/go-task:1": {}
   },
   // Configure tool-specific properties.
   "customizations": {
