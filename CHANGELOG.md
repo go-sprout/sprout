@@ -1,5 +1,40 @@
 # Changelog
 
+## Release v1.0.1: Sprout Maintenance 🛠️ (2025-06-11)
+
+> 🌿 Keeping the Garden Tidy and Secure!
+
+This patch release focuses on maintaining Sprout's health with critical dependency updates and documentation improvements. We're committed to keeping Sprout secure and up-to-date for all our users.
+
+### 🔒 **Security & Dependencies**
+- **Updated golang.org/x/crypto**: Bumped from v0.32.0 to v0.39.0 across multiple updates, ensuring the latest security patches and improvements. See [#124](https://github.com/go-sprout/sprout/pull/124).
+- **Updated golang.org/x/text**: Upgraded from v0.21.0 to v0.24.0 for better Unicode support and text processing capabilities. See [#119](https://github.com/go-sprout/sprout/pull/119).
+- **Updated dario.cat/mergo**: Bumped from v1.0.1 to v1.0.2 for improved merging functionality. See [PR #125](https://github.com/go-sprout/sprout/pull/125).
+- **Updated github.com/spf13/cast**: Upgraded from v1.7.1 to v1.8.0 for enhanced type conversion capabilities. See [PR #121](https://github.com/go-sprout/sprout/pull/121).
+
+### 🛠️ **Maintenance & Tooling**
+- **Migrated to golangci-lint v2**: Updated our linting infrastructure for better code quality checks. Thanks to [@mrueg](https://github.com/mrueg) for this contribution! See [PR #117](https://github.com/go-sprout/sprout/pull/117).
+- **CI/CD Improvements**: Updated multiple GitHub Actions to their latest versions:
+  - codecov/codecov-action: v5.1.2 → v5.4.3 (PRs [#110](https://github.com/go-sprout/sprout/pull/110), [#114](https://github.com/go-sprout/sprout/pull/114), [#120](https://github.com/go-sprout/sprout/pull/120), [#127](https://github.com/go-sprout/sprout/pull/127))
+  - golangci/golangci-lint-action: v7 → v8 (PR [#122](https://github.com/go-sprout/sprout/pull/122))
+
+### 📚 **Documentation**
+- **Fixed Registry Code Example**: Corrected the code example in our registry documentation to ensure developers have accurate implementation guidance. Thanks to [@sagikazarmark](https://github.com/sagikazarmark) for spotting and fixing this! See [PR #126](https://github.com/go-sprout/sprout/pull/126).
+
+---
+
+### 🎉 **Welcome New Contributors!**
+
+We're excited to welcome [@sagikazarmark](https://github.com/sagikazarmark) to the Sprout community with their first contribution! Thank you for helping us improve our documentation.
+
+---
+
+### 📝 **Notes**
+
+This maintenance release ensures Sprout remains secure and compatible with the latest Go ecosystem updates. While there are no new features in this release, these dependency updates include important security patches and performance improvements that benefit all Sprout users.
+
+**Full Changelog**: https://github.com/go-sprout/sprout/compare/v1.0.0...v1.0.1
+
 ## Release v1.0.0: Sprout Genesis 🌱 (2025-01-16)
 
 > 🌱 A New Era of Functionality, Flexibility, and Performance!
