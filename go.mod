@@ -6,7 +6,7 @@ toolchain go1.24.1
 
 require (
 	dario.cat/mergo v1.0.2
-	github.com/Masterminds/semver/v3 v3.3.1
+	github.com/Masterminds/semver/v3 v3.4.0
 	github.com/google/uuid v1.6.0
 	github.com/mitchellh/copystructure v1.2.0
 	github.com/spf13/cast v1.9.2
