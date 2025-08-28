@@ -34,7 +34,7 @@ func TestSemverCompare(t *testing.T) {
 
 	mtc := []pesticide.TestCase{
 		{Input: `{{ semverCompare "abc" "1.0.0" }}`, ExpectedErr: "improper constraint"},
-		{Input: `{{ semverCompare "1.0.0" "abc" }}`, ExpectedErr: "Invalid Semantic Version"},
+		{Input: `{{ semverCompare "1.0.0" "abc" }}`, ExpectedErr: "invalid semantic version"},
 	}
 
 	pesticide.RunTestCases(t, semver.NewRegistry(), mtc)
