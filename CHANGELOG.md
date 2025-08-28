@@ -1,5 +1,23 @@
 # Changelog
 
+## Release v1.0.2: Sprout Refresh 🔄 (2025-08-28)
+
+> 🛡️ Staying Fresh and Secure!
+
+This patch release continues our commitment to keeping Sprout secure and up-to-date with the latest dependency updates from the Go ecosystem.
+
+### 🔒 **Security & Dependencies**
+- **Updated golang.org/x/crypto**: Bumped from v0.39.0 to v0.41.0 across multiple updates, ensuring the latest security patches and cryptographic improvements. See [#133](https://github.com/go-sprout/sprout/pull/133) and [#135](https://github.com/go-sprout/sprout/pull/135).
+- **Updated golang.org/x/text**: Upgraded from v0.26.0 to v0.28.0 for enhanced Unicode support and text processing capabilities. See [#132](https://github.com/go-sprout/sprout/pull/132) and [#134](https://github.com/go-sprout/sprout/pull/134).
+
+---
+
+### 📝 **Notes**
+
+This maintenance release ensures Sprout continues to benefit from the latest security patches and performance improvements in the Go ecosystem. These dependency updates provide enhanced cryptographic functions and improved text processing without introducing any breaking changes.
+
+**Full Changelog**: https://github.com/go-sprout/sprout/compare/v1.0.1...v1.0.2
+
 ## Release v1.0.1: Sprout Maintenance 🛠️ (2025-06-11)
 
 > 🌿 Keeping the Garden Tidy and Secure!

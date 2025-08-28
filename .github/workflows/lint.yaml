@@ -16,11 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Install Go
       uses: actions/setup-go@v5
       with:
-        go-version: stable
+        go-version: 1.24
     - name: Install testifylint
       run: go install github.com/Antonboom/testifylint@v1.4.0
     - name: golangci-lint
