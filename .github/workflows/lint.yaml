@@ -24,6 +24,6 @@ jobs:
     - name: Install testifylint
       run: go install github.com/Antonboom/testifylint@v1.4.0
     - name: golangci-lint
-      uses: golangci/golangci-lint-action@v8
+      uses: golangci/golangci-lint-action@v9
       with:
         version: v2.1.0
