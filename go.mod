@@ -1,6 +1,6 @@
 module github.com/go-sprout/sprout
 
-go 1.23.3
+go 1.24.0
 
 toolchain go1.24.1
 
@@ -12,8 +12,8 @@ require (
 	github.com/spf13/cast v1.9.2
 	github.com/stretchr/testify v1.11.1
 	go.yaml.in/yaml/v3 v3.0.4
-	golang.org/x/crypto v0.41.0
-	golang.org/x/text v0.28.0
+	golang.org/x/crypto v0.44.0
+	golang.org/x/text v0.31.0
 )
 
 require (
