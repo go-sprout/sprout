@@ -3,9 +3,10 @@ package sprigin
 import (
 	"testing"
 
-	"github.com/go-sprout/sprout"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/go-sprout/sprout"
 )
 
 const sprigFunctionCount = 203
