@@ -178,6 +178,14 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 		env.NewRegistry(),
 	)
 
+	// BACKWARDS COMPATIBILITY
+	// Override dig to use Sprig's signature (keys + default + dict)
+	// instead of Sprout's signature (keys + dict)
+	mapsRegistry := maps.NewRegistry()
+	_ = mapsRegistry.LinkHandler(sh)
+	sh.funcsMap["dig"] = mapsRegistry.SprigDig
+	// \ BACKWARDS COMPATIBILITY
+
 	// Register aliases for functions
 	// BACKWARDS COMPATIBILITY
 	// Register the sprig function aliases

@@ -44,7 +44,7 @@ var data = map[string]any{
 	"float":       123.456,
 	"bool":        true,
 	"array":       []any{"a", "b", "c"},
-	"map":         map[string]any{"foo": "bar"},
+	"map":         map[string]any{"foo": "bar", "nested": map[string]any{"far": "bee"}},
 	"object":      struct{ Name string }{"example object"},
 	"func":        func() string { return "example function" },
 	"error":       fmt.Errorf("example error"),

@@ -401,6 +401,49 @@ func (mr *MapsRegistry) Dig(args ...any) (any, error) {
 	return mr.digIntoDict(dict, keys)
 }
 
+// SprigDig implements Sprig's dig signature for backward compatibility.
+// It navigates through a nested dictionary using a sequence of keys and returns
+// the value found, or a default value if the path doesn't exist.
+//
+// Parameters:
+//
+//	args ...any - a sequence of keys, followed by a default value, followed by a dictionary.
+//
+// Returns:
+//
+//	any - the value found at the nested key path, or the default value if not found.
+//	error - an error if there are fewer than three arguments or if types are invalid.
+//
+// Example (Sprig syntax):
+//
+//	{{ dig "a" "b" "default" .dict }} - returns .dict.a.b or "default" if not found
+func (mr *MapsRegistry) SprigDig(args ...any) (any, error) {
+	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
+	if len(args) < 3 {
+		return nil, errors.New("dig requires at least three arguments: a sequence of keys, a default value, and a dictionary")
+	}
+
+	dict, ok := args[len(args)-1].(map[string]any)
+	if !ok {
+		return nil, errors.New("last argument must be a map[string]any")
+	}
+
+	// The second-to-last argument is the default value (can be any type in Sprig)
+	defaultValue := args[len(args)-2]
+
+	keys, err := mr.parseKeys(args[:len(args)-2])
+	if err != nil {
+		return nil, fmt.Errorf("cannot parse keys: %w", err)
+	}
+
+	value, err := mr.digIntoDict(dict, keys)
+	if err != nil || value == nil {
+		return defaultValue, nil
+	}
+
+	return value, nil
+}
+
 // HasKey checks if the specified key exists in the dictionary.
 //
 // Parameters:
