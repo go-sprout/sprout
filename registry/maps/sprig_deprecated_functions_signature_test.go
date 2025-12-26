@@ -81,3 +81,23 @@ func TestDeprecatedOmit(t *testing.T) {
 
 	pesticide.RunTestCases(t, maps.NewRegistry(), tc)
 }
+
+// TestDeprecatedDig tests the Sprig-compatible dig signature (keys + default + dict).
+// This function is only available through the sprigin compatibility layer.
+func TestDeprecatedDig(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{Name: "TestSingleKeyFound", Input: `{{dig "a" "default" .}}`, ExpectedOutput: "found", Data: map[string]any{"a": "found"}},
+		{Name: "TestSingleKeyNotFound", Input: `{{dig "b" "default" .}}`, ExpectedOutput: "default", Data: map[string]any{"a": "found"}},
+		{Name: "TestNestedKeysFound", Input: `{{dig "a" "b" "default" .}}`, ExpectedOutput: "nested", Data: map[string]any{"a": map[string]any{"b": "nested"}}},
+		{Name: "TestNestedKeysNotFound", Input: `{{dig "a" "c" "default" .}}`, ExpectedOutput: "default", Data: map[string]any{"a": map[string]any{"b": "nested"}}},
+		{Name: "TestDeeplyNested", Input: `{{dig "a" "b" "c" "default" .}}`, ExpectedOutput: "deep", Data: map[string]any{"a": map[string]any{"b": map[string]any{"c": "deep"}}}},
+		{Name: "TestDeeplyNestedNotFound", Input: `{{dig "a" "b" "x" "default" .}}`, ExpectedOutput: "default", Data: map[string]any{"a": map[string]any{"b": map[string]any{"c": "deep"}}}},
+		{Name: "TestEmptyDict", Input: `{{dig "a" "default" .}}`, ExpectedOutput: "default", Data: map[string]any{}},
+		{Name: "TestIntegerValue", Input: `{{dig "count" "0" .}}`, ExpectedOutput: "42", Data: map[string]any{"count": 42}},
+		{Name: "TestNotEnoughArgs", Input: `{{dig "a" .}}`, ExpectedErr: "dig requires at least three arguments", Data: map[string]any{"a": 1}},
+		{Name: "TestInvalidLastArg", Input: `{{dig "a" "default" "notamap"}}`, ExpectedErr: "last argument must be a map[string]any"},
+		{Name: "TestInvalidKeyType", Input: `{{dig .num "default" .dict}}`, ExpectedErr: "all keys must be strings", Data: map[string]any{"num": 123, "dict": map[string]any{"a": 1}}},
+	}
+
+	pesticide.RunTestCasesWithFuncs(t, map[string]any{"dig": maps.NewRegistry().SprigDig}, tc)
+}

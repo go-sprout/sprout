@@ -617,3 +617,6 @@ this is because the output of the function is fixed in Sprout due to bugs not fi
 [CODE_000617]    {{ .time | mustDateModify "-1h" | date "02 Jan 06 15:04 -0700" }}
 [CODE_000618]    {{ .time | mustDateModify "10m" | date "02 Jan 06 15:04 -0700" }}
 [CODE_000619]    {{ .time | mustDateModify "-10s" | date "02 Jan 06 15:04 -0700" }}
+[CODE_000620]    {{ .map | dig "nested" "far" "default" }}
+[CODE_000621]    {{ .map | dig "nested" "default" }}
+[CODE_000622]    {{ .map | dig "nonexistent" "default" }}
