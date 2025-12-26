@@ -1,5 +1,35 @@
 # Changelog
 
+## Release v1.0.3: Sprout Compatibility 🔧 (2025-12-26)
+
+> 🌿 Restoring Harmony with Sprig!
+
+This patch release focuses on restoring backward compatibility for the `dig` function in the sprigin compatibility layer, ensuring a seamless migration experience for users transitioning from Sprig.
+
+### 🐛 **Bug Fixes**
+- **Restored Sprig `dig` Signature**: Fixed the `dig` function in the sprigin compatibility layer to use Sprig's original signature `{{ dig "key" "default" $dict }}` instead of Sprout's native syntax. This resolves [#152](https://github.com/go-sprout/sprout/issues/152). See [PR #153](https://github.com/go-sprout/sprout/pull/153).
+
+### 🛠️ **Enhancements**
+- **New Pesticide Helper**: Added `RunTestCasesWithFuncs` to the pesticide package, enabling testing with custom FuncMaps for sprigin compatibility functions.
+- **Deprecation Notice for `dig`**: When using sprigin, the `dig` function now logs a deprecation warning encouraging migration to Sprout's native syntax `{{ $dict | dig "key" | default "default" }}`.
+
+### 🔒 **Security & Dependencies**
+- **Updated golang.org/x/crypto**: Bumped from v0.41.0 to v0.42.0. See [#143](https://github.com/go-sprout/sprout/pull/143).
+- **Updated github.com/spf13/cast**: Upgraded from v1.9.2 to v1.10.0. See [#144](https://github.com/go-sprout/sprout/pull/144).
+- **Migrated YAML Library**: Moved to a maintained YAML library for better long-term support. See [#145](https://github.com/go-sprout/sprout/pull/145).
+- **Monthly Dependencies Update**: Regular maintenance update for all dependencies. See [#154](https://github.com/go-sprout/sprout/pull/154).
+
+### 📚 **Documentation**
+- **Updated Migration Guide**: The `dig` function section in the migration documentation now clearly explains the signature difference between Sprig and Sprout.
+
+---
+
+### 📝 **Notes**
+
+If you're using `sprigin.FuncMap()` for backward compatibility with Sprig templates, the `dig` function will now work as expected with Sprig's signature. A deprecation warning will be logged to encourage migration to Sprout's native syntax.
+
+**Full Changelog**: https://github.com/go-sprout/sprout/compare/v1.0.2...v1.0.3
+
 ## Release v1.0.2: Sprout Refresh 🔄 (2025-08-28)
 
 > 🛡️ Staying Fresh and Secure!
