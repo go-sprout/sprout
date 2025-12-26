@@ -3,6 +3,7 @@ package sprigin
 import (
 	"testing"
 
+	"github.com/go-sprout/sprout"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -83,4 +84,24 @@ func TestSprigHandler(t *testing.T) {
 		"go-sprout/sprout.filesystem",
 		"go-sprout/sprout.env",
 	})
+}
+
+func TestDigHasDeprecationNotice(t *testing.T) {
+	handler := NewSprigHandler()
+	handler.Build()
+
+	notices := handler.Notices()
+
+	found := false
+	for _, notice := range notices {
+		for _, name := range notice.FunctionNames {
+			if name == "dig" {
+				found = true
+				assert.Equal(t, sprout.NoticeKindDeprecated, notice.Kind)
+				assert.Contains(t, notice.Message, "use new native syntax")
+				break
+			}
+		}
+	}
+	assert.True(t, found, "dig should have a deprecation notice")
 }
