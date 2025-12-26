@@ -238,27 +238,12 @@ if err != nil {
 
 #### Dig
 
-> Consider the example dictionary defined as follows:
->
-> ```go
-> dict := map[string]any{
->   "a": map[string]any{
->     "b": 2,
->   },
-> }
-> ```
+* **Sprig**: The `dig` function requires a default value as the second-to-last argument: `{{ dig "a" "b" "default" $dict }}`. It returns the last map in the access chain instead of the final value.
+* **Sprout**: The `dig` function does not include a default value: `{{ $dict | dig "a" "b" }}`. Use the `default` filter instead: `{{ $dict | dig "a" "b" | default "default" }}`. It returns the final value in the chain, regardless of its type.
 
-* **Sprig**: Previously, the `dig` function would return the last map in the access chain.
-
-```go
-{{ $dict | dig "a" "b" }} // Output: map[b:2]
-```
-
-* **Sprout**: Now, the `dig` function returns the final object in the chain, regardless of its type (map, array, string, etc.).
-
-```go
-{{ $dict | dig "a" "b" }} // Output: 2
-```
+{% hint style="info" %}
+If you use `sprigin.FuncMap()`, the `dig` function retains Sprig's signature with the default value parameter for backward compatibility.
+{% endhint %}
 
 #### ToCamelCase / ToPascalCase
 
