@@ -53,6 +53,32 @@ func TestTemplate(t *testing.T, registry sprout.Registry, tmplString string, dat
 	return runTemplate(t, testHandler(registry), tmplString, data)
 }
 
+// RunTestCasesWithFuncs runs test cases using a custom FuncMap.
+// Use this when you need to test functions that aren't registered through
+// a standard sprout.Registry (e.g., sprigin compatibility functions).
+func RunTestCasesWithFuncs(t *testing.T, funcs template.FuncMap, tc []TestCase) {
+	t.Helper()
+
+	for _, test := range tc {
+		t.Run(test.Name, func(t *testing.T) {
+			t.Helper()
+
+			tmpl, err := template.New("test").Funcs(funcs).Parse(test.Input)
+			require.NoError(t, err, "Failed to parse template")
+
+			var buf bytes.Buffer
+			err = tmpl.ExecuteTemplate(&buf, "test", test.Data)
+
+			if test.ExpectedErr != "" {
+				require.ErrorContains(t, err, test.ExpectedErr)
+			} else {
+				require.NoError(t, err)
+			}
+			assert.Equal(t, test.ExpectedOutput, buf.String())
+		})
+	}
+}
+
 func runTemplate(t *testing.T, handler sprout.Handler, tmplString string, data any) (string, error) {
 	t.Helper()
 
