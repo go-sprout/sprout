@@ -47,7 +47,7 @@ You can track our progress towards Sprout v1.0 by following the documentation pa
   - [Working with Templates](#working-with-templates)
 - [Usage: Quick Example (code only)](#usage-quick-example)
 - [Performance Benchmarks](#performance-benchmarks)
-  - [Sprig v3.2.3 vs Sprout v0.2](#sprig-v323-vs-sprout-v02)
+  - [Sprig v3.2.3 vs Sprout v0.5](#sprig-v323-vs-sprout-v05)
 - [Development Philosophy (Currently in reflexion to create our)](#development-philosophy-currently-in-reflexion-to-create-our)
 
 
