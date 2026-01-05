@@ -74,7 +74,7 @@ func (ch *CryptoRegistry) Htpasswd(username string, password string) (string, er
 // For an example of this function in a Go template, refer to [Sprout Documentation: derivePassword].
 //
 // [Sprout Documentation: derivePassword]: https://docs.atom.codes/sprout/registries/crypto#derivepassword
-func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password, user, site string) (string, error) {
+func (ch *CryptoRegistry) DerivePassword(counter int, passwordType, password, user, site string) (string, error) {
 	templates := passwordTypeTemplates[passwordType]
 	if templates == nil {
 		return "", fmt.Errorf("cannot find password template %s", passwordType)
@@ -94,7 +94,7 @@ func (ch *CryptoRegistry) DerivePassword(counter uint32, passwordType, password,
 	buffer.Truncate(len(masterPasswordSeed))
 	_ = binary.Write(&buffer, binary.BigEndian, uint32(len(site)))
 	buffer.WriteString(site)
-	_ = binary.Write(&buffer, binary.BigEndian, counter)
+	_ = binary.Write(&buffer, binary.BigEndian, uint32(counter))
 
 	hmacv := hmac.New(sha256.New, key)
 	hmacv.Write(buffer.Bytes())
