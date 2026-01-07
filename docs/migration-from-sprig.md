@@ -238,8 +238,12 @@ if err != nil {
 
 #### Dig
 
-* **Sprig**: The `dig` function requires a default value as the second-to-last argument: `{{ dig "a" "b" "default" $dict }}`. It returns the last map in the access chain instead of the final value.
-* **Sprout**: The `dig` function does not include a default value: `{{ $dict | dig "a" "b" }}`. Use the `default` filter instead: `{{ $dict | dig "a" "b" | default "default" }}`. It returns the final value in the chain, regardless of its type.
+* **Sprig**:
+  * The `dig` function requires a default value as the second-to-last argument: `{{ dig "a" "b" "default" $dict }}`. It returns the last map in the access chain instead of the final value.
+  * Dots in keys are treated literally: `{{ dict "a" (dict "b" 5) | dig "a.b" "missing" }}` results in `missing`.
+* **Sprout**:
+  * The `dig` function does not include a default value: `{{ $dict | dig "a" "b" }}`. Use the `default` filter instead: `{{ $dict | dig "a" "b" | default "default" }}`. It returns the final value in the chain, regardless of its type.
+  * Keys are split on dots when accessing nested values: `{{ dict "a" (dict "b" 5) | dig "a.b" | default "missing" }}` results in `5`.
 
 {% hint style="info" %}
 If you use `sprigin.FuncMap()`, the `dig` function retains Sprig's signature with the default value parameter for backward compatibility.

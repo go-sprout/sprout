@@ -397,6 +397,7 @@ func (mr *MapsRegistry) Dig(args ...any) (any, error) {
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse keys: %w", err)
 	}
+	keys = mr.splitKeys(keys)
 
 	return mr.digIntoDict(dict, keys)
 }
