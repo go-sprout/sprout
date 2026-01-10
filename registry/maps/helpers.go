@@ -55,28 +55,56 @@ func (mr *MapsRegistry) digIntoDict(dict map[string]any, keys []string) (any, er
 //	keys, err := mr.parseKeys([]any{"key1", 2})
 //	fmt.Println(err) // Output: all keys must be strings, got int at position 1
 func (mr *MapsRegistry) parseKeys(keySet []any) ([]string, error) {
-	// Calculate the total number of keys needed
-	totalKeys := 0
+	keys := make([]string, 0, len(keySet))
+
+	// Convert each key to string
 	for i, element := range keySet {
 		key, ok := element.(string)
 		if !ok {
 			return nil, fmt.Errorf("all keys must be strings, got %T at position %d", element, i)
 		}
+		keys = append(keys, key)
+	}
+
+	return keys, nil
+}
+
+// splitKeys breaks up nested keys into simple key elements, splitting on dots.
+//
+// Parameters:
+//
+//	keySet []string - a slice with simple and nested keys.
+//
+// Returns:
+//
+//	[]string - a slice containing only simple keys, possibly split from nested ones.
+//
+// Example:
+//
+//	keys := mr.splitKeys([]string{"a", "nested.key"})
+//	fmt.Printf("%q\n", keys) // Output: ["a" "nested" "key"]
+//
+//	keys := mr.splitKeys([]string{"only", "simple", "keys"})
+//	fmt.Printf("%q\n", keys) // Output: ["only" "simple" "keys"]
+func (mr *MapsRegistry) splitKeys(keySet []string) []string {
+	// Calculate the total number of keys needed
+	totalKeys := 0
+	for _, key := range keySet {
 		totalKeys += 1 + strings.Count(key, ".")
+	}
+
+	// Only simple keys found, no need to split anything
+	if totalKeys == len(keySet) {
+		return keySet
 	}
 
 	// Preallocate the slice with the exact number of required elements
 	keys := make([]string, 0, totalKeys)
 
 	// Now, fill the slice
-	for _, element := range keySet {
-		key := element.(string)
-		if strings.Contains(key, ".") {
-			keys = append(keys, strings.Split(key, ".")...)
-		} else {
-			keys = append(keys, key)
-		}
+	for _, key := range keySet {
+		keys = append(keys, strings.Split(key, ".")...)
 	}
 
-	return keys, nil
+	return keys
 }

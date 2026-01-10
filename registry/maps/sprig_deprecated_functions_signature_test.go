@@ -94,6 +94,7 @@ func TestDeprecatedDig(t *testing.T) {
 		{Name: "TestDeeplyNestedNotFound", Input: `{{dig "a" "b" "x" "default" .}}`, ExpectedOutput: "default", Data: map[string]any{"a": map[string]any{"b": map[string]any{"c": "deep"}}}},
 		{Name: "TestEmptyDict", Input: `{{dig "a" "default" .}}`, ExpectedOutput: "default", Data: map[string]any{}},
 		{Name: "TestIntegerValue", Input: `{{dig "count" "0" .}}`, ExpectedOutput: "42", Data: map[string]any{"count": 42}},
+		{Name: "TestKeysWithDots", Input: `{{dig "has.dot" "default" .}}`, ExpectedOutput: "value", Data: map[string]any{"has.dot": "value"}},
 		{Name: "TestNotEnoughArgs", Input: `{{dig "a" .}}`, ExpectedErr: "dig requires at least three arguments", Data: map[string]any{"a": 1}},
 		{Name: "TestInvalidLastArg", Input: `{{dig "a" "default" "notamap"}}`, ExpectedErr: "last argument must be a map[string]any"},
 		{Name: "TestInvalidKeyType", Input: `{{dig .num "default" .dict}}`, ExpectedErr: "all keys must be strings", Data: map[string]any{"num": 123, "dict": map[string]any{"a": 1}}},
