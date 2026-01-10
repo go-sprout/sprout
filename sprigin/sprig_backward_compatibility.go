@@ -1,6 +1,7 @@
 package sprigin
 
 import (
+	"fmt"
 	htemplate "html/template"
 	"log/slog"
 	"strings"
@@ -144,6 +145,15 @@ func (sh *SprigHandler) Logger() *slog.Logger {
 	return slog.New(slog.Default().Handler())
 }
 
+// SignatureWarn logs a warning message about a deprecated function signature.
+// This is used to warn users when they use the old Sprig signature instead of
+// the new Sprout signature.
+func (sh *SprigHandler) SignatureWarn(functionName, oldSign, newSign string) {
+	msg := fmt.Sprintf("The signature of `%s` has changed from `%s` to `%s`, please update your code before next upgrade. This change will simplify the usage of the function and respect go/template conventions and allow usage of pipe (`|`).", functionName, oldSign, newSign)
+
+	sh.Logger().With("function", functionName, "notice", "deprecated").Warn(fmt.Sprintf("Template function `%s` is deprecated: %s", functionName, msg))
+}
+
 func (sh *SprigHandler) RawFunctions() sprout.FunctionMap {
 	return sh.funcsMap
 }
@@ -179,12 +189,30 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 	)
 
 	// BACKWARDS COMPATIBILITY
-	// Override dig to use Sprig's signature (keys + default + dict)
-	// instead of Sprout's signature (keys + dict)
+	// Override functions to use Sprig's signatures instead of Sprout's new signatures.
+	// This is necessary because Sprig and Sprout use different argument orders.
+	// The sprig* functions are defined in sprig_functions.go and handle both
+	// old Sprig and new Sprout signatures with type-based detection.
+	// Deprecation warnings are logged only when old Sprig signature is detected.
 	mapsRegistry := maps.NewRegistry()
 	_ = mapsRegistry.LinkHandler(sh)
-	sh.funcsMap["dig"] = mapsRegistry.SprigDig
-	sh.notices = append(sh.notices, *sprout.NewDeprecatedNotice("dig", "use new native syntax `{{ $dict | dig \"key\" | default \"default\" }}` instead of old Sprig's `{{ dig \"key\" \"default\" $dict }}`"))
+	slicesRegistry := slices.NewRegistry()
+	_ = slicesRegistry.LinkHandler(sh)
+
+	// Maps registry overrides
+	sh.funcsMap["dig"] = sh.sprigDig()
+	sh.funcsMap["get"] = sh.sprigGet(mapsRegistry)
+	sh.funcsMap["set"] = sh.sprigSet(mapsRegistry)
+	sh.funcsMap["unset"] = sh.sprigUnset(mapsRegistry)
+	sh.funcsMap["hasKey"] = sh.sprigHasKey(mapsRegistry)
+	sh.funcsMap["pick"] = sh.sprigPick(mapsRegistry)
+	sh.funcsMap["omit"] = sh.sprigOmit(mapsRegistry)
+
+	// Slices registry overrides
+	sh.funcsMap["append"] = sh.sprigAppend(slicesRegistry)
+	sh.funcsMap["prepend"] = sh.sprigPrepend(slicesRegistry)
+	sh.funcsMap["slice"] = sh.sprigSlice(slicesRegistry)
+	sh.funcsMap["without"] = sh.sprigWithout(slicesRegistry)
 	// \ BACKWARDS COMPATIBILITY
 
 	// Register aliases for functions

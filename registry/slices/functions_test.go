@@ -24,7 +24,7 @@ func TestAppend(t *testing.T) {
 		{Input: `{{ .V | append "a" }}`, ExpectedOutput: "[x a]", Data: map[string]any{"V": [1]string{"x"}}},
 		{Input: `{{ .V | append "a" }}`, Data: map[string]any{"V": nil}, ExpectedErr: "cannot append to nil"},
 		{Input: `{{ .V | append "a" }}`, Data: map[string]any{"V": 1}, ExpectedErr: "cannot append on type int"},
-		{Input: `{{ append }}`, ExpectedErr: " expected 2 arguments, got 0"},
+		{Input: `{{ append }}`, ExpectedErr: "wrong number of args for append: want 2 got 0"},
 	}
 
 	pesticide.RunTestCases(t, slices.NewRegistry(), tc)
@@ -38,7 +38,7 @@ func TestPrepend(t *testing.T) {
 		{Input: `{{ .V | prepend "a" }}`, ExpectedOutput: "[a x]", Data: map[string]any{"V": [1]string{"x"}}},
 		{Input: `{{ .V | prepend "a" }}`, Data: map[string]any{"V": nil}, ExpectedErr: "cannot prepend to nil"},
 		{Input: `{{ .V | prepend "a" }}`, Data: map[string]any{"V": 1}, ExpectedErr: "cannot prepend on type int"},
-		{Input: `{{ prepend }}`, ExpectedErr: " expected 2 arguments, got 0"},
+		{Input: `{{ prepend }}`, ExpectedErr: "wrong number of args for prepend: want 2 got 0"},
 	}
 
 	pesticide.RunTestCases(t, slices.NewRegistry(), tc)
@@ -138,7 +138,7 @@ func TestSlice(t *testing.T) {
 		{Input: `{{ .V | slice 0 1 }}`, Data: map[string]any{"V": 1}, ExpectedErr: "last argument must be a slice but got int"},
 		{Input: `{{ .V | slice -1 1 }}`, Data: map[string]any{"V": []string{"a"}}, ExpectedErr: "start index out of bounds"},
 		{Input: `{{ .V | slice 0 52 }}`, Data: map[string]any{"V": []string{"a"}}, ExpectedErr: "end index out of bounds"},
-		{Input: `{{ slice }}`, ExpectedErr: "expected 2 arguments, got 0"},
+		{Input: `{{ slice }}`, ExpectedErr: "slice requires at least one argument"},
 	}
 
 	pesticide.RunTestCases(t, slices.NewRegistry(), tc)
@@ -168,7 +168,7 @@ func TestWithout(t *testing.T) {
 		{Input: `{{ .V | without "a" }}`, ExpectedOutput: "[]", Data: map[string]any{"V": []string{}}},
 		{Input: `{{ .V | without "a" }}`, Data: map[string]any{"V": nil}, ExpectedErr: "cannot without nil"},
 		{Input: `{{ .V | without "a" }}`, Data: map[string]any{"V": 1}, ExpectedErr: "last argument must be a slice but got int"},
-		{Input: `{{ without  }}`, ExpectedErr: "expected 2 arguments, got 0"},
+		{Input: `{{ without  }}`, ExpectedErr: "without requires at least two arguments"},
 	}
 
 	pesticide.RunTestCases(t, slices.NewRegistry(), tc)
