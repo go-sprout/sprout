@@ -44,6 +44,8 @@ func TestSprigSet(t *testing.T) {
 		// Edge cases
 		{Name: "TestSetOnEmptyMap", Input: `{{$d := set . "key" "value"}}{{$d}}`, ExpectedOutput: "map[key:value]", Data: map[string]any{}},
 		{Name: "TestSetNilValue", Input: `{{$d := set .M "key" .Nil}}{{$d}}`, ExpectedOutput: "map[key:<nil>]", Data: map[string]any{"M": map[string]any{}, "Nil": nil}},
+		// Ambiguous case - both first and last are maps (default case)
+		{Name: "TestSetAmbiguousBothMaps", Input: `{{$d := set .M1 "key" .M2}}{{$d}}`, ExpectedOutput: "map[a:1 key:map[b:2]]", Data: map[string]any{"M1": map[string]any{"a": 1}, "M2": map[string]any{"b": 2}}},
 	}
 
 	pesticide.RunTestCasesWithFuncs(t, sprigin.FuncMap(), tc)
@@ -127,6 +129,8 @@ func TestSprigDig(t *testing.T) {
 		{Name: "TestEmptyDict", Input: `{{dig "a" "default" .}}`, ExpectedOutput: "default", Data: map[string]any{}},
 		{Name: "TestIntegerValue", Input: `{{dig "count" "0" .}}`, ExpectedOutput: "42", Data: map[string]any{"count": 42}},
 		{Name: "TestKeysWithDots", Input: `{{dig "has.dot" "default" .}}`, ExpectedOutput: "value", Data: map[string]any{"has.dot": "value"}},
+		// Test digging into a non-dict value mid-path (returns default due to error)
+		{Name: "TestDigNonDictInPath", Input: `{{dig "a" "b" "default" .}}`, ExpectedOutput: "default", Data: map[string]any{"a": "notadict"}},
 	}
 
 	pesticide.RunTestCasesWithFuncs(t, sprigin.FuncMap(), tc)
