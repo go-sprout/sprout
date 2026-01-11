@@ -6,7 +6,6 @@ import (
 
 	"dario.cat/mergo"
 
-	"github.com/go-sprout/sprout/deprecated"
 	"github.com/go-sprout/sprout/internal/helpers"
 )
 
@@ -50,35 +49,16 @@ func (mr *MapsRegistry) Dict(values ...any) map[string]any {
 // Returns:
 //
 //	any - the value associated with the key, or an empty string if the key does not exist.
-//	error - protect against undesired behavior due to migration to new signature.
+//	error - error if arguments are invalid.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: get].
 //
 // [Sprout Documentation: get]: https://docs.atom.codes/sprout/registries/maps#get
-func (mr *MapsRegistry) Get(args ...any) (any, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	// ! Due to change in signature, this function still supports the old signature
-	// ! to let users transition to the new signature.
-	// * Old signature: Get(map[string]any, string)
-	// * New signature: Get(string, map[string]any)
-	if len(args) != 2 {
-		return "", deprecated.ErrArgsCount(2, len(args))
+func (mr *MapsRegistry) Get(key string, dict map[string]any) (any, error) {
+	if value, ok := dict[key]; ok {
+		return value, nil
 	}
-
-	switch arg0 := args[0].(type) {
-	case map[string]any:
-		// Old signature
-		deprecated.SignatureWarn(mr.handler.Logger(), "get", "{{ get dict key }}", "{{ dict | get key }}")
-		return mr.Get(args[1].(string), arg0)
-	case string:
-		// New signature
-		if value, ok := args[1].(map[string]any)[arg0]; ok {
-			return value, nil
-		}
-		return "", nil
-	default:
-		return "", fmt.Errorf("expected map or string, got %T", arg0)
-	}
+	return "", nil
 }
 
 // Set adds or updates a key with a specified value in the dictionary.
@@ -92,36 +72,14 @@ func (mr *MapsRegistry) Get(args ...any) (any, error) {
 // Returns:
 //
 //	map[string]any - the updated dictionary.
-//	error - protect against undesired behavior due to migration to new signature.
+//	error - error if arguments are invalid.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: set].
 //
 // [Sprout Documentation: set]: https://docs.atom.codes/sprout/registries/maps#set
-func (mr *MapsRegistry) Set(args ...any) (map[string]any, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	// ! Due to change in signature, this function still supports the old signature
-	// ! to let users transition to the new signature.
-	// * Old signature: Set(map[string]any, string, string)
-	// * New signature: Set(string, any, map[string]any)
-	if len(args) != 3 {
-		return nil, deprecated.ErrArgsCount(3, len(args))
-	}
-
-	switch arg0 := args[0].(type) {
-	case map[string]any:
-		// Old signature
-		deprecated.SignatureWarn(mr.handler.Logger(), "set", "{{ set dict key value }}", "{{ dict | set key value }}")
-		return mr.Set(args[1].(string), args[2], arg0)
-	case string:
-		// New signature
-		if dict, ok := args[2].(map[string]any); ok {
-			dict[arg0] = args[1]
-			return dict, nil
-		}
-		return nil, errors.New("last argument must be a map[string]any")
-	default:
-		return nil, fmt.Errorf("expected map or string, got %T", arg0)
-	}
+func (mr *MapsRegistry) Set(key string, value any, dict map[string]any) (map[string]any, error) {
+	dict[key] = value
+	return dict, nil
 }
 
 // Unset removes a key from the dictionary.
@@ -134,36 +92,14 @@ func (mr *MapsRegistry) Set(args ...any) (map[string]any, error) {
 // Returns:
 //
 //	map[string]any - the dictionary after removing the key.
-//	error - protect against undesired behavior due to migration to new signature.
+//	error - error if arguments are invalid.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: unset].
 //
 // [Sprout Documentation: unset]: https://docs.atom.codes/sprout/registries/maps#unset
-func (mr *MapsRegistry) Unset(args ...any) (map[string]any, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	// ! Due to change in signature, this function still supports the old signature
-	// ! to let users transition to the new signature.
-	// * Old signature: Unset(map[string]any, string)
-	// * New signature: Unset(string, map[string]any)
-	if len(args) != 2 {
-		return nil, deprecated.ErrArgsCount(2, len(args))
-	}
-
-	switch arg0 := args[0].(type) {
-	case map[string]any:
-		// Old signature
-		deprecated.SignatureWarn(mr.handler.Logger(), "unset", "{{ unset dict key }}", "{{ dict | unset key }}")
-		return mr.Unset(args[1].(string), arg0)
-	case string:
-		// New signature
-		if dict, ok := args[1].(map[string]any); ok {
-			delete(dict, arg0)
-			return dict, nil
-		}
-		return nil, errors.New("last argument must be a map[string]any")
-	default:
-		return nil, fmt.Errorf("expected map or string, got %T", arg0)
-	}
+func (mr *MapsRegistry) Unset(key string, dict map[string]any) (map[string]any, error) {
+	delete(dict, key)
+	return dict, nil
 }
 
 // Keys retrieves all keys from one or more dictionaries.
@@ -257,115 +193,82 @@ func (mr *MapsRegistry) Pluck(key string, dicts ...map[string]any) []any {
 // Parameters:
 //
 //	keys ...string - the keys to include in the new dictionary.
-//	dict map[string]any - the source dictionary.
+//	dict map[string]any - the source dictionary (last argument).
 //
 // Returns:
 //
 //	map[string]any - a dictionary containing only the picked keys and their values.
-//	error - protect against undesired behavior due to migration to new signature.
+//	error - error if arguments are invalid.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: pick].
 //
 // [Sprout Documentation: pick]: https://docs.atom.codes/sprout/registries/maps#pick
 func (mr *MapsRegistry) Pick(args ...any) (map[string]any, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	// ! Due to change in signature, this function still supports the old signature
-	// ! to let users transition to the new signature.
-	// * Old signature: Pick(map[string]any, ...string)
-	// * New signature: Pick(...string, map[string]any)
 	if len(args) < 2 {
-		return nil, deprecated.ErrArgsCount(2, len(args))
+		return nil, fmt.Errorf("pick requires at least two arguments")
 	}
 
-	// Pre-allocate result map with the size of keys to avoid multiple allocations
-	result := make(map[string]any, len(args)-1) // Remove the last argument which is the dictionary
+	keys := args[:len(args)-1]
+	dict, ok := args[len(args)-1].(map[string]any)
+	if !ok {
+		return nil, errors.New("last argument must be a map[string]any")
+	}
 
-	switch arg0 := args[0].(type) {
-	case map[string]any:
-		// Old signature
-		deprecated.SignatureWarn(mr.handler.Logger(), "pick", "{{ pick dict key1 key2 }}", "{{ dict | pick key1 key2 }}")
-		return mr.Pick(append(args[1:], args[0])...)
-	case string:
-		// New signature
-		keys := args[:len(args)-1]
-		dict, ok := args[len(args)-1].(map[string]any)
+	result := make(map[string]any, len(keys))
+	for _, key := range keys {
+		keyStr, ok := key.(string)
 		if !ok {
-			return nil, errors.New("last argument must be a map[string]any")
+			return nil, errors.New("all keys must be strings")
 		}
-
-		for _, key := range keys {
-			keyStr, ok := key.(string)
-			if !ok {
-				return nil, errors.New("all keys must be strings")
-			}
-			if value, ok := dict[keyStr]; ok {
-				result[keyStr] = value
-			}
+		if value, ok := dict[keyStr]; ok {
+			result[keyStr] = value
 		}
-		return result, nil
-	default:
-		return nil, fmt.Errorf("expected map or string, got %T", arg0)
 	}
+	return result, nil
 }
 
 // Omit creates a new dictionary by excluding specified keys from the original dictionary.
 //
 // Parameters:
 //
-//	dict map[string]any - the source dictionary.
 //	keys ...string - the keys to exclude from the new dictionary.
+//	dict map[string]any - the source dictionary (last argument).
 //
 // Returns:
 //
 //	map[string]any - a dictionary without the omitted keys.
-//	error - protect against undesired behavior due to migration to new signature.
+//	error - error if arguments are invalid.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: omit].
 //
 // [Sprout Documentation: omit]: https://docs.atom.codes/sprout/registries/maps#omit
 func (mr *MapsRegistry) Omit(args ...any) (map[string]any, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	// ! Due to change in signature, this function still supports the old signature
-	// ! to let users transition to the new signature.
-	// * Old signature: Omit(map[string]any, ...string)
-	// * New signature: Omit(...string, map[string]any)
 	if len(args) < 2 {
-		return nil, deprecated.ErrArgsCount(2, len(args))
+		return nil, fmt.Errorf("omit requires at least two arguments")
 	}
 
-	// Pre-allocate result map with the size of keys to avoid multiple allocations
-	result := make(map[string]any, len(args)-1) // Remove the last argument which is the dictionary
+	keys := args[:len(args)-1]
+	dict, ok := args[len(args)-1].(map[string]any)
+	if !ok {
+		return nil, errors.New("last argument must be a map[string]any")
+	}
 
-	switch arg0 := args[0].(type) {
-	case map[string]any:
-		// Old signature
-		deprecated.SignatureWarn(mr.handler.Logger(), "omit", "{{ omit dict key1 key2 }}", "{{ dict | omit key1 key2 }}")
-		return mr.Omit(append(args[1:], args[0])...)
-	case string:
-		// New signature
-		keys := args[:len(args)-1]
-		dict, ok := args[len(args)-1].(map[string]any)
+	omitSet := make(map[string]struct{}, len(keys))
+	for _, k := range keys {
+		key, ok := k.(string)
 		if !ok {
-			return nil, errors.New("last argument must be a map[string]any")
+			return nil, errors.New("all keys must be strings")
 		}
-		omit := make(map[string]struct{}, len(keys))
-		for _, k := range keys {
-			key, ok := k.(string)
-			if !ok {
-				return nil, errors.New("all keys must be strings")
-			}
-			omit[key] = struct{}{}
-		}
-
-		for key, value := range dict {
-			if _, ok := omit[key]; !ok {
-				result[key] = value
-			}
-		}
-		return result, nil
-	default:
-		return nil, fmt.Errorf("expected map or string, got %T", arg0)
+		omitSet[key] = struct{}{}
 	}
+
+	result := make(map[string]any, len(dict))
+	for key, value := range dict {
+		if _, ok := omitSet[key]; !ok {
+			result[key] = value
+		}
+	}
+	return result, nil
 }
 
 // Dig navigates through a nested dictionary structure using a sequence of keys
@@ -402,49 +305,6 @@ func (mr *MapsRegistry) Dig(args ...any) (any, error) {
 	return mr.digIntoDict(dict, keys)
 }
 
-// SprigDig implements Sprig's dig signature for backward compatibility.
-// It navigates through a nested dictionary using a sequence of keys and returns
-// the value found, or a default value if the path doesn't exist.
-//
-// Parameters:
-//
-//	args ...any - a sequence of keys, followed by a default value, followed by a dictionary.
-//
-// Returns:
-//
-//	any - the value found at the nested key path, or the default value if not found.
-//	error - an error if there are fewer than three arguments or if types are invalid.
-//
-// Example (Sprig syntax):
-//
-//	{{ dig "a" "b" "default" .dict }} - returns .dict.a.b or "default" if not found
-func (mr *MapsRegistry) SprigDig(args ...any) (any, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	if len(args) < 3 {
-		return nil, errors.New("dig requires at least three arguments: a sequence of keys, a default value, and a dictionary")
-	}
-
-	dict, ok := args[len(args)-1].(map[string]any)
-	if !ok {
-		return nil, errors.New("last argument must be a map[string]any")
-	}
-
-	// The second-to-last argument is the default value (can be any type in Sprig)
-	defaultValue := args[len(args)-2]
-
-	keys, err := mr.parseKeys(args[:len(args)-2])
-	if err != nil {
-		return nil, fmt.Errorf("cannot parse keys: %w", err)
-	}
-
-	value, err := mr.digIntoDict(dict, keys)
-	if err != nil || value == nil {
-		return defaultValue, nil
-	}
-
-	return value, nil
-}
-
 // HasKey checks if the specified key exists in the dictionary.
 //
 // Parameters:
@@ -455,33 +315,14 @@ func (mr *MapsRegistry) SprigDig(args ...any) (any, error) {
 // Returns:
 //
 //	bool - true if the key exists, otherwise false.
-//	error - protect against undesired behavior due to migration to new signature.
+//	error - error if arguments are invalid.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: hasKey].
 //
 // [Sprout Documentation: hasKey]: https://docs.atom.codes/sprout/registries/maps#haskey
-func (mr *MapsRegistry) HasKey(args ...any) (bool, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	// ! Due to change in signature, this function still supports the old signature
-	// ! to let users transition to the new signature.
-	// * Old signature: HasKey(dict map[string]any, key string)
-	// * New signature: HasKey(key string, map[string]any)
-	if len(args) != 2 {
-		return false, deprecated.ErrArgsCount(2, len(args))
-	}
-
-	switch arg0 := args[0].(type) {
-	case map[string]any:
-		// Old signature
-		deprecated.SignatureWarn(mr.handler.Logger(), "hasKey", "{{ hasKey dict key }}", "{{ dict | hasKey key }}")
-		return mr.HasKey(args[1].(string), arg0)
-	case string:
-		// New signature
-		_, ok := args[1].(map[string]any)[arg0]
-		return ok, nil
-	default:
-		return false, fmt.Errorf("expected map or string, got %T", arg0)
-	}
+func (mr *MapsRegistry) HasKey(key string, dict map[string]any) (bool, error) {
+	_, ok := dict[key]
+	return ok, nil
 }
 
 // Merge merges multiple source maps into a destination map without

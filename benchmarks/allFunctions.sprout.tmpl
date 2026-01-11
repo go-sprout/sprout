@@ -317,8 +317,8 @@
 {{ semverCompare "1.0.0-alpha.1" "1.0.0-alpha.1" }}
 {{ list }}
 {{ .string | list "ab" true 4 5 }}
-{{ append .array "a" }}
-{{ prepend .array "a" }}
+{{ .array | append "a" }}
+{{ .array | prepend "a" }}
 {{ concat .array (list 1 2 3) }}
 {{ list 4 5 | concat (list 1 2 3) }}
 {{ chunk 2 .array }}
@@ -327,15 +327,15 @@
 {{ list 1 0 "" "hello" | compact }}
 {{ list "" "" | compact }}
 {{ list | compact }}
-{{ slice .array }}
-{{ slice .array 1 }}
-{{ slice .array 1 3 }}
-{{ slice .array 0 1 }}
+{{ .array | slice }}
+{{ .array | slice 1 }}
+{{ .array | slice 1 3 }}
+{{ .array | slice 0 1 }}
 {{ .map | safeHas "foo" }}
 {{ .map | safeHas "a" }}
 {{ .map | safeHas 1 }}
 {{ .map | safeHas .nil }}
-{{ without .array "a" }}
+{{ .array | without "a" }}
 {{ rest .array }}
 {{ initial .array }}
 {{ first .array }}
@@ -353,22 +353,22 @@
 {{range $i, $e := untilStep 3 99 0}}({{$i}}{{$e}}){{end}}
 {{range $i, $e := untilStep 3 99 -1}}({{$i}}{{$e}}){{end}}
 {{range $i, $e := untilStep 3 0 0}}({{$i}}{{$e}}){{end}}
-{{ mustAppend .array "a" }}
-{{ mustPrepend .array "a" }}
+{{ .array | mustAppend "a" }}
+{{ .array | mustPrepend "a" }}
 {{ mustChunk 2 .array }}
 {{ mustUniq .array }}
 {{ mustCompact .array }}
-{{ mustSlice .array }}
-{{ mustSlice .array 1 }}
-{{ mustSlice .array 1 3 }}
-{{ mustSlice .array 0 1 }}
+{{ .array | mustSlice }}
+{{ .array | mustSlice 1 }}
+{{ .array | mustSlice 1 3 }}
+{{ .array | mustSlice 0 1 }}
 {{ .array | mustHas "foo" }}
 {{ .array | mustHas "a" }}
 {{ .array | mustHas 1 }}
 {{ .array | mustHas .Nil }}
 {{ .array | mustHas "nope" }}
 {{ .array | mustHas 1 }}
-{{ mustWithout .array "a" }}
+{{ .array | mustWithout "a" }}
 {{ mustRest .array }}
 {{ mustInitial .array }}
 {{ mustFirst .array }}
@@ -627,6 +627,7 @@
 {{ "foobar" | substr -3 6 }}
 {{ "foobar" | substr -3 -1 }}
 {{ "foobar" | substr -3 -3 }}
+{{ substr 1 -1 "abcdef" }}
 {{ "" | indent 3 }}
 {{ "foo\nbar" | indent 3 }}
 {{ "foo\n bar" | indent 3 }}
