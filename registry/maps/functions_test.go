@@ -82,7 +82,9 @@ func TestPick(t *testing.T) {
 		{Name: "TestWithOneValue", Input: `{{ . | pick "a"}}`, ExpectedOutput: "map[a:1]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithTwoValues", Input: `{{ . | pick "a" "b"}}`, ExpectedOutput: "map[a:1 b:2]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{ . | pick "nope"}}`, ExpectedOutput: "map[]", Data: map[string]any{"a": 1}},
+		{Name: "TestInvalidArgumentsType", Input: `{{ . | pick 1 }}`, ExpectedErr: "all keys must be strings", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNoMapGivenAsLastArg", Input: `{{ .a | pick "a"}}`, ExpectedErr: "last argument must be a map[string]any", Data: map[string]any{"a": 1}},
+		{Name: "TestWithNoEnoughArgs", Input: `{{ pick .a }}`, ExpectedErr: "pick requires at least two arguments", Data: map[string]any{"a": 1}},
 	}
 
 	pesticide.RunTestCases(t, maps.NewRegistry(), tc)
@@ -95,8 +97,9 @@ func TestOmit(t *testing.T) {
 		{Name: "TestWithTwoValues", Input: `{{ . | omit "a" "b"}}`, ExpectedOutput: "map[]", Data: map[string]any{"a": 1, "b": 2}},
 		{Name: "TestWithNestedKeyNotFound", Input: `{{ . | omit "nope"}}`, ExpectedOutput: "map[a:1]", Data: map[string]any{"a": 1}},
 		{Name: "TestWithInvalidKeys", Input: `{{ . | omit "a" 1}}`, ExpectedErr: "all keys must be strings", Data: map[string]any{"a": 1}},
-		{Name: "TestInvalidArgumentsType", Input: `{{ . | omit 1 }}`, ExpectedErr: "expected map or string, got int", Data: map[string]any{"a": 1}},
+		{Name: "TestInvalidArgumentsType", Input: `{{ . | omit 1 }}`, ExpectedErr: "all keys must be strings", Data: map[string]any{"a": 1}},
 		{Name: "TestWithNoMapGivenAsLastArg", Input: `{{ .a | omit "a"}}`, ExpectedErr: "last argument must be a map[string]any", Data: map[string]any{"a": 1}},
+		{Name: "TestWithNoEnoughArgs", Input: `{{ omit .a }}`, ExpectedErr: "omit requires at least two arguments", Data: map[string]any{"a": 1}},
 	}
 
 	pesticide.RunTestCases(t, maps.NewRegistry(), tc)

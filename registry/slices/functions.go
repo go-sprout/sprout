@@ -8,7 +8,6 @@ import (
 
 	"github.com/spf13/cast"
 
-	"github.com/go-sprout/sprout/deprecated"
 	"github.com/go-sprout/sprout/internal/helpers"
 )
 
@@ -34,39 +33,18 @@ func (sr *SlicesRegistry) List(values ...any) []any {
 //
 // Parameters:
 //
-//	list any - the original list to append to.
 //	v any - the element to append.
+//	list any - the original list to append to.
 //
 // Returns:
 //
 //	[]any - the new list with the element appended.
-//	error - protect against undesired behavior due to migration to new signature.
+//	error - error if the list is nil or not a slice/array.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: append].
 //
 // [Sprout Documentation: append]: https://docs.atom.codes/sprout/registries/slices#append
-func (sr *SlicesRegistry) Append(args ...any) ([]any, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	// ! Due to change in signature, this function still supports the old signature
-	// ! to let users transition to the new signature.
-	// * Old signature: Append(list any, v any)
-	// * New signature: Append(v any, list any)
-	if len(args) != 2 {
-		return []any{}, deprecated.ErrArgsCount(2, len(args))
-	}
-
-	switch reflect.ValueOf(args[0]).Kind() {
-	case reflect.Array, reflect.Slice, reflect.Invalid:
-		// Old signature
-		deprecated.SignatureWarn(sr.handler.Logger(), "append", "{{ append list v }}", "{{ list | append v }}")
-		return sr.Append(append(args[1:], args[0])...)
-	}
-
-	// New signature
-	list := args[1]
-	v := args[0]
-	// ! END OF BACKWARDS COMPATIBILITY
-
+func (sr *SlicesRegistry) Append(v any, list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot append to nil")
 	}
@@ -104,39 +82,18 @@ func (sr *SlicesRegistry) Append(args ...any) ([]any, error) {
 //
 // Parameters:
 //
-//	list any - the original list to prepend to.
 //	v any - the element to prepend.
+//	list any - the original list to prepend to.
 //
 // Returns:
 //
 //	[]any - the new list with the element prepended.
-//	error - protect against undesired behavior due to migration to new signature.
+//	error - error if the list is nil or not a slice/array.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: prepend].
 //
 // [Sprout Documentation: prepend]: https://docs.atom.codes/sprout/registries/slices#prepend
-func (sr *SlicesRegistry) Prepend(args ...any) ([]any, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	// ! Due to change in signature, this function still supports the old signature
-	// ! to let users transition to the new signature.
-	// * Old signature: Prepend(list any, v any)
-	// * New signature: Prepend(v any, list any)
-	if len(args) != 2 {
-		return []any{}, deprecated.ErrArgsCount(2, len(args))
-	}
-
-	switch reflect.ValueOf(args[0]).Kind() {
-	case reflect.Array, reflect.Slice, reflect.Invalid:
-		// Old signature
-		deprecated.SignatureWarn(sr.handler.Logger(), "prepend", "{{ prepend list v }}", "{{ list | prepend v }}")
-		return sr.Prepend(append(args[1:], args[0])...)
-	}
-
-	// New signature
-	list := args[1]
-	v := args[0]
-	// ! END OF BACKWARDS COMPATIBILITY
-
+func (sr *SlicesRegistry) Prepend(v any, list any) ([]any, error) {
 	if list == nil {
 		return nil, fmt.Errorf("cannot prepend to nil")
 	}
@@ -398,44 +355,25 @@ func (sr *SlicesRegistry) FlattenDepth(deep int, list any) ([]any, error) {
 //
 // Parameters:
 //
+//	start int - the start index (inclusive).
+//	end int - optional end index (exclusive); if omitted, slices to the end.
 //	list any - the list to slice.
-//	indices ...any - the start and optional end indices; if end is omitted,
-//
-// slices to the end.
 //
 // Returns:
 //
 //	any - the sliced part of the list.
-//	error - protect against undesired behavior due to migration to new signature.
+//	error - error if the list is nil or not a slice/array.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: slice].
 //
 // [Sprout Documentation: slice]: https://docs.atom.codes/sprout/registries/slices#slice
 func (sr *SlicesRegistry) Slice(args ...any) (any, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	// ! Due to change in signature, this function still supports the old signature
-	// ! to let users transition to the new signature.
-	// * Old signature: Slice(list any, indices ...any)
-	// * New signature: Slice(indices ...any, list any)
 	if len(args) < 1 {
-		return []any{}, deprecated.ErrArgsCount(2, len(args))
+		return nil, fmt.Errorf("slice requires at least one argument")
 	}
 
-	if len(args) == 1 {
-		return args[0], nil
-	}
-
-	switch reflect.ValueOf(args[0]).Kind() {
-	case reflect.Array, reflect.Slice, reflect.Invalid:
-		// Old signature
-		deprecated.SignatureWarn(sr.handler.Logger(), "slice", "{{ slice list 1 2 }}", "{{ list | slice 1 2 }}")
-		return sr.Slice(append(args[1:], args[0])...)
-	}
-
-	// New signature
 	list := args[len(args)-1]
 	indices := args[:len(args)-1]
-	// ! END OF BACKWARDS COMPATIBILITY
 
 	if list == nil {
 		return nil, fmt.Errorf("cannot slice nil")
@@ -471,7 +409,7 @@ func (sr *SlicesRegistry) Slice(args ...any) (any, error) {
 
 		return valueOfList.Slice(start, end).Interface(), nil
 	default:
-		return nil, fmt.Errorf("last argument must be a slice but got %T", args[len(args)-1])
+		return nil, fmt.Errorf("last argument must be a slice but got %T", list)
 	}
 }
 
@@ -519,38 +457,24 @@ func (sr *SlicesRegistry) Has(element any, list any) (bool, error) {
 //
 // Parameters:
 //
-//	list any - the original list.
 //	omit ...any - elements to exclude from the new list.
+//	list any - the original list (last argument).
 //
 // Returns:
 //
 //	[]any - the list excluding the specified elements.
-//	error - protect against undesired behavior due to migration to new signature.
+//	error - error if the list is nil or not a slice/array.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: without].
 //
 // [Sprout Documentation: without]: https://docs.atom.codes/sprout/registries/slices#without
 func (sr *SlicesRegistry) Without(args ...any) ([]any, error) {
-	// ! BACKWARDS COMPATIBILITY: deprecated in v1.0 and removed in v1.1
-	// ! Due to change in signature, this function still supports the old signature
-	// ! to let users transition to the new signature.
-	// * Old signature: Without(list any, omit ...any)
-	// * New signature: Without(omit ...any, list any)
 	if len(args) < 2 {
-		return []any{}, deprecated.ErrArgsCount(2, len(args))
+		return nil, fmt.Errorf("without requires at least two arguments")
 	}
 
-	switch reflect.ValueOf(args[0]).Kind() {
-	case reflect.Array, reflect.Slice, reflect.Invalid:
-		// Old signature
-		deprecated.SignatureWarn(sr.handler.Logger(), "without", "{{ without list 1 2 }}", "{{ list | without 1 2 }}")
-		return sr.Without(append(args[1:], args[0])...)
-	}
-
-	// New signature
 	list := args[len(args)-1]
 	omit := args[:len(args)-1]
-	// ! END OF BACKWARDS COMPATIBILITY
 
 	if list == nil {
 		return nil, fmt.Errorf("cannot without nil")
@@ -580,7 +504,7 @@ func (sr *SlicesRegistry) Without(args ...any) ([]any, error) {
 
 		return result, nil
 	default:
-		return nil, fmt.Errorf("last argument must be a slice but got %T", args[len(args)-1])
+		return nil, fmt.Errorf("last argument must be a slice but got %T", list)
 	}
 }
 
