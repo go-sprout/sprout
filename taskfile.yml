@@ -28,6 +28,12 @@ tasks:
       with the results.
     cmds:
       - go run ./tools/docvalidator
+  test-compatibility:
+    aliases: [tc, tcomp]
+    desc: Run tests to validate the backward compatibility between sprigin and sprig
+    dir: ./sprigin/compatibility
+    cmds:
+      - go test -coverprofile=coverage.out ./...
   bench:
     aliases: [benchmarks, benchs, b]
     desc: Run benchmarks between sprig and current sprout implementation
