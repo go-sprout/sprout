@@ -71,7 +71,7 @@ The function derives a password based on the provided counter, password type, pa
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ derivePassword 1 "long" "password" "user" "example.com" }} // Output: "$2a$12$C1qL8XVjIuGKzQXwC6g6tO"
+{{ derivePassword 1 "long" "password" "user" "example.com" }} // Output: "ZedaFaxcZaso9*"
 ```
 {% endtab %}
 {% endtabs %}
