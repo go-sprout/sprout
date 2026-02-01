@@ -6,6 +6,7 @@ require (
 	github.com/Masterminds/sprig/v3 v3.3.0
 	github.com/go-sprout/sprout v1.0.3
 	github.com/stretchr/testify v1.11.1
+	golang.org/x/sync v0.19.0
 )
 
 require (

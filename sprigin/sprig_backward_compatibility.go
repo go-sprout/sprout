@@ -25,7 +25,7 @@ import (
 	"github.com/go-sprout/sprout/registry/slices"
 	"github.com/go-sprout/sprout/registry/std"
 	rstrings "github.com/go-sprout/sprout/registry/strings"
-	"github.com/go-sprout/sprout/registry/time"
+	rtime "github.com/go-sprout/sprout/registry/time"
 	"github.com/go-sprout/sprout/registry/uniqueid"
 )
 
@@ -154,6 +154,10 @@ func (sh *SprigHandler) SignatureWarn(functionName, oldSign, newSign string) {
 	sh.Logger().With("function", functionName, "notice", "deprecated").Warn(fmt.Sprintf("Template function `%s` is deprecated: %s", functionName, msg))
 }
 
+func (sh *SprigHandler) BreakingWarn(functionName, changeNotice string) {
+	sh.Logger().With("function", functionName, "notice", "deprecated").Warn(fmt.Sprintf("Template function `%s` have a significant change in next version : %s", functionName, changeNotice))
+}
+
 func (sh *SprigHandler) RawFunctions() sprout.FunctionMap {
 	return sh.funcsMap
 }
@@ -173,7 +177,7 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 		semver.NewRegistry(),
 		backward.NewRegistry(),
 		reflect.NewRegistry(),
-		time.NewRegistry(),
+		rtime.NewRegistry(),
 		rstrings.NewRegistry(),
 		random.NewRegistry(),
 		checksum.NewRegistry(),
@@ -213,7 +217,34 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 	sh.funcsMap["prepend"] = sh.sprigPrepend(slicesRegistry)
 	sh.funcsMap["slice"] = sh.sprigSlice(slicesRegistry)
 	sh.funcsMap["without"] = sh.sprigWithout(slicesRegistry)
+
+	// Encoding registry overrides - return error message like sprig does
+	encodingRegistry := encoding.NewRegistry()
+	_ = encodingRegistry.LinkHandler(sh)
+	sh.funcsMap["base64Decode"] = sh.sprigBase64Decode(encodingRegistry)
+	sh.funcsMap["base32Decode"] = sh.sprigBase32Decode(encodingRegistry)
+
+	// Time registry overrides - use local timezone like sprig does
+	timeRegistry := rtime.NewRegistry()
+	_ = timeRegistry.LinkHandler(sh)
+	sh.funcsMap["date"] = sh.sprigDate(timeRegistry)
+
+	// String registry overrides - re-introduce bugs
+	stringRegistry := rstrings.NewRegistry()
+	_ = stringRegistry.LinkHandler(sh)
+	sh.funcsMap["substr"] = sh.sprigSubstr()
+	sh.funcsMap["ellipsisBoth"] = sh.sprigAbbrevboth()
+	sh.funcsMap["toTitleCase"] = sh.sprigTitle()
+
+	// Reflect registry overrides - re-introduce bugs
+	reflectRegistry := reflect.NewRegistry()
+	_ = reflectRegistry.LinkHandler(sh)
+	sh.funcsMap["kindOf"] = sh.sprigKindOf(reflectRegistry)
+
 	// \ BACKWARDS COMPATIBILITY
+
+	sprout.AssignAliases(sh)
+	sprout.AssignNotices(sh)
 
 	// Register aliases for functions
 	// BACKWARDS COMPATIBILITY
@@ -227,9 +258,6 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 		}
 	}
 	// \ BACKWARDS COMPATIBILITY
-
-	sprout.AssignAliases(sh)
-	sprout.AssignNotices(sh)
 
 	// BACKWARDS COMPATIBILITY
 	// Ensure error handling is consistent with sprig functions

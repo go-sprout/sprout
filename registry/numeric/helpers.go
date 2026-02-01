@@ -1,12 +1,32 @@
 package numeric
 
 import (
+	"math"
 	"reflect"
 
 	"github.com/spf13/cast"
 
 	"github.com/go-sprout/sprout"
 )
+
+// cleanFloatPrecision rounds a float64 to 15 significant decimal digits
+// to eliminate floating-point representation noise.
+// This fixes issues like 0.1+0.2=0.30000000000000004 becoming exactly 0.3.
+func cleanFloatPrecision(v float64) float64 {
+	if v == 0 || math.IsNaN(v) || math.IsInf(v, 0) {
+		return v
+	}
+
+	// Determine magnitude to scale value for rounding
+	magnitude := math.Floor(math.Log10(math.Abs(v)))
+
+	// Scale to have significant digits as integers, round, then scale back
+	// 15 significant figures is sufficient for float64 while cleaning noise
+	const sigFigs = 15
+	scale := math.Pow(10, float64(sigFigs)-1-magnitude)
+
+	return math.Round(v*scale) / scale
+}
 
 // operateNumeric applies a numericOperation to a slice of any type, converting
 // to and from float64. The result is converted back to the type of the first
@@ -37,6 +57,9 @@ func operateNumeric(values []any, op numericOperation, initial any) (any, error)
 		}
 		result = op(result, floatValue)
 	}
+
+	// Clean floating-point precision noise from the result
+	result = cleanFloatPrecision(result)
 
 	// Direct type assertion for common types to avoid reflection overhead
 	initialType := reflect.TypeOf(values[0])

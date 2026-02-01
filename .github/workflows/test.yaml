@@ -53,7 +53,5 @@ jobs:
       uses: arduino/setup-task@v2
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Compare Benchmarks
-      run: task compare
     - name: Test Sprigin compatibility
       run: task test-compatibility

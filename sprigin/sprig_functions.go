@@ -4,9 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"strings"
 
+	"github.com/go-sprout/sprout/registry/encoding"
 	"github.com/go-sprout/sprout/registry/maps"
+	rreflect "github.com/go-sprout/sprout/registry/reflect"
 	"github.com/go-sprout/sprout/registry/slices"
+	"github.com/go-sprout/sprout/registry/time"
 )
 
 // isList checks if a value is a slice or array type.
@@ -272,6 +276,9 @@ func (sh *SprigHandler) sprigPick(mr *maps.MapsRegistry) func(args ...any) (map[
 func (sh *SprigHandler) sprigOmit(mr *maps.MapsRegistry) func(args ...any) (map[string]any, error) {
 	return func(args ...any) (map[string]any, error) {
 		if len(args) < 2 {
+			if isMap(args[0]) {
+				return args[0].(map[string]any), nil
+			}
 			return nil, fmt.Errorf("omit requires at least two arguments")
 		}
 
@@ -506,4 +513,147 @@ func digIntoDict(dict map[string]any, keys []string) (any, error) {
 	}
 
 	return current, nil
+}
+
+// sprigBase64Decode returns the error message as a string like sprig does,
+// instead of returning an empty string when decoding fails.
+// Sprig returns just the underlying error message without the "base64 decode error:" prefix.
+func (sh *SprigHandler) sprigBase64Decode(er *encoding.EncodingRegistry) func(value string) string {
+	return func(value string) string {
+		result, err := er.Base64Decode(value)
+		if err != nil {
+			// Unwrap to get the underlying error message like sprig does
+			if unwrapped := errors.Unwrap(err); unwrapped != nil {
+				return unwrapped.Error()
+			}
+			return err.Error()
+		}
+		return result
+	}
+}
+
+// sprigBase32Decode returns the error message as a string like sprig does,
+// instead of returning an empty string when decoding fails.
+// Sprig returns just the underlying error message without the "base32 decode error:" prefix.
+func (sh *SprigHandler) sprigBase32Decode(er *encoding.EncodingRegistry) func(value string) string {
+	return func(value string) string {
+		result, err := er.Base32Decode(value)
+		if err != nil {
+			// Unwrap to get the underlying error message like sprig does
+			if unwrapped := errors.Unwrap(err); unwrapped != nil {
+				return unwrapped.Error()
+			}
+			return err.Error()
+		}
+		return result
+	}
+}
+
+// sprigDate uses local timezone like sprig does, instead of the timezone
+// from the time value itself.
+func (sh *SprigHandler) sprigDate(tr *time.TimeRegistry) func(layout string, date any) (string, error) {
+	return func(layout string, date any) (string, error) {
+		return tr.DateInZone(layout, date, "Local")
+	}
+}
+
+func (sh *SprigHandler) sprigSubstr() func(start, end int, value string) string {
+	return func(start, end int, value string) string {
+		if start < 0 {
+			return value[:end]
+		}
+		if end > len(value) {
+			return value[start:]
+		}
+
+		if start == 0 && end == 0 {
+			sh.BreakingWarn("substr", "`substr 0 0` will return the full string in future versions instead of an empty string. Replace with `\"\"` if you need an empty result.")
+			return ""
+		}
+
+		if end <= 0 {
+			if end < 0 {
+				sh.BreakingWarn("substr", "Negative `end` values will change from being ignored to counting from the string's end. Use `0` as end value to extract until the end of the string.")
+			}
+			return value[start:]
+		}
+
+		return value[start:end]
+	}
+}
+
+func (sh *SprigHandler) sprigKindOf(rr *rreflect.ReflectRegistry) func(value any) (string, error) {
+	return func(value any) (string, error) {
+		if value == nil {
+			sh.BreakingWarn("kindOf", "`kindOf nil` will return an error in future versions instead of \"invalid\". Check for nil before calling kindOf.")
+			return "invalid", nil
+		}
+
+		return rr.KindOf(value)
+	}
+}
+
+// sprigTitle uses the deprecated strings.Title function to match Sprig's behavior.
+// Sprig's title function has two bugs compared to proper Unicode title casing:
+// 1. It doesn't lowercase letters before capitalizing (so "HELLO" stays "HELLO")
+// 2. It treats apostrophes as word separators (so "it's" becomes "It'S")
+//
+//nolint:staticcheck // SA1019: strings.Title is deprecated but needed for Sprig compatibility
+func (sh *SprigHandler) sprigTitle() func(value string) string {
+	return func(value string) string {
+		sh.BreakingWarn("title", "Sprig's `title` uses deprecated strings.Title which doesn't properly handle Unicode or apostrophes. In future versions, `title` will use proper Unicode title casing. Use `toTitleCase` for the new behavior.")
+		return strings.Title(value)
+	}
+}
+
+// sprigAbbrevboth replicates Sprig's abbrevboth behavior which has a bug:
+// when offset <= 4, it ignores the offset and just truncates from the right.
+// This is for backward compatibility with Sprig's buggy behavior.
+func (sh *SprigHandler) sprigAbbrevboth() func(offset int, maxWidth int, value string) string {
+	return func(offset int, maxWidth int, value string) string {
+		if value == "" {
+			return ""
+		}
+
+		// Sprig's check: maxWidth < 4 or (offset > 0 and maxWidth < 7)
+		if maxWidth < 4 || (offset > 0 && maxWidth < 7) {
+			return value
+		}
+
+		strLen := len(value)
+		if strLen <= maxWidth {
+			return value
+		}
+
+		// This is the Sprig bug: when offset <= 4, it ignores the offset
+		// and just truncates from the right (no left ellipsis)
+		if offset <= 4 {
+			if offset > 0 {
+				sh.BreakingWarn("abbrevboth", "When offset <= 4, Sprig ignores the offset. In future versions, the offset will be respected. Use `ellipsis` if you want right-only truncation.")
+			}
+			// Right-only truncation: str[0:maxWidth-3] + "..."
+			return value[0:maxWidth-3] + "..."
+		}
+
+		// Adjust offset if string is too short from offset position
+		if offset > strLen {
+			offset = strLen
+		}
+		if strLen-offset < (maxWidth - 3) {
+			offset = strLen - (maxWidth - 3)
+		}
+
+		// Now handle the case where we need both ellipses
+		if (offset + maxWidth - 3) < strLen {
+			// "..." + abbreviate(str[offset:], maxWidth-3)
+			remaining := value[offset:]
+			if len(remaining) > maxWidth-3 {
+				return "..." + remaining[0:maxWidth-6] + "..."
+			}
+			return "..." + remaining
+		}
+
+		// "..." + str[len-maxWidth+3:]
+		return "..." + value[strLen-(maxWidth-3):]
+	}
 }

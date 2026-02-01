@@ -54,7 +54,7 @@ func TestSprigHandler(t *testing.T) {
 	handler.Build()
 
 	assert.GreaterOrEqual(t, len(handler.RawFunctions()), sprigFunctionCount)
-	assert.Len(t, handler.RawAliases(), 37) // Hardcoded for backward compatibility
+	assert.Len(t, handler.RawAliases(), 38) // Hardcoded for backward compatibility
 
 	assert.Len(t, handler.registries, 18) // Hardcoded for backward compatibility
 

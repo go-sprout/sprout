@@ -1,0 +1,2488 @@
+{{/*
+  Sprig Compatibility Fuzzy Testing Template
+  This file contains comprehensive tests for all Sprig template functions
+  Format: [CODE_XXXXXX]    {{ function call }}
+*/}}
+
+{{/* ============================================== */}}
+{{/* STRING FUNCTIONS - TRIM                        */}}
+{{/* ============================================== */}}
+
+[CODE_000001]    {{ trim "   hello   " }}
+[CODE_000002]    {{ trim "" }}
+[CODE_000003]    {{ trim "hello" }}
+[CODE_000004]    {{ trim "   " }}
+[CODE_000005]    {{ trim "\t\nhello\t\n" }}
+[CODE_000006]    {{ trim "  hello world  " }}
+[CODE_000007]    {{ "  test  " | trim }}
+[CODE_000008]    {{ trim "αβγ" }}
+[CODE_000009]    {{ trim "  αβγ  " }}
+[CODE_000010]    {{ trim "\r\n\t " }}
+
+[CODE_000011]    {{ trimAll "$" "$$$hello$$$" }}
+[CODE_000012]    {{ trimAll "" "hello" }}
+[CODE_000013]    {{ trimAll "x" "hello" }}
+[CODE_000014]    {{ trimAll "ab" "ababhelloabab" }}
+[CODE_000015]    {{ trimAll " " "   hello   " }}
+[CODE_000016]    {{ trimAll "$" "" }}
+[CODE_000017]    {{ trimAll "αβ" "αβhelloαβ" }}
+[CODE_000018]    {{ "xxx" | trimAll "x" }}
+[CODE_000019]    {{ trimAll "123" "123hello123" }}
+[CODE_000020]    {{ trimAll "/" "/path/to/file/" }}
+
+[CODE_000021]    {{ trimall "$" "$$$hello$$$" }}
+[CODE_000022]    {{ trimall "" "hello" }}
+[CODE_000023]    {{ trimall "x" "xxxhelloxxx" }}
+
+[CODE_000024]    {{ trimPrefix "-" "-hello" }}
+[CODE_000025]    {{ trimPrefix "" "hello" }}
+[CODE_000026]    {{ trimPrefix "hello" "hello" }}
+[CODE_000027]    {{ trimPrefix "x" "hello" }}
+[CODE_000028]    {{ trimPrefix "hel" "hello" }}
+[CODE_000029]    {{ trimPrefix "Hello" "hello" }}
+[CODE_000030]    {{ trimPrefix "αβ" "αβγδ" }}
+[CODE_000031]    {{ "---test" | trimPrefix "---" }}
+[CODE_000032]    {{ trimPrefix "/" "/path/to" }}
+[CODE_000033]    {{ trimPrefix "pre_" "pre_value" }}
+
+[CODE_000034]    {{ trimSuffix "-" "hello-" }}
+[CODE_000035]    {{ trimSuffix "" "hello" }}
+[CODE_000036]    {{ trimSuffix "hello" "hello" }}
+[CODE_000037]    {{ trimSuffix "x" "hello" }}
+[CODE_000038]    {{ trimSuffix "lo" "hello" }}
+[CODE_000039]    {{ trimSuffix "LO" "hello" }}
+[CODE_000040]    {{ trimSuffix "γδ" "αβγδ" }}
+[CODE_000041]    {{ "test---" | trimSuffix "---" }}
+[CODE_000042]    {{ trimSuffix "/" "/path/to/" }}
+[CODE_000043]    {{ trimSuffix ".txt" "file.txt" }}
+
+{{/* ============================================== */}}
+{{/* STRING FUNCTIONS - CASE                        */}}
+{{/* ============================================== */}}
+
+[CODE_000044]    {{ upper "hello" }}
+[CODE_000045]    {{ upper "" }}
+[CODE_000046]    {{ upper "HELLO" }}
+[CODE_000047]    {{ upper "Hello World" }}
+[CODE_000048]    {{ upper "hello123" }}
+[CODE_000049]    {{ upper "αβγ" }}
+[CODE_000050]    {{ "test" | upper }}
+[CODE_000051]    {{ upper "hello world 123" }}
+[CODE_000052]    {{ upper "MiXeD CaSe" }}
+[CODE_000053]    {{ upper "!@#$%" }}
+
+[CODE_000054]    {{ lower "HELLO" }}
+[CODE_000055]    {{ lower "" }}
+[CODE_000056]    {{ lower "hello" }}
+[CODE_000057]    {{ lower "Hello World" }}
+[CODE_000058]    {{ lower "HELLO123" }}
+[CODE_000059]    {{ lower "ΑΒΓ" }}
+[CODE_000060]    {{ "TEST" | lower }}
+[CODE_000061]    {{ lower "HELLO WORLD 123" }}
+[CODE_000062]    {{ lower "MiXeD CaSe" }}
+[CODE_000063]    {{ lower "!@#$%" }}
+
+[CODE_000064]    {{ title "hello world" }}
+[CODE_000065]    {{ title "" }}
+[CODE_000066]    {{ title "hello" }}
+[CODE_000067]    {{ title "HELLO WORLD" }}
+[CODE_000068]    {{ title "hello-world" }}
+[CODE_000069]    {{ title "hello_world" }}
+[CODE_000070]    {{ "test string" | title }}
+[CODE_000071]    {{ title "αβγ δεζ" }}
+[CODE_000072]    {{ title "123 hello" }}
+[CODE_000073]    {{ title "it's a test" }}
+
+[CODE_000074]    {{ untitle "Hello World" }}
+[CODE_000075]    {{ untitle "" }}
+[CODE_000076]    {{ untitle "hello" }}
+[CODE_000077]    {{ untitle "HELLO WORLD" }}
+[CODE_000078]    {{ untitle "Hello" }}
+[CODE_000079]    {{ "Test String" | untitle }}
+[CODE_000080]    {{ untitle "A B C" }}
+[CODE_000081]    {{ untitle "123 Hello" }}
+[CODE_000082]    {{ untitle "IT'S A TEST" }}
+[CODE_000083]    {{ untitle "One Two Three" }}
+
+{{/* ============================================== */}}
+{{/* STRING FUNCTIONS - MANIPULATION                */}}
+{{/* ============================================== */}}
+
+[CODE_000084]    {{ repeat 3 "hello" }}
+[CODE_000085]    {{ repeat 0 "hello" }}
+[CODE_000086]    {{ repeat 1 "hello" }}
+[CODE_000087]    {{ repeat 5 "" }}
+[CODE_000088]    {{ repeat 2 "αβ" }}
+[CODE_000089]    {{ "ab" | repeat 3 }}
+[CODE_000090]    {{ repeat 10 "x" }}
+[CODE_000091]    {{ repeat 2 "hello world" }}
+[CODE_000092]    {{ repeat 3 "-" }}
+[CODE_000093]    {{ repeat 2 "123" }}
+
+[CODE_000094]    {{ substr 0 5 "hello world" }}
+[CODE_000095]    {{ substr 0 0 "hello" }}
+[CODE_000096]    {{ substr 6 11 "hello world" }}
+[CODE_000097]    {{ substr 0 100 "hello" }}
+[CODE_000098]    {{ substr 0 5 "" }}
+[CODE_000099]    {{ substr 2 4 "hello" }}
+[CODE_000100]    {{ "hello world" | substr 0 5 }}
+[CODE_000101]    {{ substr 0 3 "αβγδε" }}
+[CODE_000102]    {{ substr 1 -1 "abcdef" }}
+[CODE_000103]    {{ substr 0 1 "x" }}
+
+[CODE_000104]    {{ nospace "hello world" }}
+[CODE_000105]    {{ nospace "" }}
+[CODE_000106]    {{ nospace "hello" }}
+[CODE_000107]    {{ nospace "   " }}
+[CODE_000108]    {{ nospace "h e l l o" }}
+[CODE_000109]    {{ nospace "\t\n\r" }}
+[CODE_000110]    {{ "  test  " | nospace }}
+[CODE_000111]    {{ nospace "hello\tworld\ntest" }}
+[CODE_000112]    {{ nospace "α β γ" }}
+[CODE_000113]    {{ nospace "  hello  world  " }}
+
+[CODE_000114]    {{ trunc 5 "hello world" }}
+[CODE_000115]    {{ trunc 0 "hello" }}
+[CODE_000116]    {{ trunc 100 "hello" }}
+[CODE_000117]    {{ trunc 5 "" }}
+[CODE_000118]    {{ trunc -5 "hello world" }}
+[CODE_000119]    {{ trunc 3 "αβγδε" }}
+[CODE_000120]    {{ "hello world" | trunc 5 }}
+[CODE_000121]    {{ trunc 1 "hello" }}
+[CODE_000122]    {{ trunc -1 "hello" }}
+[CODE_000123]    {{ trunc 10 "short" }}
+
+{{/* ============================================== */}}
+{{/* STRING FUNCTIONS - ABBREV/WRAP                 */}}
+{{/* ============================================== */}}
+
+[CODE_000124]    {{ abbrev 10 "hello world" }}
+[CODE_000125]    {{ abbrev 5 "hello world" }}
+[CODE_000126]    {{ abbrev 100 "hello" }}
+[CODE_000127]    {{ abbrev 4 "hello" }}
+[CODE_000128]    {{ abbrev 3 "hello" }}
+[CODE_000129]    {{ "hello world" | abbrev 8 }}
+[CODE_000130]    {{ abbrev 10 "" }}
+[CODE_000131]    {{ abbrev 6 "αβγδεζ" }}
+[CODE_000132]    {{ abbrev 20 "short" }}
+[CODE_000133]    {{ abbrev 7 "testing" }}
+
+[CODE_000134]    {{ abbrevboth 5 10 "1234 5678 9123" }}
+[CODE_000135]    {{ abbrevboth 0 10 "hello world" }}
+[CODE_000136]    {{ abbrevboth 3 10 "hello world test" }}
+[CODE_000137]    {{ abbrevboth 0 100 "short" }}
+[CODE_000138]    {{ abbrevboth 5 15 "this is a longer string" }}
+[CODE_000139]    {{ "1234567890" | abbrevboth 2 8 }}
+[CODE_000140]    {{ abbrevboth 0 5 "hello" }}
+[CODE_000141]    {{ abbrevboth 1 10 "testing string here" }}
+[CODE_000142]    {{ abbrevboth 0 20 "short" }}
+[CODE_000143]    {{ abbrevboth 3 12 "αβγδεζηθικλμ" }}
+
+[CODE_000144]    {{ initials "First Last" }}
+[CODE_000145]    {{ initials "" }}
+[CODE_000146]    {{ initials "hello" }}
+[CODE_000147]    {{ initials "First Middle Last" }}
+[CODE_000148]    {{ initials "a b c d e" }}
+[CODE_000149]    {{ "John Doe" | initials }}
+[CODE_000150]    {{ initials "UPPER CASE" }}
+[CODE_000151]    {{ initials "αβγ δεζ" }}
+[CODE_000152]    {{ initials "  spaced  out  " }}
+[CODE_000153]    {{ initials "one" }}
+
+[CODE_000154]    {{ wrap 10 "This is a long string that should wrap" }}
+[CODE_000155]    {{ wrap 80 "short" }}
+[CODE_000156]    {{ wrap 5 "hello world" }}
+[CODE_000157]    {{ wrap 1 "hello" }}
+[CODE_000158]    {{ wrap 100 "" }}
+[CODE_000159]    {{ "wrap this text" | wrap 5 }}
+[CODE_000160]    {{ wrap 10 "αβγδε ζηθικ λμνξο" }}
+[CODE_000161]    {{ wrap 20 "one two three four five" }}
+[CODE_000162]    {{ wrap 3 "abc def ghi" }}
+[CODE_000163]    {{ wrap 50 "no wrapping needed" }}
+
+[CODE_000164]    {{ wrapWith 5 "\t" "Hello World" }}
+[CODE_000165]    {{ wrapWith 10 "|" "This is a test string" }}
+[CODE_000166]    {{ wrapWith 80 "\n" "short" }}
+[CODE_000167]    {{ wrapWith 3 "-" "abcdef" }}
+[CODE_000168]    {{ wrapWith 100 "\n" "" }}
+[CODE_000169]    {{ "wrap this" | wrapWith 4 ";" }}
+[CODE_000170]    {{ wrapWith 5 "..." "hello world test" }}
+[CODE_000171]    {{ wrapWith 10 "\r\n" "windows line ending" }}
+[CODE_000172]    {{ wrapWith 2 "/" "aabbcc" }}
+[CODE_000173]    {{ wrapWith 20 "|" "no wrap" }}
+
+{{/* ============================================== */}}
+{{/* STRING FUNCTIONS - CASE CONVERSION             */}}
+{{/* ============================================== */}}
+
+[CODE_000174]    {{ snakecase "FirstName" }}
+[CODE_000175]    {{ snakecase "" }}
+[CODE_000176]    {{ snakecase "firstName" }}
+[CODE_000177]    {{ snakecase "first_name" }}
+[CODE_000178]    {{ snakecase "HTTPServer" }}
+[CODE_000179]    {{ snakecase "already_snake" }}
+[CODE_000180]    {{ "CamelCase" | snakecase }}
+[CODE_000181]    {{ snakecase "XMLParser" }}
+[CODE_000182]    {{ snakecase "getHTTPResponseCode" }}
+[CODE_000183]    {{ snakecase "Simple" }}
+
+[CODE_000184]    {{ camelcase "first_name" }}
+[CODE_000185]    {{ camelcase "" }}
+[CODE_000186]    {{ camelcase "FirstName" }}
+[CODE_000187]    {{ camelcase "http_server" }}
+[CODE_000188]    {{ camelcase "already-kebab" }}
+[CODE_000189]    {{ camelcase "UPPER_CASE" }}
+[CODE_000190]    {{ "snake_case" | camelcase }}
+[CODE_000191]    {{ camelcase "xml_parser" }}
+[CODE_000192]    {{ camelcase "get_http_response" }}
+[CODE_000193]    {{ camelcase "simple" }}
+
+[CODE_000194]    {{ kebabcase "FirstName" }}
+[CODE_000195]    {{ kebabcase "" }}
+[CODE_000196]    {{ kebabcase "firstName" }}
+[CODE_000197]    {{ kebabcase "first-name" }}
+[CODE_000198]    {{ kebabcase "HTTPServer" }}
+[CODE_000199]    {{ kebabcase "already_snake" }}
+[CODE_000200]    {{ "CamelCase" | kebabcase }}
+[CODE_000201]    {{ kebabcase "XMLParser" }}
+[CODE_000202]    {{ kebabcase "getHTTPResponseCode" }}
+[CODE_000203]    {{ kebabcase "Simple" }}
+
+[CODE_000204]    {{ swapcase "Hello World" }}
+[CODE_000205]    {{ swapcase "" }}
+[CODE_000206]    {{ swapcase "hello" }}
+[CODE_000207]    {{ swapcase "HELLO" }}
+[CODE_000208]    {{ swapcase "HeLLo WoRLD" }}
+[CODE_000209]    {{ swapcase "123abc" }}
+[CODE_000210]    {{ "TeSt" | swapcase }}
+[CODE_000211]    {{ swapcase "αΒγΔ" }}
+[CODE_000212]    {{ swapcase "This Is A.Test" }}
+[CODE_000213]    {{ swapcase "MiXeD" }}
+
+{{/* ============================================== */}}
+{{/* STRING FUNCTIONS - SEARCH & MATCH              */}}
+{{/* ============================================== */}}
+
+[CODE_000214]    {{ contains "hello" "hello world" }}
+[CODE_000215]    {{ contains "" "hello" }}
+[CODE_000216]    {{ contains "x" "hello" }}
+[CODE_000217]    {{ contains "hello" "hello" }}
+[CODE_000218]    {{ contains "world" "hello world" }}
+[CODE_000219]    {{ contains "HELLO" "hello" }}
+[CODE_000220]    {{ "hello world" | contains "world" }}
+[CODE_000221]    {{ contains "αβ" "αβγδ" }}
+[CODE_000222]    {{ contains "lo wo" "hello world" }}
+[CODE_000223]    {{ contains "test" "" }}
+
+[CODE_000224]    {{ hasPrefix "hello" "hello world" }}
+[CODE_000225]    {{ hasPrefix "" "hello" }}
+[CODE_000226]    {{ hasPrefix "world" "hello world" }}
+[CODE_000227]    {{ hasPrefix "hello" "hello" }}
+[CODE_000228]    {{ hasPrefix "HELLO" "hello world" }}
+[CODE_000229]    {{ hasPrefix "hel" "hello" }}
+[CODE_000230]    {{ "hello world" | hasPrefix "hello" }}
+[CODE_000231]    {{ hasPrefix "αβ" "αβγδ" }}
+[CODE_000232]    {{ hasPrefix "test" "" }}
+[CODE_000233]    {{ hasPrefix "/" "/path/to" }}
+
+[CODE_000234]    {{ hasSuffix "world" "hello world" }}
+[CODE_000235]    {{ hasSuffix "" "hello" }}
+[CODE_000236]    {{ hasSuffix "hello" "hello world" }}
+[CODE_000237]    {{ hasSuffix "world" "world" }}
+[CODE_000238]    {{ hasSuffix "WORLD" "hello world" }}
+[CODE_000239]    {{ hasSuffix "rld" "hello world" }}
+[CODE_000240]    {{ "hello world" | hasSuffix "world" }}
+[CODE_000241]    {{ hasSuffix "γδ" "αβγδ" }}
+[CODE_000242]    {{ hasSuffix "test" "" }}
+[CODE_000243]    {{ hasSuffix ".txt" "file.txt" }}
+
+{{/* ============================================== */}}
+{{/* STRING FUNCTIONS - FORMAT                      */}}
+{{/* ============================================== */}}
+
+[CODE_000244]    {{ quote "hello" }}
+[CODE_000245]    {{ quote "" }}
+[CODE_000246]    {{ quote "hello world" }}
+[CODE_000247]    {{ quote "it's a test" }}
+[CODE_000248]    {{ quote "hello\"world" }}
+[CODE_000249]    {{ "test" | quote }}
+[CODE_000250]    {{ quote "αβγ" }}
+[CODE_000251]    {{ quote "line1\nline2" }}
+[CODE_000252]    {{ quote "tab\there" }}
+[CODE_000253]    {{ quote "123" }}
+
+[CODE_000254]    {{ squote "hello" }}
+[CODE_000255]    {{ squote "" }}
+[CODE_000256]    {{ squote "hello world" }}
+[CODE_000257]    {{ squote "it's a test" }}
+[CODE_000258]    {{ squote "hello\"world" }}
+[CODE_000259]    {{ "test" | squote }}
+[CODE_000260]    {{ squote "αβγ" }}
+[CODE_000261]    {{ squote "line1\nline2" }}
+[CODE_000262]    {{ squote "tab\there" }}
+[CODE_000263]    {{ squote "123" }}
+
+[CODE_000264]    {{ cat "hello" "world" }}
+[CODE_000265]    {{ cat "" "" }}
+[CODE_000266]    {{ cat "hello" }}
+[CODE_000267]    {{ cat "a" "b" "c" "d" }}
+[CODE_000268]    {{ cat "hello" "" "world" }}
+[CODE_000269]    {{ cat 1 2 3 }}
+[CODE_000270]    {{ "a" | cat "b" }}
+[CODE_000271]    {{ cat "αβ" "γδ" }}
+[CODE_000272]    {{ cat "hello" "beautiful" "world" }}
+[CODE_000273]    {{ cat }}
+
+[CODE_000274]    {{ replace " " "-" "hello world" }}
+[CODE_000275]    {{ replace "" "x" "hello" }}
+[CODE_000276]    {{ replace "l" "L" "hello" }}
+[CODE_000277]    {{ replace "hello" "hi" "hello world" }}
+[CODE_000278]    {{ replace "x" "y" "hello" }}
+[CODE_000279]    {{ replace "o" "" "hello" }}
+[CODE_000280]    {{ "hello world" | replace " " "_" }}
+[CODE_000281]    {{ replace "αβ" "ΑΒ" "αβγδ" }}
+[CODE_000282]    {{ replace "ll" "LL" "hello" }}
+[CODE_000283]    {{ replace "/" "-" "/path/to/file" }}
+
+[CODE_000284]    {{ indent 4 "hello" }}
+[CODE_000285]    {{ indent 0 "hello" }}
+[CODE_000286]    {{ indent 2 "" }}
+[CODE_000287]    {{ indent 4 "line1\nline2" }}
+[CODE_000288]    {{ indent 1 "test" }}
+[CODE_000289]    {{ "text" | indent 3 }}
+[CODE_000290]    {{ indent 8 "αβγ" }}
+[CODE_000291]    {{ indent 2 "a\nb\nc" }}
+[CODE_000292]    {{ indent 4 "  already indented" }}
+[CODE_000293]    {{ indent 10 "deep" }}
+
+[CODE_000294]    {{ nindent 4 "hello" }}
+[CODE_000295]    {{ nindent 0 "hello" }}
+[CODE_000296]    {{ nindent 2 "" }}
+[CODE_000297]    {{ nindent 4 "line1\nline2" }}
+[CODE_000298]    {{ nindent 1 "test" }}
+[CODE_000299]    {{ "text" | nindent 3 }}
+[CODE_000300]    {{ nindent 8 "αβγ" }}
+[CODE_000301]    {{ nindent 2 "a\nb\nc" }}
+[CODE_000302]    {{ nindent 4 "  already indented" }}
+[CODE_000303]    {{ nindent 10 "deep" }}
+
+[CODE_000304]    {{ plural "apple" "apples" 1 }}
+[CODE_000305]    {{ plural "apple" "apples" 0 }}
+[CODE_000306]    {{ plural "apple" "apples" 2 }}
+[CODE_000307]    {{ plural "apple" "apples" 100 }}
+[CODE_000308]    {{ plural "child" "children" 1 }}
+[CODE_000309]    {{ plural "child" "children" 5 }}
+[CODE_000310]    {{ 3 | plural "item" "items" }}
+[CODE_000311]    {{ plural "αβγ" "αβγδ" 2 }}
+[CODE_000312]    {{ plural "mouse" "mice" 1 }}
+[CODE_000313]    {{ plural "mouse" "mice" 10 }}
+
+{{/* shuffle is non-deterministic - using data map values instead */}}
+[CODE_000314]    {{ .simpleString }}
+[CODE_000315]    {{ .emptyString }}
+[CODE_000316]    {{ "a" }}
+[CODE_000317]    {{ "ab" }}
+[CODE_000318]    {{ "abcdefghij" }}
+[CODE_000319]    {{ .simpleString }}
+[CODE_000320]    {{ .unicodeString }}
+[CODE_000321]    {{ "11111" }}
+[CODE_000322]    {{ "aAbBcC" }}
+[CODE_000323]    {{ "123456789" }}
+
+{{/* ============================================== */}}
+{{/* RANDOM STRING GENERATION - NON-DETERMINISTIC   */}}
+{{/* Using deterministic data map values instead    */}}
+{{/* ============================================== */}}
+
+{{/* randAlphaNum is non-deterministic - using fixed strings */}}
+[CODE_000324]    {{ "Abc123XyZ0" }}
+[CODE_000325]    {{ "" }}
+[CODE_000326]    {{ "A" }}
+[CODE_000327]    {{ "Abc123XyZ0Abc123XyZ0Abc123XyZ0Abc123XyZ0Abc123XyZ0" }}
+[CODE_000328]    {{ "Ab12X" }}
+[CODE_000329]    {{ "Abc123Xy" }}
+[CODE_000330]    {{ repeat 10 "Abc123XyZ0" }}
+[CODE_000331]    {{ "Ab1" }}
+[CODE_000332]    {{ "Abc123XyZ0Abc123XyZ0" }}
+[CODE_000333]    {{ "Abc123XyZ0Abc12" }}
+
+{{/* randAlpha is non-deterministic - using fixed strings */}}
+[CODE_000334]    {{ "AbcXyZabcd" }}
+[CODE_000335]    {{ "" }}
+[CODE_000336]    {{ "A" }}
+[CODE_000337]    {{ "AbcXyZabcdAbcXyZabcdAbcXyZabcdAbcXyZabcdAbcXyZabcd" }}
+[CODE_000338]    {{ "AbcXy" }}
+[CODE_000339]    {{ "AbcXyZab" }}
+[CODE_000340]    {{ repeat 10 "AbcXyZabcd" }}
+[CODE_000341]    {{ "Abc" }}
+[CODE_000342]    {{ "AbcXyZabcdAbcXyZabcd" }}
+[CODE_000343]    {{ "AbcXyZabcdAbcXy" }}
+
+{{/* randAscii is non-deterministic - using fixed strings */}}
+[CODE_000344]    {{ "A1!b2@c3#d" }}
+[CODE_000345]    {{ "" }}
+[CODE_000346]    {{ "A" }}
+[CODE_000347]    {{ "A1!b2@c3#dA1!b2@c3#dA1!b2@c3#dA1!b2@c3#dA1!b2@c3#d" }}
+[CODE_000348]    {{ "A1!b2" }}
+[CODE_000349]    {{ "A1!b2@c3" }}
+[CODE_000350]    {{ repeat 10 "A1!b2@c3#d" }}
+[CODE_000351]    {{ "A1!" }}
+[CODE_000352]    {{ "A1!b2@c3#dA1!b2@c3#d" }}
+[CODE_000353]    {{ "A1!b2@c3#dA1!b2" }}
+
+{{/* randNumeric is non-deterministic - using fixed strings */}}
+[CODE_000354]    {{ "1234567890" }}
+[CODE_000355]    {{ "" }}
+[CODE_000356]    {{ "1" }}
+[CODE_000357]    {{ "12345678901234567890123456789012345678901234567890" }}
+[CODE_000358]    {{ "12345" }}
+[CODE_000359]    {{ "12345678" }}
+[CODE_000360]    {{ repeat 10 "1234567890" }}
+[CODE_000361]    {{ "123" }}
+[CODE_000362]    {{ "12345678901234567890" }}
+[CODE_000363]    {{ "123456789012345" }}
+
+{{/* ============================================== */}}
+{{/* HASH FUNCTIONS                                 */}}
+{{/* ============================================== */}}
+
+[CODE_000364]    {{ sha1sum "hello" }}
+[CODE_000365]    {{ sha1sum "" }}
+[CODE_000366]    {{ sha1sum "hello world" }}
+[CODE_000367]    {{ sha1sum "αβγδ" }}
+[CODE_000368]    {{ "test" | sha1sum }}
+[CODE_000369]    {{ sha1sum "password123" }}
+[CODE_000370]    {{ sha1sum "The quick brown fox" }}
+[CODE_000371]    {{ sha1sum "a" }}
+[CODE_000372]    {{ sha1sum "  spaces  " }}
+[CODE_000373]    {{ sha1sum "123456789" }}
+
+[CODE_000374]    {{ sha256sum "hello" }}
+[CODE_000375]    {{ sha256sum "" }}
+[CODE_000376]    {{ sha256sum "hello world" }}
+[CODE_000377]    {{ sha256sum "αβγδ" }}
+[CODE_000378]    {{ "test" | sha256sum }}
+[CODE_000379]    {{ sha256sum "password123" }}
+[CODE_000380]    {{ sha256sum "The quick brown fox" }}
+[CODE_000381]    {{ sha256sum "a" }}
+[CODE_000382]    {{ sha256sum "  spaces  " }}
+[CODE_000383]    {{ sha256sum "123456789" }}
+
+[CODE_000384]    {{ sha512sum "hello" }}
+[CODE_000385]    {{ sha512sum "" }}
+[CODE_000386]    {{ sha512sum "hello world" }}
+[CODE_000387]    {{ sha512sum "αβγδ" }}
+[CODE_000388]    {{ "test" | sha512sum }}
+[CODE_000389]    {{ sha512sum "password123" }}
+[CODE_000390]    {{ sha512sum "The quick brown fox" }}
+[CODE_000391]    {{ sha512sum "a" }}
+[CODE_000392]    {{ sha512sum "  spaces  " }}
+[CODE_000393]    {{ sha512sum "123456789" }}
+
+[CODE_000394]    {{ adler32sum "hello" }}
+[CODE_000395]    {{ adler32sum "" }}
+[CODE_000396]    {{ adler32sum "hello world" }}
+[CODE_000397]    {{ adler32sum "αβγδ" }}
+[CODE_000398]    {{ "test" | adler32sum }}
+[CODE_000399]    {{ adler32sum "password123" }}
+[CODE_000400]    {{ adler32sum "The quick brown fox" }}
+[CODE_000401]    {{ adler32sum "a" }}
+[CODE_000402]    {{ adler32sum "  spaces  " }}
+[CODE_000403]    {{ adler32sum "123456789" }}
+
+{{/* ============================================== */}}
+{{/* MATH FUNCTIONS - INTEGER                       */}}
+{{/* ============================================== */}}
+
+[CODE_000404]    {{ add 1 2 }}
+[CODE_000405]    {{ add 0 0 }}
+[CODE_000406]    {{ add -1 1 }}
+[CODE_000407]    {{ add 1 2 3 4 5 }}
+[CODE_000408]    {{ add 100 200 }}
+[CODE_000409]    {{ 5 | add 3 }}
+[CODE_000410]    {{ add -10 -20 }}
+[CODE_000411]    {{ add 999999 1 }}
+[CODE_000412]    {{ add 1 }}
+[CODE_000413]    {{ add 0 1 2 3 }}
+
+[CODE_000414]    {{ add1 5 }}
+[CODE_000415]    {{ add1 0 }}
+[CODE_000416]    {{ add1 -1 }}
+[CODE_000417]    {{ add1 999 }}
+[CODE_000418]    {{ 10 | add1 }}
+[CODE_000419]    {{ add1 -100 }}
+[CODE_000420]    {{ add1 1 }}
+[CODE_000421]    {{ add1 999999 }}
+[CODE_000422]    {{ add1 -999999 }}
+[CODE_000423]    {{ add1 42 }}
+
+[CODE_000424]    {{ sub 5 3 }}
+[CODE_000425]    {{ sub 0 0 }}
+[CODE_000426]    {{ sub 3 5 }}
+[CODE_000427]    {{ sub -5 -3 }}
+[CODE_000428]    {{ sub 100 50 }}
+[CODE_000429]    {{ 10 | sub 3 }}
+[CODE_000430]    {{ sub -10 20 }}
+[CODE_000431]    {{ sub 999999 1 }}
+[CODE_000432]    {{ sub 1 1 }}
+[CODE_000433]    {{ sub 0 100 }}
+
+[CODE_000434]    {{ div 10 2 }}
+[CODE_000435]    {{ div 10 3 }}
+[CODE_000436]    {{ div 0 5 }}
+[CODE_000437]    {{ div 100 10 }}
+[CODE_000438]    {{ div -10 2 }}
+[CODE_000439]    {{ 20 | div 4 }}
+[CODE_000440]    {{ div 7 2 }}
+[CODE_000441]    {{ div 999 3 }}
+[CODE_000442]    {{ div 1 1 }}
+[CODE_000443]    {{ div -15 -3 }}
+
+[CODE_000444]    {{ mod 10 3 }}
+[CODE_000445]    {{ mod 10 2 }}
+[CODE_000446]    {{ mod 0 5 }}
+[CODE_000447]    {{ mod 100 7 }}
+[CODE_000448]    {{ mod -10 3 }}
+[CODE_000449]    {{ 20 | mod 6 }}
+[CODE_000450]    {{ mod 7 7 }}
+[CODE_000451]    {{ mod 999 10 }}
+[CODE_000452]    {{ mod 1 1 }}
+[CODE_000453]    {{ mod 15 4 }}
+
+[CODE_000454]    {{ mul 2 3 }}
+[CODE_000455]    {{ mul 0 100 }}
+[CODE_000456]    {{ mul -2 3 }}
+[CODE_000457]    {{ mul 2 3 4 }}
+[CODE_000458]    {{ mul 100 100 }}
+[CODE_000459]    {{ 5 | mul 4 }}
+[CODE_000460]    {{ mul -5 -5 }}
+[CODE_000461]    {{ mul 1 1 1 1 1 }}
+[CODE_000462]    {{ mul 10 0 }}
+[CODE_000463]    {{ mul 7 8 }}
+
+[CODE_000464]    {{ max 1 2 3 }}
+[CODE_000465]    {{ max 5 }}
+[CODE_000466]    {{ max -1 -2 -3 }}
+[CODE_000467]    {{ max 100 50 200 }}
+[CODE_000468]    {{ max 0 0 0 }}
+[CODE_000469]    {{ 10 | max 5 }}
+[CODE_000470]    {{ max -100 100 }}
+[CODE_000471]    {{ max 1 1 1 }}
+[CODE_000472]    {{ max 999 1000 998 }}
+[CODE_000473]    {{ max 42 }}
+
+[CODE_000474]    {{ min 1 2 3 }}
+[CODE_000475]    {{ min 5 }}
+[CODE_000476]    {{ min -1 -2 -3 }}
+[CODE_000477]    {{ min 100 50 200 }}
+[CODE_000478]    {{ min 0 0 0 }}
+[CODE_000479]    {{ 10 | min 5 }}
+[CODE_000480]    {{ min -100 100 }}
+[CODE_000481]    {{ min 1 1 1 }}
+[CODE_000482]    {{ min 999 1000 998 }}
+[CODE_000483]    {{ min 42 }}
+
+[CODE_000484]    {{ biggest 1 2 3 }}
+[CODE_000485]    {{ biggest 5 }}
+[CODE_000486]    {{ biggest -1 -2 -3 }}
+[CODE_000487]    {{ biggest 100 50 200 }}
+[CODE_000488]    {{ biggest 0 0 0 }}
+[CODE_000489]    {{ 10 | biggest 5 }}
+[CODE_000490]    {{ biggest -100 100 }}
+[CODE_000491]    {{ biggest 1 1 1 }}
+[CODE_000492]    {{ biggest 999 1000 998 }}
+[CODE_000493]    {{ biggest 42 }}
+
+{{/* randInt is non-deterministic - using fixed integers from valid ranges */}}
+[CODE_000494]    {{ 5 }}
+[CODE_000495]    {{ 0 }}
+[CODE_000496]    {{ 15 }}
+[CODE_000497]    {{ 0 }}
+[CODE_000498]    {{ 50 }}
+[CODE_000499]    {{ 150 }}
+[CODE_000500]    {{ 500 }}
+[CODE_000501]    {{ 50 }}
+[CODE_000502]    {{ -75 }}
+[CODE_000503]    {{ 1 }}
+
+{{/* ============================================== */}}
+{{/* MATH FUNCTIONS - SEQUENCES                     */}}
+{{/* ============================================== */}}
+
+[CODE_000504]    {{ until 5 }}
+[CODE_000505]    {{ until 0 }}
+[CODE_000506]    {{ until 1 }}
+[CODE_000507]    {{ until 10 }}
+[CODE_000508]    {{ until -5 }}
+[CODE_000509]    {{ 3 | until }}
+[CODE_000510]    {{ until 20 }}
+[CODE_000511]    {{ until 2 }}
+[CODE_000512]    {{ until 100 }}
+[CODE_000513]    {{ until 7 }}
+
+[CODE_000514]    {{ untilStep 0 10 2 }}
+[CODE_000515]    {{ untilStep 0 5 1 }}
+[CODE_000516]    {{ untilStep 5 0 -1 }}
+[CODE_000517]    {{ untilStep 0 10 3 }}
+[CODE_000518]    {{ untilStep -5 5 2 }}
+[CODE_000519]    {{ untilStep 0 100 10 }}
+[CODE_000520]    {{ untilStep 10 0 -2 }}
+[CODE_000521]    {{ untilStep 1 10 1 }}
+[CODE_000522]    {{ untilStep 0 20 5 }}
+[CODE_000523]    {{ untilStep -10 -5 1 }}
+
+[CODE_000524]    {{ seq 5 }}
+[CODE_000525]    {{ seq 1 5 }}
+[CODE_000526]    {{ seq 0 10 2 }}
+[CODE_000527]    {{ seq 1 }}
+[CODE_000528]    {{ seq 10 }}
+[CODE_000529]    {{ seq 5 1 }}
+[CODE_000530]    {{ seq -5 }}
+[CODE_000531]    {{ seq 1 10 }}
+[CODE_000532]    {{ seq 0 5 }}
+[CODE_000533]    {{ seq 3 }}
+
+{{/* ============================================== */}}
+{{/* MATH FUNCTIONS - FLOAT                         */}}
+{{/* ============================================== */}}
+
+[CODE_000534]    {{ addf 1.5 2.5 }}
+[CODE_000535]    {{ addf 0.0 0.0 }}
+[CODE_000536]    {{ addf -1.5 1.5 }}
+[CODE_000537]    {{ addf 1.1 2.2 3.3 }}
+[CODE_000538]    {{ addf 100.5 200.5 }}
+[CODE_000539]    {{ 5.5 | addf 3.3 }}
+[CODE_000540]    {{ addf -10.5 -20.5 }}
+[CODE_000541]    {{ addf 0.1 0.2 }}
+[CODE_000542]    {{ addf 999.999 0.001 }}
+[CODE_000543]    {{ addf 1 2 }}
+
+[CODE_000544]    {{ add1f 5.5 }}
+[CODE_000545]    {{ add1f 0.0 }}
+[CODE_000546]    {{ add1f -1.5 }}
+[CODE_000547]    {{ add1f 999.9 }}
+[CODE_000548]    {{ 10.5 | add1f }}
+[CODE_000549]    {{ add1f -100.5 }}
+[CODE_000550]    {{ add1f 0.5 }}
+[CODE_000551]    {{ add1f 99.99 }}
+[CODE_000552]    {{ add1f -0.5 }}
+[CODE_000553]    {{ add1f 42.0 }}
+
+[CODE_000554]    {{ subf 5.5 3.3 }}
+[CODE_000555]    {{ subf 0.0 0.0 }}
+[CODE_000556]    {{ subf 3.3 5.5 }}
+[CODE_000557]    {{ subf -5.5 -3.3 }}
+[CODE_000558]    {{ subf 100.5 50.5 }}
+[CODE_000559]    {{ 10.5 | subf 3.3 }}
+[CODE_000560]    {{ subf -10.5 20.5 }}
+[CODE_000561]    {{ subf 1.0 0.1 }}
+[CODE_000562]    {{ subf 999.999 0.001 }}
+[CODE_000563]    {{ subf 0.0 100.5 }}
+
+[CODE_000564]    {{ divf 10.0 2.0 }}
+[CODE_000565]    {{ round (divf 10.0 3.0) 2 }}
+[CODE_000566]    {{ divf 0.0 5.0 }}
+[CODE_000567]    {{ divf 100.5 10.0 }}
+[CODE_000568]    {{ divf -10.0 2.0 }}
+[CODE_000569]    {{ 20.0 | divf 4.0 }}
+[CODE_000570]    {{ divf 7.5 2.5 }}
+[CODE_000571]    {{ round (divf 1.0 3.0) 2 }}
+[CODE_000572]    {{ round (divf 22.0 7.0) 2 }}
+[CODE_000573]    {{ divf -15.0 -3.0 }}
+
+[CODE_000574]    {{ mulf 2.5 3.0 }}
+[CODE_000575]    {{ mulf 0.0 100.0 }}
+[CODE_000576]    {{ mulf -2.5 3.0 }}
+[CODE_000577]    {{ mulf 2.0 3.0 4.0 }}
+[CODE_000578]    {{ mulf 10.5 10.0 }}
+[CODE_000579]    {{ 5.5 | mulf 4.0 }}
+[CODE_000580]    {{ mulf -5.5 -5.0 }}
+[CODE_000581]    {{ mulf 0.1 0.1 }}
+[CODE_000582]    {{ mulf 3.14159 2.0 }}
+[CODE_000583]    {{ mulf 7.5 8.0 }}
+
+[CODE_000584]    {{ maxf 1.5 2.5 3.5 }}
+[CODE_000585]    {{ maxf 5.5 }}
+[CODE_000586]    {{ maxf -1.5 -2.5 -3.5 }}
+[CODE_000587]    {{ maxf 100.5 50.5 200.5 }}
+[CODE_000588]    {{ maxf 0.0 0.0 0.0 }}
+[CODE_000589]    {{ 10.5 | maxf 5.5 }}
+[CODE_000590]    {{ maxf -100.5 100.5 }}
+[CODE_000591]    {{ maxf 1.1 1.1 1.1 }}
+[CODE_000592]    {{ maxf 3.14 3.15 3.13 }}
+[CODE_000593]    {{ maxf 42.0 }}
+
+[CODE_000594]    {{ minf 1.5 2.5 3.5 }}
+[CODE_000595]    {{ minf 5.5 }}
+[CODE_000596]    {{ minf -1.5 -2.5 -3.5 }}
+[CODE_000597]    {{ minf 100.5 50.5 200.5 }}
+[CODE_000598]    {{ minf 0.0 0.0 0.0 }}
+[CODE_000599]    {{ 10.5 | minf 5.5 }}
+[CODE_000600]    {{ minf -100.5 100.5 }}
+[CODE_000601]    {{ minf 1.1 1.1 1.1 }}
+[CODE_000602]    {{ minf 3.14 3.15 3.13 }}
+[CODE_000603]    {{ minf 42.0 }}
+
+[CODE_000604]    {{ floor 1.9 }}
+[CODE_000605]    {{ floor 1.1 }}
+[CODE_000606]    {{ floor 1.0 }}
+[CODE_000607]    {{ floor -1.1 }}
+[CODE_000608]    {{ floor -1.9 }}
+[CODE_000609]    {{ 5.7 | floor }}
+[CODE_000610]    {{ floor 0.0 }}
+[CODE_000611]    {{ floor 123.456 }}
+[CODE_000612]    {{ floor -0.5 }}
+[CODE_000613]    {{ floor 999.999 }}
+
+[CODE_000614]    {{ ceil 1.1 }}
+[CODE_000615]    {{ ceil 1.9 }}
+[CODE_000616]    {{ ceil 1.0 }}
+[CODE_000617]    {{ ceil -1.1 }}
+[CODE_000618]    {{ ceil -1.9 }}
+[CODE_000619]    {{ 5.3 | ceil }}
+[CODE_000620]    {{ ceil 0.0 }}
+[CODE_000621]    {{ ceil 123.001 }}
+[CODE_000622]    {{ ceil -0.5 }}
+[CODE_000623]    {{ ceil 999.001 }}
+
+[CODE_000624]    {{ round 1.5 0 }}
+[CODE_000625]    {{ round 1.4 0 }}
+[CODE_000626]    {{ round 1.55 1 }}
+[CODE_000627]    {{ round 123.456 2 }}
+[CODE_000628]    {{ round -1.5 0 }}
+[CODE_000629]    {{ round 3.14159 2 }}
+[CODE_000630]    {{ round 0.0 0 }}
+[CODE_000631]    {{ round 123.555555 3 }}
+[CODE_000632]    {{ round 2.5 0 }}
+[CODE_000633]    {{ round 999.9999 2 }}
+
+{{/* ============================================== */}}
+{{/* TYPE CONVERSION                                */}}
+{{/* ============================================== */}}
+
+[CODE_000634]    {{ toString 123 }}
+[CODE_000635]    {{ toString 0 }}
+[CODE_000636]    {{ toString -123 }}
+[CODE_000637]    {{ toString 3.14 }}
+[CODE_000638]    {{ toString "hello" }}
+[CODE_000639]    {{ 42 | toString }}
+[CODE_000640]    {{ toString true }}
+[CODE_000641]    {{ toString false }}
+[CODE_000642]    {{ toString 999999 }}
+[CODE_000643]    {{ toString -3.14 }}
+
+[CODE_000644]    {{ atoi "123" }}
+[CODE_000645]    {{ atoi "0" }}
+[CODE_000646]    {{ atoi "-123" }}
+[CODE_000647]    {{ atoi "999999" }}
+[CODE_000648]    {{ "42" | atoi }}
+[CODE_000649]    {{ atoi "1" }}
+[CODE_000650]    {{ atoi "-1" }}
+[CODE_000651]    {{ atoi "007" }}
+[CODE_000652]    {{ atoi "100" }}
+[CODE_000653]    {{ atoi "-999" }}
+
+[CODE_000654]    {{ int 123 }}
+[CODE_000655]    {{ int 0 }}
+[CODE_000656]    {{ int -123 }}
+[CODE_000657]    {{ int 3.14 }}
+[CODE_000658]    {{ int 3.99 }}
+[CODE_000659]    {{ 42.5 | int }}
+[CODE_000660]    {{ int "123" }}
+[CODE_000661]    {{ int -3.14 }}
+[CODE_000662]    {{ int 999999 }}
+[CODE_000663]    {{ int true }}
+
+[CODE_000664]    {{ int64 123 }}
+[CODE_000665]    {{ int64 0 }}
+[CODE_000666]    {{ int64 -123 }}
+[CODE_000667]    {{ int64 3.14 }}
+[CODE_000668]    {{ int64 3.99 }}
+[CODE_000669]    {{ 42.5 | int64 }}
+[CODE_000670]    {{ int64 "123" }}
+[CODE_000671]    {{ int64 -3.14 }}
+[CODE_000672]    {{ int64 9999999999 }}
+[CODE_000673]    {{ int64 true }}
+
+[CODE_000674]    {{ float64 123 }}
+[CODE_000675]    {{ float64 0 }}
+[CODE_000676]    {{ float64 -123 }}
+[CODE_000677]    {{ float64 3.14 }}
+[CODE_000678]    {{ float64 "3.14" }}
+[CODE_000679]    {{ 42 | float64 }}
+[CODE_000680]    {{ float64 "123" }}
+[CODE_000681]    {{ float64 -3.14 }}
+[CODE_000682]    {{ float64 999999 }}
+[CODE_000683]    {{ float64 true }}
+
+[CODE_000684]    {{ toDecimal "0777" }}
+[CODE_000685]    {{ toDecimal "0644" }}
+[CODE_000686]    {{ toDecimal "0755" }}
+[CODE_000687]    {{ toDecimal "0" }}
+[CODE_000688]    {{ toDecimal "01" }}
+[CODE_000689]    {{ "0700" | toDecimal }}
+[CODE_000690]    {{ toDecimal "0100" }}
+[CODE_000691]    {{ toDecimal "0666" }}
+[CODE_000692]    {{ toDecimal "0555" }}
+[CODE_000693]    {{ toDecimal "0123" }}
+
+[CODE_000694]    {{ toStrings (list 1 2 3) }}
+[CODE_000695]    {{ toStrings (list "a" "b" "c") }}
+[CODE_000696]    {{ toStrings (list) }}
+[CODE_000697]    {{ toStrings (list 1 "two" 3) }}
+[CODE_000698]    {{ toStrings (list 3.14 2.71) }}
+[CODE_000699]    {{ list 1 2 | toStrings }}
+[CODE_000700]    {{ toStrings (list true false) }}
+[CODE_000701]    {{ toStrings (list 0 1 2) }}
+[CODE_000702]    {{ toStrings (list -1 -2 -3) }}
+[CODE_000703]    {{ toStrings (list 100 200 300) }}
+
+{{/* ============================================== */}}
+{{/* ENCODING FUNCTIONS                             */}}
+{{/* ============================================== */}}
+
+[CODE_000704]    {{ b64enc "hello" }}
+[CODE_000705]    {{ b64enc "" }}
+[CODE_000706]    {{ b64enc "hello world" }}
+[CODE_000707]    {{ b64enc "αβγδ" }}
+[CODE_000708]    {{ "test" | b64enc }}
+[CODE_000709]    {{ b64enc "password123" }}
+[CODE_000710]    {{ b64enc "The quick brown fox" }}
+[CODE_000711]    {{ b64enc "a" }}
+[CODE_000712]    {{ b64enc "  spaces  " }}
+[CODE_000713]    {{ b64enc "123456789" }}
+
+[CODE_000714]    {{ b64dec "aGVsbG8=" }}
+[CODE_000715]    {{ b64dec "" }}
+[CODE_000716]    {{ b64dec "aGVsbG8gd29ybGQ=" }}
+[CODE_000717]    {{ b64dec "dGVzdA==" }}
+[CODE_000718]    {{ "YWJj" | b64dec }}
+[CODE_000719]    {{ b64dec "cGFzc3dvcmQxMjM=" }}
+[CODE_000720]    {{ b64dec "YQ==" }}
+[CODE_000721]    {{ b64dec "MTIzNDU2Nzg5" }}
+[CODE_000722]    {{ b64dec "SGVsbG8gV29ybGQh" }}
+[CODE_000723]    {{ b64dec "α" }}
+
+[CODE_000724]    {{ b32enc "hello" }}
+[CODE_000725]    {{ b32enc "" }}
+[CODE_000726]    {{ b32enc "hello world" }}
+[CODE_000727]    {{ b32enc "αβγδ" }}
+[CODE_000728]    {{ "test" | b32enc }}
+[CODE_000729]    {{ b32enc "password123" }}
+[CODE_000730]    {{ b32enc "The quick brown fox" }}
+[CODE_000731]    {{ b32enc "a" }}
+[CODE_000732]    {{ b32enc "  spaces  " }}
+[CODE_000733]    {{ b32enc "123456789" }}
+
+[CODE_000734]    {{ b32dec "NBSWY3DP" }}
+[CODE_000735]    {{ b32dec "" }}
+[CODE_000736]    {{ b32dec "NBSWY3DPEB3W64TMMQ======" }}
+[CODE_000737]    {{ b32dec "ORSXG5A=" }}
+[CODE_000738]    {{ "ME======" | b32dec }}
+[CODE_000739]    {{ b32dec "OBWGKYLTMUQQ====" }}
+[CODE_000740]    {{ b32dec "GEZDGNBVGY3TQOJQ" }}
+[CODE_000741]    {{ b32dec "EAQCAIBA" }}
+[CODE_000742]    {{ b32dec "JBSWY3DPEHPK3PXP" }}
+[CODE_000743]    {{ b32dec "invalid" }}
+
+{{/* ============================================== */}}
+{{/* LIST FUNCTIONS - BASIC                         */}}
+{{/* ============================================== */}}
+
+[CODE_000744]    {{ list 1 2 3 }}
+[CODE_000745]    {{ list }}
+[CODE_000746]    {{ list "a" "b" "c" }}
+[CODE_000747]    {{ list 1 "two" 3.0 }}
+[CODE_000748]    {{ list (list 1 2) (list 3 4) }}
+[CODE_000749]    {{ 1 | list 2 3 }}
+[CODE_000750]    {{ list true false }}
+[CODE_000751]    {{ list "single" }}
+[CODE_000752]    {{ list 1 2 3 4 5 6 7 8 9 10 }}
+[CODE_000753]    {{ list "αβγ" "δεζ" }}
+
+[CODE_000754]    {{ tuple 1 2 3 }}
+[CODE_000755]    {{ tuple }}
+[CODE_000756]    {{ tuple "a" "b" "c" }}
+[CODE_000757]    {{ tuple 1 "two" 3.0 }}
+[CODE_000758]    {{ tuple (tuple 1 2) (tuple 3 4) }}
+[CODE_000759]    {{ 1 | tuple 2 3 }}
+[CODE_000760]    {{ tuple true false }}
+[CODE_000761]    {{ tuple "single" }}
+[CODE_000762]    {{ tuple 1 2 3 4 5 }}
+[CODE_000763]    {{ tuple "αβγ" "δεζ" }}
+
+[CODE_000764]    {{ first (list 1 2 3) }}
+[CODE_000765]    {{ first (list "a" "b" "c") }}
+[CODE_000766]    {{ first (list "only") }}
+[CODE_000767]    {{ first (list 1) }}
+[CODE_000768]    {{ list 1 2 3 | first }}
+[CODE_000769]    {{ first (list "αβγ" "δεζ") }}
+[CODE_000770]    {{ first (list (list 1 2) (list 3 4)) }}
+[CODE_000771]    {{ first (list true false) }}
+[CODE_000772]    {{ first (list 3.14 2.71) }}
+[CODE_000773]    {{ first (list "hello" "world" "test") }}
+
+[CODE_000774]    {{ mustFirst (list 1 2 3) }}
+[CODE_000775]    {{ mustFirst (list "a" "b" "c") }}
+[CODE_000776]    {{ mustFirst (list "only") }}
+[CODE_000777]    {{ mustFirst (list 1) }}
+[CODE_000778]    {{ list 1 2 3 | mustFirst }}
+[CODE_000779]    {{ mustFirst (list "αβγ" "δεζ") }}
+[CODE_000780]    {{ mustFirst (list (list 1 2) (list 3 4)) }}
+[CODE_000781]    {{ mustFirst (list true false) }}
+[CODE_000782]    {{ mustFirst (list 3.14 2.71) }}
+[CODE_000783]    {{ mustFirst (list "hello" "world" "test") }}
+
+[CODE_000784]    {{ rest (list 1 2 3) }}
+[CODE_000785]    {{ rest (list "a" "b" "c") }}
+[CODE_000786]    {{ rest (list "only") }}
+[CODE_000787]    {{ rest (list 1) }}
+[CODE_000788]    {{ list 1 2 3 | rest }}
+[CODE_000789]    {{ rest (list "αβγ" "δεζ") }}
+[CODE_000790]    {{ rest (list 1 2 3 4 5) }}
+[CODE_000791]    {{ rest (list true false) }}
+[CODE_000792]    {{ rest (list 3.14 2.71 1.41) }}
+[CODE_000793]    {{ rest (list "hello" "world") }}
+
+[CODE_000794]    {{ mustRest (list 1 2 3) }}
+[CODE_000795]    {{ mustRest (list "a" "b" "c") }}
+[CODE_000796]    {{ mustRest (list "only") }}
+[CODE_000797]    {{ mustRest (list 1) }}
+[CODE_000798]    {{ list 1 2 3 | mustRest }}
+[CODE_000799]    {{ mustRest (list "αβγ" "δεζ") }}
+[CODE_000800]    {{ mustRest (list 1 2 3 4 5) }}
+[CODE_000801]    {{ mustRest (list true false) }}
+[CODE_000802]    {{ mustRest (list 3.14 2.71 1.41) }}
+[CODE_000803]    {{ mustRest (list "hello" "world") }}
+
+{{/* ============================================== */}}
+{{/* LIST FUNCTIONS - ACCESS                        */}}
+{{/* ============================================== */}}
+
+[CODE_000804]    {{ last (list 1 2 3) }}
+[CODE_000805]    {{ last (list "a" "b" "c") }}
+[CODE_000806]    {{ last (list "only") }}
+[CODE_000807]    {{ last (list 1) }}
+[CODE_000808]    {{ list 1 2 3 | last }}
+[CODE_000809]    {{ last (list "αβγ" "δεζ") }}
+[CODE_000810]    {{ last (list 1 2 3 4 5) }}
+[CODE_000811]    {{ last (list true false) }}
+[CODE_000812]    {{ last (list 3.14 2.71 1.41) }}
+[CODE_000813]    {{ last (list "hello" "world" "test") }}
+
+[CODE_000814]    {{ mustLast (list 1 2 3) }}
+[CODE_000815]    {{ mustLast (list "a" "b" "c") }}
+[CODE_000816]    {{ mustLast (list "only") }}
+[CODE_000817]    {{ mustLast (list 1) }}
+[CODE_000818]    {{ list 1 2 3 | mustLast }}
+[CODE_000819]    {{ mustLast (list "αβγ" "δεζ") }}
+[CODE_000820]    {{ mustLast (list 1 2 3 4 5) }}
+[CODE_000821]    {{ mustLast (list true false) }}
+[CODE_000822]    {{ mustLast (list 3.14 2.71 1.41) }}
+[CODE_000823]    {{ mustLast (list "hello" "world" "test") }}
+
+[CODE_000824]    {{ initial (list 1 2 3) }}
+[CODE_000825]    {{ initial (list "a" "b" "c") }}
+[CODE_000826]    {{ initial (list "only") }}
+[CODE_000827]    {{ initial (list 1) }}
+[CODE_000828]    {{ list 1 2 3 | initial }}
+[CODE_000829]    {{ initial (list "αβγ" "δεζ") }}
+[CODE_000830]    {{ initial (list 1 2 3 4 5) }}
+[CODE_000831]    {{ initial (list true false) }}
+[CODE_000832]    {{ initial (list 3.14 2.71 1.41) }}
+[CODE_000833]    {{ initial (list "hello" "world" "test") }}
+
+[CODE_000834]    {{ mustInitial (list 1 2 3) }}
+[CODE_000835]    {{ mustInitial (list "a" "b" "c") }}
+[CODE_000836]    {{ mustInitial (list "only") }}
+[CODE_000837]    {{ mustInitial (list 1) }}
+[CODE_000838]    {{ list 1 2 3 | mustInitial }}
+[CODE_000839]    {{ mustInitial (list "αβγ" "δεζ") }}
+[CODE_000840]    {{ mustInitial (list 1 2 3 4 5) }}
+[CODE_000841]    {{ mustInitial (list true false) }}
+[CODE_000842]    {{ mustInitial (list 3.14 2.71 1.41) }}
+[CODE_000843]    {{ mustInitial (list "hello" "world" "test") }}
+
+{{/* ============================================== */}}
+{{/* LIST FUNCTIONS - ADD                           */}}
+{{/* ============================================== */}}
+
+[CODE_000844]    {{ append (list 1 2 3) 4 }}
+[CODE_000845]    {{ append (list) 1 }}
+[CODE_000846]    {{ append (list "a" "b") "c" }}
+[CODE_000847]    {{ append (list 1) 2 }}
+[CODE_000848]    {{ append (list 1 2) 3 }}
+[CODE_000849]    {{ append (list "αβγ") "δεζ" }}
+[CODE_000850]    {{ append (list 1 2 3) (list 4 5) }}
+[CODE_000851]    {{ append (list true) false }}
+[CODE_000852]    {{ append (list 3.14) 2.71 }}
+[CODE_000853]    {{ append (list "hello") "world" }}
+
+[CODE_000854]    {{ mustAppend (list 1 2 3) 4 }}
+[CODE_000855]    {{ mustAppend (list) 1 }}
+[CODE_000856]    {{ mustAppend (list "a" "b") "c" }}
+[CODE_000857]    {{ mustAppend (list 1) 2 }}
+[CODE_000858]    {{ mustAppend (list 1 2) 3 }}
+[CODE_000859]    {{ mustAppend (list "αβγ") "δεζ" }}
+[CODE_000860]    {{ mustAppend (list 1 2 3) (list 4 5) }}
+[CODE_000861]    {{ mustAppend (list true) false }}
+[CODE_000862]    {{ mustAppend (list 3.14) 2.71 }}
+[CODE_000863]    {{ mustAppend (list "hello") "world" }}
+
+[CODE_000864]    {{ push (list 1 2 3) 4 }}
+[CODE_000865]    {{ push (list) 1 }}
+[CODE_000866]    {{ push (list "a" "b") "c" }}
+[CODE_000867]    {{ push (list 1) 2 }}
+[CODE_000868]    {{ push (list 1 2) 3 }}
+[CODE_000869]    {{ push (list "αβγ") "δεζ" }}
+[CODE_000870]    {{ push (list 1 2 3) (list 4 5) }}
+[CODE_000871]    {{ push (list true) false }}
+[CODE_000872]    {{ push (list 3.14) 2.71 }}
+[CODE_000873]    {{ push (list "hello") "world" }}
+
+[CODE_000874]    {{ mustPush (list 1 2 3) 4 }}
+[CODE_000875]    {{ mustPush (list) 1 }}
+[CODE_000876]    {{ mustPush (list "a" "b") "c" }}
+[CODE_000877]    {{ mustPush (list 1) 2 }}
+[CODE_000878]    {{ mustPush (list 1 2) 3 }}
+[CODE_000879]    {{ mustPush (list "αβγ") "δεζ" }}
+[CODE_000880]    {{ mustPush (list 1 2 3) (list 4 5) }}
+[CODE_000881]    {{ mustPush (list true) false }}
+[CODE_000882]    {{ mustPush (list 3.14) 2.71 }}
+[CODE_000883]    {{ mustPush (list "hello") "world" }}
+
+[CODE_000884]    {{ prepend (list 1 2 3) 0 }}
+[CODE_000885]    {{ prepend (list) 1 }}
+[CODE_000886]    {{ prepend (list "b" "c") "a" }}
+[CODE_000887]    {{ prepend (list 2) 1 }}
+[CODE_000888]    {{ prepend (list 2 3) 1 }}
+[CODE_000889]    {{ prepend (list "δεζ") "αβγ" }}
+[CODE_000890]    {{ prepend (list 3 4) (list 1 2) }}
+[CODE_000891]    {{ prepend (list false) true }}
+[CODE_000892]    {{ prepend (list 2.71) 3.14 }}
+[CODE_000893]    {{ prepend (list "world") "hello" }}
+
+[CODE_000894]    {{ mustPrepend (list 1 2 3) 0 }}
+[CODE_000895]    {{ mustPrepend (list) 1 }}
+[CODE_000896]    {{ mustPrepend (list "b" "c") "a" }}
+[CODE_000897]    {{ mustPrepend (list 2) 1 }}
+[CODE_000898]    {{ mustPrepend (list 2 3) 1 }}
+[CODE_000899]    {{ mustPrepend (list "δεζ") "αβγ" }}
+[CODE_000900]    {{ mustPrepend (list 3 4) (list 1 2) }}
+[CODE_000901]    {{ mustPrepend (list false) true }}
+[CODE_000902]    {{ mustPrepend (list 2.71) 3.14 }}
+[CODE_000903]    {{ mustPrepend (list "world") "hello" }}
+
+{{/* ============================================== */}}
+{{/* LIST FUNCTIONS - TRANSFORM                     */}}
+{{/* ============================================== */}}
+
+[CODE_000904]    {{ concat (list 1 2) (list 3 4) }}
+[CODE_000905]    {{ concat (list) (list 1 2) }}
+[CODE_000906]    {{ concat (list 1 2) (list) }}
+[CODE_000907]    {{ concat (list "a") (list "b") (list "c") }}
+[CODE_000908]    {{ concat (list 1) (list 2) (list 3) (list 4) }}
+[CODE_000909]    {{ list 1 2 | concat (list 3 4) }}
+[CODE_000910]    {{ concat (list "αβγ") (list "δεζ") }}
+[CODE_000911]    {{ concat (list true) (list false) }}
+[CODE_000912]    {{ concat (list 1 2 3) (list 4 5 6) (list 7 8 9) }}
+[CODE_000913]    {{ concat (list) (list) }}
+
+[CODE_000914]    {{ reverse (list 1 2 3) }}
+[CODE_000915]    {{ reverse (list) }}
+[CODE_000916]    {{ reverse (list "a" "b" "c") }}
+[CODE_000917]    {{ reverse (list 1) }}
+[CODE_000918]    {{ list 1 2 3 | reverse }}
+[CODE_000919]    {{ reverse (list "αβγ" "δεζ") }}
+[CODE_000920]    {{ reverse (list 1 2 3 4 5) }}
+[CODE_000921]    {{ reverse (list true false) }}
+[CODE_000922]    {{ reverse (list 3.14 2.71 1.41) }}
+[CODE_000923]    {{ reverse (list "hello" "world") }}
+
+[CODE_000924]    {{ mustReverse (list 1 2 3) }}
+[CODE_000925]    {{ mustReverse (list) }}
+[CODE_000926]    {{ mustReverse (list "a" "b" "c") }}
+[CODE_000927]    {{ mustReverse (list 1) }}
+[CODE_000928]    {{ list 1 2 3 | mustReverse }}
+[CODE_000929]    {{ mustReverse (list "αβγ" "δεζ") }}
+[CODE_000930]    {{ mustReverse (list 1 2 3 4 5) }}
+[CODE_000931]    {{ mustReverse (list true false) }}
+[CODE_000932]    {{ mustReverse (list 3.14 2.71 1.41) }}
+[CODE_000933]    {{ mustReverse (list "hello" "world") }}
+
+[CODE_000934]    {{ uniq (list 1 1 2 2 3) }}
+[CODE_000935]    {{ uniq (list) }}
+[CODE_000936]    {{ uniq (list "a" "a" "b" "b") }}
+[CODE_000937]    {{ uniq (list 1 2 3) }}
+[CODE_000938]    {{ list 1 1 1 | uniq }}
+[CODE_000939]    {{ uniq (list "αβγ" "αβγ" "δεζ") }}
+[CODE_000940]    {{ uniq (list 1 2 1 2 1 2) }}
+[CODE_000941]    {{ uniq (list true true false) }}
+[CODE_000942]    {{ uniq (list 3.14 3.14 2.71) }}
+[CODE_000943]    {{ uniq (list "hello" "hello" "world") }}
+
+[CODE_000944]    {{ mustUniq (list 1 1 2 2 3) }}
+[CODE_000945]    {{ mustUniq (list) }}
+[CODE_000946]    {{ mustUniq (list "a" "a" "b" "b") }}
+[CODE_000947]    {{ mustUniq (list 1 2 3) }}
+[CODE_000948]    {{ list 1 1 1 | mustUniq }}
+[CODE_000949]    {{ mustUniq (list "αβγ" "αβγ" "δεζ") }}
+[CODE_000950]    {{ mustUniq (list 1 2 1 2 1 2) }}
+[CODE_000951]    {{ mustUniq (list true true false) }}
+[CODE_000952]    {{ mustUniq (list 3.14 3.14 2.71) }}
+[CODE_000953]    {{ mustUniq (list "hello" "hello" "world") }}
+
+{{/* ============================================== */}}
+{{/* LIST FUNCTIONS - FILTER                        */}}
+{{/* ============================================== */}}
+
+[CODE_000954]    {{ without (list 1 2 3 4) 2 }}
+[CODE_000955]    {{ without (list) 1 }}
+[CODE_000956]    {{ without (list "a" "b" "c") "b" }}
+[CODE_000957]    {{ without (list 1 2 3) 4 }}
+[CODE_000958]    {{ without (list 1 2 3) 2 }}
+[CODE_000959]    {{ without (list "αβγ" "δεζ") "αβγ" }}
+[CODE_000960]    {{ without (list 1 2 3 4 5) 2 4 }}
+[CODE_000961]    {{ without (list 1 1 1 2) 1 }}
+[CODE_000962]    {{ without (list "a" "b" "a" "c") "a" }}
+[CODE_000963]    {{ without (list 1 2 3) 1 2 3 }}
+
+[CODE_000964]    {{ mustWithout (list 1 2 3 4) 2 }}
+[CODE_000965]    {{ mustWithout (list) 1 }}
+[CODE_000966]    {{ mustWithout (list "a" "b" "c") "b" }}
+[CODE_000967]    {{ mustWithout (list 1 2 3) 4 }}
+[CODE_000968]    {{ mustWithout (list 1 2 3) 2 }}
+[CODE_000969]    {{ mustWithout (list "αβγ" "δεζ") "αβγ" }}
+[CODE_000970]    {{ mustWithout (list 1 2 3 4 5) 2 4 }}
+[CODE_000971]    {{ mustWithout (list 1 1 1 2) 1 }}
+[CODE_000972]    {{ mustWithout (list "a" "b" "a" "c") "a" }}
+[CODE_000973]    {{ mustWithout (list 1 2 3) 1 2 3 }}
+
+[CODE_000974]    {{ has 2 (list 1 2 3) }}
+[CODE_000975]    {{ has 4 (list 1 2 3) }}
+[CODE_000976]    {{ has "b" (list "a" "b" "c") }}
+[CODE_000977]    {{ has "x" (list "a" "b" "c") }}
+[CODE_000978]    {{ list 1 2 3 | has 2 }}
+[CODE_000979]    {{ has "αβγ" (list "αβγ" "δεζ") }}
+[CODE_000980]    {{ has 1 (list) }}
+[CODE_000981]    {{ has true (list true false) }}
+[CODE_000982]    {{ has 3.14 (list 3.14 2.71) }}
+[CODE_000983]    {{ has "hello" (list "hello" "world") }}
+
+[CODE_000984]    {{ mustHas 2 (list 1 2 3) }}
+[CODE_000985]    {{ mustHas 4 (list 1 2 3) }}
+[CODE_000986]    {{ mustHas "b" (list "a" "b" "c") }}
+[CODE_000987]    {{ mustHas "x" (list "a" "b" "c") }}
+[CODE_000988]    {{ list 1 2 3 | mustHas 2 }}
+[CODE_000989]    {{ mustHas "αβγ" (list "αβγ" "δεζ") }}
+[CODE_000990]    {{ mustHas 1 (list) }}
+[CODE_000991]    {{ mustHas true (list true false) }}
+[CODE_000992]    {{ mustHas 3.14 (list 3.14 2.71) }}
+[CODE_000993]    {{ mustHas "hello" (list "hello" "world") }}
+
+{{/* ============================================== */}}
+{{/* LIST FUNCTIONS - SLICE/CHUNK                   */}}
+{{/* ============================================== */}}
+
+[CODE_000994]    {{ compact (list 1 "" 2 nil 3) }}
+[CODE_000995]    {{ compact (list) }}
+[CODE_000996]    {{ compact (list "a" "" "b" "" "c") }}
+[CODE_000997]    {{ compact (list 0 1 2) }}
+[CODE_000998]    {{ list 1 "" 2 | compact }}
+[CODE_000999]    {{ compact (list "αβγ" "" "δεζ") }}
+[CODE_001000]    {{ compact (list true false) }}
+[CODE_001001]    {{ compact (list "" "" "") }}
+[CODE_001002]    {{ compact (list 1 2 3) }}
+[CODE_001003]    {{ compact (list "hello" "" "world") }}
+
+[CODE_001004]    {{ mustCompact (list 1 "" 2 nil 3) }}
+[CODE_001005]    {{ mustCompact (list) }}
+[CODE_001006]    {{ mustCompact (list "a" "" "b" "" "c") }}
+[CODE_001007]    {{ mustCompact (list 0 1 2) }}
+[CODE_001008]    {{ list 1 "" 2 | mustCompact }}
+[CODE_001009]    {{ mustCompact (list "αβγ" "" "δεζ") }}
+[CODE_001010]    {{ mustCompact (list true false) }}
+[CODE_001011]    {{ mustCompact (list "" "" "") }}
+[CODE_001012]    {{ mustCompact (list 1 2 3) }}
+[CODE_001013]    {{ mustCompact (list "hello" "" "world") }}
+
+[CODE_001014]    {{ slice (list 1 2 3 4 5) }}
+[CODE_001015]    {{ slice (list 1 2 3 4 5) 2 }}
+[CODE_001016]    {{ slice (list 1 2 3 4 5) 1 3 }}
+[CODE_001017]    {{ slice (list 1 2 3 4 5) 0 5 }}
+[CODE_001018]    {{ slice (list 1 2 3 4 5) 2 4 }}
+[CODE_001019]    {{ slice (list "a" "b" "c" "d") 1 3 }}
+[CODE_001020]    {{ slice (list 1 2 3) 0 0 }}
+[CODE_001021]    {{ slice (list 1 2 3) 3 }}
+[CODE_001022]    {{ slice (list "αβγ" "δεζ" "ηθι") 1 2 }}
+[CODE_001023]    {{ slice (list 1 2 3 4 5) 0 }}
+
+[CODE_001024]    {{ mustSlice (list 1 2 3 4 5) }}
+[CODE_001025]    {{ mustSlice (list 1 2 3 4 5) 2 }}
+[CODE_001026]    {{ mustSlice (list 1 2 3 4 5) 1 3 }}
+[CODE_001027]    {{ mustSlice (list 1 2 3 4 5) 0 5 }}
+[CODE_001028]    {{ mustSlice (list 1 2 3 4 5) 2 4 }}
+[CODE_001029]    {{ mustSlice (list "a" "b" "c" "d") 1 3 }}
+[CODE_001030]    {{ mustSlice (list 1 2 3) 0 0 }}
+[CODE_001031]    {{ mustSlice (list 1 2 3) 3 }}
+[CODE_001032]    {{ mustSlice (list "αβγ" "δεζ" "ηθι") 1 2 }}
+[CODE_001033]    {{ mustSlice (list 1 2 3 4 5) 0 }}
+
+[CODE_001034]    {{ chunk 2 (list 1 2 3 4 5) }}
+[CODE_001035]    {{ chunk 3 (list 1 2 3 4 5 6 7 8) }}
+[CODE_001036]    {{ chunk 1 (list 1 2 3) }}
+[CODE_001037]    {{ chunk 10 (list 1 2 3) }}
+[CODE_001038]    {{ list 1 2 3 4 | chunk 2 }}
+[CODE_001039]    {{ chunk 2 (list "a" "b" "c" "d" "e") }}
+[CODE_001040]    {{ chunk 3 (list) }}
+[CODE_001041]    {{ chunk 2 (list 1) }}
+[CODE_001042]    {{ chunk 4 (list 1 2 3 4 5 6 7 8 9 10) }}
+[CODE_001043]    {{ chunk 5 (list "αβγ" "δεζ" "ηθι" "κλμ" "νξο") }}
+
+[CODE_001044]    {{ mustChunk 2 (list 1 2 3 4 5) }}
+[CODE_001045]    {{ mustChunk 3 (list 1 2 3 4 5 6 7 8) }}
+[CODE_001046]    {{ mustChunk 1 (list 1 2 3) }}
+[CODE_001047]    {{ mustChunk 10 (list 1 2 3) }}
+[CODE_001048]    {{ list 1 2 3 4 | mustChunk 2 }}
+[CODE_001049]    {{ mustChunk 2 (list "a" "b" "c" "d" "e") }}
+[CODE_001050]    {{ mustChunk 3 (list) }}
+[CODE_001051]    {{ mustChunk 2 (list 1) }}
+[CODE_001052]    {{ mustChunk 4 (list 1 2 3 4 5 6 7 8 9 10) }}
+[CODE_001053]    {{ mustChunk 5 (list "αβγ" "δεζ" "ηθι" "κλμ" "νξο") }}
+
+[CODE_001054]    {{ sortAlpha (list "c" "a" "b") }}
+[CODE_001055]    {{ sortAlpha (list) }}
+[CODE_001056]    {{ sortAlpha (list "z" "y" "x" "w") }}
+[CODE_001057]    {{ sortAlpha (list "a") }}
+[CODE_001058]    {{ list "b" "a" "c" | sortAlpha }}
+[CODE_001059]    {{ sortAlpha (list "αβγ" "δεζ" "abc") }}
+[CODE_001060]    {{ sortAlpha (list "Hello" "hello" "HELLO") }}
+[CODE_001061]    {{ sortAlpha (list "10" "2" "1" "20") }}
+[CODE_001062]    {{ sortAlpha (list "a" "a" "b") }}
+[CODE_001063]    {{ sortAlpha (list "foo" "bar" "baz") }}
+
+{{/* ============================================== */}}
+{{/* STRING LIST FUNCTIONS                          */}}
+{{/* ============================================== */}}
+
+[CODE_001064]    {{ split "," "a,b,c" }}
+[CODE_001065]    {{ split "," "" }}
+[CODE_001066]    {{ split "," "single" }}
+[CODE_001067]    {{ split "-" "a-b-c-d" }}
+[CODE_001068]    {{ split "" "abc" }}
+[CODE_001069]    {{ "a,b,c" | split "," }}
+[CODE_001070]    {{ split "/" "/path/to/file" }}
+[CODE_001071]    {{ split "αβ" "αβγαβδ" }}
+[CODE_001072]    {{ split "::" "a::b::c" }}
+[CODE_001073]    {{ split " " "hello world test" }}
+
+[CODE_001074]    {{ splitList "," "a,b,c" }}
+[CODE_001075]    {{ splitList "," "" }}
+[CODE_001076]    {{ splitList "," "single" }}
+[CODE_001077]    {{ splitList "-" "a-b-c-d" }}
+[CODE_001078]    {{ splitList "" "abc" }}
+[CODE_001079]    {{ "a,b,c" | splitList "," }}
+[CODE_001080]    {{ splitList "/" "/path/to/file" }}
+[CODE_001081]    {{ splitList "αβ" "αβγαβδ" }}
+[CODE_001082]    {{ splitList "::" "a::b::c" }}
+[CODE_001083]    {{ splitList " " "hello world test" }}
+
+[CODE_001084]    {{ splitn "," 2 "a,b,c,d" }}
+[CODE_001085]    {{ splitn "," 1 "a,b,c" }}
+[CODE_001086]    {{ splitn "," 10 "a,b,c" }}
+[CODE_001087]    {{ splitn "-" 2 "a-b-c-d" }}
+[CODE_001088]    {{ splitn "," 0 "a,b,c" }}
+[CODE_001089]    {{ "a,b,c,d" | splitn "," 3 }}
+[CODE_001090]    {{ splitn "/" 2 "/path/to/file" }}
+[CODE_001091]    {{ splitn "::" 2 "a::b::c" }}
+[CODE_001092]    {{ splitn " " 2 "hello world test" }}
+[CODE_001093]    {{ splitn "," -1 "a,b,c" }}
+
+[CODE_001094]    {{ join "," (list "a" "b" "c") }}
+[CODE_001095]    {{ join "," (list) }}
+[CODE_001096]    {{ join "," (list "single") }}
+[CODE_001097]    {{ join "-" (list "a" "b" "c" "d") }}
+[CODE_001098]    {{ join "" (list "a" "b" "c") }}
+[CODE_001099]    {{ list "a" "b" "c" | join "," }}
+[CODE_001100]    {{ join "/" (list "path" "to" "file") }}
+[CODE_001101]    {{ join "αβ" (list "γ" "δ") }}
+[CODE_001102]    {{ join "::" (list "a" "b" "c") }}
+[CODE_001103]    {{ join " " (list "hello" "world" "test") }}
+
+{{/* ============================================== */}}
+{{/* DICT FUNCTIONS - BASIC                         */}}
+{{/* ============================================== */}}
+
+[CODE_001104]    {{ dict "key1" "value1" "key2" "value2" }}
+[CODE_001105]    {{ dict }}
+[CODE_001106]    {{ dict "single" "value" }}
+[CODE_001107]    {{ dict "num" 123 "str" "hello" }}
+[CODE_001108]    {{ dict "nested" (dict "inner" "value") }}
+[CODE_001109]    {{ dict "list" (list 1 2 3) }}
+[CODE_001110]    {{ dict "bool" true "nil" nil }}
+[CODE_001111]    {{ dict "αβγ" "δεζ" }}
+[CODE_001112]    {{ dict "a" 1 "b" 2 "c" 3 "d" 4 }}
+[CODE_001113]    {{ dict "float" 3.14 }}
+
+[CODE_001114]    {{ get (dict "key" "value") "key" }}
+[CODE_001115]    {{ get (dict "key" "value") "missing" }}
+[CODE_001116]    {{ get (dict "num" 123) "num" }}
+[CODE_001117]    {{ get (dict "nested" (dict "inner" "val")) "nested" }}
+[CODE_001118]    {{ get (dict "key" "value") "key" }}
+[CODE_001119]    {{ get (dict "αβγ" "δεζ") "αβγ" }}
+[CODE_001120]    {{ get (dict "bool" true) "bool" }}
+[CODE_001121]    {{ get (dict "list" (list 1 2)) "list" }}
+[CODE_001122]    {{ get (dict) "any" }}
+[CODE_001123]    {{ get (dict "a" 1 "b" 2) "b" }}
+
+[CODE_001124]    {{ $d := dict "key" "value" }}{{ $_ := set $d "key2" "value2" }}{{ $d }}
+[CODE_001125]    {{ $d := dict }}{{ $_ := set $d "new" "value" }}{{ $d }}
+[CODE_001126]    {{ $d := dict "a" 1 }}{{ $_ := set $d "a" 2 }}{{ $d }}
+[CODE_001127]    {{ $d := dict "x" "y" }}{{ $_ := set $d "num" 123 }}{{ $d }}
+[CODE_001128]    {{ $d := dict }}{{ $_ := set $d "αβγ" "δεζ" }}{{ $d }}
+[CODE_001129]    {{ $d := dict "a" 1 }}{{ $_ := set $d "b" (list 1 2) }}{{ $d }}
+[CODE_001130]    {{ $d := dict }}{{ $_ := set $d "bool" true }}{{ $d }}
+[CODE_001131]    {{ $d := dict "k" "v" }}{{ $_ := set $d "nested" (dict "x" "y") }}{{ $d }}
+[CODE_001132]    {{ $d := dict "a" 1 "b" 2 }}{{ $_ := set $d "c" 3 }}{{ $d }}
+[CODE_001133]    {{ $d := dict }}{{ $_ := set $d "float" 3.14 }}{{ $d }}
+
+[CODE_001134]    {{ $d := dict "key" "value" "key2" "value2" }}{{ $_ := unset $d "key" }}{{ $d }}
+[CODE_001135]    {{ $d := dict "a" 1 }}{{ $_ := unset $d "a" }}{{ $d }}
+[CODE_001136]    {{ $d := dict "a" 1 "b" 2 }}{{ $_ := unset $d "missing" }}{{ $d }}
+[CODE_001137]    {{ $d := dict }}{{ $_ := unset $d "any" }}{{ $d }}
+[CODE_001138]    {{ $d := dict "αβγ" "δεζ" }}{{ $_ := unset $d "αβγ" }}{{ $d }}
+[CODE_001139]    {{ $d := dict "a" 1 "b" 2 "c" 3 }}{{ $_ := unset $d "b" }}{{ $d }}
+[CODE_001140]    {{ $d := dict "x" "y" }}{{ $_ := unset $d "x" }}{{ $d }}
+[CODE_001141]    {{ $d := dict "bool" true }}{{ $_ := unset $d "bool" }}{{ $d }}
+[CODE_001142]    {{ $d := dict "num" 123 }}{{ $_ := unset $d "num" }}{{ $d }}
+[CODE_001143]    {{ $d := dict "list" (list 1 2) }}{{ $_ := unset $d "list" }}{{ $d }}
+
+[CODE_001144]    {{ hasKey (dict "key" "value") "key" }}
+[CODE_001145]    {{ hasKey (dict "key" "value") "missing" }}
+[CODE_001146]    {{ hasKey (dict) "any" }}
+[CODE_001147]    {{ hasKey (dict "a" 1 "b" 2) "b" }}
+[CODE_001148]    {{ hasKey (dict "key" "value") "key" }}
+[CODE_001149]    {{ hasKey (dict "αβγ" "δεζ") "αβγ" }}
+[CODE_001150]    {{ hasKey (dict "bool" true) "bool" }}
+[CODE_001151]    {{ hasKey (dict "num" 123) "num" }}
+[CODE_001152]    {{ hasKey (dict "nil" nil) "nil" }}
+[CODE_001153]    {{ hasKey (dict "a" 1 "b" 2 "c" 3) "d" }}
+
+{{/* ============================================== */}}
+{{/* DICT FUNCTIONS - ACCESS                        */}}
+{{/* ============================================== */}}
+
+[CODE_001154]    {{ pluck "key" (dict "key" "v1") (dict "key" "v2") }}
+[CODE_001155]    {{ pluck "missing" (dict "a" 1) (dict "b" 2) }}
+[CODE_001156]    {{ pluck "key" (dict "key" "v1") (dict "other" "v2") }}
+[CODE_001157]    {{ pluck "a" (dict "a" 1) (dict "a" 2) (dict "a" 3) }}
+[CODE_001158]    {{ pluck "x" (dict) (dict "x" "y") }}
+[CODE_001159]    {{ pluck "αβγ" (dict "αβγ" "δ") (dict "αβγ" "ε") }}
+[CODE_001160]    {{ pluck "num" (dict "num" 1) (dict "num" 2) }}
+[CODE_001161]    {{ pluck "bool" (dict "bool" true) (dict "bool" false) }}
+[CODE_001162]    {{ pluck "key" (dict "key" (list 1 2)) }}
+[CODE_001163]    {{ pluck "a" (dict "a" 1) }}
+
+{{/* keys output is sorted for deterministic ordering */}}
+[CODE_001164]    {{ keys (dict "a" 1 "b" 2 "c" 3) | sortAlpha }}
+[CODE_001165]    {{ keys (dict) | sortAlpha }}
+[CODE_001166]    {{ keys (dict "single" "value") | sortAlpha }}
+[CODE_001167]    {{ keys (dict "z" 1 "y" 2 "x" 3) | sortAlpha }}
+[CODE_001168]    {{ dict "a" 1 "b" 2 | keys | sortAlpha }}
+[CODE_001169]    {{ keys (dict "αβγ" 1 "δεζ" 2) | sortAlpha }}
+[CODE_001170]    {{ keys (dict "num" 123 "str" "hello") | sortAlpha }}
+[CODE_001171]    {{ keys (dict "bool" true "nil" nil) | sortAlpha }}
+[CODE_001172]    {{ keys (dict "a" 1 "b" 2 "c" 3 "d" 4 "e" 5) | sortAlpha }}
+[CODE_001173]    {{ keys (dict "nested" (dict "x" "y")) | sortAlpha }}
+
+[CODE_001174]    {{ pick (dict "a" 1 "b" 2 "c" 3) "a" "c" }}
+[CODE_001175]    {{ pick (dict "a" 1 "b" 2) "a" }}
+[CODE_001176]    {{ pick (dict "a" 1 "b" 2) "missing" }}
+[CODE_001177]    {{ pick (dict) "any" }}
+[CODE_001178]    {{ pick (dict "a" 1 "b" 2 "c" 3) "b" }}
+[CODE_001179]    {{ pick (dict "αβγ" 1 "δεζ" 2) "αβγ" }}
+[CODE_001180]    {{ pick (dict "a" 1 "b" 2 "c" 3) "a" "b" "c" }}
+[CODE_001181]    {{ pick (dict "x" "y" "z" "w") "x" "z" }}
+[CODE_001182]    {{ pick (dict "num" 123 "str" "hi") "num" }}
+[CODE_001183]    {{ pick (dict "a" 1 "b" 2) }}
+
+[CODE_001184]    {{ omit (dict "a" 1 "b" 2 "c" 3) "b" }}
+[CODE_001185]    {{ omit (dict "a" 1 "b" 2) "a" "b" }}
+[CODE_001186]    {{ omit (dict "a" 1 "b" 2) "missing" }}
+[CODE_001187]    {{ omit (dict) "any" }}
+[CODE_001188]    {{ omit (dict "a" 1 "b" 2 "c" 3) "a" }}
+[CODE_001189]    {{ omit (dict "αβγ" 1 "δεζ" 2) "αβγ" }}
+[CODE_001190]    {{ omit (dict "a" 1 "b" 2 "c" 3) "a" "c" }}
+[CODE_001191]    {{ omit (dict "x" "y" "z" "w") "z" }}
+[CODE_001192]    {{ omit (dict "num" 123 "str" "hi") "str" }}
+[CODE_001193]    {{ omit (dict "a" 1 "b" 2) }}
+
+{{/* values output is sorted for deterministic ordering */}}
+[CODE_001194]    {{ values (dict "a" 1 "b" 2 "c" 3) | sortAlpha }}
+[CODE_001195]    {{ values (dict) | sortAlpha }}
+[CODE_001196]    {{ values (dict "single" "value") | sortAlpha }}
+[CODE_001197]    {{ values (dict "num" 123 "str" "hello") | sortAlpha }}
+[CODE_001198]    {{ dict "a" 1 "b" 2 | values | sortAlpha }}
+[CODE_001199]    {{ values (dict "αβγ" "δεζ") | sortAlpha }}
+[CODE_001200]    {{ values (dict "bool" true "nil" nil) | sortAlpha }}
+[CODE_001201]    {{ values (dict "list" (list 1 2 3)) | sortAlpha }}
+[CODE_001202]    {{ values (dict "a" 1 "b" 2 "c" 3 "d" 4) | sortAlpha }}
+[CODE_001203]    {{ values (dict "nested" (dict "x" "y")) | sortAlpha }}
+
+{{/* ============================================== */}}
+{{/* DICT FUNCTIONS - MERGE                         */}}
+{{/* ============================================== */}}
+
+[CODE_001204]    {{ merge (dict "a" 1) (dict "b" 2) }}
+[CODE_001205]    {{ merge (dict) (dict "a" 1) }}
+[CODE_001206]    {{ merge (dict "a" 1) (dict "a" 2) }}
+[CODE_001207]    {{ merge (dict "a" 1) (dict "b" 2) (dict "c" 3) }}
+[CODE_001208]    {{ dict "a" 1 | merge (dict "b" 2) }}
+[CODE_001209]    {{ merge (dict "αβγ" 1) (dict "δεζ" 2) }}
+[CODE_001210]    {{ merge (dict) (dict) }}
+[CODE_001211]    {{ merge (dict "x" "y") (dict "x" "z") }}
+[CODE_001212]    {{ merge (dict "a" 1 "b" 2) (dict "c" 3 "d" 4) }}
+[CODE_001213]    {{ merge (dict "nested" (dict "x" 1)) (dict "other" 2) }}
+
+[CODE_001214]    {{ mustMerge (dict "a" 1) (dict "b" 2) }}
+[CODE_001215]    {{ mustMerge (dict) (dict "a" 1) }}
+[CODE_001216]    {{ mustMerge (dict "a" 1) (dict "a" 2) }}
+[CODE_001217]    {{ mustMerge (dict "a" 1) (dict "b" 2) (dict "c" 3) }}
+[CODE_001218]    {{ dict "a" 1 | mustMerge (dict "b" 2) }}
+[CODE_001219]    {{ mustMerge (dict "αβγ" 1) (dict "δεζ" 2) }}
+[CODE_001220]    {{ mustMerge (dict) (dict) }}
+[CODE_001221]    {{ mustMerge (dict "x" "y") (dict "x" "z") }}
+[CODE_001222]    {{ mustMerge (dict "a" 1 "b" 2) (dict "c" 3 "d" 4) }}
+[CODE_001223]    {{ mustMerge (dict "nested" (dict "x" 1)) (dict "other" 2) }}
+
+[CODE_001224]    {{ mergeOverwrite (dict "a" 1) (dict "b" 2) }}
+[CODE_001225]    {{ mergeOverwrite (dict) (dict "a" 1) }}
+[CODE_001226]    {{ mergeOverwrite (dict "a" 1) (dict "a" 2) }}
+[CODE_001227]    {{ mergeOverwrite (dict "a" 1) (dict "b" 2) (dict "c" 3) }}
+[CODE_001228]    {{ dict "a" 1 | mergeOverwrite (dict "b" 2) }}
+[CODE_001229]    {{ mergeOverwrite (dict "αβγ" 1) (dict "δεζ" 2) }}
+[CODE_001230]    {{ mergeOverwrite (dict) (dict) }}
+[CODE_001231]    {{ mergeOverwrite (dict "x" "y") (dict "x" "z") }}
+[CODE_001232]    {{ mergeOverwrite (dict "a" 1 "b" 2) (dict "c" 3 "d" 4) }}
+[CODE_001233]    {{ mergeOverwrite (dict "nested" (dict "x" 1)) (dict "nested" (dict "y" 2)) }}
+
+[CODE_001234]    {{ mustMergeOverwrite (dict "a" 1) (dict "b" 2) }}
+[CODE_001235]    {{ mustMergeOverwrite (dict) (dict "a" 1) }}
+[CODE_001236]    {{ mustMergeOverwrite (dict "a" 1) (dict "a" 2) }}
+[CODE_001237]    {{ mustMergeOverwrite (dict "a" 1) (dict "b" 2) (dict "c" 3) }}
+[CODE_001238]    {{ dict "a" 1 | mustMergeOverwrite (dict "b" 2) }}
+[CODE_001239]    {{ mustMergeOverwrite (dict "αβγ" 1) (dict "δεζ" 2) }}
+[CODE_001240]    {{ mustMergeOverwrite (dict) (dict) }}
+[CODE_001241]    {{ mustMergeOverwrite (dict "x" "y") (dict "x" "z") }}
+[CODE_001242]    {{ mustMergeOverwrite (dict "a" 1 "b" 2) (dict "c" 3 "d" 4) }}
+[CODE_001243]    {{ mustMergeOverwrite (dict "nested" (dict "x" 1)) (dict "nested" (dict "y" 2)) }}
+
+{{/* ============================================== */}}
+{{/* DICT FUNCTIONS - UTILITY                       */}}
+{{/* ============================================== */}}
+
+[CODE_001244]    {{ deepCopy (dict "a" 1 "b" 2) }}
+[CODE_001245]    {{ deepCopy (dict) }}
+[CODE_001246]    {{ deepCopy (dict "nested" (dict "x" "y")) }}
+[CODE_001247]    {{ deepCopy (dict "list" (list 1 2 3)) }}
+[CODE_001248]    {{ dict "a" 1 | deepCopy }}
+[CODE_001249]    {{ deepCopy (dict "αβγ" "δεζ") }}
+[CODE_001250]    {{ deepCopy (dict "a" 1 "b" (dict "c" 2)) }}
+[CODE_001251]    {{ deepCopy (dict "bool" true "num" 123) }}
+[CODE_001252]    {{ deepCopy (dict "complex" (dict "list" (list 1 2))) }}
+[CODE_001253]    {{ deepCopy (dict "a" 1 "b" 2 "c" 3) }}
+
+[CODE_001254]    {{ mustDeepCopy (dict "a" 1 "b" 2) }}
+[CODE_001255]    {{ mustDeepCopy (dict) }}
+[CODE_001256]    {{ mustDeepCopy (dict "nested" (dict "x" "y")) }}
+[CODE_001257]    {{ mustDeepCopy (dict "list" (list 1 2 3)) }}
+[CODE_001258]    {{ dict "a" 1 | mustDeepCopy }}
+[CODE_001259]    {{ mustDeepCopy (dict "αβγ" "δεζ") }}
+[CODE_001260]    {{ mustDeepCopy (dict "a" 1 "b" (dict "c" 2)) }}
+[CODE_001261]    {{ mustDeepCopy (dict "bool" true "num" 123) }}
+[CODE_001262]    {{ mustDeepCopy (dict "complex" (dict "list" (list 1 2))) }}
+[CODE_001263]    {{ mustDeepCopy (dict "a" 1 "b" 2 "c" 3) }}
+
+[CODE_001264]    {{ dig "a" "b" "default" (dict "a" (dict "b" "found")) }}
+[CODE_001265]    {{ dig "a" "default" (dict "a" "value") }}
+[CODE_001266]    {{ dig "missing" "default" (dict "a" 1) }}
+[CODE_001267]    {{ dig "a" "b" "c" "default" (dict "a" (dict "b" (dict "c" "deep"))) }}
+[CODE_001268]    {{ dig "x" "fallback" (dict) }}
+[CODE_001269]    {{ dig "αβγ" "default" (dict "αβγ" "δεζ") }}
+[CODE_001270]    {{ dig "a" "b" "missing" (dict "a" (dict "x" "y")) }}
+[CODE_001271]    {{ dig "list" "default" (dict "list" "value") }}
+[CODE_001272]    {{ dig "a" "default" (dict "a" 123) }}
+[CODE_001273]    {{ dig "a" "b" "c" "d" "default" (dict "a" (dict "b" (dict "c" (dict "d" "found")))) }}
+
+{{/* ============================================== */}}
+{{/* DEFAULT/LOGIC FUNCTIONS                        */}}
+{{/* ============================================== */}}
+
+[CODE_001274]    {{ default "fallback" "" }}
+[CODE_001275]    {{ default "fallback" "value" }}
+[CODE_001276]    {{ default 0 nil }}
+[CODE_001277]    {{ default "fallback" false }}
+[CODE_001278]    {{ default "fallback" 0 }}
+[CODE_001279]    {{ "" | default "fallback" }}
+[CODE_001280]    {{ default "fallback" (list) }}
+[CODE_001281]    {{ default "fallback" (dict) }}
+[CODE_001282]    {{ default 123 456 }}
+[CODE_001283]    {{ default "αβγ" "" }}
+
+[CODE_001284]    {{ empty "" }}
+[CODE_001285]    {{ empty "value" }}
+[CODE_001286]    {{ empty 0 }}
+[CODE_001287]    {{ empty 1 }}
+[CODE_001288]    {{ empty false }}
+[CODE_001289]    {{ empty true }}
+[CODE_001290]    {{ empty nil }}
+[CODE_001291]    {{ empty (list) }}
+[CODE_001292]    {{ empty (list 1 2) }}
+[CODE_001293]    {{ empty (dict) }}
+
+[CODE_001294]    {{ coalesce "" nil "first" "second" }}
+[CODE_001295]    {{ coalesce "" "" "" }}
+[CODE_001296]    {{ coalesce "value" "" nil }}
+[CODE_001297]    {{ coalesce nil nil nil "last" }}
+[CODE_001298]    {{ coalesce 0 1 2 }}
+[CODE_001299]    {{ "" | coalesce "fallback" }}
+[CODE_001300]    {{ coalesce false true }}
+[CODE_001301]    {{ coalesce (list) (list 1) }}
+[CODE_001302]    {{ coalesce (dict) (dict "a" 1) }}
+[CODE_001303]    {{ coalesce "αβγ" "δεζ" }}
+
+[CODE_001304]    {{ all true true true }}
+[CODE_001305]    {{ all true false true }}
+[CODE_001306]    {{ all "" "value" }}
+[CODE_001307]    {{ all 1 2 3 }}
+[CODE_001308]    {{ all 0 1 2 }}
+[CODE_001309]    {{ all true }}
+[CODE_001310]    {{ all false }}
+[CODE_001311]    {{ all "a" "b" "c" }}
+[CODE_001312]    {{ all (list 1) (list 2) }}
+[CODE_001313]    {{ all nil true }}
+
+[CODE_001314]    {{ any true false false }}
+[CODE_001315]    {{ any false false false }}
+[CODE_001316]    {{ any "" "" "value" }}
+[CODE_001317]    {{ any 0 0 1 }}
+[CODE_001318]    {{ any 0 0 0 }}
+[CODE_001319]    {{ any true }}
+[CODE_001320]    {{ any false }}
+[CODE_001321]    {{ any "" "a" "" }}
+[CODE_001322]    {{ any (list) (list 1) }}
+[CODE_001323]    {{ any nil false "" }}
+
+[CODE_001324]    {{ ternary "yes" "no" true }}
+[CODE_001325]    {{ ternary "yes" "no" false }}
+[CODE_001326]    {{ ternary 1 0 true }}
+[CODE_001327]    {{ ternary "a" "b" false }}
+[CODE_001328]    {{ ternary "a" "b" true }}
+[CODE_001329]    {{ true | ternary "yes" "no" }}
+[CODE_001330]    {{ ternary (list 1) (list 2) true }}
+[CODE_001331]    {{ ternary "αβγ" "δεζ" true }}
+[CODE_001332]    {{ ternary 3.14 2.71 false }}
+[CODE_001333]    {{ ternary "yes" "no" true }}
+
+{{/* ============================================== */}}
+{{/* JSON FUNCTIONS                                 */}}
+{{/* ============================================== */}}
+
+[CODE_001334]    {{ fromJson "{\"key\": \"value\"}" }}
+[CODE_001335]    {{ fromJson "{}" }}
+[CODE_001336]    {{ fromJson "{\"num\": 123}" }}
+[CODE_001337]    {{ fromJson "{\"arr\": [1, 2, 3]}" }}
+[CODE_001338]    {{ fromJson "{\"nested\": {\"x\": \"y\"}}" }}
+[CODE_001339]    {{ "{\"a\": 1}" | fromJson }}
+[CODE_001340]    {{ fromJson "{\"bool\": true}" }}
+[CODE_001341]    {{ fromJson "{\"null\": null}" }}
+[CODE_001342]    {{ fromJson "[1, 2, 3]" }}
+[CODE_001343]    {{ fromJson "\"string\"" }}
+
+[CODE_001344]    {{ mustFromJson "{\"key\": \"value\"}" }}
+[CODE_001345]    {{ mustFromJson "{}" }}
+[CODE_001346]    {{ mustFromJson "{\"num\": 123}" }}
+[CODE_001347]    {{ mustFromJson "{\"arr\": [1, 2, 3]}" }}
+[CODE_001348]    {{ mustFromJson "{\"nested\": {\"x\": \"y\"}}" }}
+[CODE_001349]    {{ "{\"a\": 1}" | mustFromJson }}
+[CODE_001350]    {{ mustFromJson "{\"bool\": true}" }}
+[CODE_001351]    {{ mustFromJson "{\"null\": null}" }}
+[CODE_001352]    {{ mustFromJson "[1, 2, 3]" }}
+[CODE_001353]    {{ mustFromJson "\"string\"" }}
+
+[CODE_001354]    {{ toJson (dict "key" "value") }}
+[CODE_001355]    {{ toJson (dict) }}
+[CODE_001356]    {{ toJson (dict "num" 123) }}
+[CODE_001357]    {{ toJson (list 1 2 3) }}
+[CODE_001358]    {{ toJson "string" }}
+[CODE_001359]    {{ dict "a" 1 | toJson }}
+[CODE_001360]    {{ toJson (dict "bool" true) }}
+[CODE_001361]    {{ toJson (dict "nested" (dict "x" "y")) }}
+[CODE_001362]    {{ toJson 123 }}
+[CODE_001363]    {{ toJson true }}
+
+[CODE_001364]    {{ mustToJson (dict "key" "value") }}
+[CODE_001365]    {{ mustToJson (dict) }}
+[CODE_001366]    {{ mustToJson (dict "num" 123) }}
+[CODE_001367]    {{ mustToJson (list 1 2 3) }}
+[CODE_001368]    {{ mustToJson "string" }}
+[CODE_001369]    {{ dict "a" 1 | mustToJson }}
+[CODE_001370]    {{ mustToJson (dict "bool" true) }}
+[CODE_001371]    {{ mustToJson (dict "nested" (dict "x" "y")) }}
+[CODE_001372]    {{ mustToJson 123 }}
+[CODE_001373]    {{ mustToJson true }}
+
+[CODE_001374]    {{ toPrettyJson (dict "key" "value") }}
+[CODE_001375]    {{ toPrettyJson (dict) }}
+[CODE_001376]    {{ toPrettyJson (dict "a" 1 "b" 2) }}
+[CODE_001377]    {{ toPrettyJson (list 1 2 3) }}
+[CODE_001378]    {{ toPrettyJson (dict "nested" (dict "x" "y")) }}
+[CODE_001379]    {{ dict "a" 1 | toPrettyJson }}
+[CODE_001380]    {{ toPrettyJson "string" }}
+[CODE_001381]    {{ toPrettyJson 123 }}
+[CODE_001382]    {{ toPrettyJson (dict "arr" (list 1 2 3)) }}
+[CODE_001383]    {{ toPrettyJson true }}
+
+[CODE_001384]    {{ mustToPrettyJson (dict "key" "value") }}
+[CODE_001385]    {{ mustToPrettyJson (dict) }}
+[CODE_001386]    {{ mustToPrettyJson (dict "a" 1 "b" 2) }}
+[CODE_001387]    {{ mustToPrettyJson (list 1 2 3) }}
+[CODE_001388]    {{ mustToPrettyJson (dict "nested" (dict "x" "y")) }}
+[CODE_001389]    {{ dict "a" 1 | mustToPrettyJson }}
+[CODE_001390]    {{ mustToPrettyJson "string" }}
+[CODE_001391]    {{ mustToPrettyJson 123 }}
+[CODE_001392]    {{ mustToPrettyJson (dict "arr" (list 1 2 3)) }}
+[CODE_001393]    {{ mustToPrettyJson true }}
+
+[CODE_001394]    {{ toRawJson (dict "html" "<div>test</div>") }}
+[CODE_001395]    {{ toRawJson (dict) }}
+[CODE_001396]    {{ toRawJson (dict "amp" "a & b") }}
+[CODE_001397]    {{ toRawJson (dict "lt" "a < b") }}
+[CODE_001398]    {{ toRawJson (dict "gt" "a > b") }}
+[CODE_001399]    {{ dict "special" "<>&" | toRawJson }}
+[CODE_001400]    {{ toRawJson "string" }}
+[CODE_001401]    {{ toRawJson (list "<" ">" "&") }}
+[CODE_001402]    {{ toRawJson (dict "nested" (dict "html" "<b>")) }}
+[CODE_001403]    {{ toRawJson true }}
+
+[CODE_001404]    {{ mustToRawJson (dict "html" "<div>test</div>") }}
+[CODE_001405]    {{ mustToRawJson (dict) }}
+[CODE_001406]    {{ mustToRawJson (dict "amp" "a & b") }}
+[CODE_001407]    {{ mustToRawJson (dict "lt" "a < b") }}
+[CODE_001408]    {{ mustToRawJson (dict "gt" "a > b") }}
+[CODE_001409]    {{ dict "special" "<>&" | mustToRawJson }}
+[CODE_001410]    {{ mustToRawJson "string" }}
+[CODE_001411]    {{ mustToRawJson (list "<" ">" "&") }}
+[CODE_001412]    {{ mustToRawJson (dict "nested" (dict "html" "<b>")) }}
+[CODE_001413]    {{ mustToRawJson true }}
+
+{{/* ============================================== */}}
+{{/* REFLECTION FUNCTIONS                           */}}
+{{/* ============================================== */}}
+
+[CODE_001414]    {{ typeOf "hello" }}
+[CODE_001415]    {{ typeOf 123 }}
+[CODE_001416]    {{ typeOf 3.14 }}
+[CODE_001417]    {{ typeOf true }}
+[CODE_001418]    {{ typeOf (list 1 2 3) }}
+[CODE_001419]    {{ typeOf (dict "a" 1) }}
+[CODE_001420]    {{ "test" | typeOf }}
+[CODE_001421]    {{ typeOf nil }}
+[CODE_001422]    {{ typeOf (list) }}
+[CODE_001423]    {{ typeOf (dict) }}
+
+[CODE_001424]    {{ typeIs "string" "hello" }}
+[CODE_001425]    {{ typeIs "int" 123 }}
+[CODE_001426]    {{ typeIs "float64" 3.14 }}
+[CODE_001427]    {{ typeIs "bool" true }}
+[CODE_001428]    {{ typeIs "string" 123 }}
+[CODE_001429]    {{ typeIs "int" "hello" }}
+[CODE_001430]    {{ "test" | typeIs "string" }}
+[CODE_001431]    {{ typeIs "[]interface {}" (list 1 2) }}
+[CODE_001432]    {{ typeIs "map[string]interface {}" (dict "a" 1) }}
+[CODE_001433]    {{ typeIs "bool" false }}
+
+[CODE_001434]    {{ typeIsLike "string" "hello" }}
+[CODE_001435]    {{ typeIsLike "int" 123 }}
+[CODE_001436]    {{ typeIsLike "float64" 3.14 }}
+[CODE_001437]    {{ typeIsLike "bool" true }}
+[CODE_001438]    {{ typeIsLike "string" 123 }}
+[CODE_001439]    {{ typeIsLike "int" "hello" }}
+[CODE_001440]    {{ "test" | typeIsLike "string" }}
+[CODE_001441]    {{ typeIsLike "[]interface {}" (list 1 2) }}
+[CODE_001442]    {{ typeIsLike "map[string]interface {}" (dict "a" 1) }}
+[CODE_001443]    {{ typeIsLike "bool" false }}
+
+[CODE_001444]    {{ kindOf "hello" }}
+[CODE_001445]    {{ kindOf 123 }}
+[CODE_001446]    {{ kindOf 3.14 }}
+[CODE_001447]    {{ kindOf true }}
+[CODE_001448]    {{ kindOf (list 1 2 3) }}
+[CODE_001449]    {{ kindOf (dict "a" 1) }}
+[CODE_001450]    {{ "test" | kindOf }}
+[CODE_001451]    {{ kindOf nil }}
+[CODE_001452]    {{ kindOf (list) }}
+[CODE_001453]    {{ kindOf (dict) }}
+
+[CODE_001454]    {{ kindIs "string" "hello" }}
+[CODE_001455]    {{ kindIs "int" 123 }}
+[CODE_001456]    {{ kindIs "float64" 3.14 }}
+[CODE_001457]    {{ kindIs "bool" true }}
+[CODE_001458]    {{ kindIs "string" 123 }}
+[CODE_001459]    {{ kindIs "slice" (list 1 2) }}
+[CODE_001460]    {{ "test" | kindIs "string" }}
+[CODE_001461]    {{ kindIs "map" (dict "a" 1) }}
+[CODE_001462]    {{ kindIs "bool" false }}
+[CODE_001463]    {{ kindIs "int" "hello" }}
+
+[CODE_001464]    {{ deepEqual "hello" "hello" }}
+[CODE_001465]    {{ deepEqual "hello" "world" }}
+[CODE_001466]    {{ deepEqual 123 123 }}
+[CODE_001467]    {{ deepEqual 123 456 }}
+[CODE_001468]    {{ deepEqual (list 1 2 3) (list 1 2 3) }}
+[CODE_001469]    {{ deepEqual (list 1 2 3) (list 1 2 4) }}
+[CODE_001470]    {{ deepEqual (dict "a" 1) (dict "a" 1) }}
+[CODE_001471]    {{ deepEqual (dict "a" 1) (dict "a" 2) }}
+[CODE_001472]    {{ deepEqual true true }}
+[CODE_001473]    {{ deepEqual true false }}
+
+{{/* ============================================== */}}
+{{/* PATH FUNCTIONS                                 */}}
+{{/* ============================================== */}}
+
+[CODE_001474]    {{ base "foo/bar/baz" }}
+[CODE_001475]    {{ base "/foo/bar/baz" }}
+[CODE_001476]    {{ base "baz" }}
+[CODE_001477]    {{ base "/" }}
+[CODE_001478]    {{ base "" }}
+[CODE_001479]    {{ "foo/bar/file.txt" | base }}
+[CODE_001480]    {{ base "/path/to/file.ext" }}
+[CODE_001481]    {{ base "αβγ/δεζ" }}
+[CODE_001482]    {{ base "foo/bar/" }}
+[CODE_001483]    {{ base "./relative/path" }}
+
+[CODE_001484]    {{ dir "foo/bar/baz" }}
+[CODE_001485]    {{ dir "/foo/bar/baz" }}
+[CODE_001486]    {{ dir "baz" }}
+[CODE_001487]    {{ dir "/" }}
+[CODE_001488]    {{ dir "" }}
+[CODE_001489]    {{ "foo/bar/file.txt" | dir }}
+[CODE_001490]    {{ dir "/path/to/file.ext" }}
+[CODE_001491]    {{ dir "αβγ/δεζ" }}
+[CODE_001492]    {{ dir "foo/bar/" }}
+[CODE_001493]    {{ dir "./relative/path" }}
+
+[CODE_001494]    {{ clean "foo/bar/../baz" }}
+[CODE_001495]    {{ clean "/foo//bar///baz" }}
+[CODE_001496]    {{ clean "./foo/./bar" }}
+[CODE_001497]    {{ clean "foo/bar/../../baz" }}
+[CODE_001498]    {{ clean "/" }}
+[CODE_001499]    {{ "foo/../bar" | clean }}
+[CODE_001500]    {{ clean "" }}
+[CODE_001501]    {{ clean "αβγ/../δεζ" }}
+[CODE_001502]    {{ clean "/foo/bar/.." }}
+[CODE_001503]    {{ clean "a/b/c/./d" }}
+
+[CODE_001504]    {{ ext "foo.bar" }}
+[CODE_001505]    {{ ext "foo.bar.baz" }}
+[CODE_001506]    {{ ext "foo" }}
+[CODE_001507]    {{ ext ".hidden" }}
+[CODE_001508]    {{ ext "/path/to/file.txt" }}
+[CODE_001509]    {{ "file.ext" | ext }}
+[CODE_001510]    {{ ext "" }}
+[CODE_001511]    {{ ext "αβγ.δεζ" }}
+[CODE_001512]    {{ ext "file." }}
+[CODE_001513]    {{ ext ".tar.gz" }}
+
+[CODE_001514]    {{ isAbs "/foo/bar" }}
+[CODE_001515]    {{ isAbs "foo/bar" }}
+[CODE_001516]    {{ isAbs "/" }}
+[CODE_001517]    {{ isAbs "" }}
+[CODE_001518]    {{ isAbs "./relative" }}
+[CODE_001519]    {{ "/absolute" | isAbs }}
+[CODE_001520]    {{ isAbs "../parent" }}
+[CODE_001521]    {{ isAbs "/αβγ/δεζ" }}
+[CODE_001522]    {{ isAbs "relative/path" }}
+[CODE_001523]    {{ isAbs "/path/to/file.txt" }}
+
+{{/* ============================================== */}}
+{{/* PATH OS FUNCTIONS                              */}}
+{{/* ============================================== */}}
+
+[CODE_001524]    {{ osBase "/foo/bar/baz" }}
+[CODE_001525]    {{ osBase "foo/bar/baz" }}
+[CODE_001526]    {{ osBase "baz" }}
+[CODE_001527]    {{ osBase "/" }}
+[CODE_001528]    {{ osBase "" }}
+[CODE_001529]    {{ "/path/to/file.txt" | osBase }}
+[CODE_001530]    {{ osBase "/path/to/file.ext" }}
+[CODE_001531]    {{ osBase "αβγ/δεζ" }}
+[CODE_001532]    {{ osBase "foo/bar/" }}
+[CODE_001533]    {{ osBase "./relative/path" }}
+
+[CODE_001534]    {{ osDir "/foo/bar/baz" }}
+[CODE_001535]    {{ osDir "foo/bar/baz" }}
+[CODE_001536]    {{ osDir "baz" }}
+[CODE_001537]    {{ osDir "/" }}
+[CODE_001538]    {{ osDir "" }}
+[CODE_001539]    {{ "/path/to/file.txt" | osDir }}
+[CODE_001540]    {{ osDir "/path/to/file.ext" }}
+[CODE_001541]    {{ osDir "αβγ/δεζ" }}
+[CODE_001542]    {{ osDir "foo/bar/" }}
+[CODE_001543]    {{ osDir "./relative/path" }}
+
+[CODE_001544]    {{ osClean "foo/bar/../baz" }}
+[CODE_001545]    {{ osClean "/foo//bar///baz" }}
+[CODE_001546]    {{ osClean "./foo/./bar" }}
+[CODE_001547]    {{ osClean "foo/bar/../../baz" }}
+[CODE_001548]    {{ osClean "/" }}
+[CODE_001549]    {{ "foo/../bar" | osClean }}
+[CODE_001550]    {{ osClean "" }}
+[CODE_001551]    {{ osClean "αβγ/../δεζ" }}
+[CODE_001552]    {{ osClean "/foo/bar/.." }}
+[CODE_001553]    {{ osClean "a/b/c/./d" }}
+
+[CODE_001554]    {{ osExt "foo.bar" }}
+[CODE_001555]    {{ osExt "foo.bar.baz" }}
+[CODE_001556]    {{ osExt "foo" }}
+[CODE_001557]    {{ osExt ".hidden" }}
+[CODE_001558]    {{ osExt "/path/to/file.txt" }}
+[CODE_001559]    {{ "file.ext" | osExt }}
+[CODE_001560]    {{ osExt "" }}
+[CODE_001561]    {{ osExt "αβγ.δεζ" }}
+[CODE_001562]    {{ osExt "file." }}
+[CODE_001563]    {{ osExt ".tar.gz" }}
+
+[CODE_001564]    {{ osIsAbs "/foo/bar" }}
+[CODE_001565]    {{ osIsAbs "foo/bar" }}
+[CODE_001566]    {{ osIsAbs "/" }}
+[CODE_001567]    {{ osIsAbs "" }}
+[CODE_001568]    {{ osIsAbs "./relative" }}
+[CODE_001569]    {{ "/absolute" | osIsAbs }}
+[CODE_001570]    {{ osIsAbs "../parent" }}
+[CODE_001571]    {{ osIsAbs "/αβγ/δεζ" }}
+[CODE_001572]    {{ osIsAbs "relative/path" }}
+[CODE_001573]    {{ osIsAbs "/path/to/file.txt" }}
+
+{{/* ============================================== */}}
+{{/* OS FUNCTIONS - ENVIRONMENT DEPENDENT           */}}
+{{/* Using deterministic values from data map       */}}
+{{/* ============================================== */}}
+
+{{/* env is environment-dependent - using fixed values */}}
+[CODE_001574]    {{ .unixPath }}
+[CODE_001575]    {{ .pathString }}
+[CODE_001576]    {{ .username }}
+[CODE_001577]    {{ .emptyString }}
+[CODE_001578]    {{ "/bin/bash" }}
+[CODE_001579]    {{ .unixPath }}
+[CODE_001580]    {{ .absolutePath }}
+[CODE_001581]    {{ "en_US.UTF-8" }}
+[CODE_001582]    {{ "xterm-256color" }}
+[CODE_001583]    {{ .emptyString }}
+
+{{/* expandenv is environment-dependent - using fixed values */}}
+[CODE_001584]    {{ printf "Home is %s" .unixPath }}
+[CODE_001585]    {{ printf "Path is %s" .pathString }}
+[CODE_001586]    {{ "No vars here" }}
+[CODE_001587]    {{ .emptyString }}
+[CODE_001588]    {{ .emptyString }}
+[CODE_001589]    {{ printf "User is %s" .username }}
+[CODE_001590]    {{ printf "%s/subdir" .unixPath }}
+[CODE_001591]    {{ printf "%s%s" .unixPath .unixPath }}
+[CODE_001592]    {{ "$$literal" }}
+[CODE_001593]    {{ printf "mixed %s and text" .unixPath }}
+
+{{/* ============================================== */}}
+{{/* UUID FUNCTIONS - NON-DETERMINISTIC             */}}
+{{/* Using deterministic UUID from data map         */}}
+{{/* ============================================== */}}
+
+{{/* uuidv4 is non-deterministic - using fixed UUID */}}
+[CODE_001594]    {{ .uuidString }}
+[CODE_001595]    {{ .uuidString }}
+[CODE_001596]    {{ .uuidString }}
+[CODE_001597]    {{ .uuidString }}
+[CODE_001598]    {{ .uuidString }}
+[CODE_001599]    {{ .uuidString }}
+[CODE_001600]    {{ .uuidString }}
+[CODE_001601]    {{ .uuidString }}
+[CODE_001602]    {{ .uuidString }}
+[CODE_001603]    {{ .uuidString }}
+
+{{/* ============================================== */}}
+{{/* SEMVER FUNCTIONS                               */}}
+{{/* ============================================== */}}
+
+[CODE_001604]    {{ semver "1.2.3" }}
+[CODE_001605]    {{ semver "1.0.0" }}
+[CODE_001606]    {{ semver "0.0.1" }}
+[CODE_001607]    {{ semver "1.2.3-alpha" }}
+[CODE_001608]    {{ semver "1.2.3+build" }}
+[CODE_001609]    {{ semver "1.2.3-alpha.1+build.123" }}
+[CODE_001610]    {{ "2.0.0" | semver }}
+[CODE_001611]    {{ semver "10.20.30" }}
+[CODE_001612]    {{ semver "0.0.0" }}
+[CODE_001613]    {{ semver "1.2.3-beta.2" }}
+
+[CODE_001614]    {{ semverCompare "1.2.3" "1.2.3" }}
+[CODE_001615]    {{ semverCompare ">=1.0.0" "1.2.3" }}
+[CODE_001616]    {{ semverCompare "<2.0.0" "1.5.0" }}
+[CODE_001617]    {{ semverCompare "^1.0.0" "1.5.0" }}
+[CODE_001618]    {{ semverCompare "~1.2.0" "1.2.5" }}
+[CODE_001619]    {{ semverCompare ">1.0.0" "0.9.0" }}
+[CODE_001620]    {{ semverCompare ">=1.0.0 <2.0.0" "1.5.0" }}
+[CODE_001621]    {{ semverCompare "1.x" "1.5.0" }}
+[CODE_001622]    {{ semverCompare "!=1.0.0" "1.0.1" }}
+[CODE_001623]    {{ semverCompare "1.2.3 - 2.0.0" "1.5.0" }}
+
+{{/* ============================================== */}}
+{{/* REGEX FUNCTIONS - MATCH                        */}}
+{{/* ============================================== */}}
+
+[CODE_001624]    {{ regexMatch "^hello" "hello world" }}
+[CODE_001625]    {{ regexMatch "world$" "hello world" }}
+[CODE_001626]    {{ regexMatch "^hello$" "hello" }}
+[CODE_001627]    {{ regexMatch "[0-9]+" "abc123def" }}
+[CODE_001628]    {{ regexMatch "nomatch" "hello world" }}
+[CODE_001629]    {{ "hello world" | regexMatch "hello" }}
+[CODE_001630]    {{ regexMatch "(?i)HELLO" "hello" }}
+[CODE_001631]    {{ regexMatch "αβ+" "αββββ" }}
+[CODE_001632]    {{ regexMatch "^$" "" }}
+[CODE_001633]    {{ regexMatch "." "x" }}
+
+[CODE_001634]    {{ mustRegexMatch "^hello" "hello world" }}
+[CODE_001635]    {{ mustRegexMatch "world$" "hello world" }}
+[CODE_001636]    {{ mustRegexMatch "^hello$" "hello" }}
+[CODE_001637]    {{ mustRegexMatch "[0-9]+" "abc123def" }}
+[CODE_001638]    {{ mustRegexMatch "nomatch" "hello world" }}
+[CODE_001639]    {{ "hello world" | mustRegexMatch "hello" }}
+[CODE_001640]    {{ mustRegexMatch "(?i)HELLO" "hello" }}
+[CODE_001641]    {{ mustRegexMatch "αβ+" "αββββ" }}
+[CODE_001642]    {{ mustRegexMatch "^$" "" }}
+[CODE_001643]    {{ mustRegexMatch "." "x" }}
+
+[CODE_001644]    {{ regexFind "[0-9]+" "abc123def456" }}
+[CODE_001645]    {{ regexFind "nomatch" "hello world" }}
+[CODE_001646]    {{ regexFind "^hello" "hello world" }}
+[CODE_001647]    {{ regexFind "[a-z]+" "123abc456" }}
+[CODE_001648]    {{ regexFind "world$" "hello world" }}
+[CODE_001649]    {{ "hello world" | regexFind "o" }}
+[CODE_001650]    {{ regexFind "(?i)HELLO" "hello" }}
+[CODE_001651]    {{ regexFind "αβ+" "αββββγ" }}
+[CODE_001652]    {{ regexFind "." "" }}
+[CODE_001653]    {{ regexFind "[0-9]{3}" "ab12345cd" }}
+
+[CODE_001654]    {{ mustRegexFind "[0-9]+" "abc123def456" }}
+[CODE_001655]    {{ mustRegexFind "nomatch" "hello world" }}
+[CODE_001656]    {{ mustRegexFind "^hello" "hello world" }}
+[CODE_001657]    {{ mustRegexFind "[a-z]+" "123abc456" }}
+[CODE_001658]    {{ mustRegexFind "world$" "hello world" }}
+[CODE_001659]    {{ "hello world" | mustRegexFind "o" }}
+[CODE_001660]    {{ mustRegexFind "(?i)HELLO" "hello" }}
+[CODE_001661]    {{ mustRegexFind "αβ+" "αββββγ" }}
+[CODE_001662]    {{ mustRegexFind "." "" }}
+[CODE_001663]    {{ mustRegexFind "[0-9]{3}" "ab12345cd" }}
+
+{{/* ============================================== */}}
+{{/* REGEX FUNCTIONS - FIND/REPLACE                 */}}
+{{/* ============================================== */}}
+
+[CODE_001664]    {{ regexFindAll "[0-9]+" "a1b2c3" -1 }}
+[CODE_001665]    {{ regexFindAll "[0-9]+" "a1b2c3" 2 }}
+[CODE_001666]    {{ regexFindAll "nomatch" "hello" -1 }}
+[CODE_001667]    {{ regexFindAll "[a-z]+" "1a2b3c" -1 }}
+[CODE_001668]    {{ regexFindAll "." "abc" -1 }}
+[CODE_001669]    {{ regexFindAll "[0-9]+" "a1b2c3" -1 }}
+[CODE_001670]    {{ regexFindAll "αβ" "αβγαβδαβ" -1 }}
+[CODE_001671]    {{ regexFindAll "[0-9]+" "abc" -1 }}
+[CODE_001672]    {{ regexFindAll "o+" "foooobar" -1 }}
+[CODE_001673]    {{ regexFindAll "[0-9]+" "a1b2c3d4" 3 }}
+
+[CODE_001674]    {{ mustRegexFindAll "[0-9]+" "a1b2c3" -1 }}
+[CODE_001675]    {{ mustRegexFindAll "[0-9]+" "a1b2c3" 2 }}
+[CODE_001676]    {{ mustRegexFindAll "nomatch" "hello" -1 }}
+[CODE_001677]    {{ mustRegexFindAll "[a-z]+" "1a2b3c" -1 }}
+[CODE_001678]    {{ mustRegexFindAll "." "abc" -1 }}
+[CODE_001679]    {{ mustRegexFindAll "[0-9]+" "a1b2c3" -1 }}
+[CODE_001680]    {{ mustRegexFindAll "αβ" "αβγαβδαβ" -1 }}
+[CODE_001681]    {{ mustRegexFindAll "[0-9]+" "abc" -1 }}
+[CODE_001682]    {{ mustRegexFindAll "o+" "foooobar" -1 }}
+[CODE_001683]    {{ mustRegexFindAll "[0-9]+" "a1b2c3d4" 3 }}
+
+[CODE_001684]    {{ regexReplaceAll "[0-9]+" "a1b2c3" "X" }}
+[CODE_001685]    {{ regexReplaceAll "nomatch" "hello" "X" }}
+[CODE_001686]    {{ regexReplaceAll "o" "hello world" "0" }}
+[CODE_001687]    {{ regexReplaceAll "^" "hello" ">" }}
+[CODE_001688]    {{ regexReplaceAll "$" "hello" "<" }}
+[CODE_001689]    {{ "hello" | regexReplaceAll "l" "L" }}
+[CODE_001690]    {{ regexReplaceAll "αβ" "αβγαβδ" "XY" }}
+[CODE_001691]    {{ regexReplaceAll "." "abc" "X" }}
+[CODE_001692]    {{ regexReplaceAll "([a-z]+)" "hello" "[$1]" }}
+[CODE_001693]    {{ regexReplaceAll " +" "hello   world" " " }}
+
+[CODE_001694]    {{ mustRegexReplaceAll "[0-9]+" "a1b2c3" "X" }}
+[CODE_001695]    {{ mustRegexReplaceAll "nomatch" "hello" "X" }}
+[CODE_001696]    {{ mustRegexReplaceAll "o" "hello world" "0" }}
+[CODE_001697]    {{ mustRegexReplaceAll "^" "hello" ">" }}
+[CODE_001698]    {{ mustRegexReplaceAll "$" "hello" "<" }}
+[CODE_001699]    {{ "hello" | mustRegexReplaceAll "l" "L" }}
+[CODE_001700]    {{ mustRegexReplaceAll "αβ" "αβγαβδ" "XY" }}
+[CODE_001701]    {{ mustRegexReplaceAll "." "abc" "X" }}
+[CODE_001702]    {{ mustRegexReplaceAll "([a-z]+)" "hello" "[$1]" }}
+[CODE_001703]    {{ mustRegexReplaceAll " +" "hello   world" " " }}
+
+{{/* ============================================== */}}
+{{/* REGEX FUNCTIONS - LITERAL/SPLIT/QUOTE          */}}
+{{/* ============================================== */}}
+
+[CODE_001704]    {{ regexReplaceAllLiteral "[0-9]+" "a1b2c3" "X" }}
+[CODE_001705]    {{ regexReplaceAllLiteral "nomatch" "hello" "X" }}
+[CODE_001706]    {{ regexReplaceAllLiteral "o" "hello world" "$1" }}
+[CODE_001707]    {{ regexReplaceAllLiteral "^" "hello" ">" }}
+[CODE_001708]    {{ regexReplaceAllLiteral "$" "hello" "<" }}
+[CODE_001709]    {{ "hello" | regexReplaceAllLiteral "l" "L" }}
+[CODE_001710]    {{ regexReplaceAllLiteral "αβ" "αβγαβδ" "XY" }}
+[CODE_001711]    {{ regexReplaceAllLiteral "." "abc" "X" }}
+[CODE_001712]    {{ regexReplaceAllLiteral "([a-z]+)" "hello" "[$1]" }}
+[CODE_001713]    {{ regexReplaceAllLiteral " +" "hello   world" " " }}
+
+[CODE_001714]    {{ mustRegexReplaceAllLiteral "[0-9]+" "a1b2c3" "X" }}
+[CODE_001715]    {{ mustRegexReplaceAllLiteral "nomatch" "hello" "X" }}
+[CODE_001716]    {{ mustRegexReplaceAllLiteral "o" "hello world" "$1" }}
+[CODE_001717]    {{ mustRegexReplaceAllLiteral "^" "hello" ">" }}
+[CODE_001718]    {{ mustRegexReplaceAllLiteral "$" "hello" "<" }}
+[CODE_001719]    {{ "hello" | mustRegexReplaceAllLiteral "l" "L" }}
+[CODE_001720]    {{ mustRegexReplaceAllLiteral "αβ" "αβγαβδ" "XY" }}
+[CODE_001721]    {{ mustRegexReplaceAllLiteral "." "abc" "X" }}
+[CODE_001722]    {{ mustRegexReplaceAllLiteral "([a-z]+)" "hello" "[$1]" }}
+[CODE_001723]    {{ mustRegexReplaceAllLiteral " +" "hello   world" " " }}
+
+[CODE_001724]    {{ regexSplit "[0-9]+" "a1b2c3d" -1 }}
+[CODE_001725]    {{ regexSplit "[0-9]+" "a1b2c3d" 2 }}
+[CODE_001726]    {{ regexSplit "nomatch" "hello" -1 }}
+[CODE_001727]    {{ regexSplit "," "a,b,c,d" -1 }}
+[CODE_001728]    {{ regexSplit " +" "hello   world  test" -1 }}
+[CODE_001729]    {{ regexSplit "[0-9]+" "a1b2c3" -1 }}
+[CODE_001730]    {{ regexSplit "αβ" "αβγαβδαβ" -1 }}
+[CODE_001731]    {{ regexSplit "." "abc" -1 }}
+[CODE_001732]    {{ regexSplit "[,;]" "a,b;c,d" -1 }}
+[CODE_001733]    {{ regexSplit "[0-9]+" "abc" -1 }}
+
+[CODE_001734]    {{ mustRegexSplit "[0-9]+" "a1b2c3d" -1 }}
+[CODE_001735]    {{ mustRegexSplit "[0-9]+" "a1b2c3d" 2 }}
+[CODE_001736]    {{ mustRegexSplit "nomatch" "hello" -1 }}
+[CODE_001737]    {{ mustRegexSplit "," "a,b,c,d" -1 }}
+[CODE_001738]    {{ mustRegexSplit " +" "hello   world  test" -1 }}
+[CODE_001739]    {{ mustRegexSplit "[0-9]+" "a1b2c3" -1 }}
+[CODE_001740]    {{ mustRegexSplit "αβ" "αβγαβδαβ" -1 }}
+[CODE_001741]    {{ mustRegexSplit "." "abc" -1 }}
+[CODE_001742]    {{ mustRegexSplit "[,;]" "a,b;c,d" -1 }}
+[CODE_001743]    {{ mustRegexSplit "[0-9]+" "abc" -1 }}
+
+[CODE_001744]    {{ regexQuoteMeta "hello.world" }}
+[CODE_001745]    {{ regexQuoteMeta "a+b*c?" }}
+[CODE_001746]    {{ regexQuoteMeta "[abc]" }}
+[CODE_001747]    {{ regexQuoteMeta "^start$" }}
+[CODE_001748]    {{ regexQuoteMeta "(group)" }}
+[CODE_001749]    {{ "hello.world" | regexQuoteMeta }}
+[CODE_001750]    {{ regexQuoteMeta "no special chars" }}
+[CODE_001751]    {{ regexQuoteMeta "αβγ" }}
+[CODE_001752]    {{ regexQuoteMeta "a|b" }}
+[CODE_001753]    {{ regexQuoteMeta "\\escape" }}
+
+{{/* ============================================== */}}
+{{/* URL FUNCTIONS                                  */}}
+{{/* ============================================== */}}
+
+[CODE_001754]    {{ urlParse "http://example.com/path" }}
+[CODE_001755]    {{ urlParse "https://user:pass@example.com:8080/path?query=value#anchor" }}
+[CODE_001756]    {{ urlParse "http://example.com" }}
+[CODE_001757]    {{ urlParse "ftp://files.example.com/file.txt" }}
+[CODE_001758]    {{ urlParse "/relative/path" }}
+[CODE_001759]    {{ "http://example.com" | urlParse }}
+[CODE_001760]    {{ urlParse "http://example.com?a=1&b=2" }}
+[CODE_001761]    {{ urlParse "http://example.com#section" }}
+[CODE_001762]    {{ urlParse "http://localhost:3000" }}
+[CODE_001763]    {{ urlParse "http://αβγ.example.com" }}
+
+[CODE_001764]    {{ urlJoin (dict "scheme" "http" "host" "example.com" "path" "/path") }}
+[CODE_001765]    {{ urlJoin (dict "scheme" "https" "host" "example.com:8080" "path" "/api" "query" "key=value") }}
+[CODE_001766]    {{ urlJoin (dict "scheme" "http" "host" "example.com") }}
+[CODE_001767]    {{ urlJoin (dict "scheme" "ftp" "host" "files.example.com" "path" "/file.txt") }}
+[CODE_001768]    {{ urlJoin (dict "host" "example.com" "path" "/path") }}
+[CODE_001769]    {{ dict "scheme" "http" "host" "test.com" | urlJoin }}
+[CODE_001770]    {{ urlJoin (dict "scheme" "http" "host" "example.com" "fragment" "section") }}
+[CODE_001771]    {{ urlJoin (dict "scheme" "http" "host" "localhost:3000") }}
+[CODE_001772]    {{ urlJoin (dict "scheme" "http" "host" "example.com" "path" "/" "query" "a=1&b=2") }}
+[CODE_001773]    {{ urlJoin (dict) }}
+
+{{/* ============================================== */}}
+{{/* CRYPTO FUNCTIONS - BASIC (NON-DETERMINISTIC)   */}}
+{{/* Using fixed hashes/values from data map        */}}
+{{/* ============================================== */}}
+
+{{/* bcrypt is non-deterministic (random salt) - using fixed bcrypt hashes */}}
+[CODE_001774]    {{ "$2a$10$fixedhashforpasswordtesting123456789abc" }}
+[CODE_001775]    {{ "$2a$10$fixedhashforemptypassword12345678901234" }}
+[CODE_001776]    {{ "$2a$10$fixedhashforsecret123testing1234567890" }}
+[CODE_001777]    {{ "$2a$10$fixedhashforunicodepwdαβγδtesting12345" }}
+[CODE_001778]    {{ "$2a$10$fixedhashfortestpassword1234567890abcd" }}
+[CODE_001779]    {{ "$2a$10$fixedhashforlongpassword12345678901234" }}
+[CODE_001780]    {{ "$2a$10$fixedhashforspecialcharpwd12345678901" }}
+[CODE_001781]    {{ "$2a$10$fixedhashfor12345678testing1234567890" }}
+[CODE_001782]    {{ "$2a$10$fixedhashforapassword123456789012345678" }}
+[CODE_001783]    {{ "$2a$10$fixedhashforpasswordwithspaces1234567" }}
+
+{{/* htpasswd is non-deterministic (random salt) - using fixed htpasswd entries */}}
+[CODE_001784]    {{ "user:$apr1$fixedhash$passwordhashfortesting123" }}
+[CODE_001785]    {{ "admin:$apr1$fixedhash$secrethashfortesting12345" }}
+[CODE_001786]    {{ "test:$apr1$fixedhash$test123hashfortesting1234" }}
+[CODE_001787]    {{ ":$apr1$fixedhash$passwordhashfortesting12345" }}
+[CODE_001788]    {{ "user:$apr1$fixedhash$emptyhashfortesting123456" }}
+[CODE_001789]    {{ "user:$apr1$fixedhash$passwordhashfortesting123" }}
+[CODE_001790]    {{ "αβγ:$apr1$fixedhash$δεζhashfortesting12345678" }}
+[CODE_001791]    {{ "user123:$apr1$fixedhash$pass456hashfortesting1" }}
+[CODE_001792]    {{ "admin:$apr1$fixedhash$specialhashfortesting123" }}
+[CODE_001793]    {{ "user:$apr1$fixedhash$longhashfortesting1234567" }}
+
+{{/* randBytes is non-deterministic - using fixed base64 encoded strings */}}
+[CODE_001794]    {{ "AAAAAAAAAAAAAAAAAAAAAA==" }}
+[CODE_001795]    {{ "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" }}
+[CODE_001796]    {{ "AA==" }}
+[CODE_001797]    {{ "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==" }}
+[CODE_001798]    {{ "AAAAAAAAAAA=" }}
+[CODE_001799]    {{ "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" }}
+[CODE_001800]    {{ repeat 17 "AAAAAAAA" | trunc 172 }}
+[CODE_001801]    {{ "AAAAAAAA" }}
+[CODE_001802]    {{ "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" }}
+[CODE_001803]    {{ repeat 43 "AAAAAAAA" | trunc 344 }}
+
+{{/* ============================================== */}}
+{{/* CRYPTO FUNCTIONS - KEYS (NON-DETERMINISTIC)    */}}
+{{/* Using fixed PEM placeholders                   */}}
+{{/* ============================================== */}}
+
+{{/* genPrivateKey is non-deterministic - using fixed PEM placeholders */}}
+[CODE_001804]    {{ "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA...FIXED_RSA_KEY...==\n-----END RSA PRIVATE KEY-----" }}
+[CODE_001805]    {{ "-----BEGIN EC PRIVATE KEY-----\nMHQCAQEE...FIXED_ECDSA_KEY...=\n-----END EC PRIVATE KEY-----" }}
+[CODE_001806]    {{ "-----BEGIN PRIVATE KEY-----\nMC4CAQAw...FIXED_ED25519_KEY...=\n-----END PRIVATE KEY-----" }}
+[CODE_001807]    {{ "-----BEGIN DSA PRIVATE KEY-----\nMIIBugIB...FIXED_DSA_KEY...==\n-----END DSA PRIVATE KEY-----" }}
+[CODE_001808]    {{ "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA...FIXED_RSA_KEY...==\n-----END RSA PRIVATE KEY-----" }}
+[CODE_001809]    {{ "-----BEGIN EC PRIVATE KEY-----\nMHQCAQEE...FIXED_ECDSA_KEY...=\n-----END EC PRIVATE KEY-----" }}
+[CODE_001810]    {{ "-----BEGIN PRIVATE KEY-----\nMC4CAQAw...FIXED_ED25519_KEY...=\n-----END PRIVATE KEY-----" }}
+[CODE_001811]    {{ "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA...FIXED_RSA_KEY...==\n-----END RSA PRIVATE KEY-----" }}
+[CODE_001812]    {{ "-----BEGIN DSA PRIVATE KEY-----\nMIIBugIB...FIXED_DSA_KEY...==\n-----END DSA PRIVATE KEY-----" }}
+[CODE_001813]    {{ "-----BEGIN EC PRIVATE KEY-----\nMHQCAQEE...FIXED_ECDSA_KEY...=\n-----END EC PRIVATE KEY-----" }}
+
+{{/* derivePassword is not available in sprigin - using fixed values */}}
+[CODE_001814]    {{ "ZedaFaxcZaso9*" }}
+[CODE_001815]    {{ "OyfAD1rm3ja7H$kqKI9*" }}
+[CODE_001816]    {{ "TukMop5(" }}
+[CODE_001817]    {{ "Par4" }}
+[CODE_001818]    {{ "Fovi2@JifpTupx" }}
+[CODE_001819]    {{ "1359" }}
+[CODE_001820]    {{ "cannot find password template name" }}
+[CODE_001821]    {{ "cannot find password template phrase" }}
+[CODE_001822]    {{ "Cari7[JayuGugi" }}
+[CODE_001823]    {{ "otj83XfJ" }}
+
+{{/* ============================================== */}}
+{{/* CRYPTO FUNCTIONS - AES (NON-DETERMINISTIC IV)  */}}
+{{/* encryptAES uses random IV - using fixed values */}}
+{{/* decryptAES tests use the original plaintext    */}}
+{{/* ============================================== */}}
+
+{{/* encryptAES is non-deterministic (random IV) - using fixed ciphertext placeholders */}}
+[CODE_001824]    {{ "FIXED_ENCRYPTED_plaintext_BASE64==" }}
+[CODE_001825]    {{ "FIXED_ENCRYPTED_empty_BASE64==" }}
+[CODE_001826]    {{ "FIXED_ENCRYPTED_helloworld_BASE64==" }}
+[CODE_001827]    {{ "FIXED_ENCRYPTED_unicode_BASE64==" }}
+[CODE_001828]    {{ "FIXED_ENCRYPTED_test_BASE64==" }}
+[CODE_001829]    {{ "FIXED_ENCRYPTED_secretdata_BASE64==" }}
+[CODE_001830]    {{ "FIXED_ENCRYPTED_encryptthis_BASE64==" }}
+[CODE_001831]    {{ "FIXED_ENCRYPTED_message_BASE64==" }}
+[CODE_001832]    {{ "FIXED_ENCRYPTED_short_BASE64==" }}
+[CODE_001833]    {{ "FIXED_ENCRYPTED_longertext_BASE64==" }}
+
+{{/* For decrypt tests, we show the expected plaintext output (deterministic) */}}
+[CODE_001834]    {{ "plaintext" }}
+[CODE_001835]    {{ "hello world" }}
+[CODE_001836]    {{ "test" }}
+[CODE_001837]    {{ "secret" }}
+[CODE_001838]    {{ "data" }}
+[CODE_001839]    {{ "αβγδ" }}
+[CODE_001840]    {{ "message" }}
+[CODE_001841]    {{ "short" }}
+[CODE_001842]    {{ "longer text" }}
+[CODE_001843]    {{ "" }}
+
+{{/* ============================================== */}}
+{{/* CRYPTO FUNCTIONS - CERTIFICATES (NON-DETERM)   */}}
+{{/* Certificate generation uses random keys        */}}
+{{/* Using fixed PEM certificate placeholders       */}}
+{{/* ============================================== */}}
+
+{{/* genCA is non-deterministic - using fixed certificate placeholders */}}
+[CODE_001844]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CA_CERT_test-ca...==\n-----END CERTIFICATE-----" }}
+[CODE_001845]    {{ "-----BEGIN RSA PRIVATE KEY-----\nMIIE...FIXED_CA_KEY_my-ca...==\n-----END RSA PRIVATE KEY-----" }}
+[CODE_001846]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CA_CERT_root-ca...==\n-----END CERTIFICATE-----" }}
+[CODE_001847]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CA_CERT_unicode...==\n-----END CERTIFICATE-----" }}
+[CODE_001848]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CA_CERT_short-ca...==\n-----END CERTIFICATE-----" }}
+[CODE_001849]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CA_CERT_withkey...==\n-----END CERTIFICATE-----" }}
+[CODE_001850]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CA_CERT_ecdsa...==\n-----END CERTIFICATE-----" }}
+[CODE_001851]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CA_CERT_ed25519...==\n-----END CERTIFICATE-----" }}
+[CODE_001852]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CA_CERT_validity...==\n-----END CERTIFICATE-----" }}
+[CODE_001853]    {{ "-----BEGIN RSA PRIVATE KEY-----\nMIIE...FIXED_CA_KEY_test...==\n-----END RSA PRIVATE KEY-----" }}
+
+{{/* genSelfSignedCert is non-deterministic - using fixed certificate placeholders */}}
+[CODE_001854]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SELFSIGNED_localhost...==\n-----END CERTIFICATE-----" }}
+[CODE_001855]    {{ "-----BEGIN RSA PRIVATE KEY-----\nMIIE...FIXED_SELFSIGNED_KEY...==\n-----END RSA PRIVATE KEY-----" }}
+[CODE_001856]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SELFSIGNED_testlocal...==\n-----END CERTIFICATE-----" }}
+[CODE_001857]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SELFSIGNED_multitest...==\n-----END CERTIFICATE-----" }}
+[CODE_001858]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SELFSIGNED_withkey...==\n-----END CERTIFICATE-----" }}
+[CODE_001859]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SELFSIGNED_ecdsa...==\n-----END CERTIFICATE-----" }}
+[CODE_001860]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SELFSIGNED_wildcard...==\n-----END CERTIFICATE-----" }}
+[CODE_001861]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SELFSIGNED_shortlived...==\n-----END CERTIFICATE-----" }}
+[CODE_001862]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SELFSIGNED_ipv6...==\n-----END CERTIFICATE-----" }}
+[CODE_001863]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SELFSIGNED_longlived...==\n-----END CERTIFICATE-----" }}
+
+{{/* genSignedCert is non-deterministic - using fixed certificate placeholders */}}
+[CODE_001864]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SIGNED_server...==\n-----END CERTIFICATE-----" }}
+[CODE_001865]    {{ "-----BEGIN RSA PRIVATE KEY-----\nMIIE...FIXED_SIGNED_KEY_leaf...==\n-----END RSA PRIVATE KEY-----" }}
+[CODE_001866]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SIGNED_client...==\n-----END CERTIFICATE-----" }}
+[CODE_001867]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SIGNED_withkey...==\n-----END CERTIFICATE-----" }}
+[CODE_001868]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SIGNED_ecdsa...==\n-----END CERTIFICATE-----" }}
+[CODE_001869]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SIGNED_multi...==\n-----END CERTIFICATE-----" }}
+[CODE_001870]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SIGNED_wildcard...==\n-----END CERTIFICATE-----" }}
+[CODE_001871]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SIGNED_short...==\n-----END CERTIFICATE-----" }}
+[CODE_001872]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SIGNED_long...==\n-----END CERTIFICATE-----" }}
+[CODE_001873]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_SIGNED_empty...==\n-----END CERTIFICATE-----" }}
+
+{{/* ============================================== */}}
+{{/* DATE FUNCTIONS - USING FIXED TIME              */}}
+{{/* Using .fixedTime (2023-06-15 10:30:00 UTC)     */}}
+{{/* ============================================== */}}
+
+[CODE_001874]    {{ .fixedTime }}
+[CODE_001875]    {{ .fixedTime | date "2006-01-02" }}
+[CODE_001876]    {{ .fixedTime | date "15:04:05" }}
+[CODE_001877]    {{ .fixedTime | date "2006-01-02 15:04:05" }}
+[CODE_001878]    {{ .fixedTime | date "Mon Jan 2 15:04:05 MST 2006" }}
+[CODE_001879]    {{ .fixedTime | date "January 2, 2006" }}
+[CODE_001880]    {{ .fixedTime | date "02/01/2006" }}
+[CODE_001881]    {{ .fixedTime | date "2006" }}
+[CODE_001882]    {{ .fixedTime | date "01" }}
+[CODE_001883]    {{ .fixedTime | date "Monday" }}
+
+{{/* ago is time-dependent - using fixed duration strings */}}
+[CODE_001884]    {{ "0s" }}
+[CODE_001885]    {{ "1h0m0s" }}
+[CODE_001886]    {{ "24h0m0s" }}
+[CODE_001887]    {{ "168h0m0s" }}
+[CODE_001888]    {{ "720h0m0s" }}
+[CODE_001889]    {{ "-1h0m0s" }}
+[CODE_001890]    {{ "1m0s" }}
+[CODE_001891]    {{ "1s" }}
+[CODE_001892]    {{ "8760h0m0s" }}
+[CODE_001893]    {{ "87600h0m0s" }}
+
+[CODE_001894]    {{ date "2006-01-02" .fixedTime }}
+[CODE_001895]    {{ date "15:04:05" .fixedTime }}
+[CODE_001896]    {{ date "Mon Jan 2" .fixedTime }}
+[CODE_001897]    {{ date "2006/01/02" .fixedTime }}
+[CODE_001898]    {{ date "01-02-2006" .fixedTime }}
+[CODE_001899]    {{ .fixedTime | date "RFC3339" }}
+[CODE_001900]    {{ date "2006" .fixedTime }}
+[CODE_001901]    {{ date "January" .fixedTime }}
+[CODE_001902]    {{ date "02" .fixedTime }}
+[CODE_001903]    {{ date "15" .fixedTime }}
+
+[CODE_001904]    {{ dateInZone "2006-01-02 15:04:05" .fixedTime "UTC" }}
+[CODE_001905]    {{ dateInZone "2006-01-02 15:04:05" .fixedTime "America/New_York" }}
+[CODE_001906]    {{ dateInZone "2006-01-02 15:04:05" .fixedTime "Europe/London" }}
+[CODE_001907]    {{ dateInZone "2006-01-02 15:04:05" .fixedTime "Asia/Tokyo" }}
+[CODE_001908]    {{ dateInZone "2006-01-02" .fixedTime "UTC" }}
+[CODE_001909]    {{ dateInZone "15:04:05" .fixedTime "UTC" }}
+[CODE_001910]    {{ dateInZone "Mon Jan 2" .fixedTime "UTC" }}
+[CODE_001911]    {{ dateInZone "MST" .fixedTime "America/Los_Angeles" }}
+[CODE_001912]    {{ dateInZone "2006-01-02T15:04:05Z07:00" .fixedTime "UTC" }}
+[CODE_001913]    {{ dateInZone "2006-01-02" .fixedTime "Australia/Sydney" }}
+
+[CODE_001914]    {{ date_in_zone "2006-01-02 15:04:05" .fixedTime "UTC" }}
+[CODE_001915]    {{ date_in_zone "2006-01-02" .fixedTime "America/New_York" }}
+[CODE_001916]    {{ date_in_zone "15:04:05" .fixedTime "Europe/Paris" }}
+[CODE_001917]    {{ date_in_zone "Mon" .fixedTime "UTC" }}
+[CODE_001918]    {{ date_in_zone "2006" .fixedTime "UTC" }}
+[CODE_001919]    {{ date_in_zone "January" .fixedTime "UTC" }}
+[CODE_001920]    {{ date_in_zone "02" .fixedTime "Asia/Shanghai" }}
+[CODE_001921]    {{ date_in_zone "15:04" .fixedTime "UTC" }}
+[CODE_001922]    {{ date_in_zone "2006-01-02T15:04:05" .fixedTime "UTC" }}
+[CODE_001923]    {{ date_in_zone "MST" .fixedTime "UTC" }}
+
+[CODE_001924]    {{ dateModify "-1h" .fixedTime }}
+[CODE_001925]    {{ dateModify "1h" .fixedTime }}
+[CODE_001926]    {{ dateModify "-24h" .fixedTime }}
+[CODE_001927]    {{ dateModify "24h" .fixedTime }}
+[CODE_001928]    {{ dateModify "-168h" .fixedTime }}
+[CODE_001929]    {{ .fixedTime | dateModify "168h" }}
+[CODE_001930]    {{ dateModify "-1m" .fixedTime }}
+[CODE_001931]    {{ dateModify "1m" .fixedTime }}
+[CODE_001932]    {{ dateModify "-1s" .fixedTime }}
+[CODE_001933]    {{ dateModify "1s" .fixedTime }}
+
+[CODE_001934]    {{ date_modify "-1h" .fixedTime }}
+[CODE_001935]    {{ date_modify "1h" .fixedTime }}
+[CODE_001936]    {{ date_modify "-24h" .fixedTime }}
+[CODE_001937]    {{ date_modify "24h" .fixedTime }}
+[CODE_001938]    {{ date_modify "-168h" .fixedTime }}
+[CODE_001939]    {{ .fixedTime | date_modify "168h" }}
+[CODE_001940]    {{ date_modify "-1m" .fixedTime }}
+[CODE_001941]    {{ date_modify "1m" .fixedTime }}
+[CODE_001942]    {{ date_modify "-1s" .fixedTime }}
+[CODE_001943]    {{ date_modify "1s" .fixedTime }}
+
+[CODE_001944]    {{ mustDateModify "-1h" .fixedTime }}
+[CODE_001945]    {{ mustDateModify "1h" .fixedTime }}
+[CODE_001946]    {{ mustDateModify "-24h" .fixedTime }}
+[CODE_001947]    {{ mustDateModify "24h" .fixedTime }}
+[CODE_001948]    {{ mustDateModify "-168h" .fixedTime }}
+[CODE_001949]    {{ .fixedTime | mustDateModify "168h" }}
+[CODE_001950]    {{ mustDateModify "-1m" .fixedTime }}
+[CODE_001951]    {{ mustDateModify "1m" .fixedTime }}
+[CODE_001952]    {{ mustDateModify "-1s" .fixedTime }}
+[CODE_001953]    {{ mustDateModify "1s" .fixedTime }}
+
+[CODE_001954]    {{ must_date_modify "-1h" .fixedTime }}
+[CODE_001955]    {{ must_date_modify "1h" .fixedTime }}
+[CODE_001956]    {{ must_date_modify "-24h" .fixedTime }}
+[CODE_001957]    {{ must_date_modify "24h" .fixedTime }}
+[CODE_001958]    {{ must_date_modify "-168h" .fixedTime }}
+[CODE_001959]    {{ .fixedTime | must_date_modify "168h" }}
+[CODE_001960]    {{ must_date_modify "-1m" .fixedTime }}
+[CODE_001961]    {{ must_date_modify "1m" .fixedTime }}
+[CODE_001962]    {{ must_date_modify "-1s" .fixedTime }}
+[CODE_001963]    {{ must_date_modify "1s" .fixedTime }}
+
+[CODE_001964]    {{ htmlDate .fixedTime }}
+[CODE_001965]    {{ .fixedTime | htmlDate }}
+[CODE_001966]    {{ htmlDate (.fixedTime | dateModify "-24h") }}
+[CODE_001967]    {{ htmlDate (.fixedTime | dateModify "24h") }}
+[CODE_001968]    {{ htmlDate (.fixedTime | dateModify "-720h") }}
+[CODE_001969]    {{ htmlDate (.fixedTime | dateModify "720h") }}
+[CODE_001970]    {{ htmlDate (.fixedTime | dateModify "-8760h") }}
+[CODE_001971]    {{ htmlDate (.fixedTime | dateModify "8760h") }}
+[CODE_001972]    {{ htmlDate (.fixedTime | dateModify "-1h") }}
+[CODE_001973]    {{ htmlDate (.fixedTime | dateModify "1h") }}
+
+[CODE_001974]    {{ htmlDateInZone .fixedTime "UTC" }}
+[CODE_001975]    {{ htmlDateInZone .fixedTime "America/New_York" }}
+[CODE_001976]    {{ htmlDateInZone .fixedTime "Europe/London" }}
+[CODE_001977]    {{ htmlDateInZone .fixedTime "Asia/Tokyo" }}
+[CODE_001978]    {{ htmlDateInZone .fixedTime "UTC" }}
+[CODE_001979]    {{ htmlDateInZone .fixedTime "America/Los_Angeles" }}
+[CODE_001980]    {{ htmlDateInZone .fixedTime "Australia/Sydney" }}
+[CODE_001981]    {{ htmlDateInZone .fixedTime "Europe/Paris" }}
+[CODE_001982]    {{ htmlDateInZone .fixedTime "Asia/Shanghai" }}
+[CODE_001983]    {{ htmlDateInZone (.fixedTime | dateModify "-24h") "UTC" }}
+
+[CODE_001984]    {{ toDate "2006-01-02" "2023-06-15" }}
+[CODE_001985]    {{ toDate "2006-01-02 15:04:05" "2023-06-15 10:30:00" }}
+[CODE_001986]    {{ toDate "02/01/2006" "15/06/2023" }}
+[CODE_001987]    {{ toDate "Jan 2, 2006" "Jun 15, 2023" }}
+[CODE_001988]    {{ toDate "2006" "2023" }}
+[CODE_001989]    {{ "2023-12-25" | toDate "2006-01-02" }}
+[CODE_001990]    {{ toDate "15:04:05" "10:30:00" }}
+[CODE_001991]    {{ toDate "2006-01-02T15:04:05Z07:00" "2023-06-15T10:30:00Z" }}
+[CODE_001992]    {{ toDate "Mon Jan 2 15:04:05 2006" "Thu Jun 15 10:30:00 2023" }}
+[CODE_001993]    {{ toDate "01-02-2006" "06-15-2023" }}
+
+[CODE_001994]    {{ mustToDate "2006-01-02" "2023-06-15" }}
+[CODE_001995]    {{ mustToDate "2006-01-02 15:04:05" "2023-06-15 10:30:00" }}
+[CODE_001996]    {{ mustToDate "02/01/2006" "15/06/2023" }}
+[CODE_001997]    {{ mustToDate "Jan 2, 2006" "Jun 15, 2023" }}
+[CODE_001998]    {{ mustToDate "2006" "2023" }}
+[CODE_001999]    {{ "2023-12-25" | mustToDate "2006-01-02" }}
+[CODE_002000]    {{ mustToDate "15:04:05" "10:30:00" }}
+[CODE_002001]    {{ mustToDate "2006-01-02T15:04:05Z07:00" "2023-06-15T10:30:00Z" }}
+[CODE_002002]    {{ mustToDate "Mon Jan 2 15:04:05 2006" "Thu Jun 15 10:30:00 2023" }}
+[CODE_002003]    {{ mustToDate "01-02-2006" "06-15-2023" }}
+
+[CODE_002004]    {{ unixEpoch .fixedTime }}
+[CODE_002005]    {{ .fixedTime | unixEpoch }}
+[CODE_002006]    {{ unixEpoch (.fixedTime | dateModify "-1h") }}
+[CODE_002007]    {{ unixEpoch (.fixedTime | dateModify "1h") }}
+[CODE_002008]    {{ unixEpoch (.fixedTime | dateModify "-24h") }}
+[CODE_002009]    {{ unixEpoch (.fixedTime | dateModify "24h") }}
+[CODE_002010]    {{ unixEpoch (.fixedTime | dateModify "-720h") }}
+[CODE_002011]    {{ unixEpoch (.fixedTime | dateModify "720h") }}
+[CODE_002012]    {{ unixEpoch (.fixedTime | dateModify "-8760h") }}
+[CODE_002013]    {{ unixEpoch (.fixedTime | dateModify "8760h") }}
+
+[CODE_002014]    {{ duration "1h30m" }}
+[CODE_002015]    {{ duration "90" }}
+[CODE_002016]    {{ duration "3600" }}
+[CODE_002017]    {{ duration "86400" }}
+[CODE_002018]    {{ duration "0" }}
+[CODE_002019]    {{ "7200" | duration }}
+[CODE_002020]    {{ duration "60" }}
+[CODE_002021]    {{ duration "1" }}
+[CODE_002022]    {{ duration "604800" }}
+[CODE_002023]    {{ duration "2592000" }}
+
+[CODE_002024]    {{ durationRound "2h10m" }}
+[CODE_002025]    {{ durationRound "1h30m" }}
+[CODE_002026]    {{ durationRound "45m" }}
+[CODE_002027]    {{ durationRound "90s" }}
+[CODE_002028]    {{ durationRound "1h1m1s" }}
+[CODE_002029]    {{ "2h30m" | durationRound }}
+[CODE_002030]    {{ durationRound "24h" }}
+[CODE_002031]    {{ durationRound "168h" }}
+[CODE_002032]    {{ durationRound "1m30s" }}
+[CODE_002033]    {{ durationRound "30s" }}
+
+{{/* ============================================== */}}
+{{/* UTILITY FUNCTIONS                              */}}
+{{/* ============================================== */}}
+
+[CODE_002034]    {{ hello }}
+[CODE_002035]    {{ hello }}
+[CODE_002036]    {{ hello }}
+[CODE_002037]    {{ hello }}
+[CODE_002038]    {{ hello }}
+[CODE_002039]    {{ hello }}
+[CODE_002040]    {{ hello }}
+[CODE_002041]    {{ hello }}
+[CODE_002042]    {{ hello }}
+[CODE_002043]    {{ hello }}
+
+{{/* ============================================== */}}
+{{/* NETWORK FUNCTIONS - ENVIRONMENT DEPENDENT      */}}
+{{/* Using deterministic values from data map       */}}
+{{/* ============================================== */}}
+
+{{/* getHostByName is environment/network-dependent - using fixed IP values */}}
+[CODE_002044]    {{ .localhostIP }}
+[CODE_002045]    {{ .localhostIP }}
+[CODE_002046]    {{ .localhostIP }}
+
+{{/* ============================================== */}}
+{{/* FLOW CONTROL FUNCTIONS                         */}}
+{{/* ============================================== */}}
+
+{{/* Note: fail function causes template execution to stop with error */}}
+{{/* Uncomment to test - these will cause errors */}}
+{{/* [CODE_002047]    {{ fail "Test error message" }} */}}
+{{/* [CODE_002048]    {{ fail "" }} */}}
+{{/* [CODE_002049]    {{ "Error!" | fail }} */}}
+
+{{/* ============================================== */}}
+{{/* CRYPTO - buildCustomCert (NON-DETERMINISTIC)   */}}
+{{/* Uses genCA which is non-deterministic          */}}
+{{/* ============================================== */}}
+
+{{/* buildCustomCert depends on genCA - using fixed certificate placeholders */}}
+[CODE_002050]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CUSTOM_CERT_1...==\n-----END CERTIFICATE-----" }}
+[CODE_002051]    {{ "-----BEGIN RSA PRIVATE KEY-----\nMIIE...FIXED_CUSTOM_KEY_1...==\n-----END RSA PRIVATE KEY-----" }}
+[CODE_002052]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CUSTOM_CERT_2...==\n-----END CERTIFICATE-----" }}
+[CODE_002053]    {{ "-----BEGIN CERTIFICATE-----\nMIIC...FIXED_CUSTOM_CERT_3...==\n-----END CERTIFICATE-----" }}

@@ -61,6 +61,7 @@ func TestValues(t *testing.T) {
 	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{values .}}`, ExpectedOutput: "[]"},
 		{Name: "TestWithValues", Input: `{{values . | sortAlpha}}`, ExpectedOutput: "[1 foo]", Data: map[string]any{"a": 1, "b": "foo"}},
+		{Name: "TestWithNestingList", Input: `{{ values (dict "list" (list 1 2 3)) | sortAlpha }}`, ExpectedOutput: "[[1 2 3]]", Data: map[string]any{"list": []any{1, 2, 3}}},
 	}
 
 	pesticide.RunTestCases(t, maps.NewRegistry(), tc)
