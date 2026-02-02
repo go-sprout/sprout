@@ -122,6 +122,54 @@ func TestDig(t *testing.T) {
 	pesticide.RunTestCases(t, maps.NewRegistry(), tc)
 }
 
+func TestDigWithEscapedKeys(t *testing.T) {
+	tc := []pesticide.TestCase{
+		// Escaped dot: access key with literal dot
+		// In Go template strings: \\ produces \, so \\. produces \.
+		{Name: "TestEscapedDotKey", Input: `{{dig "example\\.com" .}}`, ExpectedOutput: "value", Data: map[string]any{"example.com": "value"}},
+		{Name: "TestEscapedDotKeyNested", Input: `{{dig "servers.api\\.internal.port" .}}`, ExpectedOutput: "8080", Data: map[string]any{
+			"servers": map[string]any{
+				"api.internal": map[string]any{
+					"port": "8080",
+				},
+			},
+		}},
+		// Multiple escaped dots
+		{Name: "TestMultipleEscapedDots", Input: `{{dig "a\\.b\\.c" .}}`, ExpectedOutput: "value", Data: map[string]any{"a.b.c": "value"}},
+		// Escaped backslash: \\\\ produces \\ in template, which dig sees as \\, resolving to single \
+		{Name: "TestEscapedBackslash", Input: `{{dig "a\\\\b" .}}`, ExpectedOutput: "value", Data: map[string]any{`a\b`: "value"}},
+		// Mixed: escaped and unescaped dots
+		{Name: "TestMixedDots", Input: `{{dig "a\\.b.c" .}}`, ExpectedOutput: "value", Data: map[string]any{
+			"a.b": map[string]any{
+				"c": "value",
+			},
+		}},
+		// Backward compatibility: normal dot splitting still works
+		{Name: "TestBackwardCompatibility", Input: `{{dig "a.b.c" .}}`, ExpectedOutput: "nested", Data: map[string]any{
+			"a": map[string]any{
+				"b": map[string]any{
+					"c": "nested",
+				},
+			},
+		}},
+		// Error: invalid escape sequence (\n is not valid, only \. and \\ are)
+		// In template: \\n produces \n which is invalid
+		{Name: "TestInvalidEscape", Input: `{{dig "a\\nb" .}}`, ExpectedErr: "invalid escape sequence: \\n"},
+		// Error: trailing backslash: \\ produces single \, which is trailing
+		{Name: "TestTrailingBackslash", Input: `{{dig "abc\\" .}}`, ExpectedErr: "trailing backslash"},
+		// Error: consecutive dots create empty segments
+		{Name: "TestConsecutiveDots", Input: `{{dig "a..b" .}}`, ExpectedErr: "empty key segment"},
+		// Error: leading dot
+		{Name: "TestLeadingDot", Input: `{{dig ".abc" .}}`, ExpectedErr: "empty key segment"},
+		// Error: trailing dot
+		{Name: "TestTrailingDot", Input: `{{dig "abc." .}}`, ExpectedErr: "empty key segment"},
+		// Combined with escape helper
+		{Name: "TestWithEscapeHelper", Input: `{{dig (escape "." "example.com") .}}`, ExpectedOutput: "value", Data: map[string]any{"example.com": "value"}},
+	}
+
+	pesticide.RunTestCases(t, maps.NewRegistry(), tc)
+}
+
 func TestHasKey(t *testing.T) {
 	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{. | hasKey "a"}}`, ExpectedOutput: "false"},

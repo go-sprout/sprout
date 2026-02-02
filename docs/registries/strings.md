@@ -651,3 +651,36 @@ Generates a sequence of numbers as a string, allowing for customizable start, en
 ```
 {% endtab %}
 {% endtabs %}
+
+### <mark style="color:purple;">escape</mark>
+
+The function escapes specified characters in a string by prefixing them with a backslash. The backslash character itself is always implicitly included in the charset and escaped first. This is useful for preparing strings to be used with functions like `dig` that interpret escape sequences.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Escape(charset string, value string) string
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ escape "." "example.com" }} // Output: example\.com
+{{ escape ".:" "a.b:c" }} // Output: a\.b\:c
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">unescape</mark>
+
+The function reverses `escape` by removing backslash prefixes from specified characters. The backslash character itself is always implicitly included in the charset. Returns an error if an invalid escape sequence is found.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Unescape(charset string, value string) (string, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ unescape "." "example\\.com" }} // Output: example.com
+{{ unescape ".:" "a\\.b\\:c" }} // Output: a.b:c
+{{ "example.com" | escape "." | unescape "." }} // Output: example.com
+```
+{% endtab %}
+{% endtabs %}
