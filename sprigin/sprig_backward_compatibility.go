@@ -102,6 +102,7 @@ var nonhermeticFunctions = []string{
 }
 
 type SprigHandler struct {
+	logger     *slog.Logger
 	registries []sprout.Registry
 	notices    []sprout.FunctionNotice
 
@@ -111,6 +112,7 @@ type SprigHandler struct {
 
 func NewSprigHandler() *SprigHandler {
 	return &SprigHandler{
+		logger:     slog.New(slog.Default().Handler()),
 		registries: make([]sprout.Registry, 0),
 		funcsMap:   make(sprout.FunctionMap),
 		funcsAlias: make(sprout.FunctionAliasMap),
@@ -142,7 +144,7 @@ func (sh *SprigHandler) AddRegistries(registries ...sprout.Registry) error {
 }
 
 func (sh *SprigHandler) Logger() *slog.Logger {
-	return slog.New(slog.Default().Handler())
+	return sh.logger
 }
 
 // SignatureWarn logs a warning message about a deprecated function signature.
@@ -278,8 +280,8 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func HermeticTxtFuncMap() ttemplate.FuncMap {
-	r := TxtFuncMap()
+func HermeticTxtFuncMap(opts ...sprout.HandlerOption[*SprigHandler]) ttemplate.FuncMap {
+	r := TxtFuncMap(opts...)
 	for _, name := range nonhermeticFunctions {
 		delete(r, name)
 	}
@@ -290,8 +292,8 @@ func HermeticTxtFuncMap() ttemplate.FuncMap {
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func HermeticHtmlFuncMap() htemplate.FuncMap {
-	r := HtmlFuncMap()
+func HermeticHtmlFuncMap(opts ...sprout.HandlerOption[*SprigHandler]) htemplate.FuncMap {
+	r := HtmlFuncMap(opts...)
 	for _, name := range nonhermeticFunctions {
 		delete(r, name)
 	}
@@ -302,32 +304,39 @@ func HermeticHtmlFuncMap() htemplate.FuncMap {
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func TxtFuncMap() ttemplate.FuncMap {
-	return ttemplate.FuncMap(FuncMap())
+func TxtFuncMap(opts ...sprout.HandlerOption[*SprigHandler]) ttemplate.FuncMap {
+	return ttemplate.FuncMap(FuncMap(opts...))
 }
 
 // HtmlFuncMap returns an 'html/template'.Funcmap
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func HtmlFuncMap() htemplate.FuncMap {
-	return htemplate.FuncMap(FuncMap())
+func HtmlFuncMap(opts ...sprout.HandlerOption[*SprigHandler]) htemplate.FuncMap {
+	return htemplate.FuncMap(FuncMap(opts...))
 }
 
 // GenericFuncMap returns a copy of the basic function map as a map[string]any.
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func GenericFuncMap() map[string]any {
-	return FuncMap()
+func GenericFuncMap(opts ...sprout.HandlerOption[*SprigHandler]) map[string]any {
+	return FuncMap(opts...)
 }
 
 // FuncMap returns a template.FuncMap for use with text/template or html/template.
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARD COMPATIBILITY ONLY
-func FuncMap() ttemplate.FuncMap {
+func FuncMap(opts ...sprout.HandlerOption[*SprigHandler]) ttemplate.FuncMap {
 	sprigHandler := NewSprigHandler()
+
+	for _, opt := range opts {
+		err := opt(sprigHandler)
+		if err != nil {
+			sprigHandler.Logger().Error("cannot validate your option", "err", err)
+		}
+	}
 
 	return sprigHandler.Build()
 }
