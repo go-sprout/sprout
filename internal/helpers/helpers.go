@@ -3,8 +3,6 @@ package helpers
 import (
 	"fmt"
 	"reflect"
-
-	"github.com/spf13/cast"
 )
 
 // strSlice converts a value to a slice of strings, handling various types
@@ -37,7 +35,7 @@ func StrSlice(value any) []string {
 		var result []string
 		for _, s := range interfaces {
 			if s != nil {
-				result = append(result, cast.ToString(s))
+				result = append(result, ToString(s))
 			}
 		}
 		return result
@@ -50,14 +48,14 @@ func StrSlice(value any) []string {
 		for i := 0; i < reflectedValue.Len(); i++ {
 			value := reflectedValue.Index(i).Interface()
 			if value != nil {
-				result = append(result, cast.ToString(value))
+				result = append(result, ToString(value))
 			}
 		}
 		return result
 	}
 
 	// If it's not a slice, array, or nil, return a slice with the string representation of v.
-	return []string{cast.ToString(value)}
+	return []string{ToString(value)}
 }
 
 // UntilStep generates a slice of integers from 'start' to 'stop' (exclusive),

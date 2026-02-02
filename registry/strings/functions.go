@@ -774,7 +774,7 @@ func (sr *StringsRegistry) Substring(start, end int, value string) string {
 	if start < 0 {
 		start = 0
 	}
-	if end > length {
+	if end > length || end == 0 {
 		end = length
 	}
 	if start > end {

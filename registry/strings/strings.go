@@ -56,7 +56,7 @@ var randSource mathrand.Source
 var (
 	camelCaseStyle    = caseStyle{Separator: -1, CapitalizeNext: true, CapitalizeFirst: false, ForceLowercase: true}
 	kebabCaseStyle    = caseStyle{Separator: '-', ForceLowercase: true}
-	pascalCaseStyle   = caseStyle{Separator: -1, CapitalizeFirst: true, CapitalizeNext: true}
+	pascalCaseStyle   = caseStyle{Separator: -1, CapitalizeFirst: true, CapitalizeNext: true, ForceLowercase: true}
 	snakeCaseStyle    = caseStyle{Separator: '_', ForceLowercase: true}
 	dotCaseStyle      = caseStyle{Separator: '.', ForceLowercase: true}
 	pathCaseStyle     = caseStyle{Separator: '/', ForceLowercase: true}

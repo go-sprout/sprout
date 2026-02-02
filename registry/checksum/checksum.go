@@ -35,6 +35,7 @@ func (cr *ChecksumRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error
 func (cr *ChecksumRegistry) RegisterAliases(aliasMap sprout.FunctionAliasMap) error {
 	sprout.AddAlias(aliasMap, "sha1Sum", "sha1sum")
 	sprout.AddAlias(aliasMap, "sha256Sum", "sha256sum")
+	sprout.AddAlias(aliasMap, "sha512Sum", "sha512sum")
 	sprout.AddAlias(aliasMap, "adler32Sum", "adler32sum")
 	sprout.AddAlias(aliasMap, "md5Sum", "md5sum")
 	return nil
