@@ -974,12 +974,12 @@ func (sr *StringsRegistry) Unescape(charset, value string) (string, error) {
 		}
 
 		if i+1 >= len(runes) {
-			return "", fmt.Errorf("invalid escape sequence: trailing backslash")
+			return "", fmt.Errorf("invalid escape sequence: trailing backslash in %q", value)
 		}
 
 		next := runes[i+1]
 		if _, valid := validEscapes[next]; !valid {
-			return "", fmt.Errorf("invalid escape sequence: \\%c", next)
+			return "", fmt.Errorf("invalid escape sequence: \\%c in %q", next, value)
 		}
 
 		result.WriteRune(next)

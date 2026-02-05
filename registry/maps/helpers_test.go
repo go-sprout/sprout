@@ -106,6 +106,22 @@ func TestSplitKeysWithEscapes(t *testing.T) {
 			input:    []string{""},
 			expected: []string{""},
 		},
+		// Unicode tests
+		{
+			name:     "unicode key with escaped dot",
+			input:    []string{`日本語\.キー`},
+			expected: []string{"日本語.キー"},
+		},
+		{
+			name:     "unicode nested path",
+			input:    []string{`données.clé\.spéciale`},
+			expected: []string{"données", "clé.spéciale"},
+		},
+		{
+			name:     "zero alloc fast path simple keys",
+			input:    []string{"a", "b", "c"},
+			expected: []string{"a", "b", "c"},
+		},
 	}
 
 	for _, tt := range tests {
@@ -120,6 +136,18 @@ func TestSplitKeysWithEscapes(t *testing.T) {
 			}
 		})
 	}
+}
+
+// TestSplitKeysWithEscapesZeroAlloc verifies the zero-allocation fast path.
+func TestSplitKeysWithEscapesZeroAlloc(t *testing.T) {
+	mr := NewRegistry()
+	input := []string{"simple", "keys", "only"}
+
+	result, err := mr.splitKeysWithEscapes(input)
+	require.NoError(t, err)
+
+	// Verify same slice is returned (no allocation)
+	assert.Equal(t, &input[0], &result[0], "expected zero-allocation fast path to return same slice")
 }
 
 func TestSplitKeyOnUnescapedDots(t *testing.T) {

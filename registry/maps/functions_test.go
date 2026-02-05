@@ -165,6 +165,14 @@ func TestDigWithEscapedKeys(t *testing.T) {
 		{Name: "TestTrailingDot", Input: `{{dig "abc." .}}`, ExpectedErr: "empty key segment"},
 		// Combined with escape helper
 		{Name: "TestWithEscapeHelper", Input: `{{dig (escape "." "example.com") .}}`, ExpectedOutput: "value", Data: map[string]any{"example.com": "value"}},
+		// Unicode key with escaped dot
+		{Name: "TestUnicodeDotKey", Input: `{{dig "日本語\\.キー" .}}`, ExpectedOutput: "value", Data: map[string]any{"日本語.キー": "value"}},
+		// Unicode nested path
+		{Name: "TestUnicodeNestedPath", Input: `{{dig "données.clé\\.spéciale" .}}`, ExpectedOutput: "valeur", Data: map[string]any{
+			"données": map[string]any{
+				"clé.spéciale": "valeur",
+			},
+		}},
 	}
 
 	pesticide.RunTestCases(t, maps.NewRegistry(), tc)

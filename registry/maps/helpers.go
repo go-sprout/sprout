@@ -97,10 +97,30 @@ func (mr *MapsRegistry) parseKeys(keySet []any) ([]string, error) {
 //	keys, _ := mr.splitKeysWithEscapes([]string{"a\\\\b"})
 //	fmt.Printf("%q\n", keys) // Output: ["a\\b"]
 func (mr *MapsRegistry) splitKeysWithEscapes(keySet []string) ([]string, error) {
+	// Fast path: check if any key needs processing
+	needsProcessing := false
+	for _, key := range keySet {
+		if strings.ContainsAny(key, "\\.") {
+			needsProcessing = true
+			break
+		}
+	}
+
+	// Zero-allocation fast path: no dots or escapes, return input as-is
+	if !needsProcessing {
+		return keySet, nil
+	}
+
 	var result []string
 
 	for _, key := range keySet {
-		// Fast path: if no backslash, use simple split
+		// Fast path: no backslash and no dots - use key directly
+		if !strings.ContainsAny(key, "\\.") {
+			result = append(result, key)
+			continue
+		}
+
+		// Medium path: dots but no backslash - use simple split
 		if !strings.Contains(key, "\\") {
 			parts := strings.Split(key, ".")
 			// Validate no empty segments (consecutive, leading, or trailing dots)

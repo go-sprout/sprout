@@ -202,6 +202,11 @@ Keys are split on dots (`.`) by default, allowing `"a.b.c"` syntax as shorthand 
 - Use the `escape` helper function to escape dynamic keys: `dig (escape "." $key) .`
 {% endhint %}
 
+{% hint style="warning" %}
+**Go Template String Escaping:**
+In Go templates, backslashes must be doubled. To write the escape sequence `\.`, use `\\.` in your template. For a literal backslash in a key, use `\\\\` (which becomes `\\` after Go template parsing, then `\` after dig parsing).
+{% endhint %}
+
 ### <mark style="color:purple;">hasKey</mark>
 
 The function checks whether a specified key exists in the dictionary, returning `true` if the key is found and `false` otherwise.
