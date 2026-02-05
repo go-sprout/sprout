@@ -882,17 +882,6 @@ func (sr *StringsRegistry) Seq(params ...int) string {
 	}
 }
 
-// buildEscapeSet creates a set of characters to escape/unescape.
-// The backslash character is always implicitly included.
-func buildEscapeSet(charset string) map[rune]struct{} {
-	set := make(map[rune]struct{}, len(charset)+1)
-	set['\\'] = struct{}{}
-	for _, r := range charset {
-		set[r] = struct{}{}
-	}
-	return set
-}
-
 // Escape escapes specified characters in a string by prefixing them with a
 // backslash. The backslash character itself is always implicitly included
 // in the charset and escaped first.
