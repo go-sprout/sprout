@@ -76,50 +76,110 @@ Takes a look over renamed functions to change it in your template or use aliases
 
 ## <mark style="color:purple;">How to Transition</mark>
 
-### Step 1: Identify and Organize Functions
+Choose your migration path based on your situation:
 
-Review your existing templates and identify the functions you rely on from Sprig. Determine whether these functions have direct equivalents in Sprout or if they require using the `sprigin` package for backward compatibility.
+### Option A: New Projects or Breaking Changes Acceptable
 
-### Step 2: Refactor Templates
+If you're starting a new project or your users accept breaking changes, use Sprout directly:
 
-Update your templates to replace Sprig function calls with their Sprout equivalents. If a direct replacement is unavailable, consider using aliases or the `sprigin` package to maintain functionality.
+```go
+import "github.com/go-sprout/sprout"
 
-### Step 3: Register Functions and Handlers
+handler := sprout.New()
+funcs := handler.Build()
+```
 
-Set up your Sprout environment by creating a handler and registering the necessary function registries. This step ensures that your templates have access to the required functions.
+This gives you all the improvements (bug fixes, proper piping support, better error handling) without any compatibility overhead.
 
-### Step 4: Test and Validate
+### Option B: Non-Breaking Migration for End-Users
 
-Thoroughly test your migrated templates to ensure that all functions behave as expected. Pay particular attention to error handling and any deprecated functions that may require adjustments.
+If you have existing end-users and need a gradual migration path:
+
+**Phase 1: Replace Sprig with Sprigin**
+
+```go
+// Before (Sprig)
+import "github.com/Masterminds/sprig/v3"
+funcs := sprig.FuncMap()
+
+// After (Sprigin)
+import "github.com/go-sprout/sprout/sprigin"
+funcs := sprigin.FuncMap()
+```
+
+Sprigin provides full backward compatibility while logging deprecation warnings. Your end-users will see warnings in logs about deprecated functions and signature changes, giving them time to update their templates.
+
+**Phase 2: Keep Sprigin for X Versions/Months**
+
+Maintain sprigin for your defined deprecation period (e.g., 3-6 months or 2-3 versions) to:
+- Respect your breaking change policy
+- Allow end-users to see and act on deprecation warnings
+- Ensure a smooth transition
+
+**Phase 3: Switch to Sprout**
+
+Once your deprecation period ends, replace sprigin with sprout:
+
+```go
+// Final migration
+import "github.com/go-sprout/sprout"
+
+handler := sprout.New()
+funcs := handler.Build()
+```
 
 ## <mark style="color:purple;">How to Transition for your end-users</mark>
 
-You use sprig or sprout for end-users and want to migrate ?\
-Transitioning from Sprig to Sprout can be smooth with proper guidance. Here's a detailed plan to ensure confidence during the migration:
+You use Sprig or Sprout for end-users and want to migrate? Here's a detailed plan to ensure confidence during the migration:
 
 {% hint style="info" %}
-You need more information now, contact maintainers or open [a discussion on the repository](https://github.com/orgs/go-sprout/discussions/categories/q-a).
+Need more information? Contact maintainers or open [a discussion on the repository](https://github.com/orgs/go-sprout/discussions/categories/q-a).
 {% endhint %}
 
 ***
 
+### The Sprigin Compatibility Layer
+
+The `sprigin` package is specifically designed for this use case. It:
+
+- **Supports both signatures**: Automatically detects whether you're using the old Sprig signature (`get $dict "key"`) or the new Sprout piping signature (`$dict | get "key"`)
+- **Logs deprecation warnings**: When old signatures or deprecated functions are used, warnings are logged to inform your end-users
+- **Preserves Sprig behavior**: Bug-for-bug compatible to avoid breaking existing templates
+
+### Migration Steps
+
 1. **Communicate the Purpose of the Migration**\
-   Explain the reasons for switching to Sprout, emphasizing improvements such as better performance, modular function registries, enhanced error handling, and new features like function notices and safe functions. Providing context will minimize resistance and help users understand the long-term benefits.
-2. **Attach Your Logger to Sprout**\
-   Starting from Sprout v1.0.0, deprecated functions are flagged through the logger. This ensures end-users are informed of upcoming deprecations without breaking the existing code.
-3. **Update Frequently**\
-   We follow a no-breaking-change policy for five minor versions. For example, a function deprecated in v1.2 will be removed in v1.7. End-of-life notices for functions will be automatically logged, so you don’t need to intervene.
-4. **Provide Feedback**\
-   If you or your end-users encounter any feedback during the migration—whether it’s about missing functions, bugs, or positive experiences—reach out to the maintainers or contribute to the project on GitHub. Your input helps improve the library for everyone.
+   Explain the reasons for switching to Sprout, emphasizing improvements such as better performance, modular function registries, enhanced error handling, and new features like function notices and safe functions.
+
+2. **Replace Sprig with Sprigin**\
+   Simply replace your import and function call:
+   ```go
+   // Before
+   import "github.com/Masterminds/sprig/v3"
+   funcs := sprig.FuncMap()
+
+   // After
+   import "github.com/go-sprout/sprout/sprigin"
+   funcs := sprigin.FuncMap()
+   ```
+
+3. **Monitor Deprecation Warnings**\
+   Sprigin logs warnings for deprecated functions and signature changes. Share these logs with your end-users so they can update their templates.
+
+4. **Keep Sprigin for X Versions/Months**\
+   Maintain the compatibility layer according to your breaking change policy. We recommend 3-6 months or 2-3 versions.
+
+5. **Final Switch to Sprout**\
+   Once your deprecation period ends and end-users have migrated their templates, switch to Sprout directly.
 
 ***
 
 {% hint style="info" %}
-As a library developer, you can extend Sprout by creating your [own function registry](advanced/how-to-create-a-registry.md). This allows you to add custom functions to meet specific use cases. Additionally, you can use [**notices** ](features/function-notices.md)to inform your end-users about important updates or issues during template execution, such as deprecations or debugging hints. These notices can enhance the user experience by providing real-time feedback, ensuring a smoother transition to the new system, and allowing users to handle function changes more efficiently.
+As a library developer, you can extend Sprout by creating your [own function registry](advanced/how-to-create-a-registry.md). Additionally, you can use [**notices**](features/function-notices.md) to inform your end-users about important updates during template execution.
 {% endhint %}
 
 {% hint style="success" %}
-Our maintainers and collaborators can assist you if you have question, don't hesitate to [open a discussion on GitHub](https://github.com/orgs/go-sprout/discussions/categories/q-a) !
+Our maintainers and collaborators can assist you if you have questions. Don't hesitate to [open a discussion on GitHub](https://github.com/orgs/go-sprout/discussions/categories/q-a)!
 {% endhint %}
 
 ## <mark style="color:purple;">Migrating Common Functions</mark>
@@ -165,7 +225,7 @@ You can continue to use the same function name inside your template
 
 ## <mark style="color:purple;">Panicking Functions</mark>
 
-In Sprig, errors within certain functions cause a panic. In contrast, Sprout opts for returning nil or an empty value, improving safety and predictability.
+In Sprig, errors within certain functions cause a panic. Both **Sprout and Sprigin** fix all panics, returning errors properly instead.
 
 **Old Behavior (Sprig)**: Triggers a panic on error
 
@@ -175,7 +235,7 @@ if err != nil {
 }
 ```
 
-**New Behavior (Sprout)**: Returns nil or an empty value on error
+**New Behavior (Sprout & Sprigin)**: Returns nil or an empty value on error
 
 ```go
 if err != nil {
@@ -183,7 +243,13 @@ if err != nil {
 }
 ```
 
-#### Methods that previously caused a panic in Sprig :
+{% hint style="success" %}
+**Migration Tip**
+
+Whether you use `sprout` or `sprigin`, all panics are fixed. You can safely migrate without worrying about panics crashing your application.
+{% endhint %}
+
+#### Methods that previously caused a panic in Sprig:
 
 * DeepCopy
 * MustDeepCopy
@@ -211,6 +277,47 @@ if err != nil {
 
 ## <mark style="color:purple;">Function-Specific Changes</mark>
 
+### Signature Changes (Argument Order)
+
+Sprout reorders function arguments to support Go template piping conventions. The target (map/list) is now the **last** argument instead of the first.
+
+{% hint style="info" %}
+If you use `sprigin.FuncMap()`, both signatures are supported automatically. Sprigin detects which signature you're using and logs a warning when the old Sprig signature is detected.
+{% endhint %}
+
+#### Map Functions: get, set, unset, hasKey, pick, omit
+
+| Function | Sprig Signature | Sprout Signature |
+|----------|-----------------|------------------|
+| `get` | `{{ get $dict "key" }}` | `{{ $dict \| get "key" }}` |
+| `set` | `{{ set $dict "key" "value" }}` | `{{ $dict \| set "key" "value" }}` |
+| `unset` | `{{ unset $dict "key" }}` | `{{ $dict \| unset "key" }}` |
+| `hasKey` | `{{ hasKey $dict "key" }}` | `{{ $dict \| hasKey "key" }}` |
+| `pick` | `{{ pick $dict "k1" "k2" }}` | `{{ $dict \| pick "k1" "k2" }}` |
+| `omit` | `{{ omit $dict "k1" "k2" }}` | `{{ $dict \| omit "k1" "k2" }}` |
+
+#### List Functions: append, prepend, slice, without
+
+| Function | Sprig Signature | Sprout Signature |
+|----------|-----------------|------------------|
+| `append` | `{{ append $list "value" }}` | `{{ $list \| append "value" }}` |
+| `prepend` | `{{ prepend $list "value" }}` | `{{ $list \| prepend "value" }}` |
+| `slice` | `{{ slice $list 1 3 }}` | `{{ $list \| slice 1 3 }}` |
+| `without` | `{{ without $list "a" "b" }}` | `{{ $list \| without "a" "b" }}` |
+
+#### Dig Function
+
+* **Sprig**: `{{ dig "key1" "key2" "default" $dict }}` - default value is the second-to-last argument
+* **Sprout**: `{{ $dict | dig "key1" "key2" | default "default" }}` - use `default` filter separately
+
+Additional differences:
+* **Sprig**: Dots in keys are treated literally (`dig "a.b"` looks for key `"a.b"`)
+* **Sprout**: Keys are split on dots (`dig "a.b"` is equivalent to `dig "a" "b"`)
+
+---
+
+### Behavior Changes
+
 #### MustDeepCopy
 
 * **Sprig**: Accepts `nil` input, causing an internal panic.
@@ -231,51 +338,183 @@ if err != nil {
 * **Sprig**: Returns a corrected duration in positive form, even for negative inputs.
 * **Sprout**: Accurately returns the duration, preserving the sign of the input.
 
-#### Base32Decode / Base64Decode
+#### Date
 
-* **Sprig**: Decoding functions return the error string when the input is not a valid base64 encoded string.
-* **Sprout**: Decoding functions return an empty string if the input is not a valid base64 encoded string, simplifying error handling.
-
-#### Dig
-
-* **Sprig**:
-  * The `dig` function requires a default value as the second-to-last argument: `{{ dig "a" "b" "default" $dict }}`. It returns the last map in the access chain instead of the final value.
-  * Dots in keys are treated literally: `{{ dict "a" (dict "b" 5) | dig "a.b" "missing" }}` results in `missing`.
-* **Sprout**:
-  * The `dig` function does not include a default value: `{{ $dict | dig "a" "b" }}`. Use the `default` filter instead: `{{ $dict | dig "a" "b" | default "default" }}`. It returns the final value in the chain, regardless of its type.
-  * Keys are split on dots when accessing nested values: `{{ dict "a" (dict "b" 5) | dig "a.b" | default "missing" }}` results in `5`.
+* **Sprig**: Uses local timezone for formatting.
+* **Sprout**: Uses the timezone from the time value itself.
 
 {% hint style="info" %}
-If you use `sprigin.FuncMap()`, the `dig` function retains Sprig's signature with the default value parameter for backward compatibility.
+If you use `sprigin.FuncMap()`, the `date` function uses local timezone like Sprig for backward compatibility.
+{% endhint %}
+
+#### Base32Decode / Base64Decode
+
+* **Sprig**: Returns the error message string when decoding fails.
+* **Sprout**: Returns an empty string when decoding fails.
+
+{% hint style="info" %}
+If you use `sprigin.FuncMap()`, the decoding functions return the error message like Sprig for backward compatibility.
 {% endhint %}
 
 #### ToCamelCase / ToPascalCase
 
-* **Sprig**: The `toCamelCase` return value are in PascalCase. No `toPascalCase` function is available.
-* **Sprout**: The `toCamelCase` function returns camelCase strings, while the `toPascalCase` function returns PascalCase strings.
+* **Sprig**: The `camelcase` function returns PascalCase (e.g., `"hello_world"` → `"HelloWorld"`). No true camelCase function exists.
+* **Sprout**:
+  * `toCamelCase` returns true camelCase (e.g., `"hello_world"` → `"helloWorld"`)
+  * `toPascalCase` returns PascalCase (e.g., `"hello_world"` → `"HelloWorld"`)
+  * The alias `camelcase` points to `toPascalCase` for backward compatibility.
+
+#### ToTitleCase / Title
+
+* **Sprig**: Uses the deprecated `strings.Title` function which:
+  * Doesn't lowercase letters before capitalizing (`"HELLO"` stays `"HELLO"`)
+  * Treats apostrophes as word separators (`"it's"` becomes `"It'S"`)
+* **Sprout**: Uses proper Unicode title casing (`"HELLO"` → `"Hello"`, `"it's"` → `"It's"`)
+
+{% hint style="info" %}
+If you use `sprigin.FuncMap()`, the `toTitleCase`/`title` function uses the old `strings.Title` behavior with a warning about the upcoming change.
+{% endhint %}
+
+#### Substr
+
+* **Sprig**: `substr 0 0 "hello"` returns `""` (empty string)
+* **Sprout**: `substr 0 0 "hello"` returns `"hello"` (full string, as end=0 means "to the end")
+
+{% hint style="info" %}
+If you use `sprigin.FuncMap()`, the old behavior is preserved with warnings about the upcoming change.
+{% endhint %}
+
+#### KindOf
+
+* **Sprig**: `kindOf nil` returns `"invalid"`
+* **Sprout**: `kindOf nil` returns an error
+
+{% hint style="info" %}
+If you use `sprigin.FuncMap()`, the old behavior is preserved with a warning about the upcoming change.
+{% endhint %}
+
+#### EllipsisBoth / Abbrevboth
+
+* **Sprig**: Has a bug where offset <= 4 is ignored (truncates from right only)
+* **Sprout**: Respects the offset parameter correctly
+
+{% hint style="info" %}
+If you use `sprigin.FuncMap()`, the buggy behavior is preserved with a warning when offset <= 4.
+{% endhint %}
+
+#### Nospace / Ellipsis (Abbrev)
+
+* **Sprig**: Has bugs with Unicode characters (e.g., `nospace "α β γ"`)
+* **Sprout**: Correctly handles Unicode characters
 
 #### Merge / MergeOverwrite
 
-* **Sprig**: The `merge` and `mergeOverwrite` functions does dereference when second value are the default golang value (example: `0` for int).
-* **Sprout**: The `merge` and `mergeOverwrite` functions does not dereference and keep the second value as is (example: `0` for int).
+* **Sprig**: Dereferences when the second value is the default Go value (e.g., `0` for int is treated as "not set").
+* **Sprout**: Does not dereference; keeps the second value as-is (e.g., `0` for int is preserved).
 
 ## <mark style="color:purple;">Deprecated Features</mark>
 
-Sprout has deprecated certain features for better security and performance. For example, **direct cryptographic operations in templates are discouraged.**
+### Functions to be Removed
+
+The following functions are marked with `// ! DEPRECATED` and will be removed in the next major version:
+
+| Function | Reason | Alternative |
+|----------|--------|-------------|
+| `fail` | Limited use case | Use Go error handling |
+| `urlParse` | Moving to dedicated URL package | Will be replaced |
+| `urlJoin` | Moving to dedicated URL package | Will be replaced |
+| `getHostByName` | Non-deterministic, security concern | Handle DNS outside templates |
+
+{% hint style="warning" %}
+Perform cryptographic operations (listed in `crypto` package) outside of templates. The [`crypto` registry](registries/crypto.md) will be dropped in future versions.
+{% endhint %}
+
+### Renamed Functions (Deprecated Aliases)
+
+The following function names are deprecated. They still work but will log deprecation warnings. Use the new names instead:
+
+#### String Functions
+
+| Deprecated | New Name |
+|------------|----------|
+| `upper`, `toupper`, `uppercase` | `toUpper` |
+| `lower`, `tolower`, `lowercase` | `toLower` |
+| `title`, `titlecase` | `toTitleCase` |
+| `camelcase` | `toPascalCase` |
+| `snake`, `snakecase` | `toSnakeCase` |
+| `kebab`, `kebabcase` | `toKebabCase` |
+| `swapcase` | `swapCase` |
+| `abbrev` | `ellipsis` |
+| `abbrevboth` | `ellipsisBoth` |
+| `trimall` | `trimAll` |
+
+#### List Functions
+
+| Deprecated | New Name |
+|------------|----------|
+| `push` | `append` |
+| `mustPush` | `mustAppend` |
+| `tuple` | `list` |
+| `biggest` | `max` |
+
+#### Encoding Functions
+
+| Deprecated | New Name |
+|------------|----------|
+| `b64enc` | `base64Encode` |
+| `b64dec` | `base64Decode` |
+| `b32enc` | `base32Encode` |
+| `b32dec` | `base32Decode` |
+
+#### Path Functions
+
+| Deprecated | New Name |
+|------------|----------|
+| `base` | `pathBase` |
+| `dir` | `pathDir` |
+| `ext` | `pathExt` |
+| `clean` | `pathClean` |
+| `isAbs` | `pathIsAbs` |
+
+#### Date Functions
+
+| Deprecated | New Name |
+|------------|----------|
+| `date_modify` | `dateModify` |
+| `date_in_zone` | `dateInZone` |
+| `must_date_modify` | `mustDateModify` |
+| `ago` | `dateAgo` |
+
+#### Type Conversion Functions
+
+| Deprecated | New Name |
+|------------|----------|
+| `int`, `atoi` | `toInt` |
+| `int64` | `toInt64` |
+| `float64` | `toFloat64` |
+| `toDecimal` | `toOctal` |
+| `toStrings` | `strSlice` |
+
+#### Math Functions
+
+| Deprecated | New Name |
+|------------|----------|
+| `addf` | `add` |
+| `add1f` | `add1` |
+| `subf` | `sub` |
+
+#### Other Functions
+
+| Deprecated | New Name |
+|------------|----------|
+| `expandenv` | `expandEnv` |
 
 {% hint style="info" %}
 **Migration Tip**
 
-Review your template functions and avoid using deprecated features.\
-Move critical operations outside of templates to maintain security.
+All deprecated aliases are flagged with `// ! deprecated` (lowercase) in sprigin for renamed functions.\
+Functions marked for total removal use `// ! DEPRECATED` (uppercase) in the codebase.
 {% endhint %}
-
-{% hint style="warning" %}
-Perform cryptographic operations (listed in `crypto` package) outside of templates. the [`crypto`registry ](registries/crypto.md)will be drop in few versions.
-{% endhint %}
-
-All deprecated features are flagged with <mark style="color:red;">`// ! DEPRECATED`</mark> in codebase.\
-A complete list will be available here when the v1 of Sprout are released.
 
 ## <mark style="color:purple;">Conclusion</mark>
 

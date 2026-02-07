@@ -774,7 +774,7 @@ func (sr *StringsRegistry) Substring(start, end int, value string) string {
 	if start < 0 {
 		start = 0
 	}
-	if end > length {
+	if end > length || end == 0 {
 		end = length
 	}
 	if start > end {
@@ -880,4 +880,100 @@ func (sr *StringsRegistry) Seq(params ...int) string {
 	default:
 		return ""
 	}
+}
+
+// Escape escapes specified characters in a string by prefixing them with a
+// backslash. The backslash character itself is always implicitly included
+// in the charset and escaped first.
+//
+// Parameters:
+//
+//	charset string - characters to escape (backslash is always included implicitly).
+//	value string - the string to escape.
+//
+// Returns:
+//
+//	string - the escaped string.
+//
+// Example:
+//
+//	{{ escape "." "example.com" }} // Output: "example\.com"
+//	{{ "a.b\\c" | escape "." }}    // Output: "a\.b\\c"
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: escape].
+//
+// [Sprout Documentation: escape]: https://docs.atom.codes/sprout/registries/strings#escape
+func (sr *StringsRegistry) Escape(charset, value string) string {
+	if value == "" {
+		return ""
+	}
+
+	escapeSet := buildEscapeSet(charset)
+
+	var result strings.Builder
+	result.Grow(len(value) * 2)
+
+	for _, r := range value {
+		if _, needsEscape := escapeSet[r]; needsEscape {
+			result.WriteRune('\\')
+		}
+		result.WriteRune(r)
+	}
+
+	return result.String()
+}
+
+// Unescape reverses [Escape] by removing backslash prefixes from specified
+// characters. The backslash character itself is always implicitly included
+// in the charset.
+//
+// Parameters:
+//
+//	charset string - characters that were escaped (backslash is always included implicitly).
+//	value string - the escaped string.
+//
+// Returns:
+//
+//	string - the unescaped string.
+//	error - an error if an invalid escape sequence is found.
+//
+// Example:
+//
+//	{{ unescape "." "example\\.com" }} // Output: "example.com"
+//	{{ unescape "." "a\\nb" }}         // Error: invalid escape sequence
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: unescape].
+//
+// [Sprout Documentation: unescape]: https://docs.atom.codes/sprout/registries/strings#unescape
+func (sr *StringsRegistry) Unescape(charset, value string) (string, error) {
+	if value == "" {
+		return "", nil
+	}
+
+	validEscapes := buildEscapeSet(charset)
+
+	var result strings.Builder
+	result.Grow(len(value))
+
+	runes := []rune(value)
+	for i := 0; i < len(runes); i++ {
+		if runes[i] != '\\' {
+			result.WriteRune(runes[i])
+			continue
+		}
+
+		if i+1 >= len(runes) {
+			return "", fmt.Errorf("invalid escape sequence: trailing backslash in %q", value)
+		}
+
+		next := runes[i+1]
+		if _, valid := validEscapes[next]; !valid {
+			return "", fmt.Errorf("invalid escape sequence: \\%c in %q", next, value)
+		}
+
+		result.WriteRune(next)
+		i++
+	}
+
+	return result.String(), nil
 }

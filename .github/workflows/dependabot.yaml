@@ -8,28 +8,41 @@ permissions:
   contents: write
 
 jobs:
-  tidy_benchmarks:
-    name: Tidy Benchmarks
+  tidy_all_mods:
+    name: Tidy go.mod recursively
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
-      with:
-        token: ${{ secrets.ORGANIZATION_ACTIONS_TOKEN }}
-    - name: Setup Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.22.5'
-    - name: Run go mod tidy in benchmarks directory
-      working-directory: benchmarks
-      run: |
-        go mod tidy
-        if [[ -n $(git status --porcelain) ]]; then
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add go.mod go.sum
-          git commit -m "chore: run go mod tidy in benchmarks directory"
-          git push
-        else
-          echo "No changes to commit"
-        fi
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.ORGANIZATION_ACTIONS_TOKEN }}
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.5'
+      - name: Run go mod tidy in benchmarks directory
+        working-directory: benchmarks
+        run: |
+          go mod tidy
+          if [[ -n $(git status --porcelain) ]]; then
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add go.mod go.sum
+            git commit -m "chore: run go mod tidy in benchmarks directory"
+            git push
+          else
+            echo "No changes to commit"
+          fi
+      - name: Run go mod tidy in sprigin/compatibility directory
+        working-directory: sprigin/compatibility
+        run: |
+          go mod tidy
+          if [[ -n $(git status --porcelain) ]]; then
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add go.mod go.sum
+            git commit -m "chore: run go mod tidy in sprigin/comparibility directory"
+            git push
+          else
+            echo "No changes to commit"
+          fi

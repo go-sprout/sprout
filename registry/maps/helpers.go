@@ -69,42 +69,141 @@ func (mr *MapsRegistry) parseKeys(keySet []any) ([]string, error) {
 	return keys, nil
 }
 
-// splitKeys breaks up nested keys into simple key elements, splitting on dots.
+// splitKeysWithEscapes breaks up nested keys into simple key elements, splitting
+// on unescaped dots only. Escape sequences are resolved in the output.
+//
+// Escape sequences:
+//   - \. → literal dot (not a path separator)
+//   - \\ → literal backslash
+//   - \x (other) → error
 //
 // Parameters:
 //
-//	keySet []string - a slice with simple and nested keys.
+//	keySet []string - a slice with simple and nested keys, possibly containing escape sequences.
 //
 // Returns:
 //
-//	[]string - a slice containing only simple keys, possibly split from nested ones.
+//	[]string - a slice containing only simple keys with escape sequences resolved.
+//	error - an error if an invalid escape sequence is encountered.
 //
 // Example:
 //
-//	keys := mr.splitKeys([]string{"a", "nested.key"})
+//	keys, _ := mr.splitKeysWithEscapes([]string{"a", "nested.key"})
 //	fmt.Printf("%q\n", keys) // Output: ["a" "nested" "key"]
 //
-//	keys := mr.splitKeys([]string{"only", "simple", "keys"})
-//	fmt.Printf("%q\n", keys) // Output: ["only" "simple" "keys"]
-func (mr *MapsRegistry) splitKeys(keySet []string) []string {
-	// Calculate the total number of keys needed
-	totalKeys := 0
+//	keys, _ := mr.splitKeysWithEscapes([]string{"a\\.b"})
+//	fmt.Printf("%q\n", keys) // Output: ["a.b"]
+//
+//	keys, _ := mr.splitKeysWithEscapes([]string{"a\\\\b"})
+//	fmt.Printf("%q\n", keys) // Output: ["a\\b"]
+func (mr *MapsRegistry) splitKeysWithEscapes(keySet []string) ([]string, error) {
+	// Fast path: check if any key needs processing
+	needsProcessing := false
 	for _, key := range keySet {
-		totalKeys += 1 + strings.Count(key, ".")
+		if strings.ContainsAny(key, "\\.") {
+			needsProcessing = true
+			break
+		}
 	}
 
-	// Only simple keys found, no need to split anything
-	if totalKeys == len(keySet) {
-		return keySet
+	// Zero-allocation fast path: no dots or escapes, return input as-is
+	if !needsProcessing {
+		return keySet, nil
 	}
 
-	// Preallocate the slice with the exact number of required elements
-	keys := make([]string, 0, totalKeys)
+	var result []string
 
-	// Now, fill the slice
 	for _, key := range keySet {
-		keys = append(keys, strings.Split(key, ".")...)
+		// Fast path: no backslash and no dots - use key directly
+		if !strings.ContainsAny(key, "\\.") {
+			result = append(result, key)
+			continue
+		}
+
+		// Medium path: dots but no backslash - use simple split
+		if !strings.Contains(key, "\\") {
+			parts := strings.Split(key, ".")
+			// Validate no empty segments (consecutive, leading, or trailing dots)
+			for _, part := range parts {
+				if part == "" && len(parts) > 1 {
+					return nil, fmt.Errorf("empty key segment in path %q (consecutive or leading/trailing dots)", key)
+				}
+			}
+			result = append(result, parts...)
+			continue
+		}
+
+		// Slow path: handle escape sequences
+		parts, err := mr.splitKeyOnUnescapedDots(key)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, parts...)
 	}
 
-	return keys
+	return result, nil
+}
+
+// splitKeyOnUnescapedDots splits a key on unescaped dots and resolves escape sequences.
+// Empty segments (from consecutive dots like "a..b") are preserved intentionally,
+// as empty strings are valid map keys in Go.
+//
+// Parameters:
+//
+//	key string - a key that may contain escape sequences.
+//
+// Returns:
+//
+//	[]string - the key split on unescaped dots, with escapes resolved.
+//	error - an error if an invalid escape sequence is found or if the key contains empty segments.
+func (mr *MapsRegistry) splitKeyOnUnescapedDots(key string) ([]string, error) {
+	var parts []string
+	var segment strings.Builder
+	lastWasDot := true // Start true to detect leading dot
+
+	runes := []rune(key)
+	for i := 0; i < len(runes); i++ {
+		r := runes[i]
+
+		// Handle unescaped dot as path separator
+		if r == '.' {
+			if lastWasDot {
+				return nil, fmt.Errorf("empty key segment in path %q (consecutive or leading/trailing dots)", key)
+			}
+			parts = append(parts, segment.String())
+			segment.Reset()
+			lastWasDot = true
+			continue
+		}
+
+		lastWasDot = false
+
+		// Handle non-escape characters
+		if r != '\\' {
+			segment.WriteRune(r)
+			continue
+		}
+
+		// Handle escape sequences
+		if i+1 >= len(runes) {
+			return nil, fmt.Errorf("invalid escape sequence: trailing backslash in key %q", key)
+		}
+
+		next := runes[i+1]
+		switch next {
+		case '.', '\\':
+			segment.WriteRune(next)
+		default:
+			return nil, fmt.Errorf("invalid escape sequence: \\%c in key %q", next, key)
+		}
+		i++
+	}
+
+	// Check for trailing dot
+	if lastWasDot && len(runes) > 0 {
+		return nil, fmt.Errorf("empty key segment in path %q (consecutive or leading/trailing dots)", key)
+	}
+
+	parts = append(parts, segment.String())
+	return parts, nil
 }

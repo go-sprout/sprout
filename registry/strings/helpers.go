@@ -97,7 +97,7 @@ func (sr *StringsRegistry) transformString(style caseStyle, value string) string
 	result.Grow(len(value) + 10) // Allocate a bit more for potential separators
 
 	capitalizeNext := style.CapitalizeNext
-	var lastRune, lastLetter, nextRune rune = 0, 0, 0
+	var lastRune, lastLetter, nextRune rune
 
 	if !style.CapitalizeFirst {
 		capitalizeNext = false
@@ -106,6 +106,8 @@ func (sr *StringsRegistry) transformString(style caseStyle, value string) string
 	for i, r := range value {
 		if i+1 < len(value) {
 			nextRune = rune(value[i+1])
+		} else {
+			nextRune = 0
 		}
 
 		if r == ' ' || r == '-' || r == '_' {
@@ -120,13 +122,37 @@ func (sr *StringsRegistry) transformString(style caseStyle, value string) string
 			continue
 		}
 
-		if unicode.IsUpper(r) && style.Separator != -1 && result.Len() > 0 && lastRune != style.Separator {
-			if (unicode.IsUpper(lastRune) && unicode.IsUpper(r) && unicode.IsLower(nextRune)) || (unicode.IsUpper(r) && unicode.IsLower(lastRune)) {
-				result.WriteRune(style.Separator)
+		if unicode.IsUpper(r) && result.Len() > 0 && lastRune != style.Separator {
+			// Detect word boundaries: transition from lowercase to uppercase (e.g., "firstName")
+			// or end of an acronym (e.g., "HTMLParser" where 'P' follows 'L' which follows uppercase).
+			var isWordBoundary bool
+
+			if style.Separator != -1 {
+				// For styles with separators (snake_case, kebab-case, etc.), use standard detection
+				isWordBoundary = unicode.IsLower(lastRune) ||
+					(unicode.IsUpper(lastRune) && unicode.IsLower(nextRune))
+			} else {
+				// For styles without separators (camelCase, PascalCase), detect word boundaries:
+				// 1. Lowercase to uppercase transition where the word continues (letter/digit follows)
+				//    e.g., "firstName" → "first" + "Name", "NoHTTPS" → "No" + "Https"
+				// 2. End of acronym (uppercase to uppercase to lowercase)
+				//    e.g., "HTMLParser" → "Html" + "Parser"
+				// Exclude stray uppercase at end of word (e.g., "FoO" should not split)
+				nextIsContent := unicode.IsLetter(nextRune) || unicode.IsDigit(nextRune)
+				isWordBoundary = (unicode.IsLower(lastRune) && nextIsContent) ||
+					(unicode.IsUpper(lastRune) && unicode.IsLower(nextRune))
+			}
+
+			if isWordBoundary {
+				if style.Separator != -1 {
+					result.WriteRune(style.Separator)
+				}
+				// Mark the start of a new word for capitalization
+				capitalizeNext = true
 			}
 		}
 
-		if style.Separator != -1 && lastRune != style.Separator && (unicode.IsDigit(r) && !unicode.IsDigit(lastRune)) {
+		if style.Separator != -1 && result.Len() > 0 && lastRune != style.Separator && (unicode.IsDigit(r) && !unicode.IsDigit(lastRune)) {
 			result.WriteRune(style.Separator)
 		}
 
@@ -238,6 +264,17 @@ func (sr *StringsRegistry) wordWrap(wrapLength int, newLineCharacter string, wra
 	}
 
 	return resultBuilder.String()
+}
+
+// buildEscapeSet creates a set of characters to escape/unescape.
+// The backslash character is always implicitly included.
+func buildEscapeSet(charset string) map[rune]struct{} {
+	set := make(map[rune]struct{}, len(charset)+1)
+	set['\\'] = struct{}{}
+	for _, r := range charset {
+		set[r] = struct{}{}
+	}
+	return set
 }
 
 // swapFirstLetter swaps the first letter of the string 'value' to uppercase or

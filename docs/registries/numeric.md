@@ -149,7 +149,7 @@ The function multiplies a sequence of values and returns the result as a `float6
 {% tabs %}
 {% tab title="Template Example" %}
 ```go
-{{ mulf 1.1 1.1 }} // Output: 1.2100000000000002
+{{ mulf 1.1 1.1 }} // Output: 1.21
 ```
 {% endtab %}
 {% endtabs %}

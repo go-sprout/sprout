@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log/slog"
 	"runtime"
-	"sync"
 	"testing"
 	"text/template"
 	"time"
@@ -31,8 +30,6 @@ import (
 	"github.com/go-sprout/sprout/registry/strings"
 	rtime "github.com/go-sprout/sprout/registry/time"
 	"github.com/go-sprout/sprout/registry/uniqueid"
-	"github.com/go-sprout/sprout/sprigin"
-	"github.com/stretchr/testify/assert"
 )
 
 var data = map[string]any{
@@ -43,7 +40,7 @@ var data = map[string]any{
 	"int":         123,
 	"float":       123.456,
 	"bool":        true,
-	"array":       []any{"a", "b", "c"},
+	"array":       []any{"a", "b", "c", []any{"nested1", "nested2"}},
 	"map":         map[string]any{"foo": "bar", "nested": map[string]any{"far": "bee"}},
 	"object":      struct{ Name string }{"example object"},
 	"func":        func() string { return "example function" },
@@ -164,36 +161,4 @@ func sproutBench(templatePath string) {
 		}
 	}
 	buf.Reset()
-}
-
-func TestCompareSprigAndSprout(t *testing.T) {
-	wg := sync.WaitGroup{}
-
-	wg.Add(2)
-
-	var bufSprig, bufSprout bytes.Buffer
-
-	go func() {
-		defer wg.Done()
-
-		tmplSprig, err := template.New("compare").Funcs(sprig.FuncMap()).ParseFiles("compare.tmpl")
-		assert.NoError(t, err)
-
-		err = tmplSprig.ExecuteTemplate(&bufSprig, "compare.tmpl", data)
-		assert.NoError(t, err)
-	}()
-
-	go func() {
-		defer wg.Done()
-
-		tmplSprout, err := template.New("compare").Funcs(sprigin.FuncMap()).ParseGlob("compare.tmpl")
-		assert.NoError(t, err)
-
-		err = tmplSprout.ExecuteTemplate(&bufSprout, "compare.tmpl", data)
-		assert.NoError(t, err)
-	}()
-
-	wg.Wait()
-	// sprig is expected (---) and sprout is actual (+++)
-	assert.Equal(t, bufSprig.String(), bufSprout.String())
 }

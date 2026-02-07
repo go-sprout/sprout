@@ -168,6 +168,12 @@ The function creates a new dictionary by excluding the specified keys from the o
 
 The function navigates through a nested dictionary structure using a sequence of keys and returns the value found at the specified path, allowing access to deeply nested data. The last argument must be the map.
 
+Keys are split on dots (`.`) by default, allowing `"a.b.c"` syntax as shorthand for `"a" "b" "c"`. To access keys that contain literal dots, use the escape sequence `\.`. Use `\\` for literal backslashes.
+
+**Escape Sequences:**
+- `\.` — literal dot (not a path separator)
+- `\\` — literal backslash
+
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Dig(args ...any) (any, error)
 </code></pre></td></tr></tbody></table>
 
@@ -175,13 +181,31 @@ The function navigates through a nested dictionary structure using a sequence of
 {% tab title="Template Example" %}
 ```go
 {{- $d := dict "key1" "value1" "nested" (dict "foo" "bar") -}}
-{{ $d | dig "nested" "foo" }} // Output: "bar"
+{{ $d | dig "nested" "foo" }} // Output: bar
 
 {{- $d := dict "key1" "value1" "nested" (dict "foo" "bar") -}}
-{{ $d | dig "nested.foo" }} // Output: "bar"
+{{ $d | dig "nested.foo" }} // Output: bar
+
+{{- $d := dict "example.com" "value" -}}
+{{ $d | dig "example\\.com" }} // Output: value
+
+{{- $d := dict "example.com" "value" -}}
+{{ $d | dig (escape "." "example.com") }} // Output: value
 ```
 {% endtab %}
 {% endtabs %}
+
+{% hint style="info" %}
+**Escape Sequences for keys with dots:**
+- `\.` in the key path represents a literal dot (not a path separator)
+- `\\` represents a literal backslash
+- Use the `escape` helper function to escape dynamic keys: `dig (escape "." $key) .`
+{% endhint %}
+
+{% hint style="warning" %}
+**Go Template String Escaping:**
+In Go templates, backslashes must be doubled. To write the escape sequence `\.`, use `\\.` in your template. For a literal backslash in a key, use `\\\\` (which becomes `\\` after Go template parsing, then `\` after dig parsing).
+{% endhint %}
 
 ### <mark style="color:purple;">hasKey</mark>
 

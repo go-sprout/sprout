@@ -61,6 +61,7 @@ func TestValues(t *testing.T) {
 	tc := []pesticide.TestCase{
 		{Name: "TestEmpty", Input: `{{values .}}`, ExpectedOutput: "[]"},
 		{Name: "TestWithValues", Input: `{{values . | sortAlpha}}`, ExpectedOutput: "[1 foo]", Data: map[string]any{"a": 1, "b": "foo"}},
+		{Name: "TestWithNestingList", Input: `{{ values (dict "list" (list 1 2 3)) | sortAlpha }}`, ExpectedOutput: "[[1 2 3]]", Data: map[string]any{"list": []any{1, 2, 3}}},
 	}
 
 	pesticide.RunTestCases(t, maps.NewRegistry(), tc)
@@ -116,6 +117,62 @@ func TestDig(t *testing.T) {
 		{Name: "TestWithInvalidMap", Input: `{{dig "a" 1}}`, ExpectedErr: "last argument must be a map[string]any"},
 		{Name: "TestToAccessNotMapNestedKey", Input: `{{dig "a" "b" .}}`, Data: map[string]any{"a": 1}, ExpectedErr: "value at key \"a\" is not a nested dictionary but int"},
 		{Name: "TestWithDotSyntax", Input: `{{ dig "a.b" . }}`, ExpectedOutput: "2", Data: map[string]any{"a": map[string]any{"b": 2}}},
+	}
+
+	pesticide.RunTestCases(t, maps.NewRegistry(), tc)
+}
+
+func TestDigWithEscapedKeys(t *testing.T) {
+	tc := []pesticide.TestCase{
+		// Escaped dot: access key with literal dot
+		// In Go template strings: \\ produces \, so \\. produces \.
+		{Name: "TestEscapedDotKey", Input: `{{dig "example\\.com" .}}`, ExpectedOutput: "value", Data: map[string]any{"example.com": "value"}},
+		{Name: "TestEscapedDotKeyNested", Input: `{{dig "servers.api\\.internal.port" .}}`, ExpectedOutput: "8080", Data: map[string]any{
+			"servers": map[string]any{
+				"api.internal": map[string]any{
+					"port": "8080",
+				},
+			},
+		}},
+		// Multiple escaped dots
+		{Name: "TestMultipleEscapedDots", Input: `{{dig "a\\.b\\.c" .}}`, ExpectedOutput: "value", Data: map[string]any{"a.b.c": "value"}},
+		// Escaped backslash: \\\\ produces \\ in template, which dig sees as \\, resolving to single \
+		{Name: "TestEscapedBackslash", Input: `{{dig "a\\\\b" .}}`, ExpectedOutput: "value", Data: map[string]any{`a\b`: "value"}},
+		// Mixed: escaped and unescaped dots
+		{Name: "TestMixedDots", Input: `{{dig "a\\.b.c" .}}`, ExpectedOutput: "value", Data: map[string]any{
+			"a.b": map[string]any{
+				"c": "value",
+			},
+		}},
+		// Backward compatibility: normal dot splitting still works
+		{Name: "TestBackwardCompatibility", Input: `{{dig "a.b.c" .}}`, ExpectedOutput: "nested", Data: map[string]any{
+			"a": map[string]any{
+				"b": map[string]any{
+					"c": "nested",
+				},
+			},
+		}},
+		// Error: invalid escape sequence (\n is not valid, only \. and \\ are)
+		// In template: \\n produces \n which is invalid
+		{Name: "TestInvalidEscape", Input: `{{dig "a\\nb" .}}`, ExpectedErr: "invalid escape sequence: \\n"},
+		// Error: trailing backslash: \\ produces single \, which is trailing
+		{Name: "TestTrailingBackslash", Input: `{{dig "abc\\" .}}`, ExpectedErr: "trailing backslash"},
+		// Error: consecutive dots create empty segments
+		{Name: "TestConsecutiveDots", Input: `{{dig "a..b" .}}`, ExpectedErr: "empty key segment"},
+		// Error: leading dot
+		{Name: "TestLeadingDot", Input: `{{dig ".abc" .}}`, ExpectedErr: "empty key segment"},
+		// Error: trailing dot
+		{Name: "TestTrailingDot", Input: `{{dig "abc." .}}`, ExpectedErr: "empty key segment"},
+		// Combined with escape helper
+		{Name: "TestWithEscapeHelper", Input: `{{dig (escape "." "example.com") .}}`, ExpectedOutput: "value", Data: map[string]any{"example.com": "value"}},
+		// Unicode key with escaped dot
+		{Name: "TestUnicodeDotKey", Input: `{{dig "日本語\\.キー" .}}`, ExpectedOutput: "value", Data: map[string]any{"日本語.キー": "value"}},
+		// Unicode nested path
+		{Name: "TestUnicodeNestedPath", Input: `{{dig "données.clé\\.spéciale" .}}`, ExpectedOutput: "valeur", Data: map[string]any{
+			"données": map[string]any{
+				"clé.spéciale": "valeur",
+			},
+		}},
 	}
 
 	pesticide.RunTestCases(t, maps.NewRegistry(), tc)
