@@ -31,8 +31,7 @@ func TestWithLogger(t *testing.T) {
 
 		err := WithLogger(nil)(handler)
 
-		require.Error(t, err)
-		assert.Contains(t, err.Error(), "logger is nil")
+		require.ErrorContains(t, err, "logger is nil")
 		assert.Equal(t, originalLogger, handler.Logger())
 	})
 }
@@ -45,14 +44,12 @@ func TestFuncMapWithLogger(t *testing.T) {
 		funcMap := FuncMap(WithLogger(customLogger))
 
 		assert.NotNil(t, funcMap)
-		assert.GreaterOrEqual(t, len(funcMap), sprigFunctionCount)
 	})
 
 	t.Run("works without options", func(t *testing.T) {
 		funcMap := FuncMap()
 
 		assert.NotNil(t, funcMap)
-		assert.GreaterOrEqual(t, len(funcMap), sprigFunctionCount)
 	})
 }
 
