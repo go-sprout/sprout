@@ -266,6 +266,17 @@ func (sr *StringsRegistry) wordWrap(wrapLength int, newLineCharacter string, wra
 	return resultBuilder.String()
 }
 
+// buildEscapeSet creates a set of characters to escape/unescape.
+// The backslash character is always implicitly included.
+func buildEscapeSet(charset string) map[rune]struct{} {
+	set := make(map[rune]struct{}, len(charset)+1)
+	set['\\'] = struct{}{}
+	for _, r := range charset {
+		set[r] = struct{}{}
+	}
+	return set
+}
+
 // swapFirstLetter swaps the first letter of the string 'value' to uppercase or
 // lowercase. The casing is determined by the 'casing' parameter.
 //

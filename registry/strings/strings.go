@@ -135,5 +135,7 @@ func (sr *StringsRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error 
 	sprout.AddFunction(funcsMap, "indent", sr.Indent)
 	sprout.AddFunction(funcsMap, "nindent", sr.Nindent)
 	sprout.AddFunction(funcsMap, "seq", sr.Seq)
+	sprout.AddFunction(funcsMap, "escape", sr.Escape)
+	sprout.AddFunction(funcsMap, "unescape", sr.Unescape)
 	return nil
 }

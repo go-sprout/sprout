@@ -527,3 +527,46 @@ func TestSeq(t *testing.T) {
 
 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
 }
+
+func TestEscape(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ escape "." "" }}`, ExpectedOutput: ""},
+		{Name: "TestNoDots", Input: `{{ escape "." "abc" }}`, ExpectedOutput: "abc"},
+		{Name: "TestSingleDot", Input: `{{ escape "." "a.b" }}`, ExpectedOutput: `a\.b`},
+		{Name: "TestMultipleDots", Input: `{{ escape "." "a.b.c" }}`, ExpectedOutput: `a\.b\.c`},
+		{Name: "TestBackslash", Input: `{{ escape "." "a\\b" }}`, ExpectedOutput: `a\\b`},
+		{Name: "TestBackslashAndDot", Input: `{{ escape "." "a\\.b" }}`, ExpectedOutput: `a\\\.b`},
+		{Name: "TestDomainName", Input: `{{ escape "." "example.com" }}`, ExpectedOutput: `example\.com`},
+		{Name: "TestMultipleChars", Input: `{{ escape ".:" "a.b:c" }}`, ExpectedOutput: `a\.b\:c`},
+	}
+
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
+}
+
+func TestUnescape(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{Name: "TestEmpty", Input: `{{ unescape "." "" }}`, ExpectedOutput: ""},
+		{Name: "TestNoEscapes", Input: `{{ unescape "." "abc" }}`, ExpectedOutput: "abc"},
+		{Name: "TestEscapedDot", Input: `{{ unescape "." "a\\.b" }}`, ExpectedOutput: "a.b"},
+		{Name: "TestMultipleEscapedDots", Input: `{{ unescape "." "a\\.b\\.c" }}`, ExpectedOutput: "a.b.c"},
+		{Name: "TestEscapedBackslash", Input: `{{ unescape "." "a\\\\b" }}`, ExpectedOutput: `a\b`},
+		{Name: "TestMixedEscapes", Input: `{{ unescape "." "a\\\\.b" }}`, ExpectedOutput: `a\.b`},
+		{Name: "TestInvalidEscape", Input: `{{ unescape "." "a\\nb" }}`, ExpectedErr: "invalid escape sequence: \\n"},
+		{Name: "TestTrailingBackslash", Input: `{{ unescape "." "abc\\" }}`, ExpectedErr: "invalid escape sequence: trailing backslash"},
+		{Name: "TestMultipleChars", Input: `{{ unescape ".:" "a\\.b\\:c" }}`, ExpectedOutput: "a.b:c"},
+	}
+
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
+}
+
+func TestEscapeUnescapeRoundTrip(t *testing.T) {
+	tc := []pesticide.TestCase{
+		{Name: "TestSimple", Input: `{{ "abc" | escape "." | unescape "." }}`, ExpectedOutput: "abc"},
+		{Name: "TestWithDot", Input: `{{ "a.b" | escape "." | unescape "." }}`, ExpectedOutput: "a.b"},
+		{Name: "TestWithBackslash", Input: `{{ "a\\b" | escape "." | unescape "." }}`, ExpectedOutput: `a\b`},
+		{Name: "TestWithBoth", Input: `{{ "a.b\\c.d" | escape "." | unescape "." }}`, ExpectedOutput: `a.b\c.d`},
+		{Name: "TestDomainName", Input: `{{ "example.com" | escape "." | unescape "." }}`, ExpectedOutput: "example.com"},
+	}
+
+	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
+}
