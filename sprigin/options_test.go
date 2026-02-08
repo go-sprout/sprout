@@ -54,8 +54,7 @@ func TestFuncMapWithLogger(t *testing.T) {
 }
 
 func TestHermeticFuncMapsWithLogger(t *testing.T) {
-	var buf bytes.Buffer
-	customLogger := slog.New(slog.NewTextHandler(&buf, nil))
+	customLogger := slog.New(slog.DiscardHandler())
 
 	t.Run("HermeticTxtFuncMap accepts options", func(t *testing.T) {
 		funcMap := HermeticTxtFuncMap(WithLogger(customLogger))
