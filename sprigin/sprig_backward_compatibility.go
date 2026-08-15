@@ -280,55 +280,98 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func HermeticTxtFuncMap(opts ...sprout.HandlerOption[*SprigHandler]) ttemplate.FuncMap {
-	r := TxtFuncMap(opts...)
-	for _, name := range nonhermeticFunctions {
-		delete(r, name)
-	}
-	return r
+func HermeticTxtFuncMap() ttemplate.FuncMap {
+	return HermeticTxtFuncMapWith()
 }
 
 // HermeticHtmlFuncMap returns an 'html/template'.Funcmap with only repeatable functions.
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func HermeticHtmlFuncMap(opts ...sprout.HandlerOption[*SprigHandler]) htemplate.FuncMap {
-	r := HtmlFuncMap(opts...)
-	for _, name := range nonhermeticFunctions {
-		delete(r, name)
-	}
-	return r
+func HermeticHtmlFuncMap() htemplate.FuncMap {
+	return HermeticHtmlFuncMapWith()
 }
 
 // TxtFuncMap returns a 'text/template'.FuncMap
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func TxtFuncMap(opts ...sprout.HandlerOption[*SprigHandler]) ttemplate.FuncMap {
-	return ttemplate.FuncMap(FuncMap(opts...))
+func TxtFuncMap() ttemplate.FuncMap {
+	return TxtFuncMapWith()
 }
 
 // HtmlFuncMap returns an 'html/template'.Funcmap
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func HtmlFuncMap(opts ...sprout.HandlerOption[*SprigHandler]) htemplate.FuncMap {
-	return htemplate.FuncMap(FuncMap(opts...))
+func HtmlFuncMap() htemplate.FuncMap {
+	return HtmlFuncMapWith()
 }
 
 // GenericFuncMap returns a copy of the basic function map as a map[string]any.
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARDS COMPATIBILITY ONLY
-func GenericFuncMap(opts ...sprout.HandlerOption[*SprigHandler]) map[string]any {
-	return FuncMap(opts...)
+func GenericFuncMap() map[string]any {
+	return GenericFuncMapWith()
 }
 
 // FuncMap returns a template.FuncMap for use with text/template or html/template.
 // It provides backward compatibility with sprig.FuncMap and integrates
 // additional configured functions.
 // FOR BACKWARD COMPATIBILITY ONLY
-func FuncMap(opts ...sprout.HandlerOption[*SprigHandler]) ttemplate.FuncMap {
+func FuncMap() ttemplate.FuncMap {
+	return FuncMapWith()
+}
+
+// HermeticTxtFuncMapWith behaves like [HermeticTxtFuncMap] and applies the
+// given handler options, such as [WithLogger].
+// FOR BACKWARDS COMPATIBILITY ONLY
+func HermeticTxtFuncMapWith(opts ...sprout.HandlerOption[*SprigHandler]) ttemplate.FuncMap {
+	r := TxtFuncMapWith(opts...)
+	for _, name := range nonhermeticFunctions {
+		delete(r, name)
+	}
+	return r
+}
+
+// HermeticHtmlFuncMapWith behaves like [HermeticHtmlFuncMap] and applies the
+// given handler options, such as [WithLogger].
+// FOR BACKWARDS COMPATIBILITY ONLY
+func HermeticHtmlFuncMapWith(opts ...sprout.HandlerOption[*SprigHandler]) htemplate.FuncMap {
+	r := HtmlFuncMapWith(opts...)
+	for _, name := range nonhermeticFunctions {
+		delete(r, name)
+	}
+	return r
+}
+
+// TxtFuncMapWith behaves like [TxtFuncMap] and applies the given handler
+// options, such as [WithLogger].
+// FOR BACKWARDS COMPATIBILITY ONLY
+func TxtFuncMapWith(opts ...sprout.HandlerOption[*SprigHandler]) ttemplate.FuncMap {
+	return ttemplate.FuncMap(FuncMapWith(opts...))
+}
+
+// HtmlFuncMapWith behaves like [HtmlFuncMap] and applies the given handler
+// options, such as [WithLogger].
+// FOR BACKWARDS COMPATIBILITY ONLY
+func HtmlFuncMapWith(opts ...sprout.HandlerOption[*SprigHandler]) htemplate.FuncMap {
+	return htemplate.FuncMap(FuncMapWith(opts...))
+}
+
+// GenericFuncMapWith behaves like [GenericFuncMap] and applies the given
+// handler options, such as [WithLogger].
+// FOR BACKWARDS COMPATIBILITY ONLY
+func GenericFuncMapWith(opts ...sprout.HandlerOption[*SprigHandler]) map[string]any {
+	return FuncMapWith(opts...)
+}
+
+// FuncMapWith behaves like [FuncMap] and applies the given handler options,
+// such as [WithLogger]. An option returning an error is reported through the
+// handler logger and skipped, the function map is still built.
+// FOR BACKWARD COMPATIBILITY ONLY
+func FuncMapWith(opts ...sprout.HandlerOption[*SprigHandler]) ttemplate.FuncMap {
 	sprigHandler := NewSprigHandler()
 
 	for _, opt := range opts {
