@@ -21,8 +21,6 @@ jobs:
       uses: actions/setup-go@v5
       with:
         go-version: 1.25
-    - name: Install testifylint
-      run: go install github.com/Antonboom/testifylint@v1.4.0
     - name: golangci-lint
       uses: golangci/golangci-lint-action@v9
       with:
