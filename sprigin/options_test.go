@@ -86,7 +86,7 @@ func TestFuncMapWith(t *testing.T) {
 		withOptions := FuncMapWith()
 		legacy := FuncMap()
 
-		assert.Equal(t, len(legacy), len(withOptions))
+		assert.Len(t, withOptions, len(legacy))
 		for name := range legacy {
 			assert.Contains(t, withOptions, name)
 		}
@@ -160,14 +160,14 @@ func TestHermeticFuncMapsWith(t *testing.T) {
 // entrypoints: they must stay callable without arguments and assignable to
 // their original function type, so upgrading sprigin is never a breaking change.
 func TestBackwardCompatibleSignatures(t *testing.T) {
-	var (
-		_ func() ttemplate.FuncMap = FuncMap
-		_ func() ttemplate.FuncMap = TxtFuncMap
-		_ func() ttemplate.FuncMap = HermeticTxtFuncMap
-		_ func() htemplate.FuncMap = HtmlFuncMap
-		_ func() htemplate.FuncMap = HermeticHtmlFuncMap
-		_ func() map[string]any    = GenericFuncMap
-	)
+	// Conversions, not declarations: they fail to compile if the signature ever
+	// gains a parameter, without staticcheck asking to drop the explicit type.
+	_ = (func() ttemplate.FuncMap)(FuncMap)
+	_ = (func() ttemplate.FuncMap)(TxtFuncMap)
+	_ = (func() ttemplate.FuncMap)(HermeticTxtFuncMap)
+	_ = (func() htemplate.FuncMap)(HtmlFuncMap)
+	_ = (func() htemplate.FuncMap)(HermeticHtmlFuncMap)
+	_ = (func() map[string]any)(GenericFuncMap)
 
 	assert.Contains(t, HermeticTxtFuncMap(), "get")
 	assert.NotContains(t, HermeticTxtFuncMap(), "env")
