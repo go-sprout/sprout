@@ -1,10 +1,43 @@
 package main
 
 import (
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+// TestHandlerFor_Default tests handlerFor when the documentation file has no
+// dedicated handler. It verifies that the handler built from all registries is
+// returned.
+func TestHandlerFor_Default(t *testing.T) {
+	assert.Same(t, sproutHandler, handlerFor(filepath.Join("docs", "registries", "example1.md")))
+}
+
+// TestHandlerFor_Dedicated tests handlerFor when the documentation file has a
+// dedicated handler. It verifies that this handler is returned instead of the
+// default one, so the examples are validated against the right registry.
+func TestHandlerFor_Dedicated(t *testing.T) {
+	file := filepath.Join("docs", "registries", "regex.md")
+
+	handler := handlerFor(file)
+	assert.NotSame(t, sproutHandler, handler)
+	assert.Same(t, dedicatedHandlers[file], handler)
+}
+
+// TestProcessExample_DedicatedHandler tests processExample on a file having a
+// dedicated handler. The `regex` registry takes precedence over the deprecated
+// `regexp` one, so the main parameter is expected to be the last one.
+func TestProcessExample_DedicatedHandler(t *testing.T) {
+	example := Example{
+		FuncName: "regexSplit",
+		File:     filepath.Join("docs", "registries", "regex.md"),
+		Code:     `{{ "banana" | regexSplit "a" -1 }}`,
+		Expected: "[b n n ]",
+	}
+	err := processExample(example)
+	assert.NoError(t, err)
+}
 
 // TestProcessExample_Success tests processExample when the template executes
 // successfully and the output matches the expected output.
