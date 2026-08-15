@@ -109,6 +109,43 @@ funcs := sprigin.FuncMap()
 
 Sprigin provides full backward compatibility while logging deprecation warnings. Your end-users will see warnings in logs about deprecated functions and signature changes, giving them time to update their templates.
 
+#### Customizing the Logger
+
+By default, Sprigin logs warnings to the standard `slog` default handler. You can provide your own logger to integrate with your application's logging system, using the `*With` variant of any entrypoint:
+
+```go
+import (
+    "log/slog"
+    "os"
+
+    "github.com/go-sprout/sprout/sprigin"
+)
+
+// Use a custom logger for deprecation warnings
+logger := slog.New(slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{
+    Level: slog.LevelWarn,
+}))
+funcs := sprigin.FuncMapWith(sprigin.WithLogger(logger))
+```
+
+This is useful when you want to:
+- Route deprecation warnings to a specific log destination
+- Use a structured logging format (JSON, etc.)
+- Filter or aggregate warnings in your logging infrastructure
+
+Every entrypoint has such a variant:
+
+| Original                | With options                |
+| ----------------------- | --------------------------- |
+| `FuncMap()`             | `FuncMapWith(opts...)`      |
+| `TxtFuncMap()`          | `TxtFuncMapWith(opts...)`   |
+| `HtmlFuncMap()`         | `HtmlFuncMapWith(opts...)`  |
+| `GenericFuncMap()`      | `GenericFuncMapWith(opts...)` |
+| `HermeticTxtFuncMap()`  | `HermeticTxtFuncMapWith(opts...)` |
+| `HermeticHtmlFuncMap()` | `HermeticHtmlFuncMapWith(opts...)` |
+
+The original functions keep their exact signature, so upgrading Sprigin is never a breaking change. If an option is invalid (a `nil` logger, for instance) it is reported through the handler logger and skipped, and the function map is still built.
+
 **Phase 2: Keep Sprigin for X Versions/Months**
 
 Maintain sprigin for your defined deprecation period (e.g., 3-6 months or 2-3 versions) to:
@@ -143,7 +180,7 @@ Need more information? Contact maintainers or open [a discussion on the reposito
 The `sprigin` package is specifically designed for this use case. It:
 
 - **Supports both signatures**: Automatically detects whether you're using the old Sprig signature (`get $dict "key"`) or the new Sprout piping signature (`$dict | get "key"`)
-- **Logs deprecation warnings**: When old signatures or deprecated functions are used, warnings are logged to inform your end-users
+- **Logs deprecation warnings**: When old signatures or deprecated functions are used, warnings are logged to inform your end-users (see [Customizing the Logger](#customizing-the-logger) to integrate with your logging system)
 - **Preserves Sprig behavior**: Bug-for-bug compatible to avoid breaking existing templates
 
 ### Migration Steps
@@ -164,7 +201,7 @@ The `sprigin` package is specifically designed for this use case. It:
    ```
 
 3. **Monitor Deprecation Warnings**\
-   Sprigin logs warnings for deprecated functions and signature changes. Share these logs with your end-users so they can update their templates.
+   Sprigin logs warnings for deprecated functions and signature changes. Share these logs with your end-users so they can update their templates. Use `sprigin.FuncMapWith(sprigin.WithLogger(...))` to route warnings to your preferred logging destination.
 
 4. **Keep Sprigin for X Versions/Months**\
    Maintain the compatibility layer according to your breaking change policy. We recommend 3-6 months or 2-3 versions.
