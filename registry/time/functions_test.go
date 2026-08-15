@@ -155,6 +155,68 @@ func TestUnixEpoch(t *testing.T) {
 
 	tc := []pesticide.TestCase{
 		{Name: "TestUnixEpoch", Input: `{{ .V | unixEpoch }}`, ExpectedOutput: "1715094245", Data: map[string]any{"V": timeTest}},
+		{Name: "TestToUnixAlias", Input: `{{ .V | toUnix }}`, ExpectedOutput: "1715094245", Data: map[string]any{"V": timeTest}},
+	}
+
+	pesticide.RunTestCases(t, rtime.NewRegistry(), tc)
+}
+
+func TestToUnixMilli(t *testing.T) {
+	timeTest := time.Date(2024, 5, 7, 15, 4, 5, 123456789, time.UTC)
+
+	tc := []pesticide.TestCase{
+		{Name: "TestTimeObject", Input: `{{ .V | toUnixMilli }}`, ExpectedOutput: "1715094245123", Data: map[string]any{"V": timeTest}},
+	}
+
+	pesticide.RunTestCases(t, rtime.NewRegistry(), tc)
+}
+
+func TestToUnixMicro(t *testing.T) {
+	timeTest := time.Date(2024, 5, 7, 15, 4, 5, 123456789, time.UTC)
+
+	tc := []pesticide.TestCase{
+		{Name: "TestTimeObject", Input: `{{ .V | toUnixMicro }}`, ExpectedOutput: "1715094245123456", Data: map[string]any{"V": timeTest}},
+	}
+
+	pesticide.RunTestCases(t, rtime.NewRegistry(), tc)
+}
+
+func TestFromUnix(t *testing.T) {
+	// temporarily force time.Local to UTC to keep the output deterministic
+	pesticide.ForceTimeLocal(t, time.UTC)
+
+	tc := []pesticide.TestCase{
+		{Name: "TestInt", Input: `{{ .V | fromUnix | date "02 Jan 06 15:04:05 -0700" }}`, ExpectedOutput: "07 May 24 15:04:05 +0000", Data: map[string]any{"V": int(1715094245)}},
+		{Name: "TestInt64", Input: `{{ .V | fromUnix | date "02 Jan 06 15:04:05 -0700" }}`, ExpectedOutput: "07 May 24 15:04:05 +0000", Data: map[string]any{"V": int64(1715094245)}},
+		{Name: "TestString", Input: `{{ .V | fromUnix | date "02 Jan 06 15:04:05 -0700" }}`, ExpectedOutput: "07 May 24 15:04:05 +0000", Data: map[string]any{"V": "1715094245"}},
+		{Name: "TestZeroValue", Input: `{{ .V | fromUnix | date "02 Jan 06 15:04:05 -0700" }}`, ExpectedOutput: "01 Jan 70 00:00:00 +0000", Data: map[string]any{"V": 0}},
+		{Name: "TestWithInvalidInput", Input: `{{ .V | fromUnix }}`, ExpectedErr: "unable to cast", Data: map[string]any{"V": "invalid"}},
+	}
+
+	pesticide.RunTestCases(t, rtime.NewRegistry(), tc)
+}
+
+func TestFromUnixMilli(t *testing.T) {
+	// temporarily force time.Local to UTC to keep the output deterministic
+	pesticide.ForceTimeLocal(t, time.UTC)
+
+	tc := []pesticide.TestCase{
+		{Name: "TestInt64", Input: `{{ .V | fromUnixMilli | date "02 Jan 06 15:04:05.000 -0700" }}`, ExpectedOutput: "07 May 24 15:04:05.123 +0000", Data: map[string]any{"V": int64(1715094245123)}},
+		{Name: "TestString", Input: `{{ .V | fromUnixMilli | date "02 Jan 06 15:04:05.000 -0700" }}`, ExpectedOutput: "07 May 24 15:04:05.123 +0000", Data: map[string]any{"V": "1715094245123"}},
+		{Name: "TestWithInvalidInput", Input: `{{ .V | fromUnixMilli }}`, ExpectedErr: "unable to cast", Data: map[string]any{"V": "invalid"}},
+	}
+
+	pesticide.RunTestCases(t, rtime.NewRegistry(), tc)
+}
+
+func TestFromUnixMicro(t *testing.T) {
+	// temporarily force time.Local to UTC to keep the output deterministic
+	pesticide.ForceTimeLocal(t, time.UTC)
+
+	tc := []pesticide.TestCase{
+		{Name: "TestInt64", Input: `{{ .V | fromUnixMicro | date "02 Jan 06 15:04:05.000000 -0700" }}`, ExpectedOutput: "07 May 24 15:04:05.123456 +0000", Data: map[string]any{"V": int64(1715094245123456)}},
+		{Name: "TestString", Input: `{{ .V | fromUnixMicro | date "02 Jan 06 15:04:05.000000 -0700" }}`, ExpectedOutput: "07 May 24 15:04:05.123456 +0000", Data: map[string]any{"V": "1715094245123456"}},
+		{Name: "TestWithInvalidInput", Input: `{{ .V | fromUnixMicro }}`, ExpectedErr: "unable to cast", Data: map[string]any{"V": "invalid"}},
 	}
 
 	pesticide.RunTestCases(t, rtime.NewRegistry(), tc)
