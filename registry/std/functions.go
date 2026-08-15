@@ -190,7 +190,7 @@ func (sr *StdRegistry) Cat(values ...any) string {
 			builder.WriteRune(' ') // Add space between elements
 		}
 		// Append the string representation of the item
-		builder.WriteString(fmt.Sprint(item))
+		fmt.Fprint(&builder, item)
 	}
 	// Return the concatenated string without trailing spaces
 	return builder.String()

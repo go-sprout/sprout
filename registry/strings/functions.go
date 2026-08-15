@@ -444,7 +444,7 @@ func (sr *StringsRegistry) Quote(values ...any) string {
 		if i > 0 {
 			build.WriteRune(' ')
 		}
-		build.WriteString(fmt.Sprintf("%q", fmt.Sprint(elem)))
+		fmt.Fprintf(&build, "%q", fmt.Sprint(elem))
 	}
 	return build.String()
 }
@@ -473,7 +473,7 @@ func (sr *StringsRegistry) Squote(values ...any) string {
 		}
 		// Use fmt.Sprint to convert any to string, then quote it.
 		builder.WriteRune('\'')
-		builder.WriteString(fmt.Sprint(elem))
+		fmt.Fprint(&builder, elem)
 		builder.WriteRune('\'')
 	}
 	return builder.String()
