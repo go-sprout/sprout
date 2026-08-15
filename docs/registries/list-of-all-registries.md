@@ -20,7 +20,8 @@ Every function is categorized into a registry and may include a [**'must'** vers
 * [**numeric**](numeric.md): Utilities for numerical operations and calculations.
 * [**random**](random.md): Functions to generate random numbers, strings, and other data.
 * [**reflect**](reflect.md): Tools to inspect and manipulate data types using reflection.
-* [**regexp**](regexp.md): Regular expression functions for pattern matching and string manipulation.
+* [**regex**](regex.md): Regular expression functions for pattern matching and string manipulation, pipeline friendly.
+* [**regexp**](regexp.md): Regular expression functions using the historical sprig signatures. _Deprecated, use_ [_**regex**_](regex.md) _instead._
 * [**semver**](semver.md): Functions to handle semantic versioning and comparison.
 * [**slices**](slices.md): Utilities for slice operations, including filtering, sorting, and transforming.
 * [**std**](std.md): Standard functions for common operations.

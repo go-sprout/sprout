@@ -33,6 +33,7 @@
 * [Network](registries/network.md)
 * [Random](registries/random.md)
 * [Reflect](registries/reflect.md)
+* [Regex](registries/regex.md)
 * [Regexp](registries/regexp.md)
 * [SemVer](registries/semver.md)
 * [Slices](registries/slices.md)
