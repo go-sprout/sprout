@@ -7,6 +7,12 @@ description: >-
 
 # Regexp
 
+{% hint style="danger" %}
+This registry is **deprecated** and will be removed in Sprout v1.2. Use the [`regex`](regex.md) registry instead, where the main parameter is always the last one and every function can be used in a template pipeline.
+
+Both registries expose the same function names, so they are **mutually exclusive**: register one or the other, never both. See the [migration table](regex.md#regex) to know which four functions need their arguments to be reordered in your templates.
+{% endhint %}
+
 {% hint style="info" %}
 You can easily import all the functions from the <mark style="color:yellow;">`regexp`</mark> registry by including the following import statement in your code
 

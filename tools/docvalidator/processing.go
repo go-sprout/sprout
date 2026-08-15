@@ -2,14 +2,36 @@ package main
 
 import (
 	"fmt"
+	"path/filepath"
 	"strings"
 	"text/template"
 
 	"github.com/go-sprout/sprout"
 	"github.com/go-sprout/sprout/group/all"
+	"github.com/go-sprout/sprout/registry/regex"
 )
 
 var sproutHandler = sprout.New(sprout.WithGroups(all.RegistryGroup()))
+
+// dedicatedHandlers associates a documentation file with its own handler. It is
+// needed for registries sharing their function names with a registry of the
+// `all` group, like `regex` and `regexp`, which cannot be registered together.
+// The dedicated registry is registered first so its functions take precedence.
+var dedicatedHandlers = map[string]*sprout.DefaultHandler{
+	filepath.Join("docs", "registries", "regex.md"): sprout.New(
+		sprout.WithRegistries(regex.NewRegistry()),
+		sprout.WithGroups(all.RegistryGroup()),
+	),
+}
+
+// handlerFor returns the handler to use to validate the examples of the given
+// documentation file, falling back to the default one built from all registries.
+func handlerFor(file string) *sprout.DefaultHandler {
+	if handler, ok := dedicatedHandlers[filepath.Clean(file)]; ok {
+		return handler
+	}
+	return sproutHandler
+}
 
 // processExample compiles and executes a single template example.
 // It checks the execution result against the expected output, and returns an error if they don't match.
@@ -20,7 +42,7 @@ func processExample(example Example) error {
 	}
 
 	// Build the template with custom functions
-	tmpl, err := template.New("example").Funcs(sproutHandler.Build()).Parse(example.Code)
+	tmpl, err := template.New("example").Funcs(handlerFor(example.File).Build()).Parse(example.Code)
 	if err != nil {
 		return fmt.Errorf("error parsing template: %w", err)
 	}

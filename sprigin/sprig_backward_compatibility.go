@@ -20,6 +20,7 @@ import (
 	"github.com/go-sprout/sprout/registry/numeric"
 	"github.com/go-sprout/sprout/registry/random"
 	"github.com/go-sprout/sprout/registry/reflect"
+	//nolint:staticcheck // sprigin mirrors the sprig API, it must keep the sprig signatures of the `regexp` registry
 	"github.com/go-sprout/sprout/registry/regexp"
 	"github.com/go-sprout/sprout/registry/semver"
 	"github.com/go-sprout/sprout/registry/slices"
@@ -186,7 +187,7 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 		conversion.NewRegistry(),
 		numeric.NewRegistry(),
 		encoding.NewRegistry(),
-		regexp.NewRegistry(),
+		regexp.NewRegistry(), //nolint:staticcheck // sprigin must keep the sprig signatures, it cannot use the `regex` registry
 		slices.NewRegistry(),
 		maps.NewRegistry(),
 		crypto.NewRegistry(),
