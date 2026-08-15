@@ -4,6 +4,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/spf13/cast"
 )
 
 // Date formats a given date or current time into a specified format string.
@@ -151,6 +153,109 @@ func (tr *TimeRegistry) Now() time.Time {
 // [Sprout Documentation: unixEpoch]: https://docs.atom.codes/sprout/registries/time#unixepoch
 func (tr *TimeRegistry) UnixEpoch(date time.Time) string {
 	return strconv.FormatInt(date.Unix(), 10)
+}
+
+// ToUnixMilli returns the Unix epoch timestamp in milliseconds of a given date.
+//
+// Parameters:
+//
+//	date time.Time - the date to convert to a Unix timestamp.
+//
+// Returns:
+//
+//	string - the Unix timestamp in milliseconds as a string.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: toUnixMilli].
+//
+// [Sprout Documentation: toUnixMilli]: https://docs.atom.codes/sprout/registries/time#tounixmilli
+func (tr *TimeRegistry) ToUnixMilli(date time.Time) string {
+	return strconv.FormatInt(date.UnixMilli(), 10)
+}
+
+// ToUnixMicro returns the Unix epoch timestamp in microseconds of a given date.
+//
+// Parameters:
+//
+//	date time.Time - the date to convert to a Unix timestamp.
+//
+// Returns:
+//
+//	string - the Unix timestamp in microseconds as a string.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: toUnixMicro].
+//
+// [Sprout Documentation: toUnixMicro]: https://docs.atom.codes/sprout/registries/time#tounixmicro
+func (tr *TimeRegistry) ToUnixMicro(date time.Time) string {
+	return strconv.FormatInt(date.UnixMicro(), 10)
+}
+
+// FromUnix converts a Unix epoch timestamp in seconds into a date, in the
+// local timezone.
+//
+// Parameters:
+//
+//	timestamp any - the Unix timestamp in seconds to convert to a date.
+//
+// Returns:
+//
+//	time.Time - the date corresponding to the given timestamp.
+//	error - when the timestamp is not a valid number.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: fromUnix].
+//
+// [Sprout Documentation: fromUnix]: https://docs.atom.codes/sprout/registries/time#fromunix
+func (tr *TimeRegistry) FromUnix(timestamp any) (time.Time, error) {
+	sec, err := cast.ToInt64E(timestamp)
+	if err != nil {
+		return time.Time{}, err
+	}
+	return time.Unix(sec, 0), nil
+}
+
+// FromUnixMilli converts a Unix epoch timestamp in milliseconds into a date,
+// in the local timezone.
+//
+// Parameters:
+//
+//	timestamp any - the Unix timestamp in milliseconds to convert to a date.
+//
+// Returns:
+//
+//	time.Time - the date corresponding to the given timestamp.
+//	error - when the timestamp is not a valid number.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: fromUnixMilli].
+//
+// [Sprout Documentation: fromUnixMilli]: https://docs.atom.codes/sprout/registries/time#fromunixmilli
+func (tr *TimeRegistry) FromUnixMilli(timestamp any) (time.Time, error) {
+	msec, err := cast.ToInt64E(timestamp)
+	if err != nil {
+		return time.Time{}, err
+	}
+	return time.UnixMilli(msec), nil
+}
+
+// FromUnixMicro converts a Unix epoch timestamp in microseconds into a date,
+// in the local timezone.
+//
+// Parameters:
+//
+//	timestamp any - the Unix timestamp in microseconds to convert to a date.
+//
+// Returns:
+//
+//	time.Time - the date corresponding to the given timestamp.
+//	error - when the timestamp is not a valid number.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: fromUnixMicro].
+//
+// [Sprout Documentation: fromUnixMicro]: https://docs.atom.codes/sprout/registries/time#fromunixmicro
+func (tr *TimeRegistry) FromUnixMicro(timestamp any) (time.Time, error) {
+	usec, err := cast.ToInt64E(timestamp)
+	if err != nil {
+		return time.Time{}, err
+	}
+	return time.UnixMicro(usec), nil
 }
 
 // DateModify adjusts a given date by a specified duration. If the duration

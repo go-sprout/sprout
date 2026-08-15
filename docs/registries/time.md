@@ -117,6 +117,88 @@ The function returns the Unix epoch timestamp for a given date.
 {% endtab %}
 {% endtabs %}
 
+{% hint style="info" %}
+`toUnix` is an alias of `unixEpoch`, both can be used interchangeably.
+{% endhint %}
+
+### <mark style="color:purple;">toUnixMilli</mark>
+
+The function returns the Unix epoch timestamp in milliseconds for a given date.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUnixMilli(date time.Time) string
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ now | toUnixMilli }} // Output(will be different): 1683306245123
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">toUnixMicro</mark>
+
+The function returns the Unix epoch timestamp in microseconds for a given date.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">ToUnixMicro(date time.Time) string
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ now | toUnixMicro }} // Output(will be different): 1683306245123456
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">fromUnix</mark>
+
+The function converts a Unix epoch timestamp in seconds into a date, in the local timezone.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">FromUnix(timestamp any) (time.Time, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ 1683306245 | fromUnix | date "Jan 2, 2006" }} // Output: "May 5, 2023"
+{{ "invalid" | fromUnix }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">fromUnixMilli</mark>
+
+The function converts a Unix epoch timestamp in milliseconds into a date, in the local timezone.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">FromUnixMilli(timestamp any) (time.Time, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ 1683306245123 | fromUnixMilli | date "Jan 2, 2006" }} // Output: "May 5, 2023"
+{{ "invalid" | fromUnixMilli }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">fromUnixMicro</mark>
+
+The function converts a Unix epoch timestamp in microseconds into a date, in the local timezone.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">FromUnixMicro(timestamp any) (time.Time, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ 1683306245123456 | fromUnixMicro | date "Jan 2, 2006" }} // Output: "May 5, 2023"
+{{ "invalid" | fromUnixMicro }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
 ### <mark style="color:purple;">dateModify</mark>
 
 The function adjusts a given date by a specified duration, returning the modified date. If the duration format is incorrect, it returns the original date without any changes, in case of must version, an error is returned.

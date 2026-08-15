@@ -30,6 +30,11 @@ func (tr *TimeRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 	sprout.AddFunction(funcsMap, "dateAgo", tr.DateAgo)
 	sprout.AddFunction(funcsMap, "now", tr.Now)
 	sprout.AddFunction(funcsMap, "unixEpoch", tr.UnixEpoch)
+	sprout.AddFunction(funcsMap, "toUnixMilli", tr.ToUnixMilli)
+	sprout.AddFunction(funcsMap, "toUnixMicro", tr.ToUnixMicro)
+	sprout.AddFunction(funcsMap, "fromUnix", tr.FromUnix)
+	sprout.AddFunction(funcsMap, "fromUnixMilli", tr.FromUnixMilli)
+	sprout.AddFunction(funcsMap, "fromUnixMicro", tr.FromUnixMicro)
 	sprout.AddFunction(funcsMap, "dateModify", tr.DateModify)
 	sprout.AddFunction(funcsMap, "durationRound", tr.DurationRound)
 	sprout.AddFunction(funcsMap, "htmlDate", tr.HtmlDate)
@@ -39,6 +44,7 @@ func (tr *TimeRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error {
 
 func (tr *TimeRegistry) RegisterAliases(aliasesMap sprout.FunctionAliasMap) error {
 	sprout.AddAlias(aliasesMap, "dateModify", "mustDateModify")
+	sprout.AddAlias(aliasesMap, "unixEpoch", "toUnix")
 	return nil
 }
 
