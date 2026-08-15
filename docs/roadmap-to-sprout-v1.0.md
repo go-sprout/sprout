@@ -85,8 +85,9 @@ When you are a middle-app (between sprout and the user how write the template), 
 The solution are to embed a notice system in the template library to warn the end-user of a deprecation and let x versions between the deprecation notice and the replacement / removal of the function.
 
 {% hint style="success" %}
-These features are implemented on v0.6.0, documentation can be found here :\
-[broken-reference](broken-reference/ "mention")
+These features are implemented on v0.6.0, documentation can be found here:
+
+[function-notices.md](features/function-notices.md "mention")
 {% endhint %}
 
 ## Compatibility between spring and sprout
