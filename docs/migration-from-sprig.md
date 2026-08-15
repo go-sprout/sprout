@@ -109,7 +109,7 @@ funcs := sprigin.FuncMap()
 
 Sprigin provides full backward compatibility while logging deprecation warnings. Your end-users will see warnings in logs about deprecated functions and signature changes, giving them time to update their templates.
 
-**Customizing the Logger**
+#### Customizing the Logger
 
 By default, Sprigin logs warnings to the standard `slog` default handler. You can provide your own logger to integrate with your application's logging system, using the `*With` variant of any entrypoint:
 
@@ -128,12 +128,23 @@ logger := slog.New(slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{
 funcs := sprigin.FuncMapWith(sprigin.WithLogger(logger))
 ```
 
-Every entrypoint has such a variant: `FuncMapWith`, `TxtFuncMapWith`, `HtmlFuncMapWith`, `GenericFuncMapWith`, `HermeticTxtFuncMapWith` and `HermeticHtmlFuncMapWith`. The original functions (`sprigin.FuncMap()`, …) keep their exact signature, so upgrading Sprigin never breaks your code.
-
 This is useful when you want to:
 - Route deprecation warnings to a specific log destination
 - Use a structured logging format (JSON, etc.)
 - Filter or aggregate warnings in your logging infrastructure
+
+Every entrypoint has such a variant:
+
+| Original                | With options                |
+| ----------------------- | --------------------------- |
+| `FuncMap()`             | `FuncMapWith(opts...)`      |
+| `TxtFuncMap()`          | `TxtFuncMapWith(opts...)`   |
+| `HtmlFuncMap()`         | `HtmlFuncMapWith(opts...)`  |
+| `GenericFuncMap()`      | `GenericFuncMapWith(opts...)` |
+| `HermeticTxtFuncMap()`  | `HermeticTxtFuncMapWith(opts...)` |
+| `HermeticHtmlFuncMap()` | `HermeticHtmlFuncMapWith(opts...)` |
+
+The original functions keep their exact signature, so upgrading Sprigin is never a breaking change. If an option is invalid (a `nil` logger, for instance) it is reported through the handler logger and skipped, and the function map is still built.
 
 **Phase 2: Keep Sprigin for X Versions/Months**
 
