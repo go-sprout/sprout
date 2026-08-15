@@ -85,7 +85,7 @@ func (nr *NumericRegistry) Round(value any, poww int, roundOpts ...float64) (flo
 		return 0.0, sprout.NewErrConvertFailed("float64", value, err)
 	}
 
-	digit := float * pow
+	digit := float64(float * pow)
 	_, div := math.Modf(digit)
 	if div >= roundOn {
 		return math.Ceil(digit) / pow, nil
