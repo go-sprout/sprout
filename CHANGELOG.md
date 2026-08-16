@@ -1,5 +1,73 @@
 # Changelog
 
+## Release v1.1.0: Sprout Grows Up 🌳 (2026-08-16)
+
+> 🌿 A cleaner contract, a softer landing from Sprig!
+
+This minor release completes the signature cleanup started in v1.0, introduces the pipeline-friendly `regex` registry, adds 14 new functions, and turns `sprigin` into a genuinely full drop-in replacement for Sprig with directional migration warnings.
+
+### ⚠️ **Breaking Changes**
+
+**The Sprig argument order is no longer tolerated by Sprout itself.**
+
+Up to v1.0.x, calling these functions with the Sprig argument order still worked in Sprout: the old order was detected, silently reordered, and a deprecation warning was logged. That tolerance was announced for removal in v1.1 and **is now removed**. Ten functions fail instead of warning:
+
+`get`, `set`, `unset`, `hasKey`, `pick`, `omit`, `append`, `prepend`, `slice`, `without`
+
+```go
+{{ append $list "value" }}
+// v1.0.x: [a value]   + "the signature of `append` has changed" warning
+// v1.1.0: error, cannot append on type string, the list must be the last argument
+```
+
+The fix is the pipe syntax, `{{ $list = $list | append "value" }}`. See the [migration guide](https://docs.atom.codes/sprout/migration-from-sprig) for the full table. **`sprigin` is not affected**: it still accepts both orders and warns only on the legacy one, so it remains the safe landing zone while you update your templates.
+
+**Removed from the public Go API:**
+- The `github.com/go-sprout/sprout/deprecated` package, which held `SignatureWarn` and `ErrArgsCount`. The equivalent now lives in `sprigin`, where the compatibility logic belongs.
+- `MapsRegistry.SprigDig`, superseded by the `sprigin` compatibility layer.
+- `MapsRegistry.Get`, `Set`, `Unset`, `HasKey`, `SlicesRegistry.Append` and `Prepend` no longer take `(args ...any)`, they use their real typed signatures.
+
+### ✨ **New Features**
+- **New `regex` Registry**: A pipeline-friendly replacement for `regexp`, where the main parameter is always the last argument. Same 11 function names, only `regexFindAll`, `regexSplit`, `regexReplaceAll` and `regexReplaceAllLiteral` change their argument order. Both registries expose the same names and are therefore mutually exclusive. `regexp` is now deprecated and will be removed in v1.2. This resolves [#147](https://github.com/go-sprout/sprout/issues/147). See [PR #185](https://github.com/go-sprout/sprout/pull/185).
+- **UUID Functions**: `uuidv7` (time-ordered), `uuidv5` and `uuidv3` (deterministic, namespace based), plus `uuidNil`, `isUUID`, `uuidVersion` and `uuidTime` to inspect existing UUIDs. No new dependency. This resolves part of [#155](https://github.com/go-sprout/sprout/issues/155). See [PR #186](https://github.com/go-sprout/sprout/pull/186).
+- **Unix Timestamp Conversions**: `toUnixMilli`, `toUnixMicro`, `fromUnix`, `fromUnixMilli`, `fromUnixMicro`, and `toUnix` as an alias of `unixEpoch`. This resolves [#130](https://github.com/go-sprout/sprout/issues/130). See [PR #184](https://github.com/go-sprout/sprout/pull/184).
+- **String Escaping**: `escape` and `unescape` to prepare strings for functions interpreting escape sequences, such as `dig`. See [PR #171](https://github.com/go-sprout/sprout/pull/171).
+- **Custom Logger for Sprigin**: `sprigin.WithLogger()` and the `*With()` func map builders let you route migration warnings wherever you want. See [PR #170](https://github.com/go-sprout/sprout/pull/170).
+
+### 🛠️ **Enhancements**
+- **Sprigin Accepts Both Signatures**: Eleven functions (`dig`, `get`, `set`, `unset`, `hasKey`, `pick`, `omit`, `append`, `prepend`, `slice`, `without`) detect the signature in use, run correctly either way, and warn only when the legacy Sprig order is detected. Templates already written in Sprout style stay silent.
+- **Clearer Migration Warnings**: `append` and `prepend` now show the assignment in their message, `{{ $list = $list | append "value" }}`, since the call alone never accumulates in a `range`. This resolves the confusion reported in [#180](https://github.com/go-sprout/sprout/issues/180). See [PR #187](https://github.com/go-sprout/sprout/pull/187).
+- **Ambiguous Calls Get Their Own Message**: When both arguments match the two signatures, for instance appending a list to a list, the call can no longer be disambiguated. Sprigin keeps the Sprig behavior and now says so, instead of asking you to migrate to the signature you may already use.
+- **Actionable Errors in Sprout**: `append` and `prepend` now report `cannot append on type string, the list must be the last argument`, pointing at the expected position rather than only the type.
+- **Informational Notices for `regexp`**: The registry deprecation is surfaced as an `info` notice at render time, and as Go `Deprecated:` markers on the package and `NewRegistry`. Choosing a registry is the library author's call, so the compiler-level marker is the one that matters, and template rendering stays quiet.
+
+### 🐛 **Bug Fixes**
+- **Sprigin Stack Overflow**: The backward compatibility layer recursed indefinitely when both arguments of `append` or `prepend` were lists, crashing the process. See [PR #164](https://github.com/go-sprout/sprout/pull/164).
+- **Sprig `dig` Key Splitting**: The compatibility `dig` no longer splits keys on dots, matching Sprig. This resolves [#159](https://github.com/go-sprout/sprout/issues/159). See [PR #160](https://github.com/go-sprout/sprout/pull/160).
+- **Literal Dots in `dig` Keys**: Native `dig` can now address keys containing dots, using the new `escape` function. See [PR #171](https://github.com/go-sprout/sprout/pull/171).
+- **Sprig Compatibility Coverage**: A fuzzing based compatibility suite of 2053 cases was added to keep `sprigin` aligned with Sprig. See [PR #165](https://github.com/go-sprout/sprout/pull/165).
+
+### 🔒 **Security & Dependencies**
+- **Updated golang.org/x/crypto**: Bumped from v0.46.0 to v0.55.0 across multiple updates. See [#169](https://github.com/go-sprout/sprout/pull/169), [#173](https://github.com/go-sprout/sprout/pull/173) and [#176](https://github.com/go-sprout/sprout/pull/176).
+- **Updated golang.org/x/text**: Bumped from v0.32.0 to v0.41.0. See [#167](https://github.com/go-sprout/sprout/pull/167), [#172](https://github.com/go-sprout/sprout/pull/172) and [#174](https://github.com/go-sprout/sprout/pull/174).
+- **CI Maintenance**: Bumped `actions/checkout` and `codecov-action`, and restricted the test matrix to supported Go versions. See [#158](https://github.com/go-sprout/sprout/pull/158), [#175](https://github.com/go-sprout/sprout/pull/175), [#181](https://github.com/go-sprout/sprout/pull/181) and [#182](https://github.com/go-sprout/sprout/pull/182).
+
+### 📚 **Documentation**
+- **New `regex` Registry Page**: Full documentation with a migration table from `regexp`, and a deprecation banner on the `regexp` page.
+- **Signature Migration**: The migration guide now states explicitly that the Sprig argument order was tolerated in v1.0.x and is refused from v1.1.0, and the `append` / `prepend` examples carry the assignment.
+- **List Accumulation**: The `slices` registry page documents that list functions return a new list, with a `range` example, a frequent source of confusion.
+- **Benchmarks and Links**: Benchmarks updated to reflect the current function set, and broken links fixed. See [#166](https://github.com/go-sprout/sprout/pull/166), [#156](https://github.com/go-sprout/sprout/pull/156) and [#178](https://github.com/go-sprout/sprout/pull/178).
+
+---
+
+### 📝 **Notes**
+
+**Upgrading from v1.0.x**: if your templates use the Sprig argument order, either update them to the pipe syntax, or switch your imports to `sprigin` first. Sprigin accepts both orders and points at the Sprout equivalent for every legacy call, letting you and your end users migrate on your own clock.
+
+**Deprecation timeline**: the `regexp` registry stays available and functional through v1.1, and is removed in v1.2 along with the switch of the `all` and `hermetic` groups to `regex`. To opt in today, register `regex` before the group: its functions take precedence.
+
+**Full Changelog**: https://github.com/go-sprout/sprout/compare/v1.0.3...v1.1.0
+
 ## Release v1.0.3: Sprout Compatibility 🔧 (2025-12-26)
 
 > 🌿 Restoring Harmony with Sprig!

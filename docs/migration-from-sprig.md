@@ -318,8 +318,22 @@ Whether you use `sprout` or `sprigin`, all panics are fixed. You can safely migr
 
 Sprout reorders function arguments to support Go template piping conventions. The target (map/list) is now the **last** argument instead of the first.
 
+{% hint style="danger" %}
+**Breaking in v1.1.0.** Up to v1.0.x, calling these functions with the Sprig argument order still worked in Sprout itself: the old order was detected, silently reordered, and a deprecation warning was logged. **That tolerance is removed in v1.1.0.** The following functions now fail instead of warning:
+
+`get`, `set`, `unset`, `hasKey`, `pick`, `omit`, `append`, `prepend`, `slice`, `without`
+
+```go
+{{ append $list "value" }}
+// v1.0.x: [a value]   + "the signature of `append` has changed" warning
+// v1.1.0: error, cannot append on type string, the list must be the last argument
+```
+
+If you upgrade from v1.0.x and your templates still use the Sprig order, update them with the tables below before bumping. Nothing changes if you already use the pipe syntax.
+{% endhint %}
+
 {% hint style="info" %}
-If you use `sprigin.FuncMap()`, both signatures are supported automatically. Sprigin detects which signature you're using and logs a warning when the old Sprig signature is detected.
+`sprigin.FuncMap()` is not affected: it supports both signatures, detects which one you use, and logs a warning only for the old Sprig order. Switching to `sprigin` buys you time to migrate your templates before moving to `sprout` directly.
 {% endhint %}
 
 #### Map Functions: get, set, unset, hasKey, pick, omit

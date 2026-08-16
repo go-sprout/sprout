@@ -65,7 +65,12 @@ func (rr *RegexpRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) erro
 	// main parameter is always the last one. Functions whose signature is left
 	// untouched only need the registry to be swapped, the others also need the
 	// arguments to be reordered in the templates.
-	sprout.AddNotice(notices, sprout.NewNotice(sprout.NoticeKindDeprecated, []string{
+	//
+	// These notices are informational, not deprecation warnings: choosing a
+	// registry is the library author's call, not the template author's, and the
+	// latter cannot act on a warning raised while rendering. Library authors are
+	// reached by the `Deprecated:` markers on the package and on NewRegistry.
+	sprout.AddNotice(notices, sprout.NewNotice(sprout.NoticeKindInfo, []string{
 		"regexFind",
 		"regexMatch",
 		"regexQuoteMeta",
@@ -73,11 +78,11 @@ func (rr *RegexpRegistry) RegisterNotices(notices *[]sprout.FunctionNotice) erro
 		"regexFindAllGroups",
 		"regexFindNamed",
 		"regexFindAllNamed",
-	}, "the `regexp` registry is deprecated and will be removed in v1.2, please use the `regex` registry instead (this function keeps the same signature)"))
-	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("regexFindAll", "the `regexp` registry is deprecated and will be removed in v1.2, please use the `regex` registry instead where the signature becomes `regexFindAll <regex> <n> <value>`"))
-	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("regexSplit", "the `regexp` registry is deprecated and will be removed in v1.2, please use the `regex` registry instead where the signature becomes `regexSplit <regex> <n> <value>`"))
-	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("regexReplaceAll", "the `regexp` registry is deprecated and will be removed in v1.2, please use the `regex` registry instead where the signature becomes `regexReplaceAll <regex> <replacedBy> <value>`"))
-	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("regexReplaceAllLiteral", "the `regexp` registry is deprecated and will be removed in v1.2, please use the `regex` registry instead where the signature becomes `regexReplaceAllLiteral <regex> <replacedBy> <value>`"))
+	}, "the `regexp` registry is deprecated in favor of `regex` and will be removed in v1.2, this function keeps the same signature"))
+	sprout.AddNotice(notices, sprout.NewInfoNotice("regexFindAll", "the `regexp` registry is deprecated in favor of `regex` and will be removed in v1.2, where the signature becomes `regexFindAll <regex> <n> <value>`"))
+	sprout.AddNotice(notices, sprout.NewInfoNotice("regexSplit", "the `regexp` registry is deprecated in favor of `regex` and will be removed in v1.2, where the signature becomes `regexSplit <regex> <n> <value>`"))
+	sprout.AddNotice(notices, sprout.NewInfoNotice("regexReplaceAll", "the `regexp` registry is deprecated in favor of `regex` and will be removed in v1.2, where the signature becomes `regexReplaceAll <regex> <replacedBy> <value>`"))
+	sprout.AddNotice(notices, sprout.NewInfoNotice("regexReplaceAllLiteral", "the `regexp` registry is deprecated in favor of `regex` and will be removed in v1.2, where the signature becomes `regexReplaceAllLiteral <regex> <replacedBy> <value>`"))
 
 	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustRegexFind", "please use `regexFind` instead"))
 	sprout.AddNotice(notices, sprout.NewDeprecatedNotice("mustRegexFindAll", "please use `regexFindAll` instead"))
