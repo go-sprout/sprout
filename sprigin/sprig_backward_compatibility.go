@@ -151,10 +151,30 @@ func (sh *SprigHandler) Logger() *slog.Logger {
 // SignatureWarn logs a warning message about a deprecated function signature.
 // This is used to warn users when they use the old Sprig signature instead of
 // the new Sprout signature.
+//
+// oldSign and newSign are shown side by side, so they must differ only by what
+// the user has to change. For the functions returning a new value that is
+// usually accumulated, both should carry the assignment, otherwise the message
+// reads as if the call alone was enough.
 func (sh *SprigHandler) SignatureWarn(functionName, oldSign, newSign string) {
 	msg := fmt.Sprintf("The signature of `%s` has changed from `%s` to `%s`, please update your code before next upgrade. This change will simplify the usage of the function and respect go/template conventions and allow usage of pipe (`|`).", functionName, oldSign, newSign)
 
 	sh.Logger().With("function", functionName, "notice", "deprecated").Warn(fmt.Sprintf("Template function `%s` is deprecated: %s", functionName, msg))
+}
+
+// AmbiguousSignatureWarn logs a warning message when the arguments of a call
+// match both the Sprig and the Sprout signatures, which happens when the
+// receiver and the value have the same type, e.g. appending a list to a list.
+//
+// The call cannot be disambiguated from the arguments alone, so the Sprig
+// signature is assumed for backward compatibility. Callers already migrated to
+// the Sprout signature get their arguments swapped, hence a message of its own
+// instead of the migration one, which would tell them to move to the very
+// signature they already use.
+func (sh *SprigHandler) AmbiguousSignatureWarn(functionName, assumedSign, migratedSign string) {
+	msg := fmt.Sprintf("The arguments of `%s` match both signatures, the sprig one `%s` has been assumed. If your template already uses `%s`, its arguments have been swapped: use the `sprout` package directly, where only the sprout signature exists, to remove the ambiguity.", functionName, assumedSign, migratedSign)
+
+	sh.Logger().With("function", functionName, "notice", "deprecated").Warn(fmt.Sprintf("Template function `%s` is ambiguous: %s", functionName, msg))
 }
 
 func (sh *SprigHandler) BreakingWarn(functionName, changeNotice string) {

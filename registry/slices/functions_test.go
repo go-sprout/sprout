@@ -24,6 +24,7 @@ func TestAppend(t *testing.T) {
 		{Input: `{{ .V | append "a" }}`, ExpectedOutput: "[x a]", Data: map[string]any{"V": [1]string{"x"}}},
 		{Input: `{{ .V | append "a" }}`, Data: map[string]any{"V": nil}, ExpectedErr: "cannot append to nil"},
 		{Input: `{{ .V | append "a" }}`, Data: map[string]any{"V": 1}, ExpectedErr: "cannot append on type int"},
+		{Name: "TestWithTheListFirst", Input: `{{ append .V "a" }}`, Data: map[string]any{"V": []string{"x"}}, ExpectedErr: "cannot append on type string, the list must be the last argument"},
 		{Input: `{{ append }}`, ExpectedErr: "wrong number of args for append: want 2 got 0"},
 	}
 
@@ -38,6 +39,7 @@ func TestPrepend(t *testing.T) {
 		{Input: `{{ .V | prepend "a" }}`, ExpectedOutput: "[a x]", Data: map[string]any{"V": [1]string{"x"}}},
 		{Input: `{{ .V | prepend "a" }}`, Data: map[string]any{"V": nil}, ExpectedErr: "cannot prepend to nil"},
 		{Input: `{{ .V | prepend "a" }}`, Data: map[string]any{"V": 1}, ExpectedErr: "cannot prepend on type int"},
+		{Name: "TestWithTheListFirst", Input: `{{ prepend .V "a" }}`, Data: map[string]any{"V": []string{"x"}}, ExpectedErr: "cannot prepend on type string, the list must be the last argument"},
 		{Input: `{{ prepend }}`, ExpectedErr: "wrong number of args for prepend: want 2 got 0"},
 	}
 

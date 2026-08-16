@@ -337,10 +337,28 @@ If you use `sprigin.FuncMap()`, both signatures are supported automatically. Spr
 
 | Function | Sprig Signature | Sprout Signature |
 |----------|-----------------|------------------|
-| `append` | `{{ append $list "value" }}` | `{{ $list \| append "value" }}` |
-| `prepend` | `{{ prepend $list "value" }}` | `{{ $list \| prepend "value" }}` |
+| `append` | `{{ $list = append $list "value" }}` | `{{ $list = $list \| append "value" }}` |
+| `prepend` | `{{ $list = prepend $list "value" }}` | `{{ $list = $list \| prepend "value" }}` |
 | `slice` | `{{ slice $list 1 3 }}` | `{{ $list \| slice 1 3 }}` |
 | `without` | `{{ without $list "a" "b" }}` | `{{ $list \| without "a" "b" }}` |
+
+{% hint style="warning" %}
+`append` and `prepend` return a **new** list, they never modify the one they receive. Accumulating in a `range` therefore requires assigning the result back, in Sprig as well as in Sprout. Only the position of the arguments changes:
+
+```go
+{{- $stages := list -}}
+{{- range .Stages -}}
+  {{- $stages = $stages | append .Name -}}
+{{- end -}}
+{{ $stages | sortAlpha }}
+```
+
+Dropping the `=` leaves `$stages` empty and prints the intermediate lists into the output:
+
+```go
+{{- $stages | append .Name -}} {{/* the result goes to the output, $stages is unchanged */}}
+```
+{% endhint %}
 
 #### Dig Function
 
