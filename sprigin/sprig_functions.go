@@ -43,6 +43,37 @@ func isMap(v any) bool {
 // These wrappers are only used through the sprigin compatibility layer.
 // Deprecation warnings are only logged when old Sprig signature is detected.
 
+// Signatures displayed by [SprigHandler.SignatureWarn] and
+// [SprigHandler.AmbiguousSignatureWarn]. They are defined once per function so
+// both messages always show the very same forms.
+//
+// `append` and `prepend` carry the assignment because they return a new list
+// without mutating the original one: showing the call alone reads as if it was
+// enough to accumulate in a `range`, which it is not.
+const (
+	sprigSignGet     = `{{ get $dict "key" }}`
+	sproutSignGet    = `{{ $dict | get "key" }}`
+	sprigSignSet     = `{{ set $dict "key" "value" }}`
+	sproutSignSet    = `{{ $dict | set "key" "value" }}`
+	sprigSignUnset   = `{{ unset $dict "key" }}`
+	sproutSignUnset  = `{{ $dict | unset "key" }}`
+	sprigSignHasKey  = `{{ hasKey $dict "key" }}`
+	sproutSignHasKey = `{{ $dict | hasKey "key" }}`
+	sprigSignPick    = `{{ pick $dict "key1" "key2" }}`
+	sproutSignPick   = `{{ $dict | pick "key1" "key2" }}`
+	sprigSignOmit    = `{{ omit $dict "key1" "key2" }}`
+	sproutSignOmit   = `{{ $dict | omit "key1" "key2" }}`
+
+	sprigSignAppend   = `{{ $list = append $list "value" }}`
+	sproutSignAppend  = `{{ $list = $list | append "value" }}`
+	sprigSignPrepend  = `{{ $list = prepend $list "value" }}`
+	sproutSignPrepend = `{{ $list = $list | prepend "value" }}`
+	sprigSignSlice    = `{{ slice $list 1 3 }}`
+	sproutSignSlice   = `{{ $list | slice 1 3 }}`
+	sprigSignWithout  = `{{ without $list "a" "b" }}`
+	sproutSignWithout = `{{ $list | without "a" "b" }}`
+)
+
 // sprigGet handles both Sprig and Sprout signatures for get.
 // Sprig: get(dict, key) - dict first
 // Sprout: get(key, dict) - dict last (for piping)
@@ -59,7 +90,7 @@ func (sh *SprigHandler) sprigGet(mr *maps.MapsRegistry) func(args ...any) (any, 
 		switch {
 		case firstIsMap && !secondIsMap:
 			// Old Sprig signature: get(dict, key)
-			sh.SignatureWarn("get", "{{ get $dict \"key\" }}", "{{ $dict | get \"key\" }}")
+			sh.SignatureWarn("get", sprigSignGet, sproutSignGet)
 			dict := args[0].(map[string]any)
 			key, ok := args[1].(string)
 			if !ok {
@@ -75,8 +106,12 @@ func (sh *SprigHandler) sprigGet(mr *maps.MapsRegistry) func(args ...any) (any, 
 			dict := args[1].(map[string]any)
 			return mr.Get(key, dict)
 		default:
-			// Ambiguous or invalid - try Sprig behavior (with warning)
-			sh.SignatureWarn("get", "{{ get $dict \"key\" }}", "{{ $dict | get \"key\" }}")
+			// Both are maps, or neither is: the signature cannot be told apart,
+			// keep the Sprig behavior for backward compatibility. Only warn when
+			// the call is truly ambiguous, otherwise it is an argument error.
+			if firstIsMap && secondIsMap {
+				sh.AmbiguousSignatureWarn("get", sprigSignGet, sproutSignGet)
+			}
 			dict, ok := args[0].(map[string]any)
 			if !ok {
 				return nil, fmt.Errorf("first argument must be a map[string]any")
@@ -106,7 +141,7 @@ func (sh *SprigHandler) sprigSet(mr *maps.MapsRegistry) func(args ...any) (map[s
 		switch {
 		case firstIsMap && !lastIsMap:
 			// Old Sprig signature: set(dict, key, value)
-			sh.SignatureWarn("set", "{{ set $dict \"key\" \"value\" }}", "{{ $dict | set \"key\" \"value\" }}")
+			sh.SignatureWarn("set", sprigSignSet, sproutSignSet)
 			dict := args[0].(map[string]any)
 			key, ok := args[1].(string)
 			if !ok {
@@ -124,8 +159,13 @@ func (sh *SprigHandler) sprigSet(mr *maps.MapsRegistry) func(args ...any) (map[s
 			dict := args[2].(map[string]any)
 			return mr.Set(key, value, dict)
 		default:
-			// Ambiguous - try Sprig behavior (with warning)
-			sh.SignatureWarn("set", "{{ set $dict \"key\" \"value\" }}", "{{ $dict | set \"key\" \"value\" }}")
+			// Both ends are maps, or neither is: the signature cannot be told
+			// apart, keep the Sprig behavior for backward compatibility. Only
+			// warn when the call is truly ambiguous, otherwise it is an
+			// argument error.
+			if firstIsMap && lastIsMap {
+				sh.AmbiguousSignatureWarn("set", sprigSignSet, sproutSignSet)
+			}
 			dict, ok := args[0].(map[string]any)
 			if !ok {
 				return nil, fmt.Errorf("first argument must be a map[string]any")
@@ -156,7 +196,7 @@ func (sh *SprigHandler) sprigUnset(mr *maps.MapsRegistry) func(args ...any) (map
 		switch {
 		case firstIsMap && !secondIsMap:
 			// Old Sprig signature: unset(dict, key)
-			sh.SignatureWarn("unset", "{{ unset $dict \"key\" }}", "{{ $dict | unset \"key\" }}")
+			sh.SignatureWarn("unset", sprigSignUnset, sproutSignUnset)
 			dict := args[0].(map[string]any)
 			key, ok := args[1].(string)
 			if !ok {
@@ -172,8 +212,12 @@ func (sh *SprigHandler) sprigUnset(mr *maps.MapsRegistry) func(args ...any) (map
 			dict := args[1].(map[string]any)
 			return mr.Unset(key, dict)
 		default:
-			// Ambiguous - try Sprig behavior (with warning)
-			sh.SignatureWarn("unset", "{{ unset $dict \"key\" }}", "{{ $dict | unset \"key\" }}")
+			// Both are maps, or neither is: the signature cannot be told apart,
+			// keep the Sprig behavior for backward compatibility. Only warn when
+			// the call is truly ambiguous, otherwise it is an argument error.
+			if firstIsMap && secondIsMap {
+				sh.AmbiguousSignatureWarn("unset", sprigSignUnset, sproutSignUnset)
+			}
 			dict, ok := args[0].(map[string]any)
 			if !ok {
 				return nil, fmt.Errorf("first argument must be a map[string]any")
@@ -203,7 +247,7 @@ func (sh *SprigHandler) sprigHasKey(mr *maps.MapsRegistry) func(args ...any) (bo
 		switch {
 		case firstIsMap && !secondIsMap:
 			// Old Sprig signature: hasKey(dict, key)
-			sh.SignatureWarn("hasKey", "{{ hasKey $dict \"key\" }}", "{{ $dict | hasKey \"key\" }}")
+			sh.SignatureWarn("hasKey", sprigSignHasKey, sproutSignHasKey)
 			dict := args[0].(map[string]any)
 			key, ok := args[1].(string)
 			if !ok {
@@ -219,8 +263,12 @@ func (sh *SprigHandler) sprigHasKey(mr *maps.MapsRegistry) func(args ...any) (bo
 			dict := args[1].(map[string]any)
 			return mr.HasKey(key, dict)
 		default:
-			// Ambiguous - try Sprig behavior (with warning)
-			sh.SignatureWarn("hasKey", "{{ hasKey $dict \"key\" }}", "{{ $dict | hasKey \"key\" }}")
+			// Both are maps, or neither is: the signature cannot be told apart,
+			// keep the Sprig behavior for backward compatibility. Only warn when
+			// the call is truly ambiguous, otherwise it is an argument error.
+			if firstIsMap && secondIsMap {
+				sh.AmbiguousSignatureWarn("hasKey", sprigSignHasKey, sproutSignHasKey)
+			}
 			dict, ok := args[0].(map[string]any)
 			if !ok {
 				return false, fmt.Errorf("first argument must be a map[string]any")
@@ -251,7 +299,7 @@ func (sh *SprigHandler) sprigPick(mr *maps.MapsRegistry) func(args ...any) (map[
 		case firstIsMap && !lastIsMap:
 			// Old Sprig signature: pick(dict, keys...)
 			// Convert to Sprout: pick(keys..., dict)
-			sh.SignatureWarn("pick", "{{ pick $dict \"key1\" \"key2\" }}", "{{ $dict | pick \"key1\" \"key2\" }}")
+			sh.SignatureWarn("pick", sprigSignPick, sproutSignPick)
 			dict := args[0]
 			keys := args[1:]
 			return mr.Pick(append(keys, dict)...)
@@ -260,8 +308,13 @@ func (sh *SprigHandler) sprigPick(mr *maps.MapsRegistry) func(args ...any) (map[
 			// Already in correct order
 			return mr.Pick(args...)
 		default:
-			// Ambiguous - default to Sprig behavior (with warning)
-			sh.SignatureWarn("pick", "{{ pick $dict \"key1\" \"key2\" }}", "{{ $dict | pick \"key1\" \"key2\" }}")
+			// Both ends are maps, or neither is: the signature cannot be told
+			// apart, keep the Sprig behavior for backward compatibility. Only
+			// warn when the call is truly ambiguous, otherwise it is an
+			// argument error.
+			if firstIsMap && lastIsMap {
+				sh.AmbiguousSignatureWarn("pick", sprigSignPick, sproutSignPick)
+			}
 			dict := args[0]
 			keys := args[1:]
 			return mr.Pick(append(keys, dict)...)
@@ -289,7 +342,7 @@ func (sh *SprigHandler) sprigOmit(mr *maps.MapsRegistry) func(args ...any) (map[
 		case firstIsMap && !lastIsMap:
 			// Old Sprig signature: omit(dict, keys...)
 			// Convert to Sprout: omit(keys..., dict)
-			sh.SignatureWarn("omit", "{{ omit $dict \"key1\" \"key2\" }}", "{{ $dict | omit \"key1\" \"key2\" }}")
+			sh.SignatureWarn("omit", sprigSignOmit, sproutSignOmit)
 			dict := args[0]
 			keys := args[1:]
 			return mr.Omit(append(keys, dict)...)
@@ -298,8 +351,13 @@ func (sh *SprigHandler) sprigOmit(mr *maps.MapsRegistry) func(args ...any) (map[
 			// Already in correct order
 			return mr.Omit(args...)
 		default:
-			// Ambiguous - default to Sprig behavior (with warning)
-			sh.SignatureWarn("omit", "{{ omit $dict \"key1\" \"key2\" }}", "{{ $dict | omit \"key1\" \"key2\" }}")
+			// Both ends are maps, or neither is: the signature cannot be told
+			// apart, keep the Sprig behavior for backward compatibility. Only
+			// warn when the call is truly ambiguous, otherwise it is an
+			// argument error.
+			if firstIsMap && lastIsMap {
+				sh.AmbiguousSignatureWarn("omit", sprigSignOmit, sproutSignOmit)
+			}
 			dict := args[0]
 			keys := args[1:]
 			return mr.Omit(append(keys, dict)...)
@@ -359,14 +417,19 @@ func (sh *SprigHandler) sprigAppend(sr *slices.SlicesRegistry) func(args ...any)
 		switch {
 		case firstIsList && !secondIsList:
 			// Old Sprig signature: append(list, value)
-			sh.SignatureWarn("append", "{{ append $list \"value\" }}", "{{ $list | append \"value\" }}")
+			sh.SignatureWarn("append", sprigSignAppend, sproutSignAppend)
 			return sr.Append(second, first)
 		case !firstIsList && secondIsList:
 			// New Sprout signature: append(value, list)
 			return sr.Append(first, second)
+		case firstIsList && secondIsList:
+			// Both are lists, the signature cannot be told apart: keep the Sprig
+			// behavior for backward compatibility and say so.
+			sh.AmbiguousSignatureWarn("append", sprigSignAppend, sproutSignAppend)
+			return sr.Append(second, first)
 		default:
-			// Ambiguous or neither is list - default to Sprig behavior (with warning)
-			sh.SignatureWarn("append", "{{ append $list \"value\" }}", "{{ $list | append \"value\" }}")
+			// Neither is a list: this is an argument error, not a signature one,
+			// let the registry report it.
 			return sr.Append(second, first)
 		}
 	}
@@ -390,14 +453,19 @@ func (sh *SprigHandler) sprigPrepend(sr *slices.SlicesRegistry) func(args ...any
 		switch {
 		case firstIsList && !secondIsList:
 			// Old Sprig signature: prepend(list, value)
-			sh.SignatureWarn("prepend", "{{ prepend $list \"value\" }}", "{{ $list | prepend \"value\" }}")
+			sh.SignatureWarn("prepend", sprigSignPrepend, sproutSignPrepend)
 			return sr.Prepend(second, first)
 		case !firstIsList && secondIsList:
 			// New Sprout signature: prepend(value, list)
 			return sr.Prepend(first, second)
+		case firstIsList && secondIsList:
+			// Both are lists, the signature cannot be told apart: keep the Sprig
+			// behavior for backward compatibility and say so.
+			sh.AmbiguousSignatureWarn("prepend", sprigSignPrepend, sproutSignPrepend)
+			return sr.Prepend(second, first)
 		default:
-			// Ambiguous or neither is list - default to Sprig behavior (with warning)
-			sh.SignatureWarn("prepend", "{{ prepend $list \"value\" }}", "{{ $list | prepend \"value\" }}")
+			// Neither is a list: this is an argument error, not a signature one,
+			// let the registry report it.
 			return sr.Prepend(second, first)
 		}
 	}
@@ -424,7 +492,7 @@ func (sh *SprigHandler) sprigSlice(sr *slices.SlicesRegistry) func(args ...any) 
 		case firstIsList && !lastIsList:
 			// Old Sprig signature: slice(list, indices...)
 			// Convert to Sprout: slice(indices..., list)
-			sh.SignatureWarn("slice", "{{ slice $list 1 3 }}", "{{ $list | slice 1 3 }}")
+			sh.SignatureWarn("slice", sprigSignSlice, sproutSignSlice)
 			list := args[0]
 			indices := args[1:]
 			return sr.Slice(append(indices, list)...)
@@ -432,9 +500,16 @@ func (sh *SprigHandler) sprigSlice(sr *slices.SlicesRegistry) func(args ...any) 
 			// New Sprout signature: slice(indices..., list)
 			// Already in correct order
 			return sr.Slice(args...)
+		case firstIsList && lastIsList:
+			// Both ends are lists, the signature cannot be told apart: keep the
+			// Sprig behavior for backward compatibility and say so.
+			sh.AmbiguousSignatureWarn("slice", sprigSignSlice, sproutSignSlice)
+			list := args[0]
+			indices := args[1:]
+			return sr.Slice(append(indices, list)...)
 		default:
-			// Ambiguous - default to Sprig behavior (with warning)
-			sh.SignatureWarn("slice", "{{ slice $list 1 3 }}", "{{ $list | slice 1 3 }}")
+			// No list at either end: this is an argument error, not a signature
+			// one, let the registry report it.
 			list := args[0]
 			indices := args[1:]
 			return sr.Slice(append(indices, list)...)
@@ -459,7 +534,7 @@ func (sh *SprigHandler) sprigWithout(sr *slices.SlicesRegistry) func(args ...any
 		case firstIsList && !lastIsList:
 			// Old Sprig signature: without(list, omit...)
 			// Convert to Sprout: without(omit..., list)
-			sh.SignatureWarn("without", "{{ without $list \"a\" \"b\" }}", "{{ $list | without \"a\" \"b\" }}")
+			sh.SignatureWarn("without", sprigSignWithout, sproutSignWithout)
 			list := args[0]
 			omit := args[1:]
 			return sr.Without(append(omit, list)...)
@@ -467,9 +542,16 @@ func (sh *SprigHandler) sprigWithout(sr *slices.SlicesRegistry) func(args ...any
 			// New Sprout signature: without(omit..., list)
 			// Already in correct order
 			return sr.Without(args...)
+		case firstIsList && lastIsList:
+			// Both ends are lists, the signature cannot be told apart: keep the
+			// Sprig behavior for backward compatibility and say so.
+			sh.AmbiguousSignatureWarn("without", sprigSignWithout, sproutSignWithout)
+			list := args[0]
+			omit := args[1:]
+			return sr.Without(append(omit, list)...)
 		default:
-			// Ambiguous - default to Sprig behavior (with warning)
-			sh.SignatureWarn("without", "{{ without $list \"a\" \"b\" }}", "{{ $list | without \"a\" \"b\" }}")
+			// No list at either end: this is an argument error, not a signature
+			// one, let the registry report it.
 			list := args[0]
 			omit := args[1:]
 			return sr.Without(append(omit, list)...)
