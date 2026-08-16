@@ -174,7 +174,7 @@ func (sh *SprigHandler) SignatureWarn(functionName, oldSign, newSign string) {
 func (sh *SprigHandler) AmbiguousSignatureWarn(functionName, assumedSign, migratedSign string) {
 	msg := fmt.Sprintf("The arguments of `%s` match both signatures, the sprig one `%s` has been assumed. If your template already uses `%s`, its arguments have been swapped: use the `sprout` package directly, where only the sprout signature exists, to remove the ambiguity.", functionName, assumedSign, migratedSign)
 
-	sh.Logger().With("function", functionName, "notice", "ambiguous").Warn(fmt.Sprintf("Template function `%s` is ambiguous: %s", functionName, msg))
+	sh.Logger().With("function", functionName, "notice", "deprecated").Warn(fmt.Sprintf("Template function `%s` is ambiguous: %s", functionName, msg))
 }
 
 func (sh *SprigHandler) BreakingWarn(functionName, changeNotice string) {

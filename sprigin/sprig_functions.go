@@ -106,9 +106,9 @@ func (sh *SprigHandler) sprigGet(mr *maps.MapsRegistry) func(args ...any) (any, 
 			dict := args[1].(map[string]any)
 			return mr.Get(key, dict)
 		default:
-			// Both are maps, or neither is: the signature cannot be told apart,
-			// keep the Sprig behavior for backward compatibility. Only warn when
-			// the call is truly ambiguous, otherwise it is an argument error.
+			// Both are maps, or neither is: keep the Sprig behavior. Only the
+			// former is a signature ambiguity, the latter is an argument error
+			// the registry reports on its own.
 			if firstIsMap && secondIsMap {
 				sh.AmbiguousSignatureWarn("get", sprigSignGet, sproutSignGet)
 			}
@@ -159,10 +159,9 @@ func (sh *SprigHandler) sprigSet(mr *maps.MapsRegistry) func(args ...any) (map[s
 			dict := args[2].(map[string]any)
 			return mr.Set(key, value, dict)
 		default:
-			// Both ends are maps, or neither is: the signature cannot be told
-			// apart, keep the Sprig behavior for backward compatibility. Only
-			// warn when the call is truly ambiguous, otherwise it is an
-			// argument error.
+			// Both ends are maps, or neither is: keep the Sprig behavior. Only
+			// the former is a signature ambiguity, the latter is an argument
+			// error the registry reports on its own.
 			if firstIsMap && lastIsMap {
 				sh.AmbiguousSignatureWarn("set", sprigSignSet, sproutSignSet)
 			}
@@ -212,9 +211,9 @@ func (sh *SprigHandler) sprigUnset(mr *maps.MapsRegistry) func(args ...any) (map
 			dict := args[1].(map[string]any)
 			return mr.Unset(key, dict)
 		default:
-			// Both are maps, or neither is: the signature cannot be told apart,
-			// keep the Sprig behavior for backward compatibility. Only warn when
-			// the call is truly ambiguous, otherwise it is an argument error.
+			// Both are maps, or neither is: keep the Sprig behavior. Only the
+			// former is a signature ambiguity, the latter is an argument error
+			// the registry reports on its own.
 			if firstIsMap && secondIsMap {
 				sh.AmbiguousSignatureWarn("unset", sprigSignUnset, sproutSignUnset)
 			}
@@ -263,9 +262,9 @@ func (sh *SprigHandler) sprigHasKey(mr *maps.MapsRegistry) func(args ...any) (bo
 			dict := args[1].(map[string]any)
 			return mr.HasKey(key, dict)
 		default:
-			// Both are maps, or neither is: the signature cannot be told apart,
-			// keep the Sprig behavior for backward compatibility. Only warn when
-			// the call is truly ambiguous, otherwise it is an argument error.
+			// Both are maps, or neither is: keep the Sprig behavior. Only the
+			// former is a signature ambiguity, the latter is an argument error
+			// the registry reports on its own.
 			if firstIsMap && secondIsMap {
 				sh.AmbiguousSignatureWarn("hasKey", sprigSignHasKey, sproutSignHasKey)
 			}
@@ -308,10 +307,9 @@ func (sh *SprigHandler) sprigPick(mr *maps.MapsRegistry) func(args ...any) (map[
 			// Already in correct order
 			return mr.Pick(args...)
 		default:
-			// Both ends are maps, or neither is: the signature cannot be told
-			// apart, keep the Sprig behavior for backward compatibility. Only
-			// warn when the call is truly ambiguous, otherwise it is an
-			// argument error.
+			// Both ends are maps, or neither is: keep the Sprig behavior. Only
+			// the former is a signature ambiguity, the latter is an argument
+			// error the registry reports on its own.
 			if firstIsMap && lastIsMap {
 				sh.AmbiguousSignatureWarn("pick", sprigSignPick, sproutSignPick)
 			}
@@ -351,10 +349,9 @@ func (sh *SprigHandler) sprigOmit(mr *maps.MapsRegistry) func(args ...any) (map[
 			// Already in correct order
 			return mr.Omit(args...)
 		default:
-			// Both ends are maps, or neither is: the signature cannot be told
-			// apart, keep the Sprig behavior for backward compatibility. Only
-			// warn when the call is truly ambiguous, otherwise it is an
-			// argument error.
+			// Both ends are maps, or neither is: keep the Sprig behavior. Only
+			// the former is a signature ambiguity, the latter is an argument
+			// error the registry reports on its own.
 			if firstIsMap && lastIsMap {
 				sh.AmbiguousSignatureWarn("omit", sprigSignOmit, sproutSignOmit)
 			}
@@ -422,14 +419,13 @@ func (sh *SprigHandler) sprigAppend(sr *slices.SlicesRegistry) func(args ...any)
 		case !firstIsList && secondIsList:
 			// New Sprout signature: append(value, list)
 			return sr.Append(first, second)
-		case firstIsList && secondIsList:
-			// Both are lists, the signature cannot be told apart: keep the Sprig
-			// behavior for backward compatibility and say so.
-			sh.AmbiguousSignatureWarn("append", sprigSignAppend, sproutSignAppend)
-			return sr.Append(second, first)
 		default:
-			// Neither is a list: this is an argument error, not a signature one,
-			// let the registry report it.
+			// Both are lists, or neither is: keep the Sprig behavior. Only the
+			// former is a signature ambiguity, the latter is an argument error
+			// the registry reports on its own.
+			if firstIsList && secondIsList {
+				sh.AmbiguousSignatureWarn("append", sprigSignAppend, sproutSignAppend)
+			}
 			return sr.Append(second, first)
 		}
 	}
@@ -458,14 +454,13 @@ func (sh *SprigHandler) sprigPrepend(sr *slices.SlicesRegistry) func(args ...any
 		case !firstIsList && secondIsList:
 			// New Sprout signature: prepend(value, list)
 			return sr.Prepend(first, second)
-		case firstIsList && secondIsList:
-			// Both are lists, the signature cannot be told apart: keep the Sprig
-			// behavior for backward compatibility and say so.
-			sh.AmbiguousSignatureWarn("prepend", sprigSignPrepend, sproutSignPrepend)
-			return sr.Prepend(second, first)
 		default:
-			// Neither is a list: this is an argument error, not a signature one,
-			// let the registry report it.
+			// Both are lists, or neither is: keep the Sprig behavior. Only the
+			// former is a signature ambiguity, the latter is an argument error
+			// the registry reports on its own.
+			if firstIsList && secondIsList {
+				sh.AmbiguousSignatureWarn("prepend", sprigSignPrepend, sproutSignPrepend)
+			}
 			return sr.Prepend(second, first)
 		}
 	}
@@ -500,16 +495,13 @@ func (sh *SprigHandler) sprigSlice(sr *slices.SlicesRegistry) func(args ...any) 
 			// New Sprout signature: slice(indices..., list)
 			// Already in correct order
 			return sr.Slice(args...)
-		case firstIsList && lastIsList:
-			// Both ends are lists, the signature cannot be told apart: keep the
-			// Sprig behavior for backward compatibility and say so.
-			sh.AmbiguousSignatureWarn("slice", sprigSignSlice, sproutSignSlice)
-			list := args[0]
-			indices := args[1:]
-			return sr.Slice(append(indices, list)...)
 		default:
-			// No list at either end: this is an argument error, not a signature
-			// one, let the registry report it.
+			// Both ends are lists, or neither is: keep the Sprig behavior. Only
+			// the former is a signature ambiguity, the latter is an argument
+			// error the registry reports on its own.
+			if firstIsList && lastIsList {
+				sh.AmbiguousSignatureWarn("slice", sprigSignSlice, sproutSignSlice)
+			}
 			list := args[0]
 			indices := args[1:]
 			return sr.Slice(append(indices, list)...)
@@ -542,16 +534,13 @@ func (sh *SprigHandler) sprigWithout(sr *slices.SlicesRegistry) func(args ...any
 			// New Sprout signature: without(omit..., list)
 			// Already in correct order
 			return sr.Without(args...)
-		case firstIsList && lastIsList:
-			// Both ends are lists, the signature cannot be told apart: keep the
-			// Sprig behavior for backward compatibility and say so.
-			sh.AmbiguousSignatureWarn("without", sprigSignWithout, sproutSignWithout)
-			list := args[0]
-			omit := args[1:]
-			return sr.Without(append(omit, list)...)
 		default:
-			// No list at either end: this is an argument error, not a signature
-			// one, let the registry report it.
+			// Both ends are lists, or neither is: keep the Sprig behavior. Only
+			// the former is a signature ambiguity, the latter is an argument
+			// error the registry reports on its own.
+			if firstIsList && lastIsList {
+				sh.AmbiguousSignatureWarn("without", sprigSignWithout, sproutSignWithout)
+			}
 			list := args[0]
 			omit := args[1:]
 			return sr.Without(append(omit, list)...)

@@ -51,6 +51,7 @@ func TestAmbiguousSignatureWarn(t *testing.T) {
 	assert.Contains(t, logged, "Template function `append` is ambiguous")
 	assert.Contains(t, logged, "match both signatures")
 	assert.Contains(t, logged, "use the `sprout` package directly")
+	assert.Contains(t, logged, "notice=deprecated")
 	// The migration wording must not be used here, the caller may already be on
 	// the sprout signature.
 	assert.NotContains(t, logged, "has changed")
