@@ -73,7 +73,7 @@ func (sr *SlicesRegistry) Append(v any, list any) ([]any, error) {
 		return result, nil
 
 	default:
-		return nil, fmt.Errorf("cannot append on type %s", tp)
+		return nil, fmt.Errorf("cannot append on type %s, the list must be the last argument", tp)
 	}
 }
 
@@ -111,7 +111,7 @@ func (sr *SlicesRegistry) Prepend(v any, list any) ([]any, error) {
 		return append([]any{v}, result...), nil
 
 	default:
-		return nil, fmt.Errorf("cannot prepend on type %s", tp)
+		return nil, fmt.Errorf("cannot prepend on type %s, the list must be the last argument", tp)
 	}
 }
 

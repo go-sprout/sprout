@@ -46,6 +46,18 @@ The function adds an element to the end of an existing list, extending the list 
 {% endtab %}
 {% endtabs %}
 
+{% hint style="warning" %}
+The list you pass in is never modified, a new one is returned. To accumulate in a `range`, assign the result back:
+
+<pre class="language-go"><code class="lang-go">{{- $stages := list -}}
+{{- range .Stages -}}
+  {{- $stages = $stages | append .Name -}}
+{{- end -}}
+</code></pre>
+
+Without the `=`, the list stays empty and each intermediate result is printed into the output.
+{% endhint %}
+
 ### <mark style="color:purple;">prepend</mark>
 
 The function adds an element to the beginning of an existing list, placing the new item before all others.
@@ -61,6 +73,10 @@ The function adds an element to the beginning of an existing list, placing the n
 ```
 {% endtab %}
 {% endtabs %}
+
+{% hint style="warning" %}
+Like `append`, the list you pass in is never modified: assign the result back to accumulate it.
+{% endhint %}
 
 ### <mark style="color:purple;">concat</mark>
 
