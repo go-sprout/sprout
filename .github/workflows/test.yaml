@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
     - name: Install Go
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@v7
       with:
         go-version: ${{ matrix.go-version }}
     - name: Checkout code
@@ -34,7 +34,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Install Go
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@v7
+      with:
+        go-version: 1.26
     - name: Checkout code
       uses: actions/checkout@v7
     - name: Install Task
