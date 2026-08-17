@@ -19,7 +19,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v7
         with:
-          go-version: '1.22.5'
+          go-version: '1.26'
       - name: Run go mod tidy in benchmarks directory
         working-directory: benchmarks
         run: |
