@@ -37,7 +37,7 @@ List the registries needed for your project and register them with the handler. 
 * **Sprout:** Functions are managed by a handler, allowing for better control over function availability, error handling, and logging.
 
 {% hint style="success" %}
-**Migration Top**
+**Migration Tip**
 
 Nothing to do, using the new handler is enough.
 {% endhint %}
@@ -50,7 +50,7 @@ Nothing to do, using the new handler is enough.
 {% hint style="success" %}
 **Migration Tip**
 
-You can learn mote about the safe strategy here: [safe-functions.md](features/safe-functions.md "mention")
+You can learn more about the safe strategy here: [safe-functions.md](features/safe-functions.md "mention")
 {% endhint %}
 
 ### 4. **Function Aliases**
