@@ -163,6 +163,10 @@ func TestDivInt(t *testing.T) {
 		{Input: `{{ div 1.1 2.2 }}`, ExpectedOutput: "0"},
 		{Input: `{{ 4 | div 5 }}`, ExpectedOutput: "1"},
 		{Input: `{{ div 1 "a" }}`, ExpectedErr: "failed to convert: a to float64"},
+		{Name: "TestDivideByZero", Input: `{{ div 1 0 }}`, ExpectedErr: "cannot divide by zero"},
+		{Name: "TestDivideByZeroInChain", Input: `{{ div 100 5 0 }}`, ExpectedErr: "cannot divide by zero"},
+		{Name: "TestZeroDividend", Input: `{{ div 0 5 }}`, ExpectedOutput: "0"},
+		{Name: "TestWithoutArgument", Input: `{{ div }}`, ExpectedOutput: "0"},
 	}
 
 	pesticide.RunTestCases(t, numeric.NewRegistry(), tc)

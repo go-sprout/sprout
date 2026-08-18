@@ -1,6 +1,7 @@
 package numeric
 
 import (
+	"errors"
 	"math"
 	"reflect"
 
@@ -198,11 +199,20 @@ func (nr *NumericRegistry) Mulf(values ...any) (any, error) {
 // Returns:
 //
 //	int64 - the quotient of the division.
+//	error - when a divisor is zero, or when a value cannot be converted to a number.
 //
 // For an example of this function in a Go template, refer to [Sprout Documentation: div].
 //
 // [Sprout Documentation: div]: https://docs.atom.codes/sprout/registries/numeric#div
 func (nr *NumericRegistry) DivInt(values ...any) (int64, error) {
+	if len(values) > 1 {
+		for _, divisor := range values[1:] {
+			if value, err := cast.ToFloat64E(divisor); err == nil && value == 0 {
+				return 0, errors.New("cannot divide by zero")
+			}
+		}
+	}
+
 	result, err := nr.Divf(values...)
 	if err != nil {
 		return 0, err
