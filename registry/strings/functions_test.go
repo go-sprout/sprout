@@ -1,6 +1,7 @@
 package strings_test
 
 import (
+	"sync"
 	"testing"
 
 	"github.com/go-sprout/sprout/pesticide"
@@ -172,6 +173,20 @@ func TestShuffle(t *testing.T) {
 	}
 
 	pesticide.RunRegexpTestCases(t, strings.NewRegistry(), tc)
+}
+
+func TestShuffleConcurrent(t *testing.T) {
+	registry := strings.NewRegistry()
+
+	var group sync.WaitGroup
+	for range 32 {
+		group.Go(func() {
+			for range 1_000 {
+				registry.Shuffle("concurrent template rendering")
+			}
+		})
+	}
+	group.Wait()
 }
 
 func TestEllipsis(t *testing.T) {

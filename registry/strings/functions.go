@@ -297,7 +297,7 @@ func (sr *StringsRegistry) Trunc(count int, value string) string {
 // [Sprout Documentation: shuffle]: https://docs.atom.codes/sprout/registries/strings#shuffle
 func (sr *StringsRegistry) Shuffle(value string) string {
 	runes := []rune(value)
-	mathrand.New(randSource).Shuffle(len(runes), func(i, j int) {
+	mathrand.Shuffle(len(runes), func(i, j int) {
 		runes[i], runes[j] = runes[j], runes[i]
 	})
 	return string(runes)
