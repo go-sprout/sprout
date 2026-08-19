@@ -76,10 +76,16 @@ var bc_registerSprigFuncs = sprout.FunctionAliasMap{
 
 // These functions are not guaranteed to evaluate to the same result for given input, because they
 // refer to the environment or global state.
+//
+// The list must cover every function of the `env` and `random` registries, plus
+// the clock and randomness dependent ones of `time` and `uniqueid`. It is
+// asserted by TestHermeticFuncMapExcludesNonDeterministicFunctions, so a new
+// function in those registries fails the tests until it is classified here.
 // FOR BACKWARDS COMPATIBILITY ONLY
 var nonhermeticFunctions = []string{
 	// Date functions
 	"date",
+	"dateAgo",
 	"dateInZone",
 	"dateModify",
 	"now",
@@ -92,11 +98,14 @@ var nonhermeticFunctions = []string{
 	"randAscii",
 	"randNumeric",
 	"randBytes",
+	"randInt",
 	"uuidv4",
+	"uuidv7",
 
 	// OS
 	"env",
 	"expandenv",
+	"expandEnv",
 
 	// Network
 	"getHostByName",
