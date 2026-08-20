@@ -65,7 +65,7 @@ Be careful, this method uses the default cost of the library and can cause secur
 
 The function derives a password based on the provided counter, password type, password, user, and site, generating a consistent and secure password using these inputs.
 
-<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DerivePassword(counter uint32, passwordType, password, user, site string) (string, error)
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">DerivePassword(counter int, passwordType, password, user, site string) (string, error)
 </code></pre></td></tr></tbody></table>
 
 {% tabs %}

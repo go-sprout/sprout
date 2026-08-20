@@ -2175,17 +2175,16 @@
 [CODE_001812]    {{ "-----BEGIN DSA PRIVATE KEY-----\nMIIBugIB...FIXED_DSA_KEY...==\n-----END DSA PRIVATE KEY-----" }}
 [CODE_001813]    {{ "-----BEGIN EC PRIVATE KEY-----\nMHQCAQEE...FIXED_ECDSA_KEY...=\n-----END EC PRIVATE KEY-----" }}
 
-{{/* derivePassword is not available in sprigin - using fixed values */}}
-[CODE_001814]    {{ "ZedaFaxcZaso9*" }}
-[CODE_001815]    {{ "OyfAD1rm3ja7H$kqKI9*" }}
-[CODE_001816]    {{ "TukMop5(" }}
-[CODE_001817]    {{ "Par4" }}
-[CODE_001818]    {{ "Fovi2@JifpTupx" }}
-[CODE_001819]    {{ "1359" }}
-[CODE_001820]    {{ "cannot find password template name" }}
-[CODE_001821]    {{ "cannot find password template phrase" }}
-[CODE_001822]    {{ "Cari7[JayuGugi" }}
-[CODE_001823]    {{ "otj83XfJ" }}
+[CODE_001814]    {{ derivePassword 1 "long" "password" "user" "example.com" }}
+[CODE_001815]    {{ derivePassword 1 "maximum" "password" "user" "example.com" }}
+[CODE_001816]    {{ derivePassword 1 "medium" "password" "user" "example.com" }}
+[CODE_001817]    {{ derivePassword 1 "basic" "password" "user" "example.com" }}
+[CODE_001818]    {{ derivePassword 1 "pin" "password" "user" "example.com" }}
+[CODE_001819]    {{ derivePassword 2 "long" "password" "user" "example.com" }}
+[CODE_001820]    {{/* FIXME: derivePassword 1 "name" "password" "user" "example.com" */}}
+[CODE_001821]    {{/* FIXME: derivePassword 1 "phrase" "password" "user" "example.com" */}}
+[CODE_001822]    {{ derivePassword 1 "long" "" "" "" }}
+[CODE_001823]    {{ derivePassword 2 "maximum" "" "" "" }}
 
 {{/* ============================================== */}}
 {{/* CRYPTO FUNCTIONS - AES (NON-DETERMINISTIC IV)  */}}
