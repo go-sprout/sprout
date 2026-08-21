@@ -1,5 +1,32 @@
 # Changelog
 
+## Release v1.1.1: Sprout Hardening 🔧 (2026-08-21)
+
+> 🌿 Sanding down the rough edges of v1.1.0!
+
+A patch release fixing a broken `derivePassword`, a data race in `shuffle`, a division by zero in `div`, and a hermetic guarantee broken by the v1.1.0 additions.
+
+### 🐛 **Bug Fixes**
+- **`derivePassword` Returned Empty**: The counter was typed `uint32`, so `text/template` passed an `int` and the call panicked, silently swallowed by the `SafeCall` wrapper. The counter is now an `int`. This resolves [#157](https://github.com/go-sprout/sprout/issues/157). See [PR #197](https://github.com/go-sprout/sprout/pull/197).
+- **Concurrency Safe `shuffle`**: `shuffle` used a package-global `math/rand.Source`, racing when templates render in parallel. It now uses the concurrency safe `math/rand.Shuffle`. This resolves [#195](https://github.com/go-sprout/sprout/issues/195). See [PR #196](https://github.com/go-sprout/sprout/pull/196).
+- **`div` Division by Zero**: A zero divisor returned a bogus integer instead of failing, because the float division was cast after the fact. It now returns `cannot divide by zero`. See [PR #194](https://github.com/go-sprout/sprout/pull/194).
+- **Hermetic Map Leaks**: `dateAgo`, `uuidv7`, `randInt` and the `expandEnv` alias were missing from the non-hermetic exclusion list, so `HermeticTxtFuncMap` and `HermeticHtmlFuncMap` still exposed them. They are now excluded, and a test keeps the list exhaustive. See [PR #193](https://github.com/go-sprout/sprout/pull/193).
+
+### 🔒 **Security & Dependencies**
+- **Updated go.yaml.in/yaml/v3**: Bumped from v3.0.4 to v3.0.5. See [#188](https://github.com/go-sprout/sprout/pull/188).
+- **CI Maintenance**: Bumped `actions/setup-go` from 5 to 7 and `arduino/setup-task` from 2 to 3. See [#189](https://github.com/go-sprout/sprout/pull/189) and [#190](https://github.com/go-sprout/sprout/pull/190).
+
+### 📚 **Documentation**
+- **Migration Guide Typos**: Two typos corrected in the [migration from Sprig](https://docs.atom.codes/sprout/migration-from-sprig) guide. See [PR #192](https://github.com/go-sprout/sprout/pull/192).
+
+---
+
+### 📝 **Notes**
+
+Templates are a drop-in replacement for v1.1.0, with one visible change: `div` now errors on a zero divisor instead of returning an arbitrary value. Go callers of `CryptoRegistry.DerivePassword` must note its `counter` parameter changed from `uint32` to `int`.
+
+**Full Changelog**: https://github.com/go-sprout/sprout/compare/v1.1.0...v1.1.1
+
 ## Release v1.1.0: Sprout Grows Up 🌳 (2026-08-16)
 
 > 🌿 A cleaner contract, a softer landing from Sprig!
