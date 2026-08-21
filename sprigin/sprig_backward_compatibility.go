@@ -297,6 +297,7 @@ func (sh *SprigHandler) Build() sprout.FunctionMap {
 		if !strings.HasPrefix(funcName, "must") {
 			sh.funcsMap[funcName] = func(args ...any) (any, error) {
 				out, _ := runtime.SafeCall(fn, args...)
+				// TODO: match sprig's error handling
 				return out, nil
 			}
 		}
