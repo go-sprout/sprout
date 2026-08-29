@@ -184,7 +184,7 @@ The function replaces all occurrences of a specified substring ('old') in the so
 
 ### <mark style="color:purple;">repeat</mark>
 
-The function repeats the provided string a specified number of times.
+The function repeats the provided string a specified number of times. A negative count is treated as zero and returns an empty string.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Repeat(count int, str string) string
 </code></pre></td></tr></tbody></table>
@@ -193,6 +193,7 @@ The function repeats the provided string a specified number of times.
 {% tab title="Template Example" %}
 ```go
 {{ "ha" | repeat 3 }} // Output: hahaha
+{{ "ha" | repeat -3 }} // Output: ""
 ```
 {% endtab %}
 {% endtabs %}
@@ -604,7 +605,7 @@ Extracts a portion of a string based on given start and end positions, with supp
 
 ### <mark style="color:purple;">indent</mark>
 
-Adds spaces to the beginning of each line in a string, effectively indenting the text.
+Adds spaces to the beginning of each line in a string, effectively indenting the text. A negative number of spaces is treated as zero and leaves the text unindented.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Indent(spaces int, str string) string
 </code></pre></td></tr></tbody></table>
@@ -613,13 +614,14 @@ Adds spaces to the beginning of each line in a string, effectively indenting the
 {% tab title="Template Example" %}
 ```go
 {{ "Hello\nWorld" | indent 4 }} // Output: "    Hello\n    World"
+{{ "Hello\nWorld" | indent -4 }} // Output: "Hello\nWorld"
 ```
 {% endtab %}
 {% endtabs %}
 
 ### <mark style="color:purple;">nindent</mark>
 
-Similar to `Indent`, but also adds a newline before the indented lines.
+Similar to `Indent`, but also adds a newline before the indented lines. A negative number of spaces is treated as zero, as with `indent`.
 
 <table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Nindent(spaces int, str string) string
 </code></pre></td></tr></tbody></table>
@@ -628,6 +630,7 @@ Similar to `Indent`, but also adds a newline before the indented lines.
 {% tab title="Template Example" %}
 ```go
 {{ "Hello\nWorld" | nindent 4 }} // Output: \n    Hello\n    World
+{{ "Hello\nWorld" | nindent -4 }} // Output: \nHello\nWorld
 ```
 {% endtab %}
 {% endtabs %}
