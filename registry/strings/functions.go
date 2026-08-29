@@ -214,11 +214,12 @@ func (sr *StringsRegistry) Replace(old, new, value string) string {
 	return strings.ReplaceAll(value, old, new)
 }
 
-// Repeat repeats the string 'str' for 'count' times.
+// Repeat repeats the string 'str' for 'count' times. If 'count' is negative, it
+// is treated as zero and an empty string is returned.
 //
 // Parameters:
 //
-//	count int - the number of times to repeat.
+//	count int - the number of times to repeat. Negative values are treated as zero.
 //	value string - the string to repeat.
 //
 // Returns:
@@ -229,6 +230,10 @@ func (sr *StringsRegistry) Replace(old, new, value string) string {
 //
 // [Sprout Documentation: repeat]: https://docs.atom.codes/sprout/registries/strings#repeat
 func (sr *StringsRegistry) Repeat(count int, value string) string {
+	if count < 0 {
+		count = 0
+	}
+
 	return strings.Repeat(value, count)
 }
 
@@ -783,11 +788,12 @@ func (sr *StringsRegistry) Substring(start, end int, value string) string {
 	return value[start:end]
 }
 
-// Indent adds spaces to the beginning of each line in 'value'.
+// Indent adds spaces to the beginning of each line in 'value'. If 'spaces' is
+// negative, it is treated as zero and 'value' is returned unindented.
 //
 // Parameters:
 //
-//	spaces int - the number of spaces to add.
+//	spaces int - the number of spaces to add. Negative values are treated as zero.
 //	value string - the string to indent.
 //
 // Returns:
@@ -798,6 +804,10 @@ func (sr *StringsRegistry) Substring(start, end int, value string) string {
 //
 // [Sprout Documentation: indent]: https://docs.atom.codes/sprout/registries/strings#indent
 func (sr *StringsRegistry) Indent(spaces int, value string) string {
+	if spaces < 0 {
+		spaces = 0
+	}
+
 	var builder strings.Builder
 	pad := strings.Repeat(" ", spaces)
 	lines := strings.Split(value, "\n")

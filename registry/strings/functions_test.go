@@ -136,6 +136,7 @@ func TestRepeat(t *testing.T) {
 		{Name: "TestEmpty", Input: `{{ "" | repeat 3 }}`, ExpectedOutput: ""},
 		{Name: "TestRepeat", Input: `{{ "foo" | repeat 3 }}`, ExpectedOutput: "foofoofoo"},
 		{Name: "TestRepeatZero", Input: `{{ "foo" | repeat 0 }}`, ExpectedOutput: ""},
+		{Name: "TestNegativeRepeat", Input: `{{ "foo" | repeat -1 }}`, ExpectedOutput: ""},
 	}
 
 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
@@ -509,6 +510,7 @@ func TestIndent(t *testing.T) {
 		{Name: "TestIndent", Input: `{{ "foo\nbar" | indent 3 }}`, ExpectedOutput: "   foo\n   bar"},
 		{Name: "TestIndentWithSpace", Input: `{{ "foo\n bar" | indent 3 }}`, ExpectedOutput: "   foo\n    bar"},
 		{Name: "TestIndentWithTab", Input: `{{ "foo\n\tbar" | indent 3 }}`, ExpectedOutput: "   foo\n   \tbar"},
+		{Name: "TestNegativeIndent", Input: `{{ "foo\n bar" | indent -3 }}`, ExpectedOutput: "foo\n bar"},
 	}
 
 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
@@ -520,6 +522,7 @@ func TestNindent(t *testing.T) {
 		{Name: "TestIndent", Input: `{{ "foo\nbar" | nindent 3 }}`, ExpectedOutput: "\n   foo\n   bar"},
 		{Name: "TestIndentWithSpace", Input: `{{ "foo\n bar" | nindent 3 }}`, ExpectedOutput: "\n   foo\n    bar"},
 		{Name: "TestIndentWithTab", Input: `{{ "foo\n\tbar" | nindent 3 }}`, ExpectedOutput: "\n   foo\n   \tbar"},
+		{Name: "TestNegativeIndent", Input: `{{ "foo\n bar" | nindent -3 }}`, ExpectedOutput: "\nfoo\n bar"},
 	}
 
 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)
