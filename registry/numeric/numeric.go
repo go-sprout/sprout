@@ -53,6 +53,16 @@ func (nr *NumericRegistry) RegisterFunctions(funcsMap sprout.FunctionMap) error 
 	sprout.AddFunction(funcsMap, "minf", nr.Minf)
 	sprout.AddFunction(funcsMap, "max", nr.Max)
 	sprout.AddFunction(funcsMap, "maxf", nr.Maxf)
+	sprout.AddFunction(funcsMap, "sum", nr.Sum)
+	sprout.AddFunction(funcsMap, "sumf", nr.Sumf)
+	sprout.AddFunction(funcsMap, "mean", nr.Mean)
+	sprout.AddFunction(funcsMap, "meanf", nr.Meanf)
+	sprout.AddFunction(funcsMap, "median", nr.Median)
+	sprout.AddFunction(funcsMap, "medianf", nr.Medianf)
+	sprout.AddFunction(funcsMap, "mode", nr.Mode)
+	sprout.AddFunction(funcsMap, "modef", nr.Modef)
+	sprout.AddFunction(funcsMap, "spread", nr.Spread)
+	sprout.AddFunction(funcsMap, "spreadf", nr.Spreadf)
 	return nil
 }
 
