@@ -206,6 +206,8 @@ func TestEllipsisBoth(t *testing.T) {
 		{Name: "TestShort", Input: `{{ "foo" | ellipsisBoth 5 4 }}`, ExpectedOutput: "foo"},
 		{Name: "TestTruncate", Input: `{{ "foooboooooo" | ellipsisBoth 4 9 }}`, ExpectedOutput: "...boo..."},
 		{Name: "TestZeroTruncate", Input: `{{ "foobar" | ellipsisBoth 0 0 }}`, ExpectedOutput: "foobar"},
+		{Name: "TestMultiByteOffset", Input: `{{ "héllo" | ellipsisBoth 2 10 }}`, ExpectedOutput: "llo"},
+		{Name: "TestOffsetPastEnd", Input: `{{ "foo" | ellipsisBoth 5 10 }}`, ExpectedOutput: ""},
 	}
 
 	pesticide.RunTestCases(t, strings.NewRegistry(), tc)

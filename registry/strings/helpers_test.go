@@ -500,6 +500,8 @@ func TestEllipsis(t *testing.T) {
 		{name: "truncate_end", value: "hello world", offset: 0, maxWidth: 8, expected: "hello..."},
 		{name: "maxWidth_too_small", value: "hello", offset: 0, maxWidth: 3, expected: "hello"},
 		{name: "with_offset", value: "hello world", offset: 2, maxWidth: 10, expected: "...llo ..."},
+		{name: "offset_inside_multibyte_rune", value: "héllo", offset: 2, maxWidth: 10, expected: "llo"},
+		{name: "offset_past_end", value: "foo", offset: 5, maxWidth: 10, expected: ""},
 		{name: "empty_string", value: "", offset: 0, maxWidth: 10, expected: ""},
 	}
 

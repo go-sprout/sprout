@@ -31,7 +31,12 @@ func (sr *StringsRegistry) ellipsis(value string, offset int, maxWidth int) stri
 
 	// If the string doesn't need trimming, return it as is.
 	if runeCount <= maxWidth || runeCount <= offset {
-		return value[offset:]
+		if offset == 0 {
+			return value
+		}
+
+		runes := []rune(value)
+		return string(runes[min(offset, len(runes)):])
 	}
 
 	// Determine end position for the substring, ensuring room for the ellipsis.
