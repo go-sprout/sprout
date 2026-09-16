@@ -405,3 +405,278 @@ func (nr *NumericRegistry) Maxf(value any, values ...any) (float64, error) {
 	}
 	return floatA, nil
 }
+
+// Sum returns the total of the given values as int64.
+//
+// A single slice or array argument is expanded, so both `sum .Values` and
+// `sum 1 2 3` are accepted.
+//
+// Parameters:
+//
+//	values ...any - numbers to total, or a single slice of them.
+//
+// Returns:
+//
+//	int64 - the total of the values.
+//	error - when a value cannot be converted.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: sum].
+//
+// [Sprout Documentation: sum]: https://docs.atom.codes/sprout/registries/numeric#sum
+func (nr *NumericRegistry) Sum(values ...any) (int64, error) {
+	floats, err := toFloatSlice(values)
+	if err != nil {
+		return 0, err
+	}
+
+	return cast.ToInt64(sumFloats(floats)), nil
+}
+
+// Sumf returns the total of the given values as float64.
+//
+// A single slice or array argument is expanded, so both `sumf .Values` and
+// `sumf 1.1 2.2` are accepted.
+//
+// Parameters:
+//
+//	values ...any - numbers to total, or a single slice of them.
+//
+// Returns:
+//
+//	float64 - the total of the values.
+//	error - when a value cannot be converted.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: sumf].
+//
+// [Sprout Documentation: sumf]: https://docs.atom.codes/sprout/registries/numeric#sumf
+func (nr *NumericRegistry) Sumf(values ...any) (float64, error) {
+	floats, err := toFloatSlice(values)
+	if err != nil {
+		return 0, err
+	}
+
+	return sumFloats(floats), nil
+}
+
+// Mean returns the arithmetic mean of the given values as int64.
+//
+// The result is truncated toward zero, so the mean of 1 and 2 is 1. Use Meanf
+// to keep the fractional part.
+//
+// Parameters:
+//
+//	values ...any - numbers to average, or a single slice of them.
+//
+// Returns:
+//
+//	int64 - the mean of the values.
+//	error - when a value cannot be converted, or no values are given.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: mean].
+//
+// [Sprout Documentation: mean]: https://docs.atom.codes/sprout/registries/numeric#mean
+func (nr *NumericRegistry) Mean(values ...any) (int64, error) {
+	floats, err := toFloatSlice(values)
+	if err != nil {
+		return 0, err
+	}
+
+	mean, err := meanFloats(floats)
+	if err != nil {
+		return 0, err
+	}
+
+	return cast.ToInt64(mean), nil
+}
+
+// Meanf returns the arithmetic mean of the given values as float64.
+//
+// Parameters:
+//
+//	values ...any - numbers to average, or a single slice of them.
+//
+// Returns:
+//
+//	float64 - the mean of the values.
+//	error - when a value cannot be converted, or no values are given.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: meanf].
+//
+// [Sprout Documentation: meanf]: https://docs.atom.codes/sprout/registries/numeric#meanf
+func (nr *NumericRegistry) Meanf(values ...any) (float64, error) {
+	floats, err := toFloatSlice(values)
+	if err != nil {
+		return 0, err
+	}
+
+	return meanFloats(floats)
+}
+
+// Median returns the middle value of the given values as int64, or the mean of
+// the two middle values when the count is even.
+//
+// The result is truncated toward zero, so the median of 1 and 2 is 1. Use
+// Medianf to keep the fractional part.
+//
+// Parameters:
+//
+//	values ...any - numbers to inspect, or a single slice of them.
+//
+// Returns:
+//
+//	int64 - the median of the values.
+//	error - when a value cannot be converted, or no values are given.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: median].
+//
+// [Sprout Documentation: median]: https://docs.atom.codes/sprout/registries/numeric#median
+func (nr *NumericRegistry) Median(values ...any) (int64, error) {
+	floats, err := toFloatSlice(values)
+	if err != nil {
+		return 0, err
+	}
+
+	median, err := medianFloats(floats)
+	if err != nil {
+		return 0, err
+	}
+
+	return cast.ToInt64(median), nil
+}
+
+// Medianf returns the middle value of the given values as float64, or the mean
+// of the two middle values when the count is even.
+//
+// Parameters:
+//
+//	values ...any - numbers to inspect, or a single slice of them.
+//
+// Returns:
+//
+//	float64 - the median of the values.
+//	error - when a value cannot be converted, or no values are given.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: medianf].
+//
+// [Sprout Documentation: medianf]: https://docs.atom.codes/sprout/registries/numeric#medianf
+func (nr *NumericRegistry) Medianf(values ...any) (float64, error) {
+	floats, err := toFloatSlice(values)
+	if err != nil {
+		return 0, err
+	}
+
+	return medianFloats(floats)
+}
+
+// Mode returns the most frequent of the given values as int64.
+//
+// Ties are resolved in favour of the value that appears first, so the result is
+// stable for a given input.
+//
+// Parameters:
+//
+//	values ...any - numbers to inspect, or a single slice of them.
+//
+// Returns:
+//
+//	int64 - the most frequent value.
+//	error - when a value cannot be converted, or no values are given.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: mode].
+//
+// [Sprout Documentation: mode]: https://docs.atom.codes/sprout/registries/numeric#mode
+func (nr *NumericRegistry) Mode(values ...any) (int64, error) {
+	floats, err := toFloatSlice(values)
+	if err != nil {
+		return 0, err
+	}
+
+	mode, err := modeFloats(floats)
+	if err != nil {
+		return 0, err
+	}
+
+	return cast.ToInt64(mode), nil
+}
+
+// Modef returns the most frequent of the given values as float64.
+//
+// Ties are resolved in favour of the value that appears first, so the result is
+// stable for a given input.
+//
+// Parameters:
+//
+//	values ...any - numbers to inspect, or a single slice of them.
+//
+// Returns:
+//
+//	float64 - the most frequent value.
+//	error - when a value cannot be converted, or no values are given.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: modef].
+//
+// [Sprout Documentation: modef]: https://docs.atom.codes/sprout/registries/numeric#modef
+func (nr *NumericRegistry) Modef(values ...any) (float64, error) {
+	floats, err := toFloatSlice(values)
+	if err != nil {
+		return 0, err
+	}
+
+	return modeFloats(floats)
+}
+
+// Spread returns the distance between the largest and smallest of the given
+// values as int64.
+//
+// The function is named spread rather than range because range is a keyword of
+// the template language and cannot be used as a function name.
+//
+// Parameters:
+//
+//	values ...any - numbers to inspect, or a single slice of them.
+//
+// Returns:
+//
+//	int64 - the distance between the largest and smallest value.
+//	error - when a value cannot be converted, or no values are given.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: spread].
+//
+// [Sprout Documentation: spread]: https://docs.atom.codes/sprout/registries/numeric#spread
+func (nr *NumericRegistry) Spread(values ...any) (int64, error) {
+	floats, err := toFloatSlice(values)
+	if err != nil {
+		return 0, err
+	}
+
+	spread, err := spreadFloats(floats)
+	if err != nil {
+		return 0, err
+	}
+
+	return cast.ToInt64(spread), nil
+}
+
+// Spreadf returns the distance between the largest and smallest of the given
+// values as float64.
+//
+// Parameters:
+//
+//	values ...any - numbers to inspect, or a single slice of them.
+//
+// Returns:
+//
+//	float64 - the distance between the largest and smallest value.
+//	error - when a value cannot be converted, or no values are given.
+//
+// For an example of this function in a Go template, refer to [Sprout Documentation: spreadf].
+//
+// [Sprout Documentation: spreadf]: https://docs.atom.codes/sprout/registries/numeric#spreadf
+func (nr *NumericRegistry) Spreadf(values ...any) (float64, error) {
+	floats, err := toFloatSlice(values)
+	if err != nil {
+		return 0, err
+	}
+
+	return spreadFloats(floats)
+}
