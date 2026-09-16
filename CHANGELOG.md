@@ -1,5 +1,33 @@
 # Changelog
 
+## Release v1.1.2: Sprout Keeps Its Promise 🛡️ (2026-09-16)
+
+> 🌿 No more panics, we meant it!
+
+A patch release closing three panics left in the `strings` registry, where a negative count or an out of range offset could still take the whole render down.
+
+### 🐛 **Bug Fixes**
+- **`repeat` and `indent` Negative Count**: A negative count was passed straight to `strings.Repeat`, which panics. It is now clamped to zero, so `repeat -1` returns `""` and `indent -1` leaves the value unindented. `nindent` is fixed along the way. See [PR #200](https://github.com/go-sprout/sprout/pull/200).
+- **`ellipsis` Offset in Runes**: The early return sliced by byte while `offset` is a rune index, cutting multi-byte characters in half and panicking when the offset exceeded the string length. It now slices by rune and returns `""` past the end. See [PR #199](https://github.com/go-sprout/sprout/pull/199).
+
+### 🔒 **Security & Dependencies**
+- **Updated golang.org/x/crypto**: Bumped from v0.55.0 to v0.57.0. See [#201](https://github.com/go-sprout/sprout/pull/201).
+- **Updated stretchr/testify**: Bumped from v1.11.1 to v1.12.1. See [#198](https://github.com/go-sprout/sprout/pull/198).
+
+---
+
+### 🎉 **Welcome New Contributors!**
+
+We're excited to welcome [@hdimer](https://github.com/hdimer) and [@NotAFlightRisk](https://github.com/NotAFlightRisk) to the Sprout community with their first contributions! Thank you for hunting down these panics.
+
+---
+
+### 📝 **Notes**
+
+Templates are a drop-in replacement for v1.1.1. Calls that used to panic now return a value instead.
+
+**Full Changelog**: https://github.com/go-sprout/sprout/compare/v1.1.1...v1.1.2
+
 ## Release v1.1.1: Sprout Hardening 🔧 (2026-08-21)
 
 > 🌿 Sanding down the rough edges of v1.1.0!
