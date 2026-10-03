@@ -69,7 +69,7 @@ func (sr *SlicesRegistry) flattenSlice(value reflect.Value, remainingDeep int) [
 	for i := 0; i < value.Len(); i++ {
 		item := value.Index(i)
 
-		if item.Kind() == reflect.Interface {
+		if item.Kind() == reflect.Interface && !item.IsNil() {
 			item = item.Elem()
 		}
 
