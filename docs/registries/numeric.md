@@ -260,3 +260,182 @@ The function returns the maximum value among the provided floating-point argumen
 ```
 {% endtab %}
 {% endtabs %}
+
+### <mark style="color:purple;">sum</mark>
+
+The function returns the total of the provided values as an integer. A single list argument is expanded, so a list of values coming from your data can be totalled directly.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Sum(values ...any) (int64, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ sum 1 2 3 4 }} // Output: 10
+{{ sum (list 1 2 3 4) }} // Output: 10
+{{ sum }} // Output: 0
+{{ sum "invalid" }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">sumf</mark>
+
+The function returns the total of the provided values as a floating-point number. A single list argument is expanded, so a list of values coming from your data can be totalled directly.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Sumf(values ...any) (float64, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ sumf 1.5 2.25 }} // Output: 3.75
+{{ sumf (list 1.1 2.2 3.3) }} // Output: 6.6
+{{ sumf 0.1 0.2 }} // Output: 0.3
+{{ sumf "invalid" }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">mean</mark>
+
+The function returns the arithmetic mean of the provided values as an integer. The result is truncated toward zero, so use <mark style="color:yellow;">`meanf`</mark> to keep the fractional part.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Mean(values ...any) (int64, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ mean 10 20 60 }} // Output: 30
+{{ mean (list 2 4 6) }} // Output: 4
+{{ mean 1 2 }} // Output: 1
+{{ mean }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">meanf</mark>
+
+The function returns the arithmetic mean of the provided values as a floating-point number.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Meanf(values ...any) (float64, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ meanf 1 2 }} // Output: 1.5
+{{ meanf (list 1.5 2.5) }} // Output: 2
+{{ meanf 10 20 60 }} // Output: 30
+{{ meanf }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">median</mark>
+
+The function returns the middle of the provided values as an integer, or the mean of the two middle values when the count is even. The result is truncated toward zero, so use <mark style="color:yellow;">`medianf`</mark> to keep the fractional part.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Median(values ...any) (int64, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ median 60 10 20 }} // Output: 20
+{{ median (list 10 20 30 40) }} // Output: 25
+{{ median 1 2 }} // Output: 1
+{{ median }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">medianf</mark>
+
+The function returns the middle of the provided values as a floating-point number, or the mean of the two middle values when the count is even. Unlike the mean, it is not pulled by a single outlying value.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Medianf(values ...any) (float64, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ medianf 60 10 20 }} // Output: 20
+{{ medianf (list 10 20 30 40) }} // Output: 25
+{{ medianf 1 2 }} // Output: 1.5
+{{ medianf }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">mode</mark>
+
+The function returns the most frequent of the provided values as an integer. When several values are equally frequent, the one appearing first is returned.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Mode(values ...any) (int64, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ mode 25 50 25 }} // Output: 25
+{{ mode (list 9 9 1) }} // Output: 9
+{{ mode 5 3 5 3 }} // Output: 5
+{{ mode }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">modef</mark>
+
+The function returns the most frequent of the provided values as a floating-point number. When several values are equally frequent, the one appearing first is returned.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Modef(values ...any) (float64, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ modef 2.5 1.75 2.5 }} // Output: 2.5
+{{ modef (list 1.1 2.2 1.1) }} // Output: 1.1
+{{ modef }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">spread</mark>
+
+The function returns the distance between the largest and smallest of the provided values as an integer. It is named <mark style="color:yellow;">`spread`</mark> rather than <mark style="color:yellow;">`range`</mark> because <mark style="color:yellow;">`range`</mark> is a keyword of the template language and cannot be used as a function name.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Spread(values ...any) (int64, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ spread 10 60 20 }} // Output: 50
+{{ spread (list 3 9 1) }} // Output: 8
+{{ spread -10 10 }} // Output: 20
+{{ spread }} // Error
+```
+{% endtab %}
+{% endtabs %}
+
+### <mark style="color:purple;">spreadf</mark>
+
+The function returns the distance between the largest and smallest of the provided values as a floating-point number.
+
+<table data-header-hidden><thead><tr><th width="164">Name</th><th>Value</th></tr></thead><tbody><tr><td>Signature</td><td><pre class="language-go"><code class="lang-go">Spreadf(values ...any) (float64, error)
+</code></pre></td></tr></tbody></table>
+
+{% tabs %}
+{% tab title="Template Example" %}
+```go
+{{ spreadf 1.5 4.25 }} // Output: 2.75
+{{ spreadf (list 2.5 0.5) }} // Output: 2
+{{ spreadf 7 }} // Output: 0
+{{ spreadf }} // Error
+```
+{% endtab %}
+{% endtabs %}
