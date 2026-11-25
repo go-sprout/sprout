@@ -305,19 +305,15 @@ func swapFirstLetter(value string, shouldUppercase bool) string {
 		updateFunc = unicode.ToLower
 	}
 
-	buf := []byte(value)
-	for i := 0; i < len(buf); {
-		r, size := utf8.DecodeRune(buf[i:])
+	for i := 0; i < len(value); {
+		r, size := utf8.DecodeRuneInString(value[i:])
 
 		if unicode.IsLetter(r) {
 			if conditionFunc(r) {
 				return value
 			}
 
-			upperRune := updateFunc(r)
-			utf8.EncodeRune(buf[i:i+size], upperRune)
-
-			return string(buf)
+			return value[:i] + string(updateFunc(r)) + value[i+size:]
 		}
 
 		i += size

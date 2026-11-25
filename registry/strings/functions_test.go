@@ -451,6 +451,7 @@ func TestCapitalize(t *testing.T) {
 		{Name: "CapitalizeWithUnderscore", Input: `{{ "boo_bar" | capitalize }}`, ExpectedOutput: "Boo_bar"},
 		{Name: "CapitalizeWithEmoji", Input: `{{ "👍 good" | capitalize }}`, ExpectedOutput: "👍 Good"},
 		{Name: "CapitalizeWithUnicode", Input: `{{ "été" | capitalize }}`, ExpectedOutput: "Été"},
+		{Name: "CapitalizeWithUnicodeWidthChange", Input: `{{ "ſome" | capitalize }}`, ExpectedOutput: "Some"},
 		{Name: "CapitalizeWithArabic", Input: `{{ "مرحبا" | capitalize }}`, ExpectedOutput: "مرحبا"},
 	}
 
@@ -466,6 +467,7 @@ func TestUncapitalize(t *testing.T) {
 		{Name: "UncapitalizeWithUnderscore", Input: `{{ "Boo_bar" | uncapitalize }}`, ExpectedOutput: "boo_bar"},
 		{Name: "UncapitalizeWithEmoji", Input: `{{ "👍 Good" | uncapitalize }}`, ExpectedOutput: "👍 good"},
 		{Name: "UncapitalizeWithUnicode", Input: `{{ "Été" | uncapitalize }}`, ExpectedOutput: "été"},
+		{Name: "UncapitalizeWithUnicodeWidthChange", Input: `{{ "İstanbul" | uncapitalize }}`, ExpectedOutput: "istanbul"},
 		{Name: "UncapitalizeWithArabic", Input: `{{ "مرحبا" | uncapitalize }}`, ExpectedOutput: "مرحبا"},
 	}
 
